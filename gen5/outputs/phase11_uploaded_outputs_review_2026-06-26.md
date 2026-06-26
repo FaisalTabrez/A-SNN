@@ -265,9 +265,53 @@ Interpretation:
   `0.5GB` at `100k` agents for the benchmark configuration.
 - Tick rate drops as population increases, but aggregate agent-throughput keeps
   rising, which supports the vectorized swarm direction.
-- Caveat: this benchmark used `8` mean active synapses, not the saturated
-  champion topology near `86` active synapses. A second throughput run should
-  benchmark dense/saturated evolved genomes.
+- Caveat resolved in follow-up: this benchmark used `8` mean active synapses,
+  not the saturated champion topology near `86` active synapses. The
+  `2026-06-27` saturated CUDA follow-up is summarized below.
+
+## Verified saturated-topology CUDA throughput follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_saturated_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_saturated_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_saturated_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `saturated`
+- Active edges: `86`
+- `torch.compile`: not requested
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 434.261 | 434,260.848 | 8.823 |
+| 10,000 | 408.174 | 4,081,741.472 | 89.590 |
+| 50,000 | 92.179 | 4,608,966.681 | 440.950 |
+| 100,000 | 46.438 | 4,643,764.924 | 883.836 |
+
+Comparison to prior 8-edge CUDA benchmark:
+
+| Population | Saturated / 8-edge throughput | Saturated / 8-edge max memory |
+|---:|---:|---:|
+| 1,000 | 0.724 | 0.992 |
+| 10,000 | 0.686 | 1.675 |
+| 50,000 | 0.205 | 1.770 |
+| 100,000 | 0.159 | 1.816 |
+
+Interpretation:
+
+- Saturated topology remains computationally viable at `100k` agents:
+  `4.64M` agent-steps/sec and under `1GB` CUDA max memory.
+- Active-edge load matters enormously. At `100k`, the `86`-edge saturated run
+  achieves about `15.9%` of the original `8`-edge throughput.
+- The saturated curve plateaus from `50k` to `100k`, suggesting memory/scatter
+  bandwidth pressure.
+- Caveat: the prior 8-edge run used `torch.compile`; this saturated run did
+  not. A fair follow-up should rerun saturated CUDA with `--compile`.
 
 ## Verified baseline comparison
 
@@ -316,15 +360,15 @@ finding that topology saturation is a real pressure.
 | Plasticity benefit over static network | Proven | Full `25.9`, gated `24.6`, static `13.6` |
 | Gated adult plasticity best overall | Not proven | Full plasticity has higher raw fitness and better retention; gated is more synapse-efficient |
 | Catastrophic forgetting measured | Proven | Retention ablation now uploaded and analyzed |
-| Throughput scaling 1k/10k/50k/100k | Proven | CUDA `torch.compile` active; `29.3M` agent-steps/sec at 100k |
+| Throughput scaling 1k/10k/50k/100k | Proven | 8-edge CUDA `29.3M` agent-steps/sec at 100k; 86-edge saturated CUDA `4.64M` at 100k |
 | Baseline comparison against dense LIF / PPO | Partial | Dense LIF/MLP scaffold compared; PPO skipped due missing `stable-baselines3` |
 
 ## Recommended next actions
 
 1. Add topology pressure to future evolution runs because both the single-run
    telemetry and prior champion run show active-edge saturation.
-2. Add a saturated-topology throughput benchmark using champion-like `~86`
-   active synapses rather than the `8`-edge benchmark prior.
+2. Rerun saturated-topology CUDA throughput with `--compile`, and run exact
+   champion adjacency throughput.
 3. Tune the adult/gated plasticity rule. Current settings improve compactness
    but do not beat full plasticity on retention.
 4. Run trained baselines:

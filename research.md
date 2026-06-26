@@ -629,6 +629,33 @@ Implication:
   - `--topology-preset saturated --active-edges 86`,
   - optionally `--topology-preset champion --adjacency-json ...`.
 
+Follow-up result added 2026-06-27:
+
+- Saturated CUDA benchmark with `86` active edges completed.
+- At `100k` agents, saturated throughput was `4.64M` agent-steps/sec with
+  `883.84 MB` CUDA max memory.
+- Compared with the earlier `8`-edge CUDA benchmark, saturated throughput was:
+  - `72.4%` at `1k`,
+  - `68.6%` at `10k`,
+  - `20.5%` at `50k`,
+  - `15.9%` at `100k`.
+- Saturated memory at `100k` was `1.82x` the `8`-edge benchmark.
+- The saturated throughput curve plateaus from `50k` to `100k`, suggesting
+  scatter/memory-bandwidth pressure under high active-edge load.
+
+Implication:
+
+- Champion-like topologies are still viable at large population size, but the
+  performance story must be topology-aware.
+- Future benchmark tables must include active-edge count, not just population
+  size and device.
+- Next benchmark: rerun saturated CUDA with `--compile`, then run exact
+  `champion_sparse_adjacency.json` topology.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_saturated_2026-06-27/analysis.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
