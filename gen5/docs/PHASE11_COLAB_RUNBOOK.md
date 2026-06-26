@@ -28,13 +28,27 @@ Device policy:
 Quick TPU check:
 
 ```python
-import torch
+import sys, torch
+print("Python:", sys.version)
+print("Torch:", torch.__version__)
 try:
     import torch_xla
     print("XLA device:", torch_xla.device() if hasattr(torch_xla, "device") else "legacy torch_xla API")
 except Exception as exc:
     print("PyTorch/XLA unavailable:", exc)
 ```
+
+If `torch_xla` is unavailable, install a PyTorch/XLA build compatible with the
+current Colab Python/PyTorch runtime, then restart the runtime. For current
+Colab Python 3.12 TPU runtimes, start with:
+
+```python
+!pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+```
+
+Then restart the runtime and rerun the TPU check above. If the notebook is a
+T4/L4 GPU runtime rather than a TPU runtime, use `--device cuda` instead of
+`--device xla`.
 
 ## 1. Retention / forgetting ablation
 

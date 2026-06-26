@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import importlib
+import sys
 from types import SimpleNamespace
 from typing import Any
 
@@ -75,11 +76,29 @@ def try_xla_device():
 def xla_device():
     """Return the current XLA device using modern or legacy PyTorch/XLA APIs."""
 
-    torch_xla = importlib.import_module("torch_xla")
+    try:
+        torch_xla = importlib.import_module("torch_xla")
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(_xla_dependency_message()) from exc
     if hasattr(torch_xla, "device"):
         return torch_xla.device()
-    xm = importlib.import_module("torch_xla.core.xla_model")
+    try:
+        xm = importlib.import_module("torch_xla.core.xla_model")
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(_xla_dependency_message()) from exc
     return xm.xla_device()
+
+
+def _xla_dependency_message() -> str:
+    version = f"{sys.version_info.major}.{sys.version_info.minor}"
+    return (
+        "PyTorch/XLA is required for --device xla/--device tpu, but the "
+        f"`torch_xla` package is not importable in this Python {version} "
+        "runtime. In Colab, switch to a TPU runtime and install a PyTorch/XLA "
+        "build that matches the active Python/PyTorch version, then restart "
+        "the runtime before rerunning. If this Colab instance only has a T4 "
+        "GPU, rerun with `--device cuda` instead of `--device xla`."
+    )
 
 
 def is_xla_device(device) -> bool:

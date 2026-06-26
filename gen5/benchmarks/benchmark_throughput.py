@@ -4,6 +4,7 @@ Colab TPU/XLA target:
 
 ```python
 !pip install torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+import torch_xla  # verify this succeeds before running --device xla
 !python gen5/benchmarks/benchmark_throughput.py \
   --device xla \
   --topology-preset saturated \

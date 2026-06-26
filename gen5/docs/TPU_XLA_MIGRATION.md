@@ -61,9 +61,34 @@ Avoid in hot loops:
 - `torch.compile` is skipped on XLA because PyTorch/XLA already compiles lazily
   into XLA graphs.
 
+## Colab TPU setup
+
+On a TPU runtime, first verify that PyTorch/XLA is importable:
+
+```python
+import sys, torch
+print("Python:", sys.version)
+print("Torch:", torch.__version__)
+try:
+    import torch_xla
+    print("XLA device:", torch_xla.device() if hasattr(torch_xla, "device") else "legacy torch_xla API")
+except Exception as exc:
+    print("PyTorch/XLA unavailable:", exc)
+```
+
+If `torch_xla` is missing, install a build compatible with the current Colab
+Python/PyTorch runtime, then restart the runtime:
+
+```python
+!pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+```
+
+If the notebook is on a T4/L4 GPU runtime, use `--device cuda`; `--device xla`
+requires `torch_xla`.
+
 ## Colab TPU commands
 
-On a TPU runtime:
+After the TPU setup check passes:
 
 ```python
 !python gen5/benchmarks/benchmark_throughput.py \

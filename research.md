@@ -580,6 +580,16 @@ Implication:
 - The next benchmark pass should rerun Phase 11 on `--device xla` and compare
   convergence, retention, and throughput against the existing CUDA/T4 evidence.
 
+Runtime caveat added 2026-06-27:
+
+- `--device xla` requires `torch_xla` to be importable in the active Colab
+  runtime. If `torch_xla` is missing, the issue is a Colab TPU/PyTorch-XLA
+  setup problem, not an AMMC graph error.
+- AMMC now raises an actionable dependency message instead of a raw
+  `ModuleNotFoundError`.
+- T4/L4 notebooks should use `--device cuda`; TPU notebooks should pass the
+  PyTorch/XLA preflight import check before running benchmarks.
+
 ### 17. Throughput benchmarks must report topology load
 
 Finding: the first Phase 11 throughput result used the original `8` active-edge
