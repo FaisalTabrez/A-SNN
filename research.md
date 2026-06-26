@@ -764,6 +764,31 @@ Artifact:
 
 - `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/analysis.md`
 
+Champion-path robustness added 2026-06-27:
+
+- A CUDA champion benchmark attempt failed because the command used
+  `gen5_outputs/champion/champion_sparse_adjacency.json`, but the repository
+  archive stores the known champion at
+  `gen5/outputs/colab_500_gen_2026-06-25/champion_sparse_adjacency.json`.
+- `benchmark_throughput.py` now gives a candidate-discovery diagnostic for
+  missing champion adjacency paths and tells Colab users to run:
+  `find /content -name champion_sparse_adjacency.json -print`.
+- The Colab runbook now includes an exact CUDA champion hotpath command with an
+  `ADJ_PATH` variable.
+
+Implication:
+
+- Throughput artifacts should record the exact adjacency path used, because
+  "champion" can refer to either the archived 500-generation champion or a
+  freshly exported runtime champion.
+- Future benchmark commands should either use the repository archive path or
+  explicitly locate the current Colab export before running.
+
+Artifacts:
+
+- `gen5/benchmarks/benchmark_throughput.py`
+- `gen5/docs/PHASE11_COLAB_RUNBOOK.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every

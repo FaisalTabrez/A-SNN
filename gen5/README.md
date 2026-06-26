@@ -268,6 +268,10 @@ python gen5/benchmarks/benchmark_throughput.py `
 If a champion sparse adjacency has been exported, benchmark that exact topology:
 
 ```powershell
+Get-ChildItem -Recurse -Filter champion_sparse_adjacency.json
+```
+
+```powershell
 python gen5/benchmarks/benchmark_throughput.py `
   --device xla `
   --topology-preset champion `
@@ -277,6 +281,10 @@ python gen5/benchmarks/benchmark_throughput.py `
   --warmup 30 `
   --output-dir gen5_outputs/throughput_xla_champion
 ```
+
+In Colab, use `find /content -name champion_sparse_adjacency.json -print` and
+pass the printed path to `--adjacency-json` if your champion export lives in a
+runtime output folder rather than the repository archive.
 
 For a Colab T4/L4 CUDA fallback:
 

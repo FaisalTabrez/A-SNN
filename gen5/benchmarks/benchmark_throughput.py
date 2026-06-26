@@ -77,6 +77,8 @@ from ammc_gen5 import (
 )
 from ammc_gen5.evaluation import default_foraging_seed_edges
 
+CHAMPION_ADJACENCY_NAME = "champion_sparse_adjacency.json"
+
 
 @dataclass
 class ThroughputResult:
@@ -359,16 +361,99 @@ def synthetic_saturated_edges(active_edges: int, *, max_edges: int, seed: int):
 
 
 def resolve_adjacency_path(adjacency_json: str | None) -> pathlib.Path:
-    if adjacency_json:
-        path = pathlib.Path(adjacency_json)
-    else:
-        path = ROOT / "outputs" / "colab_500_gen_2026-06-25" / "champion_sparse_adjacency.json"
-    if not path.exists():
-        raise FileNotFoundError(
-            f"champion adjacency file not found: {path}. "
-            "Pass --adjacency-json path/to/champion_sparse_adjacency.json."
+    requested = pathlib.Path(adjacency_json) if adjacency_json else None
+    candidates = _adjacency_path_candidates(requested)
+    for path in candidates:
+        if path.exists() and path.is_file():
+            return path
+
+    discovered = _discover_adjacency_files()
+    if len(discovered) == 1:
+        return discovered[0]
+
+    searched = "\n".join(f"  - {path}" for path in candidates)
+    if discovered:
+        found = "\n".join(f"  - {path}" for path in discovered)
+        discovery_hint = (
+            "\n\nDiscovered multiple candidate files; pass the intended one "
+            f"with --adjacency-json:\n{found}"
         )
-    return path
+    else:
+        discovery_hint = (
+            "\n\nNo candidate files were discovered under the repository, its "
+            "parent directory, or gen5_outputs. In Colab, run:\n"
+            f"  find /content -name {CHAMPION_ADJACENCY_NAME} -print"
+        )
+
+    label = requested if requested is not None else "<default champion adjacency>"
+    raise FileNotFoundError(
+        f"champion adjacency file not found for {label}.\n"
+        "Searched:\n"
+        f"{searched}"
+        f"{discovery_hint}"
+    )
+
+
+def _adjacency_path_candidates(requested: pathlib.Path | None) -> list[pathlib.Path]:
+    candidates: list[pathlib.Path] = []
+    if requested is not None:
+        candidates.extend(_expand_adjacency_request(requested))
+        if not requested.is_absolute():
+            candidates.extend(_expand_adjacency_request(pathlib.Path.cwd() / requested))
+            candidates.extend(_expand_adjacency_request(ROOT.parent / requested))
+    else:
+        candidates.extend(
+            [
+                ROOT / "outputs" / "colab_500_gen_2026-06-25" / CHAMPION_ADJACENCY_NAME,
+                ROOT / "outputs" / "champion" / CHAMPION_ADJACENCY_NAME,
+                ROOT.parent / "gen5_outputs" / "champion" / CHAMPION_ADJACENCY_NAME,
+                ROOT.parent / "gen5_outputs" / CHAMPION_ADJACENCY_NAME,
+                pathlib.Path.cwd() / "gen5" / "outputs" / "colab_500_gen_2026-06-25" / CHAMPION_ADJACENCY_NAME,
+                pathlib.Path.cwd() / "gen5_outputs" / "champion" / CHAMPION_ADJACENCY_NAME,
+                pathlib.Path.cwd() / "gen5_outputs" / CHAMPION_ADJACENCY_NAME,
+                pathlib.Path.cwd() / "1st run" / CHAMPION_ADJACENCY_NAME,
+            ]
+        )
+    return _unique_paths(candidates)
+
+
+def _expand_adjacency_request(path: pathlib.Path) -> list[pathlib.Path]:
+    if path.name == CHAMPION_ADJACENCY_NAME:
+        return [path]
+    return [path, path / CHAMPION_ADJACENCY_NAME]
+
+
+def _discover_adjacency_files() -> list[pathlib.Path]:
+    roots = _unique_paths(
+        [
+            ROOT,
+            ROOT.parent,
+            pathlib.Path.cwd(),
+            pathlib.Path.cwd() / "gen5_outputs",
+            ROOT.parent / "gen5_outputs",
+        ]
+    )
+    found: list[pathlib.Path] = []
+    for root in roots:
+        if root.exists() and root.is_dir():
+            try:
+                found.extend(root.rglob(CHAMPION_ADJACENCY_NAME))
+            except OSError:
+                continue
+    return _unique_paths(path for path in found if path.is_file())
+
+
+def _unique_paths(paths) -> list[pathlib.Path]:
+    unique: list[pathlib.Path] = []
+    seen: set[str] = set()
+    for raw_path in paths:
+        path = pathlib.Path(raw_path)
+        key = str(path.resolve()) if path.exists() else str(path)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(path)
+    return unique
 
 
 def load_adjacency_edges(path: pathlib.Path, *, max_edges: int):

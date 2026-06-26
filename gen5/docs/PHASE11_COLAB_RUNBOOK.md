@@ -121,6 +121,10 @@ If the champion adjacency file is present in Colab, run the exact champion
 topology:
 
 ```python
+!find /content -name champion_sparse_adjacency.json -print
+```
+
+```python
 !python gen5/benchmarks/benchmark_throughput.py \
   --device xla \
   --topology-preset champion \
@@ -130,6 +134,9 @@ topology:
   --warmup 30 \
   --output-dir gen5_outputs/throughput_xla_champion
 ```
+
+Use the path printed by `find` if your champion package lives somewhere else,
+for example under `gen5_outputs/champion/` from a fresh exporter run.
 
 Then optionally run the T4/L4 CUDA fallback for continuity with prior Phase 11
 numbers:
@@ -143,6 +150,22 @@ numbers:
   --warmup 30 \
   --compile \
   --output-dir gen5_outputs/throughput_cuda
+```
+
+For the exact champion topology on CUDA/T4, replace `ADJ_PATH` with the path
+printed by the `find` command above:
+
+```python
+ADJ_PATH = "gen5/outputs/colab_500_gen_2026-06-25/champion_sparse_adjacency.json"
+!python gen5/benchmarks/benchmark_throughput.py \
+  --device cuda \
+  --topology-preset champion \
+  --adjacency-json "$ADJ_PATH" \
+  --population-sizes 1000 10000 50000 100000 \
+  --steps 240 \
+  --warmup 30 \
+  --compile \
+  --output-dir gen5_outputs/throughput_cuda_champion_compile_hotpath
 ```
 
 Expected outputs:
