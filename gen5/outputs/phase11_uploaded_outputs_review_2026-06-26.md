@@ -313,6 +313,53 @@ Interpretation:
 - Caveat: the prior 8-edge run used `torch.compile`; this saturated run did
   not. A fair follow-up should rerun saturated CUDA with `--compile`.
 
+## Verified saturated-topology CUDA compile follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_saturated_compile_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_saturated_compile_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `saturated`
+- Active edges: `86`
+- `torch.compile`: requested and active
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 439.827 | 439,827.118 | 10.728 |
+| 10,000 | 405.581 | 4,055,814.161 | 89.590 |
+| 50,000 | 91.814 | 4,590,713.206 | 440.950 |
+| 100,000 | 46.187 | 4,618,652.250 | 883.836 |
+
+Comparison to saturated eager CUDA run:
+
+| Population | Compiled / eager throughput | Compiled / eager max memory |
+|---:|---:|---:|
+| 1,000 | 1.013 | 1.216 |
+| 10,000 | 0.994 | 1.000 |
+| 50,000 | 0.996 | 1.000 |
+| 100,000 | 0.995 | 1.000 |
+
+Interpretation:
+
+- `torch.compile` did not produce a useful speedup for this saturated run; it
+  was flat to slightly slower at larger population sizes.
+- The run emitted a Torch Dynamo recompile-limit warning from
+  `EvolvingHeadlessAMMCLoop.step()` because the full training step mutates the
+  Python-side `_epoch_step_host` counter.
+- The benchmark code now targets a separate `benchmark_tick()` tensor hot path
+  and records `tick_mode: tensor_hot_path_no_epoch_control` for future runs.
+  This keeps full evolutionary training semantics intact while preventing
+  compiler measurements from specializing on host epoch control.
+- These uploaded compiled results should be treated as diagnostic evidence, not
+  the final compiler benchmark.
+
 ## Verified baseline comparison
 
 Raw files:

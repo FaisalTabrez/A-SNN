@@ -129,6 +129,34 @@ class EvolvingHeadlessAMMCLoop(nn.Module):
             **world,
         }
 
+    def benchmark_tick(self, generator=None):
+        """Run one control-free tensor tick for throughput benchmarks.
+
+        ``step()`` intentionally mixes the tensor hot path with Python-side
+        epoch bookkeeping and a diagnostics dictionary. That is useful for
+        training telemetry, but it makes ``torch.compile`` specialize on host
+        counters such as ``_epoch_step_host`` and can trigger repeated
+        recompilation. This method keeps only the per-tick tensor work used by
+        the throughput benchmark: environment sensing, sparse recurrent brain
+        update, motor decoding, physics, and a tensor epoch counter increment.
+
+        Epoch evolution, champion snapshots, logger writes, and host integer
+        counters are deliberately skipped.
+        """
+
+        with torch.no_grad():
+            sensory = self.environment.sensory_tensor()
+            neural_input = self.transducer.encode_sensors(sensory)
+            recurrent_current = self.evolver(self.membrane)
+            spikes, membrane = self.transducer.lif_step(neural_input + recurrent_current, self.membrane)
+            self.membrane.copy_(membrane)
+
+            action = self.transducer.decode_motors(spikes)
+            self.environment.step(action, generator=generator)
+            self.epoch_step.add_(1)
+            mark_step(self.environment.agent_pos.device)
+            return action
+
     def finish_epoch(self, generator=None) -> dict:
         """Evolve the population from environment fitness and reset positions."""
 

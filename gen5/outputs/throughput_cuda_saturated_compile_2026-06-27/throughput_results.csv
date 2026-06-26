@@ -1,0 +1,5 @@
+topology_preset,requested_active_edges,seeded_active_edges,adjacency_json,population_size,steps,seconds,ticks_per_second,agent_steps_per_second,mean_active_synapses,device,dtype,torch_compile_requested,torch_compile_active,compile_error,cuda_memory_allocated_mb,cuda_max_memory_allocated_mb,accelerator_backend
+saturated,86,86,,1000,240,0.5456689459997506,439.82711818112097,439827.11818112095,86.00000762939453,cuda,torch.float32,True,True,,4.6162109375,10.7275390625,cuda
+saturated,86,86,,10000,240,0.5917430889999196,405.58141609328135,4055814.1609328133,86.0,cuda,torch.float32,True,True,,46.59375,89.59033203125,cuda
+saturated,86,86,,50000,240,2.6139729189999343,91.81426412474858,4590713.206237429,86.0,cuda,torch.float32,True,True,,230.603515625,440.9501953125,cuda
+saturated,86,86,,100000,240,5.196321070000067,46.18652249677037,4618652.249677037,86.0,cuda,torch.float32,True,True,,462.23291015625,883.83642578125,cuda

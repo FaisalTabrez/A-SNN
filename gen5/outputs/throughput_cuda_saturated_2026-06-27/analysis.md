@@ -60,9 +60,23 @@ Prior reference:
   did not. A fairer comparison should rerun saturated with `--compile` on CUDA
   and also run both topology presets on TPU/XLA once the XLA runtime is clean.
 
+## Compile follow-up
+
+A saturated CUDA rerun with `--compile` was uploaded on 2026-06-27:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_2026-06-27/throughput_results.json`
+- Peak: `4.62M` agent-steps/sec at `100k`
+- Compiled / eager throughput at `100k`: `0.995x`
+
+That run emitted a Torch Dynamo recompile-limit warning from the full
+`EvolvingHeadlessAMMCLoop.step()` path because `_epoch_step_host` is a mutable
+Python integer on an `nn.Module`. The benchmark code has since been updated to
+use a control-free `benchmark_tick()` tensor hot path and to record
+`tick_mode: tensor_hot_path_no_epoch_control` in future outputs.
+
 ## Next benchmark actions
 
-1. Rerun saturated CUDA with `--compile`.
+1. Rerun saturated CUDA eager and compiled on the new `benchmark_tick()` path.
 2. Run exact `champion_sparse_adjacency.json` topology, not only synthetic
    saturated topology.
 3. Run `foraging`, `saturated`, and `champion` presets on TPU/XLA after the

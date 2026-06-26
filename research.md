@@ -656,6 +656,45 @@ Artifact:
 
 - `gen5/outputs/throughput_cuda_saturated_2026-06-27/analysis.md`
 
+Compile follow-up added 2026-06-27:
+
+- Saturated CUDA `--compile` run completed on the same `86` active-edge
+  topology.
+- At `100k` agents, compiled saturated throughput was `4.62M`
+  agent-steps/sec with `883.84 MB` CUDA max memory.
+- Compiled/eager throughput ratio was effectively flat:
+  - `1.013x` at `1k`,
+  - `0.994x` at `10k`,
+  - `0.996x` at `50k`,
+  - `0.995x` at `100k`.
+- The run emitted a Torch Dynamo recompile-limit warning from
+  `EvolvingHeadlessAMMCLoop.step()` because the full training step mutates the
+  Python integer `_epoch_step_host`, which Dynamo treats as a static
+  `nn.Module` guard.
+
+Decision:
+
+- Keep full `step()` semantics unchanged for real evolution and telemetry.
+- Add a separate `benchmark_tick()` tensor hot path for throughput timing and
+  `torch.compile`.
+- Future throughput rows now record
+  `tick_mode: tensor_hot_path_no_epoch_control` so compiler-hot-path results
+  are not confused with full evolutionary training-step diagnostics.
+
+Implication:
+
+- The uploaded compiled saturated result is diagnostic evidence, not the final
+  compiler-performance claim.
+- The next publishable benchmark should rerun eager and compiled saturated
+  throughput on the same `benchmark_tick()` path, then repeat with the exact
+  champion adjacency.
+
+Artifacts:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_2026-06-27/analysis.md`
+- `gen5/benchmarks/benchmark_throughput.py`
+- `gen5/ammc_gen5/evolving_loop.py`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1334,10 +1373,12 @@ Validation:
    - `--device xla` multi-seed convergence,
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
-2. Run the new saturated-topology throughput presets in Colab:
-   - compare `foraging` vs `saturated --active-edges 86`,
-   - optionally compare exact `champion_sparse_adjacency.json`,
-   - report memory and agent-steps/sec at 1k/10k/50k/100k.
+2. Rerun topology-aware throughput on the new `benchmark_tick()` path:
+   - compare eager vs `--compile` for `saturated --active-edges 86`,
+   - compare `foraging`, `saturated`, and exact
+     `champion_sparse_adjacency.json`,
+   - report `tick_mode`, memory, active-edge count, and agent-steps/sec at
+     1k/10k/50k/100k.
 3. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,
    - add protected-core champion masks,

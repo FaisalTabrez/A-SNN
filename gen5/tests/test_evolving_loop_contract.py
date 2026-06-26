@@ -78,7 +78,18 @@ class EvolvingLoopContractTest(unittest.TestCase):
         self.assertFalse(torch.equal(first_positions, loop.environment.agent_pos))
         self.assertTrue(torch.all(loop.membrane == 0))
 
+    def test_benchmark_tick_skips_host_epoch_control(self) -> None:
+        loop = self.make_loop(epoch_steps=1)
+
+        action = loop.benchmark_tick()
+
+        self.assertEqual(tuple(action.shape), (16, 2))
+        self.assertEqual(int(loop.epoch_step.item()), 1)
+        self.assertEqual(loop._epoch_step_host, 0)
+        self.assertEqual(loop._generation_host, 1)
+        self.assertEqual(int(loop.generation.item()), 1)
+        self.assertIsNone(loop.last_epoch_report)
+
 
 if __name__ == "__main__":
     unittest.main()
-

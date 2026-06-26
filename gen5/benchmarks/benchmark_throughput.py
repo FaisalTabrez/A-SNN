@@ -30,7 +30,9 @@ Colab T4/CUDA fallback:
 
 The script reports both raw simulation ticks/sec and agent-steps/sec. The
 second number is usually the better scaling metric because one tick advances an
-entire population tensor.
+entire population tensor. Throughput timing uses the control-free
+``benchmark_tick()`` hot path, so ``torch.compile`` does not specialize on
+Python epoch counters used by full evolutionary training.
 
 Use `--topology-preset foraging` for the original 8-edge prior,
 `--topology-preset saturated --active-edges 86` for a champion-like active
@@ -92,6 +94,7 @@ class ThroughputResult:
     torch_compile_requested: bool
     torch_compile_active: bool
     compile_error: str | None
+    tick_mode: str
     cuda_memory_allocated_mb: float | None
     cuda_max_memory_allocated_mb: float | None
     accelerator_backend: str
@@ -124,7 +127,11 @@ def parse_args() -> argparse.Namespace:
         help="Path to champion_sparse_adjacency.json for --topology-preset champion",
     )
     parser.add_argument("--device", default="auto", help="'auto', 'xla'/'tpu', 'cpu', 'cuda', or a torch device string")
-    parser.add_argument("--compile", action="store_true", help="Attempt torch.compile around the loop tick")
+    parser.add_argument(
+        "--compile",
+        action="store_true",
+        help="Attempt torch.compile around the tensor-only benchmark tick",
+    )
     parser.add_argument("--output-dir", default="gen5_outputs/throughput")
     parser.add_argument("--seed", type=int, default=42)
     return parser.parse_args()
@@ -238,7 +245,8 @@ def run_one_size(
         EvolvingLoopConfig(epoch_steps=epoch_steps),
     ).to(device)
 
-    tick = loop.step
+    tick = loop.benchmark_tick
+    tick_mode = "tensor_hot_path_no_epoch_control"
     compile_active = False
     compile_error = None
     if compile_requested:
@@ -246,7 +254,7 @@ def run_one_size(
             compile_error = "torch.compile skipped for XLA; PyTorch/XLA performs lazy XLA compilation"
         elif hasattr(torch, "compile"):
             try:
-                tick = torch.compile(loop.step)  # type: ignore[attr-defined]
+                tick = torch.compile(loop.benchmark_tick)  # type: ignore[attr-defined]
                 compile_active = True
             except Exception as exc:  # pragma: no cover
                 compile_error = str(exc)
@@ -261,7 +269,7 @@ def run_one_size(
             raise
         compile_error = f"torch.compile runtime fallback: {exc}"
         compile_active = False
-        tick = loop.step
+        tick = loop.benchmark_tick
         for _ in range(warmup):
             tick()
     sync(device)
@@ -274,7 +282,7 @@ def run_one_size(
             raise
         compile_error = f"torch.compile timed-loop fallback: {exc}"
         compile_active = False
-        tick = loop.step
+        tick = loop.benchmark_tick
         sync(device)
         start = time.perf_counter()
         for _ in range(steps):
@@ -301,6 +309,7 @@ def run_one_size(
         torch_compile_requested=compile_requested,
         torch_compile_active=compile_active,
         compile_error=compile_error,
+        tick_mode=tick_mode,
         cuda_memory_allocated_mb=mem.allocated_mb,
         cuda_max_memory_allocated_mb=mem.max_allocated_mb,
         accelerator_backend=mem.backend,
