@@ -585,8 +585,10 @@ Runtime caveat added 2026-06-27:
 - `--device xla` requires `torch_xla` to be importable in the active Colab
   runtime. If `torch_xla` is missing, the issue is a Colab TPU/PyTorch-XLA
   setup problem, not an AMMC graph error.
+- `_XLAC` / `undefined symbol` import failures mean `torch_xla` is installed
+  but binary-incompatible with the active `torch` wheel.
 - AMMC now raises an actionable dependency message instead of a raw
-  `ModuleNotFoundError`.
+  `ModuleNotFoundError` or binary loader traceback.
 - T4/L4 notebooks should use `--device cuda`; TPU notebooks should pass the
   PyTorch/XLA preflight import check before running benchmarks.
 

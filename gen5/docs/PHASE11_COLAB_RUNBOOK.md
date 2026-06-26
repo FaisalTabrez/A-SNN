@@ -46,6 +46,17 @@ Colab Python 3.12 TPU runtimes, start with:
 !pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
 ```
 
+If the error mentions `_XLAC` or `undefined symbol`, `torch_xla` is installed
+but binary-incompatible with the active `torch` wheel. In that case, use a fresh
+TPU runtime and install matching nightly CPU PyTorch + PyTorch/XLA wheels
+together:
+
+```python
+!pip uninstall -y torch torch_xla torchvision torchaudio
+!pip install -q --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
+!pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+```
+
 Then restart the runtime and rerun the TPU check above. If the notebook is a
 T4/L4 GPU runtime rather than a TPU runtime, use `--device cuda` instead of
 `--device xla`.

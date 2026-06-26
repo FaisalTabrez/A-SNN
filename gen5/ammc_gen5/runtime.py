@@ -78,26 +78,31 @@ def xla_device():
 
     try:
         torch_xla = importlib.import_module("torch_xla")
-    except ModuleNotFoundError as exc:
-        raise ModuleNotFoundError(_xla_dependency_message()) from exc
+    except Exception as exc:
+        raise ImportError(_xla_dependency_message(exc)) from exc
     if hasattr(torch_xla, "device"):
         return torch_xla.device()
     try:
         xm = importlib.import_module("torch_xla.core.xla_model")
-    except ModuleNotFoundError as exc:
-        raise ModuleNotFoundError(_xla_dependency_message()) from exc
+    except Exception as exc:
+        raise ImportError(_xla_dependency_message(exc)) from exc
     return xm.xla_device()
 
 
-def _xla_dependency_message() -> str:
+def _xla_dependency_message(original_error: BaseException | None = None) -> str:
     version = f"{sys.version_info.major}.{sys.version_info.minor}"
+    torch_version = getattr(torch, "__version__", "unknown") if torch is not None else "unavailable"
+    original = f" Original import error: {original_error}" if original_error is not None else ""
     return (
         "PyTorch/XLA is required for --device xla/--device tpu, but the "
-        f"`torch_xla` package is not importable in this Python {version} "
-        "runtime. In Colab, switch to a TPU runtime and install a PyTorch/XLA "
-        "build that matches the active Python/PyTorch version, then restart "
-        "the runtime before rerunning. If this Colab instance only has a T4 "
-        "GPU, rerun with `--device cuda` instead of `--device xla`."
+        f"`torch_xla` package could not be loaded in this Python {version}, "
+        f"PyTorch {torch_version} runtime. This usually means either "
+        "`torch_xla` is missing or its binary was built for a different "
+        "PyTorch/Python ABI. In Colab, switch to a TPU runtime and install a "
+        "PyTorch/XLA build that matches the active Python/PyTorch version, "
+        "then restart the runtime before rerunning. If this Colab instance "
+        "only has a T4/L4 GPU, rerun with `--device cuda` instead of "
+        f"`--device xla`.{original}"
     )
 
 

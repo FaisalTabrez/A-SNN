@@ -83,6 +83,16 @@ Python/PyTorch runtime, then restart the runtime:
 !pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
 ```
 
+If the error mentions `_XLAC` or `undefined symbol`, `torch_xla` is present but
+binary-incompatible with the active `torch` wheel. On a fresh TPU runtime,
+install matching nightly CPU PyTorch + PyTorch/XLA wheels together:
+
+```python
+!pip uninstall -y torch torch_xla torchvision torchaudio
+!pip install -q --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
+!pip install -q --pre torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+```
+
 If the notebook is on a T4/L4 GPU runtime, use `--device cuda`; `--device xla`
 requires `torch_xla`.
 
