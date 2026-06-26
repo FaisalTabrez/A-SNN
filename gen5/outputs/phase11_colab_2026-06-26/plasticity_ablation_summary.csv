@@ -1,0 +1,4 @@
+group,seeds,final_mean_best_fitness,final_std_best_fitness,final_mean_active_synapses,adaptation_success_rate,mean_adaptation_generation
+static_snn,10,13.6,0.8432740427115678,8.0,1.0,1.0
+full_plasticity_infant,10,25.9,0.9944289260117533,85.95111923217773,1.0,1.0
+gated_plasticity_adult,10,24.6,1.07496769977314,66.99509811401367,1.0,1.0

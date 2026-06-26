@@ -1,0 +1,5 @@
+name,status,population_size,steps,seconds,ticks_per_second,agent_steps_per_second,active_parameters,total_parameters,parameter_memory_mb,mean_fitness,max_fitness,notes
+ammc_sparse_evolver,ok,10000,240,0.6493219869998939,369.61631487159116,3696163.1487159114,80000,1280000,9.765625,-0.05889999866485596,20.0,Sparse AMMC policy counts active edges as active parameters.
+dense_lif_snn,ok,10000,240,0.9909350819998508,242.1954821860229,2421954.821860229,4932,4932,0.0188140869140625,0.125,4.0,snntorch available; Internal LIF surrogate used unless snnTorch training is installed.
+dense_mlp_policy,ok,10000,240,0.8270646729997679,290.1828694115525,2901828.6941155246,4866,4866,0.01856231689453125,-0.02290000021457672,3.0,Dense MLP inference scaffold; PPO training hook is dependency-gated.
+ppo_mlp_policy,skipped,10000,240,,,,,,,,,stable-baselines3 unavailable: No module named 'stable_baselines3'

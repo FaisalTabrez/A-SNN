@@ -1,0 +1,96 @@
+"""AMMC Gen-5 neuromorphic framework scaffold."""
+
+from .champion_export import ChampionExportConfig, ChampionExportResult, ChampionExporter
+from .dynamic_sparse import DynamicSparseLinear, DynamicSparseLinearFunction
+from .dual_tensor import AstrocyteGridConfig, DualTensorManager
+from .evaluation import (
+    AblationGenerationRecord,
+    AblationGroupConfig,
+    AblationSummaryRecord,
+    AggregateGenerationRecord,
+    PlasticityAblationConfig,
+    PlasticityAblationResult,
+    PlasticityAblationRunner,
+    RetentionAblationConfig,
+    RetentionAblationResult,
+    RetentionAblationRunner,
+    RetentionGenerationRecord,
+    RetentionSummaryRecord,
+    StatisticalTrialResult,
+    TrialGenerationRecord,
+    TrialRunner,
+    TrialRunnerConfig,
+)
+from .evolving_loop import EvolvingHeadlessAMMCLoop, EvolvingLoopConfig
+from .evolver import TensorEvolver, TensorEvolverConfig
+from .memory import LTWSTWConfig, LTWSTWMemory
+from .runtime import (
+    AcceleratorMemory,
+    accelerator_memory,
+    clear_memory_stats,
+    device_kind,
+    is_cuda_device,
+    is_xla_device,
+    make_generator,
+    mark_step,
+    resolve_device,
+    seed_everything,
+    sync,
+    try_xla_device,
+    xla_device,
+)
+from .tensor_environment import TensorEnvironment2D, TensorEnvironmentConfig
+from .telemetry import EvolutionTelemetryLogger, EvolutionTelemetryRecord
+from .transducer import HeadlessAMMCLoop, TransducerConfig, VectorizedTransducer
+
+__all__ = [
+    "AstrocyteGridConfig",
+    "AblationGenerationRecord",
+    "AblationGroupConfig",
+    "AblationSummaryRecord",
+    "AggregateGenerationRecord",
+    "AcceleratorMemory",
+    "ChampionExportConfig",
+    "ChampionExportResult",
+    "ChampionExporter",
+    "DualTensorManager",
+    "DynamicSparseLinear",
+    "DynamicSparseLinearFunction",
+    "EvolvingHeadlessAMMCLoop",
+    "EvolvingLoopConfig",
+    "EvolutionTelemetryLogger",
+    "EvolutionTelemetryRecord",
+    "HeadlessAMMCLoop",
+    "LTWSTWConfig",
+    "LTWSTWMemory",
+    "PlasticityAblationConfig",
+    "PlasticityAblationResult",
+    "PlasticityAblationRunner",
+    "RetentionAblationConfig",
+    "RetentionAblationResult",
+    "RetentionAblationRunner",
+    "RetentionGenerationRecord",
+    "RetentionSummaryRecord",
+    "StatisticalTrialResult",
+    "TensorEvolver",
+    "TensorEvolverConfig",
+    "TensorEnvironment2D",
+    "TensorEnvironmentConfig",
+    "TrialGenerationRecord",
+    "TrialRunner",
+    "TrialRunnerConfig",
+    "TransducerConfig",
+    "VectorizedTransducer",
+    "accelerator_memory",
+    "clear_memory_stats",
+    "device_kind",
+    "is_cuda_device",
+    "is_xla_device",
+    "make_generator",
+    "mark_step",
+    "resolve_device",
+    "seed_everything",
+    "sync",
+    "try_xla_device",
+    "xla_device",
+]

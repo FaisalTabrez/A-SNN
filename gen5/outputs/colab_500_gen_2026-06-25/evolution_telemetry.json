@@ -1,0 +1,5002 @@
+[
+  {
+    "generation": 1,
+    "epoch": 1,
+    "max_fitness": 12.0,
+    "mean_population_fitness": -0.10029999911785126,
+    "mean_active_synapses": 9.155599594116211,
+    "sprout_count": 11990,
+    "prune_count": 434,
+    "ltw_mutation_count": 40000
+  },
+  {
+    "generation": 2,
+    "epoch": 2,
+    "max_fitness": 9.0,
+    "mean_population_fitness": -0.05979999899864197,
+    "mean_active_synapses": 10.314399719238281,
+    "sprout_count": 11981,
+    "prune_count": 469,
+    "ltw_mutation_count": 45816
+  },
+  {
+    "generation": 3,
+    "epoch": 3,
+    "max_fitness": 12.0,
+    "mean_population_fitness": 0.26659998297691345,
+    "mean_active_synapses": 11.437399864196777,
+    "sprout_count": 11668,
+    "prune_count": 484,
+    "ltw_mutation_count": 51595
+  },
+  {
+    "generation": 4,
+    "epoch": 4,
+    "max_fitness": 11.0,
+    "mean_population_fitness": -0.8091999888420105,
+    "mean_active_synapses": 12.539999961853027,
+    "sprout_count": 11820,
+    "prune_count": 552,
+    "ltw_mutation_count": 57066
+  },
+  {
+    "generation": 5,
+    "epoch": 5,
+    "max_fitness": 14.0,
+    "mean_population_fitness": 0.3588999807834625,
+    "mean_active_synapses": 13.623899459838867,
+    "sprout_count": 11659,
+    "prune_count": 598,
+    "ltw_mutation_count": 62589
+  },
+  {
+    "generation": 6,
+    "epoch": 6,
+    "max_fitness": 14.0,
+    "mean_population_fitness": -0.4527999758720398,
+    "mean_active_synapses": 14.713099479675293,
+    "sprout_count": 11483,
+    "prune_count": 660,
+    "ltw_mutation_count": 68154
+  },
+  {
+    "generation": 7,
+    "epoch": 7,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.8693000078201294,
+    "mean_active_synapses": 15.79789924621582,
+    "sprout_count": 11357,
+    "prune_count": 710,
+    "ltw_mutation_count": 73666
+  },
+  {
+    "generation": 8,
+    "epoch": 8,
+    "max_fitness": 13.0,
+    "mean_population_fitness": -0.3868999779224396,
+    "mean_active_synapses": 16.855098724365234,
+    "sprout_count": 11355,
+    "prune_count": 780,
+    "ltw_mutation_count": 78988
+  },
+  {
+    "generation": 9,
+    "epoch": 9,
+    "max_fitness": 15.0,
+    "mean_population_fitness": 0.46379998326301575,
+    "mean_active_synapses": 17.8760986328125,
+    "sprout_count": 11114,
+    "prune_count": 893,
+    "ltw_mutation_count": 84270
+  },
+  {
+    "generation": 10,
+    "epoch": 10,
+    "max_fitness": 15.0,
+    "mean_population_fitness": 0.6110000014305115,
+    "mean_active_synapses": 18.804698944091797,
+    "sprout_count": 11203,
+    "prune_count": 890,
+    "ltw_mutation_count": 88867
+  },
+  {
+    "generation": 11,
+    "epoch": 11,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.32359999418258667,
+    "mean_active_synapses": 19.812599182128906,
+    "sprout_count": 10873,
+    "prune_count": 923,
+    "ltw_mutation_count": 94088
+  },
+  {
+    "generation": 12,
+    "epoch": 12,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.4903999865055084,
+    "mean_active_synapses": 20.784000396728516,
+    "sprout_count": 11032,
+    "prune_count": 990,
+    "ltw_mutation_count": 98899
+  },
+  {
+    "generation": 13,
+    "epoch": 13,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.2825999855995178,
+    "mean_active_synapses": 21.81060028076172,
+    "sprout_count": 10893,
+    "prune_count": 1049,
+    "ltw_mutation_count": 104131
+  },
+  {
+    "generation": 14,
+    "epoch": 14,
+    "max_fitness": 15.0,
+    "mean_population_fitness": 0.18369999527931213,
+    "mean_active_synapses": 22.7593994140625,
+    "sprout_count": 10686,
+    "prune_count": 1066,
+    "ltw_mutation_count": 108987
+  },
+  {
+    "generation": 15,
+    "epoch": 15,
+    "max_fitness": 15.0,
+    "mean_population_fitness": 0.604200005531311,
+    "mean_active_synapses": 23.702999114990234,
+    "sprout_count": 10591,
+    "prune_count": 1083,
+    "ltw_mutation_count": 113761
+  },
+  {
+    "generation": 16,
+    "epoch": 16,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.019099999219179153,
+    "mean_active_synapses": 24.734699249267578,
+    "sprout_count": 10585,
+    "prune_count": 1184,
+    "ltw_mutation_count": 118973
+  },
+  {
+    "generation": 17,
+    "epoch": 17,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.09690000116825104,
+    "mean_active_synapses": 25.61669921875,
+    "sprout_count": 10198,
+    "prune_count": 1199,
+    "ltw_mutation_count": 123584
+  },
+  {
+    "generation": 18,
+    "epoch": 18,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2451999932527542,
+    "mean_active_synapses": 26.47559928894043,
+    "sprout_count": 10222,
+    "prune_count": 1252,
+    "ltw_mutation_count": 127893
+  },
+  {
+    "generation": 19,
+    "epoch": 19,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.17249999940395355,
+    "mean_active_synapses": 27.277599334716797,
+    "sprout_count": 10144,
+    "prune_count": 1372,
+    "ltw_mutation_count": 132002
+  },
+  {
+    "generation": 20,
+    "epoch": 20,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.40789997577667236,
+    "mean_active_synapses": 28.116600036621094,
+    "sprout_count": 10071,
+    "prune_count": 1407,
+    "ltw_mutation_count": 136251
+  },
+  {
+    "generation": 21,
+    "epoch": 21,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.10939999669790268,
+    "mean_active_synapses": 28.944198608398438,
+    "sprout_count": 9946,
+    "prune_count": 1450,
+    "ltw_mutation_count": 140473
+  },
+  {
+    "generation": 22,
+    "epoch": 22,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.3958999812602997,
+    "mean_active_synapses": 29.72599983215332,
+    "sprout_count": 10002,
+    "prune_count": 1428,
+    "ltw_mutation_count": 144343
+  },
+  {
+    "generation": 23,
+    "epoch": 23,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.6987999677658081,
+    "mean_active_synapses": 30.579898834228516,
+    "sprout_count": 9910,
+    "prune_count": 1441,
+    "ltw_mutation_count": 148665
+  },
+  {
+    "generation": 24,
+    "epoch": 24,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.31700000166893005,
+    "mean_active_synapses": 31.47369956970215,
+    "sprout_count": 9925,
+    "prune_count": 1492,
+    "ltw_mutation_count": 153152
+  },
+  {
+    "generation": 25,
+    "epoch": 25,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.5855000019073486,
+    "mean_active_synapses": 32.286598205566406,
+    "sprout_count": 9768,
+    "prune_count": 1588,
+    "ltw_mutation_count": 157343
+  },
+  {
+    "generation": 26,
+    "epoch": 26,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.19119998812675476,
+    "mean_active_synapses": 33.13129806518555,
+    "sprout_count": 9568,
+    "prune_count": 1631,
+    "ltw_mutation_count": 161688
+  },
+  {
+    "generation": 27,
+    "epoch": 27,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.24650000035762787,
+    "mean_active_synapses": 33.92169952392578,
+    "sprout_count": 9586,
+    "prune_count": 1589,
+    "ltw_mutation_count": 165610
+  },
+  {
+    "generation": 28,
+    "epoch": 28,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.04800000041723251,
+    "mean_active_synapses": 34.62220001220703,
+    "sprout_count": 9391,
+    "prune_count": 1681,
+    "ltw_mutation_count": 169256
+  },
+  {
+    "generation": 29,
+    "epoch": 29,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.20419999957084656,
+    "mean_active_synapses": 35.424598693847656,
+    "sprout_count": 9345,
+    "prune_count": 1757,
+    "ltw_mutation_count": 173329
+  },
+  {
+    "generation": 30,
+    "epoch": 30,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.23429998755455017,
+    "mean_active_synapses": 36.09469985961914,
+    "sprout_count": 9294,
+    "prune_count": 1823,
+    "ltw_mutation_count": 176738
+  },
+  {
+    "generation": 31,
+    "epoch": 31,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.9727999567985535,
+    "mean_active_synapses": 36.765499114990234,
+    "sprout_count": 9162,
+    "prune_count": 1723,
+    "ltw_mutation_count": 180108
+  },
+  {
+    "generation": 32,
+    "epoch": 32,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.07499999552965164,
+    "mean_active_synapses": 37.48259735107422,
+    "sprout_count": 9053,
+    "prune_count": 1811,
+    "ltw_mutation_count": 183792
+  },
+  {
+    "generation": 33,
+    "epoch": 33,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.07259999960660934,
+    "mean_active_synapses": 38.29039764404297,
+    "sprout_count": 9111,
+    "prune_count": 1855,
+    "ltw_mutation_count": 187824
+  },
+  {
+    "generation": 34,
+    "epoch": 34,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.37439998984336853,
+    "mean_active_synapses": 39.097198486328125,
+    "sprout_count": 8887,
+    "prune_count": 1919,
+    "ltw_mutation_count": 192002
+  },
+  {
+    "generation": 35,
+    "epoch": 35,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.12780000269412994,
+    "mean_active_synapses": 39.76530075073242,
+    "sprout_count": 8950,
+    "prune_count": 1883,
+    "ltw_mutation_count": 195293
+  },
+  {
+    "generation": 36,
+    "epoch": 36,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.10439999401569366,
+    "mean_active_synapses": 40.32149887084961,
+    "sprout_count": 8750,
+    "prune_count": 2015,
+    "ltw_mutation_count": 198240
+  },
+  {
+    "generation": 37,
+    "epoch": 37,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.0705999955534935,
+    "mean_active_synapses": 41.01089859008789,
+    "sprout_count": 8979,
+    "prune_count": 1992,
+    "ltw_mutation_count": 201561
+  },
+  {
+    "generation": 38,
+    "epoch": 38,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.3789999783039093,
+    "mean_active_synapses": 41.73059844970703,
+    "sprout_count": 8844,
+    "prune_count": 2028,
+    "ltw_mutation_count": 205245
+  },
+  {
+    "generation": 39,
+    "epoch": 39,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.24379999935626984,
+    "mean_active_synapses": 42.280399322509766,
+    "sprout_count": 8671,
+    "prune_count": 2067,
+    "ltw_mutation_count": 208100
+  },
+  {
+    "generation": 40,
+    "epoch": 40,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.12849999964237213,
+    "mean_active_synapses": 42.87369918823242,
+    "sprout_count": 8545,
+    "prune_count": 2070,
+    "ltw_mutation_count": 211131
+  },
+  {
+    "generation": 41,
+    "epoch": 41,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.07779999822378159,
+    "mean_active_synapses": 43.51219940185547,
+    "sprout_count": 8601,
+    "prune_count": 2055,
+    "ltw_mutation_count": 214288
+  },
+  {
+    "generation": 42,
+    "epoch": 42,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.4968999922275543,
+    "mean_active_synapses": 44.312599182128906,
+    "sprout_count": 8422,
+    "prune_count": 2192,
+    "ltw_mutation_count": 218448
+  },
+  {
+    "generation": 43,
+    "epoch": 43,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.6949999928474426,
+    "mean_active_synapses": 44.913700103759766,
+    "sprout_count": 8309,
+    "prune_count": 2246,
+    "ltw_mutation_count": 221537
+  },
+  {
+    "generation": 44,
+    "epoch": 44,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.296099990606308,
+    "mean_active_synapses": 45.53669738769531,
+    "sprout_count": 8402,
+    "prune_count": 2293,
+    "ltw_mutation_count": 224629
+  },
+  {
+    "generation": 45,
+    "epoch": 45,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.4220999777317047,
+    "mean_active_synapses": 46.162498474121094,
+    "sprout_count": 8178,
+    "prune_count": 2261,
+    "ltw_mutation_count": 227854
+  },
+  {
+    "generation": 46,
+    "epoch": 46,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.07499999552965164,
+    "mean_active_synapses": 46.734100341796875,
+    "sprout_count": 8268,
+    "prune_count": 2299,
+    "ltw_mutation_count": 230686
+  },
+  {
+    "generation": 47,
+    "epoch": 47,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.8228999972343445,
+    "mean_active_synapses": 47.38990020751953,
+    "sprout_count": 8245,
+    "prune_count": 2326,
+    "ltw_mutation_count": 233990
+  },
+  {
+    "generation": 48,
+    "epoch": 48,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2890999913215637,
+    "mean_active_synapses": 47.886199951171875,
+    "sprout_count": 8178,
+    "prune_count": 2312,
+    "ltw_mutation_count": 236498
+  },
+  {
+    "generation": 49,
+    "epoch": 49,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.29339998960494995,
+    "mean_active_synapses": 48.53730010986328,
+    "sprout_count": 8077,
+    "prune_count": 2410,
+    "ltw_mutation_count": 239853
+  },
+  {
+    "generation": 50,
+    "epoch": 50,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.6681999564170837,
+    "mean_active_synapses": 49.02409744262695,
+    "sprout_count": 8008,
+    "prune_count": 2393,
+    "ltw_mutation_count": 242313
+  },
+  {
+    "generation": 51,
+    "epoch": 51,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.2295999974012375,
+    "mean_active_synapses": 49.634300231933594,
+    "sprout_count": 7804,
+    "prune_count": 2379,
+    "ltw_mutation_count": 245459
+  },
+  {
+    "generation": 52,
+    "epoch": 52,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.007400000002235174,
+    "mean_active_synapses": 50.04079818725586,
+    "sprout_count": 7846,
+    "prune_count": 2480,
+    "ltw_mutation_count": 247521
+  },
+  {
+    "generation": 53,
+    "epoch": 53,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.32999998331069946,
+    "mean_active_synapses": 50.57609939575195,
+    "sprout_count": 7829,
+    "prune_count": 2430,
+    "ltw_mutation_count": 250181
+  },
+  {
+    "generation": 54,
+    "epoch": 54,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.10399999469518661,
+    "mean_active_synapses": 51.13520050048828,
+    "sprout_count": 7791,
+    "prune_count": 2563,
+    "ltw_mutation_count": 253062
+  },
+  {
+    "generation": 55,
+    "epoch": 55,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.07530000060796738,
+    "mean_active_synapses": 51.7504997253418,
+    "sprout_count": 7733,
+    "prune_count": 2612,
+    "ltw_mutation_count": 256192
+  },
+  {
+    "generation": 56,
+    "epoch": 56,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.7303000092506409,
+    "mean_active_synapses": 52.223697662353516,
+    "sprout_count": 7614,
+    "prune_count": 2555,
+    "ltw_mutation_count": 258589
+  },
+  {
+    "generation": 57,
+    "epoch": 57,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.5927000045776367,
+    "mean_active_synapses": 52.818397521972656,
+    "sprout_count": 7564,
+    "prune_count": 2684,
+    "ltw_mutation_count": 261652
+  },
+  {
+    "generation": 58,
+    "epoch": 58,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.14339999854564667,
+    "mean_active_synapses": 53.324398040771484,
+    "sprout_count": 7520,
+    "prune_count": 2592,
+    "ltw_mutation_count": 264158
+  },
+  {
+    "generation": 59,
+    "epoch": 59,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.2786000072956085,
+    "mean_active_synapses": 53.75539779663086,
+    "sprout_count": 7436,
+    "prune_count": 2580,
+    "ltw_mutation_count": 266349
+  },
+  {
+    "generation": 60,
+    "epoch": 60,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.10329999774694443,
+    "mean_active_synapses": 54.221099853515625,
+    "sprout_count": 7504,
+    "prune_count": 2723,
+    "ltw_mutation_count": 268715
+  },
+  {
+    "generation": 61,
+    "epoch": 61,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.32999998331069946,
+    "mean_active_synapses": 54.70209884643555,
+    "sprout_count": 7387,
+    "prune_count": 2690,
+    "ltw_mutation_count": 271162
+  },
+  {
+    "generation": 62,
+    "epoch": 62,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.4178999960422516,
+    "mean_active_synapses": 55.22679901123047,
+    "sprout_count": 7395,
+    "prune_count": 2763,
+    "ltw_mutation_count": 273818
+  },
+  {
+    "generation": 63,
+    "epoch": 63,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.33219999074935913,
+    "mean_active_synapses": 55.57550048828125,
+    "sprout_count": 7273,
+    "prune_count": 2742,
+    "ltw_mutation_count": 275612
+  },
+  {
+    "generation": 64,
+    "epoch": 64,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.07459999620914459,
+    "mean_active_synapses": 55.925697326660156,
+    "sprout_count": 7286,
+    "prune_count": 2795,
+    "ltw_mutation_count": 277383
+  },
+  {
+    "generation": 65,
+    "epoch": 65,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.12069999426603317,
+    "mean_active_synapses": 56.326499938964844,
+    "sprout_count": 7363,
+    "prune_count": 2792,
+    "ltw_mutation_count": 279347
+  },
+  {
+    "generation": 66,
+    "epoch": 66,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.3926999866962433,
+    "mean_active_synapses": 56.777198791503906,
+    "sprout_count": 7111,
+    "prune_count": 2831,
+    "ltw_mutation_count": 281746
+  },
+  {
+    "generation": 67,
+    "epoch": 67,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.034299999475479126,
+    "mean_active_synapses": 57.24580001831055,
+    "sprout_count": 7237,
+    "prune_count": 2769,
+    "ltw_mutation_count": 283995
+  },
+  {
+    "generation": 68,
+    "epoch": 68,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.06209999695420265,
+    "mean_active_synapses": 57.67399978637695,
+    "sprout_count": 7152,
+    "prune_count": 2786,
+    "ltw_mutation_count": 286187
+  },
+  {
+    "generation": 69,
+    "epoch": 69,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.31219998002052307,
+    "mean_active_synapses": 58.16559982299805,
+    "sprout_count": 6996,
+    "prune_count": 2930,
+    "ltw_mutation_count": 288795
+  },
+  {
+    "generation": 70,
+    "epoch": 70,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.468999981880188,
+    "mean_active_synapses": 58.52299880981445,
+    "sprout_count": 6915,
+    "prune_count": 2981,
+    "ltw_mutation_count": 290648
+  },
+  {
+    "generation": 71,
+    "epoch": 71,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.4059000015258789,
+    "mean_active_synapses": 58.864097595214844,
+    "sprout_count": 7047,
+    "prune_count": 2834,
+    "ltw_mutation_count": 292214
+  },
+  {
+    "generation": 72,
+    "epoch": 72,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.36249998211860657,
+    "mean_active_synapses": 59.321998596191406,
+    "sprout_count": 7021,
+    "prune_count": 2897,
+    "ltw_mutation_count": 294548
+  },
+  {
+    "generation": 73,
+    "epoch": 73,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.052400000393390656,
+    "mean_active_synapses": 59.59499740600586,
+    "sprout_count": 6874,
+    "prune_count": 2938,
+    "ltw_mutation_count": 296007
+  },
+  {
+    "generation": 74,
+    "epoch": 74,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.13279999792575836,
+    "mean_active_synapses": 60.031497955322266,
+    "sprout_count": 6864,
+    "prune_count": 3023,
+    "ltw_mutation_count": 298237
+  },
+  {
+    "generation": 75,
+    "epoch": 75,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.0017999999690800905,
+    "mean_active_synapses": 60.46080017089844,
+    "sprout_count": 6927,
+    "prune_count": 2977,
+    "ltw_mutation_count": 300329
+  },
+  {
+    "generation": 76,
+    "epoch": 76,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.1915999948978424,
+    "mean_active_synapses": 60.94669723510742,
+    "sprout_count": 6955,
+    "prune_count": 2964,
+    "ltw_mutation_count": 302738
+  },
+  {
+    "generation": 77,
+    "epoch": 77,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.26919999718666077,
+    "mean_active_synapses": 61.36009979248047,
+    "sprout_count": 6588,
+    "prune_count": 2987,
+    "ltw_mutation_count": 305000
+  },
+  {
+    "generation": 78,
+    "epoch": 78,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.2784999907016754,
+    "mean_active_synapses": 61.71929931640625,
+    "sprout_count": 6916,
+    "prune_count": 3011,
+    "ltw_mutation_count": 306644
+  },
+  {
+    "generation": 79,
+    "epoch": 79,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.31700000166893005,
+    "mean_active_synapses": 62.071998596191406,
+    "sprout_count": 6747,
+    "prune_count": 3087,
+    "ltw_mutation_count": 308530
+  },
+  {
+    "generation": 80,
+    "epoch": 80,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.007699999958276749,
+    "mean_active_synapses": 62.45249938964844,
+    "sprout_count": 6579,
+    "prune_count": 2968,
+    "ltw_mutation_count": 310457
+  },
+  {
+    "generation": 81,
+    "epoch": 81,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.15629999339580536,
+    "mean_active_synapses": 62.656898498535156,
+    "sprout_count": 6677,
+    "prune_count": 3220,
+    "ltw_mutation_count": 311556
+  },
+  {
+    "generation": 82,
+    "epoch": 82,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.5153999924659729,
+    "mean_active_synapses": 62.896297454833984,
+    "sprout_count": 6538,
+    "prune_count": 3183,
+    "ltw_mutation_count": 312804
+  },
+  {
+    "generation": 83,
+    "epoch": 83,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.2705000042915344,
+    "mean_active_synapses": 63.35919952392578,
+    "sprout_count": 6524,
+    "prune_count": 3130,
+    "ltw_mutation_count": 315099
+  },
+  {
+    "generation": 84,
+    "epoch": 84,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.24409998953342438,
+    "mean_active_synapses": 63.745399475097656,
+    "sprout_count": 6559,
+    "prune_count": 3101,
+    "ltw_mutation_count": 316998
+  },
+  {
+    "generation": 85,
+    "epoch": 85,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.30169999599456787,
+    "mean_active_synapses": 64.01300048828125,
+    "sprout_count": 6502,
+    "prune_count": 3084,
+    "ltw_mutation_count": 318356
+  },
+  {
+    "generation": 86,
+    "epoch": 86,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.11469999700784683,
+    "mean_active_synapses": 64.43470001220703,
+    "sprout_count": 6510,
+    "prune_count": 3217,
+    "ltw_mutation_count": 320527
+  },
+  {
+    "generation": 87,
+    "epoch": 87,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.420199990272522,
+    "mean_active_synapses": 64.71029663085938,
+    "sprout_count": 6402,
+    "prune_count": 3291,
+    "ltw_mutation_count": 321996
+  },
+  {
+    "generation": 88,
+    "epoch": 88,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.3240000009536743,
+    "mean_active_synapses": 64.95500183105469,
+    "sprout_count": 6385,
+    "prune_count": 3203,
+    "ltw_mutation_count": 323184
+  },
+  {
+    "generation": 89,
+    "epoch": 89,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.21809999644756317,
+    "mean_active_synapses": 65.3240966796875,
+    "sprout_count": 6350,
+    "prune_count": 3297,
+    "ltw_mutation_count": 325094
+  },
+  {
+    "generation": 90,
+    "epoch": 90,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.19489999115467072,
+    "mean_active_synapses": 65.61579895019531,
+    "sprout_count": 6393,
+    "prune_count": 3223,
+    "ltw_mutation_count": 326494
+  },
+  {
+    "generation": 91,
+    "epoch": 91,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.34219998121261597,
+    "mean_active_synapses": 65.87689971923828,
+    "sprout_count": 6290,
+    "prune_count": 3287,
+    "ltw_mutation_count": 327883
+  },
+  {
+    "generation": 92,
+    "epoch": 92,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.13189999759197235,
+    "mean_active_synapses": 66.11830139160156,
+    "sprout_count": 6144,
+    "prune_count": 3303,
+    "ltw_mutation_count": 329171
+  },
+  {
+    "generation": 93,
+    "epoch": 93,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.11229999363422394,
+    "mean_active_synapses": 66.42829895019531,
+    "sprout_count": 6155,
+    "prune_count": 3354,
+    "ltw_mutation_count": 330741
+  },
+  {
+    "generation": 94,
+    "epoch": 94,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.03909999877214432,
+    "mean_active_synapses": 66.71599578857422,
+    "sprout_count": 6080,
+    "prune_count": 3324,
+    "ltw_mutation_count": 332202
+  },
+  {
+    "generation": 95,
+    "epoch": 95,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.3199000060558319,
+    "mean_active_synapses": 66.96710205078125,
+    "sprout_count": 6163,
+    "prune_count": 3348,
+    "ltw_mutation_count": 333428
+  },
+  {
+    "generation": 96,
+    "epoch": 96,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.07849999517202377,
+    "mean_active_synapses": 67.214599609375,
+    "sprout_count": 6115,
+    "prune_count": 3281,
+    "ltw_mutation_count": 334656
+  },
+  {
+    "generation": 97,
+    "epoch": 97,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.1396999955177307,
+    "mean_active_synapses": 67.55169677734375,
+    "sprout_count": 6267,
+    "prune_count": 3290,
+    "ltw_mutation_count": 336270
+  },
+  {
+    "generation": 98,
+    "epoch": 98,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.35679998993873596,
+    "mean_active_synapses": 67.79299926757812,
+    "sprout_count": 6045,
+    "prune_count": 3353,
+    "ltw_mutation_count": 337619
+  },
+  {
+    "generation": 99,
+    "epoch": 99,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.16290000081062317,
+    "mean_active_synapses": 68.08699798583984,
+    "sprout_count": 5988,
+    "prune_count": 3390,
+    "ltw_mutation_count": 339136
+  },
+  {
+    "generation": 100,
+    "epoch": 100,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.18529999256134033,
+    "mean_active_synapses": 68.30089569091797,
+    "sprout_count": 6061,
+    "prune_count": 3474,
+    "ltw_mutation_count": 340211
+  },
+  {
+    "generation": 101,
+    "epoch": 101,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.08489999920129776,
+    "mean_active_synapses": 68.4656982421875,
+    "sprout_count": 6084,
+    "prune_count": 3375,
+    "ltw_mutation_count": 340974
+  },
+  {
+    "generation": 102,
+    "epoch": 102,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.1437000036239624,
+    "mean_active_synapses": 68.80239868164062,
+    "sprout_count": 6047,
+    "prune_count": 3433,
+    "ltw_mutation_count": 342705
+  },
+  {
+    "generation": 103,
+    "epoch": 103,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2736999988555908,
+    "mean_active_synapses": 69.13569641113281,
+    "sprout_count": 6052,
+    "prune_count": 3481,
+    "ltw_mutation_count": 344393
+  },
+  {
+    "generation": 104,
+    "epoch": 104,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.14309999346733093,
+    "mean_active_synapses": 69.39810180664062,
+    "sprout_count": 5980,
+    "prune_count": 3391,
+    "ltw_mutation_count": 345696
+  },
+  {
+    "generation": 105,
+    "epoch": 105,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.5388999581336975,
+    "mean_active_synapses": 69.52759552001953,
+    "sprout_count": 5988,
+    "prune_count": 3392,
+    "ltw_mutation_count": 346340
+  },
+  {
+    "generation": 106,
+    "epoch": 106,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.3304999768733978,
+    "mean_active_synapses": 69.82809448242188,
+    "sprout_count": 5834,
+    "prune_count": 3473,
+    "ltw_mutation_count": 347960
+  },
+  {
+    "generation": 107,
+    "epoch": 107,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.1492999941110611,
+    "mean_active_synapses": 70.1209945678711,
+    "sprout_count": 6016,
+    "prune_count": 3462,
+    "ltw_mutation_count": 349328
+  },
+  {
+    "generation": 108,
+    "epoch": 108,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.16179999709129333,
+    "mean_active_synapses": 70.32460021972656,
+    "sprout_count": 5716,
+    "prune_count": 3506,
+    "ltw_mutation_count": 350518
+  },
+  {
+    "generation": 109,
+    "epoch": 109,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.1655000001192093,
+    "mean_active_synapses": 70.52040100097656,
+    "sprout_count": 5816,
+    "prune_count": 3546,
+    "ltw_mutation_count": 351467
+  },
+  {
+    "generation": 110,
+    "epoch": 110,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.07800000160932541,
+    "mean_active_synapses": 70.72339630126953,
+    "sprout_count": 5806,
+    "prune_count": 3530,
+    "ltw_mutation_count": 352479
+  },
+  {
+    "generation": 111,
+    "epoch": 111,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.20160000026226044,
+    "mean_active_synapses": 70.85549926757812,
+    "sprout_count": 5683,
+    "prune_count": 3644,
+    "ltw_mutation_count": 353258
+  },
+  {
+    "generation": 112,
+    "epoch": 112,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.023899998515844345,
+    "mean_active_synapses": 71.11479949951172,
+    "sprout_count": 5855,
+    "prune_count": 3497,
+    "ltw_mutation_count": 354395
+  },
+  {
+    "generation": 113,
+    "epoch": 113,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.10359999537467957,
+    "mean_active_synapses": 71.3384017944336,
+    "sprout_count": 5761,
+    "prune_count": 3559,
+    "ltw_mutation_count": 355591
+  },
+  {
+    "generation": 114,
+    "epoch": 114,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.44849997758865356,
+    "mean_active_synapses": 71.64669799804688,
+    "sprout_count": 5777,
+    "prune_count": 3636,
+    "ltw_mutation_count": 357163
+  },
+  {
+    "generation": 115,
+    "epoch": 115,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.10779999941587448,
+    "mean_active_synapses": 71.90819549560547,
+    "sprout_count": 5638,
+    "prune_count": 3638,
+    "ltw_mutation_count": 358541
+  },
+  {
+    "generation": 116,
+    "epoch": 116,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.17319999635219574,
+    "mean_active_synapses": 72.09579467773438,
+    "sprout_count": 5711,
+    "prune_count": 3653,
+    "ltw_mutation_count": 359450
+  },
+  {
+    "generation": 117,
+    "epoch": 117,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.14419999718666077,
+    "mean_active_synapses": 72.32669830322266,
+    "sprout_count": 5764,
+    "prune_count": 3645,
+    "ltw_mutation_count": 360574
+  },
+  {
+    "generation": 118,
+    "epoch": 118,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.4147000014781952,
+    "mean_active_synapses": 72.50659942626953,
+    "sprout_count": 5610,
+    "prune_count": 3612,
+    "ltw_mutation_count": 361534
+  },
+  {
+    "generation": 119,
+    "epoch": 119,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.5288999676704407,
+    "mean_active_synapses": 72.64019775390625,
+    "sprout_count": 5537,
+    "prune_count": 3627,
+    "ltw_mutation_count": 362246
+  },
+  {
+    "generation": 120,
+    "epoch": 120,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.21660000085830688,
+    "mean_active_synapses": 72.9197998046875,
+    "sprout_count": 5767,
+    "prune_count": 3657,
+    "ltw_mutation_count": 363544
+  },
+  {
+    "generation": 121,
+    "epoch": 121,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.1492999941110611,
+    "mean_active_synapses": 73.18560028076172,
+    "sprout_count": 5477,
+    "prune_count": 3697,
+    "ltw_mutation_count": 365038
+  },
+  {
+    "generation": 122,
+    "epoch": 122,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.1525000035762787,
+    "mean_active_synapses": 73.46589660644531,
+    "sprout_count": 5549,
+    "prune_count": 3636,
+    "ltw_mutation_count": 366373
+  },
+  {
+    "generation": 123,
+    "epoch": 123,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.055799998342990875,
+    "mean_active_synapses": 73.70109558105469,
+    "sprout_count": 5571,
+    "prune_count": 3772,
+    "ltw_mutation_count": 367606
+  },
+  {
+    "generation": 124,
+    "epoch": 124,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.23499999940395355,
+    "mean_active_synapses": 73.91669464111328,
+    "sprout_count": 5550,
+    "prune_count": 3721,
+    "ltw_mutation_count": 368669
+  },
+  {
+    "generation": 125,
+    "epoch": 125,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.38419997692108154,
+    "mean_active_synapses": 74.12220001220703,
+    "sprout_count": 5534,
+    "prune_count": 3816,
+    "ltw_mutation_count": 369752
+  },
+  {
+    "generation": 126,
+    "epoch": 126,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.4772000014781952,
+    "mean_active_synapses": 74.32839965820312,
+    "sprout_count": 5531,
+    "prune_count": 3719,
+    "ltw_mutation_count": 370736
+  },
+  {
+    "generation": 127,
+    "epoch": 127,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.23229999840259552,
+    "mean_active_synapses": 74.481201171875,
+    "sprout_count": 5461,
+    "prune_count": 3663,
+    "ltw_mutation_count": 371507
+  },
+  {
+    "generation": 128,
+    "epoch": 128,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.12839999794960022,
+    "mean_active_synapses": 74.59199523925781,
+    "sprout_count": 5387,
+    "prune_count": 3765,
+    "ltw_mutation_count": 372149
+  },
+  {
+    "generation": 129,
+    "epoch": 129,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.14659999310970306,
+    "mean_active_synapses": 74.8167953491211,
+    "sprout_count": 5405,
+    "prune_count": 3679,
+    "ltw_mutation_count": 373221
+  },
+  {
+    "generation": 130,
+    "epoch": 130,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.0066999997943639755,
+    "mean_active_synapses": 74.94210052490234,
+    "sprout_count": 5355,
+    "prune_count": 3768,
+    "ltw_mutation_count": 373917
+  },
+  {
+    "generation": 131,
+    "epoch": 131,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.25509998202323914,
+    "mean_active_synapses": 75.05909729003906,
+    "sprout_count": 5347,
+    "prune_count": 3706,
+    "ltw_mutation_count": 374475
+  },
+  {
+    "generation": 132,
+    "epoch": 132,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.3310000002384186,
+    "mean_active_synapses": 75.22949981689453,
+    "sprout_count": 5243,
+    "prune_count": 3742,
+    "ltw_mutation_count": 375397
+  },
+  {
+    "generation": 133,
+    "epoch": 133,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.18459999561309814,
+    "mean_active_synapses": 75.34099578857422,
+    "sprout_count": 5281,
+    "prune_count": 3695,
+    "ltw_mutation_count": 375912
+  },
+  {
+    "generation": 134,
+    "epoch": 134,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.05350000038743019,
+    "mean_active_synapses": 75.46749877929688,
+    "sprout_count": 5288,
+    "prune_count": 3773,
+    "ltw_mutation_count": 376580
+  },
+  {
+    "generation": 135,
+    "epoch": 135,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.08169999718666077,
+    "mean_active_synapses": 75.57899475097656,
+    "sprout_count": 5314,
+    "prune_count": 3716,
+    "ltw_mutation_count": 377096
+  },
+  {
+    "generation": 136,
+    "epoch": 136,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.06679999828338623,
+    "mean_active_synapses": 75.78019714355469,
+    "sprout_count": 5254,
+    "prune_count": 3732,
+    "ltw_mutation_count": 378140
+  },
+  {
+    "generation": 137,
+    "epoch": 137,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.06700000166893005,
+    "mean_active_synapses": 75.81009674072266,
+    "sprout_count": 5120,
+    "prune_count": 3721,
+    "ltw_mutation_count": 378351
+  },
+  {
+    "generation": 138,
+    "epoch": 138,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2466999888420105,
+    "mean_active_synapses": 76.04349517822266,
+    "sprout_count": 5247,
+    "prune_count": 3732,
+    "ltw_mutation_count": 379460
+  },
+  {
+    "generation": 139,
+    "epoch": 139,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.36640000343322754,
+    "mean_active_synapses": 76.26200103759766,
+    "sprout_count": 5286,
+    "prune_count": 3774,
+    "ltw_mutation_count": 380554
+  },
+  {
+    "generation": 140,
+    "epoch": 140,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.26569998264312744,
+    "mean_active_synapses": 76.36479949951172,
+    "sprout_count": 5142,
+    "prune_count": 3826,
+    "ltw_mutation_count": 381166
+  },
+  {
+    "generation": 141,
+    "epoch": 141,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.36719998717308044,
+    "mean_active_synapses": 76.63140106201172,
+    "sprout_count": 5340,
+    "prune_count": 3906,
+    "ltw_mutation_count": 382440
+  },
+  {
+    "generation": 142,
+    "epoch": 142,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.24469999969005585,
+    "mean_active_synapses": 76.77140045166016,
+    "sprout_count": 5301,
+    "prune_count": 3769,
+    "ltw_mutation_count": 383091
+  },
+  {
+    "generation": 143,
+    "epoch": 143,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.15119999647140503,
+    "mean_active_synapses": 76.84199523925781,
+    "sprout_count": 5205,
+    "prune_count": 3927,
+    "ltw_mutation_count": 383571
+  },
+  {
+    "generation": 144,
+    "epoch": 144,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.05790000036358833,
+    "mean_active_synapses": 76.99810028076172,
+    "sprout_count": 5105,
+    "prune_count": 3756,
+    "ltw_mutation_count": 384316
+  },
+  {
+    "generation": 145,
+    "epoch": 145,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.6642999649047852,
+    "mean_active_synapses": 77.07119750976562,
+    "sprout_count": 5072,
+    "prune_count": 3866,
+    "ltw_mutation_count": 384753
+  },
+  {
+    "generation": 146,
+    "epoch": 146,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.005699999630451202,
+    "mean_active_synapses": 77.0978012084961,
+    "sprout_count": 5164,
+    "prune_count": 3996,
+    "ltw_mutation_count": 384905
+  },
+  {
+    "generation": 147,
+    "epoch": 147,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.13499999046325684,
+    "mean_active_synapses": 77.23469543457031,
+    "sprout_count": 5133,
+    "prune_count": 3828,
+    "ltw_mutation_count": 385521
+  },
+  {
+    "generation": 148,
+    "epoch": 148,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.32259997725486755,
+    "mean_active_synapses": 77.37659454345703,
+    "sprout_count": 5171,
+    "prune_count": 3839,
+    "ltw_mutation_count": 386217
+  },
+  {
+    "generation": 149,
+    "epoch": 149,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.260699987411499,
+    "mean_active_synapses": 77.43409729003906,
+    "sprout_count": 5205,
+    "prune_count": 3886,
+    "ltw_mutation_count": 386511
+  },
+  {
+    "generation": 150,
+    "epoch": 150,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.006199999712407589,
+    "mean_active_synapses": 77.52659606933594,
+    "sprout_count": 5195,
+    "prune_count": 3799,
+    "ltw_mutation_count": 386935
+  },
+  {
+    "generation": 151,
+    "epoch": 151,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.02290000021457672,
+    "mean_active_synapses": 77.65579986572266,
+    "sprout_count": 5191,
+    "prune_count": 3827,
+    "ltw_mutation_count": 387597
+  },
+  {
+    "generation": 152,
+    "epoch": 152,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.4092999994754791,
+    "mean_active_synapses": 77.71589660644531,
+    "sprout_count": 5008,
+    "prune_count": 3757,
+    "ltw_mutation_count": 387954
+  },
+  {
+    "generation": 153,
+    "epoch": 153,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.4016000032424927,
+    "mean_active_synapses": 77.8052978515625,
+    "sprout_count": 5164,
+    "prune_count": 3929,
+    "ltw_mutation_count": 388409
+  },
+  {
+    "generation": 154,
+    "epoch": 154,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.15320000052452087,
+    "mean_active_synapses": 77.89720153808594,
+    "sprout_count": 5037,
+    "prune_count": 3973,
+    "ltw_mutation_count": 388954
+  },
+  {
+    "generation": 155,
+    "epoch": 155,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.020499998703598976,
+    "mean_active_synapses": 78.08100128173828,
+    "sprout_count": 4935,
+    "prune_count": 3797,
+    "ltw_mutation_count": 389836
+  },
+  {
+    "generation": 156,
+    "epoch": 156,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.012799999676644802,
+    "mean_active_synapses": 78.13809967041016,
+    "sprout_count": 4960,
+    "prune_count": 3997,
+    "ltw_mutation_count": 390209
+  },
+  {
+    "generation": 157,
+    "epoch": 157,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.031300000846385956,
+    "mean_active_synapses": 78.19739532470703,
+    "sprout_count": 5105,
+    "prune_count": 3891,
+    "ltw_mutation_count": 390380
+  },
+  {
+    "generation": 158,
+    "epoch": 158,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3807999789714813,
+    "mean_active_synapses": 78.30819702148438,
+    "sprout_count": 5022,
+    "prune_count": 3902,
+    "ltw_mutation_count": 390981
+  },
+  {
+    "generation": 159,
+    "epoch": 159,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.4537999927997589,
+    "mean_active_synapses": 78.45259857177734,
+    "sprout_count": 4954,
+    "prune_count": 3868,
+    "ltw_mutation_count": 391720
+  },
+  {
+    "generation": 160,
+    "epoch": 160,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.5809000134468079,
+    "mean_active_synapses": 78.6189956665039,
+    "sprout_count": 5046,
+    "prune_count": 3962,
+    "ltw_mutation_count": 392553
+  },
+  {
+    "generation": 161,
+    "epoch": 161,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.04349999874830246,
+    "mean_active_synapses": 78.72669982910156,
+    "sprout_count": 4941,
+    "prune_count": 3984,
+    "ltw_mutation_count": 393155
+  },
+  {
+    "generation": 162,
+    "epoch": 162,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.5374999642372131,
+    "mean_active_synapses": 78.8241958618164,
+    "sprout_count": 4844,
+    "prune_count": 3736,
+    "ltw_mutation_count": 393567
+  },
+  {
+    "generation": 163,
+    "epoch": 163,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.00969999935477972,
+    "mean_active_synapses": 79.03939819335938,
+    "sprout_count": 5066,
+    "prune_count": 3958,
+    "ltw_mutation_count": 394643
+  },
+  {
+    "generation": 164,
+    "epoch": 164,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.45969998836517334,
+    "mean_active_synapses": 79.15609741210938,
+    "sprout_count": 5101,
+    "prune_count": 4000,
+    "ltw_mutation_count": 395230
+  },
+  {
+    "generation": 165,
+    "epoch": 165,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2881999909877777,
+    "mean_active_synapses": 79.1874008178711,
+    "sprout_count": 4928,
+    "prune_count": 3932,
+    "ltw_mutation_count": 395439
+  },
+  {
+    "generation": 166,
+    "epoch": 166,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2507999837398529,
+    "mean_active_synapses": 79.20980072021484,
+    "sprout_count": 4980,
+    "prune_count": 3898,
+    "ltw_mutation_count": 395508
+  },
+  {
+    "generation": 167,
+    "epoch": 167,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.02589999884366989,
+    "mean_active_synapses": 79.38209533691406,
+    "sprout_count": 5089,
+    "prune_count": 4018,
+    "ltw_mutation_count": 396375
+  },
+  {
+    "generation": 168,
+    "epoch": 168,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.08229999989271164,
+    "mean_active_synapses": 79.47139739990234,
+    "sprout_count": 4772,
+    "prune_count": 3934,
+    "ltw_mutation_count": 396938
+  },
+  {
+    "generation": 169,
+    "epoch": 169,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.3507999777793884,
+    "mean_active_synapses": 79.58689880371094,
+    "sprout_count": 4999,
+    "prune_count": 3984,
+    "ltw_mutation_count": 397427
+  },
+  {
+    "generation": 170,
+    "epoch": 170,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.09179999679327011,
+    "mean_active_synapses": 79.6532974243164,
+    "sprout_count": 4931,
+    "prune_count": 3950,
+    "ltw_mutation_count": 397776
+  },
+  {
+    "generation": 171,
+    "epoch": 171,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.6485999822616577,
+    "mean_active_synapses": 79.67279815673828,
+    "sprout_count": 4896,
+    "prune_count": 4052,
+    "ltw_mutation_count": 397942
+  },
+  {
+    "generation": 172,
+    "epoch": 172,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.26159998774528503,
+    "mean_active_synapses": 79.74199676513672,
+    "sprout_count": 4871,
+    "prune_count": 4087,
+    "ltw_mutation_count": 398318
+  },
+  {
+    "generation": 173,
+    "epoch": 173,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.08639999479055405,
+    "mean_active_synapses": 79.7771987915039,
+    "sprout_count": 4912,
+    "prune_count": 3976,
+    "ltw_mutation_count": 398418
+  },
+  {
+    "generation": 174,
+    "epoch": 174,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.2377999871969223,
+    "mean_active_synapses": 79.90859985351562,
+    "sprout_count": 4972,
+    "prune_count": 3994,
+    "ltw_mutation_count": 399054
+  },
+  {
+    "generation": 175,
+    "epoch": 175,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.10419999808073044,
+    "mean_active_synapses": 80.03369903564453,
+    "sprout_count": 4806,
+    "prune_count": 4003,
+    "ltw_mutation_count": 399767
+  },
+  {
+    "generation": 176,
+    "epoch": 176,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.2441999912261963,
+    "mean_active_synapses": 80.17369842529297,
+    "sprout_count": 4798,
+    "prune_count": 4027,
+    "ltw_mutation_count": 400483
+  },
+  {
+    "generation": 177,
+    "epoch": 177,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.36149999499320984,
+    "mean_active_synapses": 80.29000091552734,
+    "sprout_count": 4977,
+    "prune_count": 3997,
+    "ltw_mutation_count": 400960
+  },
+  {
+    "generation": 178,
+    "epoch": 178,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.22109998762607574,
+    "mean_active_synapses": 80.22169494628906,
+    "sprout_count": 4686,
+    "prune_count": 3979,
+    "ltw_mutation_count": 400755
+  },
+  {
+    "generation": 179,
+    "epoch": 179,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.09309999644756317,
+    "mean_active_synapses": 80.29830169677734,
+    "sprout_count": 4880,
+    "prune_count": 4005,
+    "ltw_mutation_count": 401054
+  },
+  {
+    "generation": 180,
+    "epoch": 180,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.25290000438690186,
+    "mean_active_synapses": 80.33809661865234,
+    "sprout_count": 4810,
+    "prune_count": 4029,
+    "ltw_mutation_count": 401300
+  },
+  {
+    "generation": 181,
+    "epoch": 181,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.10649999976158142,
+    "mean_active_synapses": 80.51020050048828,
+    "sprout_count": 4774,
+    "prune_count": 3952,
+    "ltw_mutation_count": 402140
+  },
+  {
+    "generation": 182,
+    "epoch": 182,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.44919997453689575,
+    "mean_active_synapses": 80.66809844970703,
+    "sprout_count": 4803,
+    "prune_count": 3962,
+    "ltw_mutation_count": 402920
+  },
+  {
+    "generation": 183,
+    "epoch": 183,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.7475000023841858,
+    "mean_active_synapses": 80.7156982421875,
+    "sprout_count": 4910,
+    "prune_count": 4055,
+    "ltw_mutation_count": 403151
+  },
+  {
+    "generation": 184,
+    "epoch": 184,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.04399999976158142,
+    "mean_active_synapses": 80.84249877929688,
+    "sprout_count": 4960,
+    "prune_count": 3955,
+    "ltw_mutation_count": 403710
+  },
+  {
+    "generation": 185,
+    "epoch": 185,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.5109999775886536,
+    "mean_active_synapses": 80.86479949951172,
+    "sprout_count": 4861,
+    "prune_count": 3989,
+    "ltw_mutation_count": 403888
+  },
+  {
+    "generation": 186,
+    "epoch": 186,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.46939998865127563,
+    "mean_active_synapses": 80.94400024414062,
+    "sprout_count": 4894,
+    "prune_count": 4080,
+    "ltw_mutation_count": 404313
+  },
+  {
+    "generation": 187,
+    "epoch": 187,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.10109999775886536,
+    "mean_active_synapses": 80.94239807128906,
+    "sprout_count": 4743,
+    "prune_count": 3947,
+    "ltw_mutation_count": 404314
+  },
+  {
+    "generation": 188,
+    "epoch": 188,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.09229999780654907,
+    "mean_active_synapses": 81.0824966430664,
+    "sprout_count": 4820,
+    "prune_count": 4067,
+    "ltw_mutation_count": 405036
+  },
+  {
+    "generation": 189,
+    "epoch": 189,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.17549999058246613,
+    "mean_active_synapses": 81.15019989013672,
+    "sprout_count": 4770,
+    "prune_count": 4036,
+    "ltw_mutation_count": 405384
+  },
+  {
+    "generation": 190,
+    "epoch": 190,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.17739999294281006,
+    "mean_active_synapses": 81.22699737548828,
+    "sprout_count": 4773,
+    "prune_count": 4051,
+    "ltw_mutation_count": 405774
+  },
+  {
+    "generation": 191,
+    "epoch": 191,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.2646999955177307,
+    "mean_active_synapses": 81.27489471435547,
+    "sprout_count": 4732,
+    "prune_count": 4211,
+    "ltw_mutation_count": 406114
+  },
+  {
+    "generation": 192,
+    "epoch": 192,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.06129999831318855,
+    "mean_active_synapses": 81.41639709472656,
+    "sprout_count": 4700,
+    "prune_count": 4088,
+    "ltw_mutation_count": 406776
+  },
+  {
+    "generation": 193,
+    "epoch": 193,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.06390000134706497,
+    "mean_active_synapses": 81.52989959716797,
+    "sprout_count": 4665,
+    "prune_count": 4022,
+    "ltw_mutation_count": 407328
+  },
+  {
+    "generation": 194,
+    "epoch": 194,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.17080000042915344,
+    "mean_active_synapses": 81.66709899902344,
+    "sprout_count": 4875,
+    "prune_count": 3996,
+    "ltw_mutation_count": 407896
+  },
+  {
+    "generation": 195,
+    "epoch": 195,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.026799999177455902,
+    "mean_active_synapses": 81.83219909667969,
+    "sprout_count": 4762,
+    "prune_count": 4014,
+    "ltw_mutation_count": 408787
+  },
+  {
+    "generation": 196,
+    "epoch": 196,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.24889999628067017,
+    "mean_active_synapses": 81.88140106201172,
+    "sprout_count": 4649,
+    "prune_count": 4005,
+    "ltw_mutation_count": 409085
+  },
+  {
+    "generation": 197,
+    "epoch": 197,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.00419999985024333,
+    "mean_active_synapses": 81.98300170898438,
+    "sprout_count": 4747,
+    "prune_count": 4083,
+    "ltw_mutation_count": 409583
+  },
+  {
+    "generation": 198,
+    "epoch": 198,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.3391000032424927,
+    "mean_active_synapses": 82.19269561767578,
+    "sprout_count": 4701,
+    "prune_count": 3992,
+    "ltw_mutation_count": 410609
+  },
+  {
+    "generation": 199,
+    "epoch": 199,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.34450000524520874,
+    "mean_active_synapses": 82.34649658203125,
+    "sprout_count": 4671,
+    "prune_count": 4094,
+    "ltw_mutation_count": 411444
+  },
+  {
+    "generation": 200,
+    "epoch": 200,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.016499999910593033,
+    "mean_active_synapses": 82.4749984741211,
+    "sprout_count": 4676,
+    "prune_count": 4216,
+    "ltw_mutation_count": 412145
+  },
+  {
+    "generation": 201,
+    "epoch": 201,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.2020999938249588,
+    "mean_active_synapses": 82.4666976928711,
+    "sprout_count": 4634,
+    "prune_count": 4135,
+    "ltw_mutation_count": 412084
+  },
+  {
+    "generation": 202,
+    "epoch": 202,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.39989998936653137,
+    "mean_active_synapses": 82.54750061035156,
+    "sprout_count": 4599,
+    "prune_count": 3968,
+    "ltw_mutation_count": 412422
+  },
+  {
+    "generation": 203,
+    "epoch": 203,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3073999881744385,
+    "mean_active_synapses": 82.64529418945312,
+    "sprout_count": 4748,
+    "prune_count": 4119,
+    "ltw_mutation_count": 412912
+  },
+  {
+    "generation": 204,
+    "epoch": 204,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.1462000012397766,
+    "mean_active_synapses": 82.72930145263672,
+    "sprout_count": 4619,
+    "prune_count": 4096,
+    "ltw_mutation_count": 413385
+  },
+  {
+    "generation": 205,
+    "epoch": 205,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.06909999996423721,
+    "mean_active_synapses": 82.75679779052734,
+    "sprout_count": 4633,
+    "prune_count": 4185,
+    "ltw_mutation_count": 413560
+  },
+  {
+    "generation": 206,
+    "epoch": 206,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.17479999363422394,
+    "mean_active_synapses": 82.79190063476562,
+    "sprout_count": 4596,
+    "prune_count": 4127,
+    "ltw_mutation_count": 413725
+  },
+  {
+    "generation": 207,
+    "epoch": 207,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.17239999771118164,
+    "mean_active_synapses": 82.86039733886719,
+    "sprout_count": 4736,
+    "prune_count": 4248,
+    "ltw_mutation_count": 414058
+  },
+  {
+    "generation": 208,
+    "epoch": 208,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.2987000048160553,
+    "mean_active_synapses": 82.88959503173828,
+    "sprout_count": 4620,
+    "prune_count": 4206,
+    "ltw_mutation_count": 414241
+  },
+  {
+    "generation": 209,
+    "epoch": 209,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.22019998729228973,
+    "mean_active_synapses": 83.05960083007812,
+    "sprout_count": 4606,
+    "prune_count": 4096,
+    "ltw_mutation_count": 415043
+  },
+  {
+    "generation": 210,
+    "epoch": 210,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.002300000051036477,
+    "mean_active_synapses": 83.06800079345703,
+    "sprout_count": 4683,
+    "prune_count": 4179,
+    "ltw_mutation_count": 415088
+  },
+  {
+    "generation": 211,
+    "epoch": 211,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.093299999833107,
+    "mean_active_synapses": 83.0136947631836,
+    "sprout_count": 4534,
+    "prune_count": 4087,
+    "ltw_mutation_count": 414845
+  },
+  {
+    "generation": 212,
+    "epoch": 212,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.25110000371932983,
+    "mean_active_synapses": 83.00619506835938,
+    "sprout_count": 4552,
+    "prune_count": 4298,
+    "ltw_mutation_count": 414904
+  },
+  {
+    "generation": 213,
+    "epoch": 213,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.4569000005722046,
+    "mean_active_synapses": 83.0271987915039,
+    "sprout_count": 4645,
+    "prune_count": 4071,
+    "ltw_mutation_count": 414849
+  },
+  {
+    "generation": 214,
+    "epoch": 214,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.34610000252723694,
+    "mean_active_synapses": 83.0573959350586,
+    "sprout_count": 4607,
+    "prune_count": 4101,
+    "ltw_mutation_count": 415034
+  },
+  {
+    "generation": 215,
+    "epoch": 215,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.094200000166893,
+    "mean_active_synapses": 83.08699798583984,
+    "sprout_count": 4564,
+    "prune_count": 4132,
+    "ltw_mutation_count": 415219
+  },
+  {
+    "generation": 216,
+    "epoch": 216,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.048899997025728226,
+    "mean_active_synapses": 83.1458969116211,
+    "sprout_count": 4588,
+    "prune_count": 4247,
+    "ltw_mutation_count": 415559
+  },
+  {
+    "generation": 217,
+    "epoch": 217,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.29729998111724854,
+    "mean_active_synapses": 83.16549682617188,
+    "sprout_count": 4475,
+    "prune_count": 4174,
+    "ltw_mutation_count": 415677
+  },
+  {
+    "generation": 218,
+    "epoch": 218,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.3621000051498413,
+    "mean_active_synapses": 83.20279693603516,
+    "sprout_count": 4605,
+    "prune_count": 4239,
+    "ltw_mutation_count": 415831
+  },
+  {
+    "generation": 219,
+    "epoch": 219,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.06069999933242798,
+    "mean_active_synapses": 83.18920135498047,
+    "sprout_count": 4520,
+    "prune_count": 4240,
+    "ltw_mutation_count": 415806
+  },
+  {
+    "generation": 220,
+    "epoch": 220,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.41339999437332153,
+    "mean_active_synapses": 83.18569946289062,
+    "sprout_count": 4530,
+    "prune_count": 4103,
+    "ltw_mutation_count": 415715
+  },
+  {
+    "generation": 221,
+    "epoch": 221,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.4052000045776367,
+    "mean_active_synapses": 83.285400390625,
+    "sprout_count": 4505,
+    "prune_count": 4119,
+    "ltw_mutation_count": 416234
+  },
+  {
+    "generation": 222,
+    "epoch": 222,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.5033000111579895,
+    "mean_active_synapses": 83.37960052490234,
+    "sprout_count": 4596,
+    "prune_count": 4196,
+    "ltw_mutation_count": 416698
+  },
+  {
+    "generation": 223,
+    "epoch": 223,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.25200000405311584,
+    "mean_active_synapses": 83.47319793701172,
+    "sprout_count": 4584,
+    "prune_count": 4170,
+    "ltw_mutation_count": 417159
+  },
+  {
+    "generation": 224,
+    "epoch": 224,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.33649998903274536,
+    "mean_active_synapses": 83.56759643554688,
+    "sprout_count": 4648,
+    "prune_count": 4236,
+    "ltw_mutation_count": 417632
+  },
+  {
+    "generation": 225,
+    "epoch": 225,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2863999903202057,
+    "mean_active_synapses": 83.66859436035156,
+    "sprout_count": 4482,
+    "prune_count": 4178,
+    "ltw_mutation_count": 418191
+  },
+  {
+    "generation": 226,
+    "epoch": 226,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.05649999901652336,
+    "mean_active_synapses": 83.68709564208984,
+    "sprout_count": 4585,
+    "prune_count": 4264,
+    "ltw_mutation_count": 418275
+  },
+  {
+    "generation": 227,
+    "epoch": 227,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.2207999974489212,
+    "mean_active_synapses": 83.6812973022461,
+    "sprout_count": 4526,
+    "prune_count": 4071,
+    "ltw_mutation_count": 418179
+  },
+  {
+    "generation": 228,
+    "epoch": 228,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.04879999905824661,
+    "mean_active_synapses": 83.72249603271484,
+    "sprout_count": 4567,
+    "prune_count": 4110,
+    "ltw_mutation_count": 418384
+  },
+  {
+    "generation": 229,
+    "epoch": 229,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.6776999831199646,
+    "mean_active_synapses": 83.76649475097656,
+    "sprout_count": 4534,
+    "prune_count": 4205,
+    "ltw_mutation_count": 418668
+  },
+  {
+    "generation": 230,
+    "epoch": 230,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.2708999812602997,
+    "mean_active_synapses": 83.82709503173828,
+    "sprout_count": 4544,
+    "prune_count": 4289,
+    "ltw_mutation_count": 419008
+  },
+  {
+    "generation": 231,
+    "epoch": 231,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.16359999775886536,
+    "mean_active_synapses": 83.80400085449219,
+    "sprout_count": 4529,
+    "prune_count": 4079,
+    "ltw_mutation_count": 418795
+  },
+  {
+    "generation": 232,
+    "epoch": 232,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.4664999842643738,
+    "mean_active_synapses": 83.92789459228516,
+    "sprout_count": 4535,
+    "prune_count": 4128,
+    "ltw_mutation_count": 419436
+  },
+  {
+    "generation": 233,
+    "epoch": 233,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.6118999719619751,
+    "mean_active_synapses": 84.01919555664062,
+    "sprout_count": 4428,
+    "prune_count": 4176,
+    "ltw_mutation_count": 419970
+  },
+  {
+    "generation": 234,
+    "epoch": 234,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.13899999856948853,
+    "mean_active_synapses": 83.92969512939453,
+    "sprout_count": 4520,
+    "prune_count": 4327,
+    "ltw_mutation_count": 419552
+  },
+  {
+    "generation": 235,
+    "epoch": 235,
+    "max_fitness": 23.0,
+    "mean_population_fitness": -0.0284000001847744,
+    "mean_active_synapses": 83.91829681396484,
+    "sprout_count": 4430,
+    "prune_count": 4241,
+    "ltw_mutation_count": 419497
+  },
+  {
+    "generation": 236,
+    "epoch": 236,
+    "max_fitness": 24.0,
+    "mean_population_fitness": 0.2962999939918518,
+    "mean_active_synapses": 83.90840148925781,
+    "sprout_count": 4513,
+    "prune_count": 4295,
+    "ltw_mutation_count": 419433
+  },
+  {
+    "generation": 237,
+    "epoch": 237,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.07559999823570251,
+    "mean_active_synapses": 83.90149688720703,
+    "sprout_count": 4474,
+    "prune_count": 4129,
+    "ltw_mutation_count": 419335
+  },
+  {
+    "generation": 238,
+    "epoch": 238,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.11909999698400497,
+    "mean_active_synapses": 83.92789459228516,
+    "sprout_count": 4488,
+    "prune_count": 4149,
+    "ltw_mutation_count": 419470
+  },
+  {
+    "generation": 239,
+    "epoch": 239,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.2619999945163727,
+    "mean_active_synapses": 83.9552993774414,
+    "sprout_count": 4454,
+    "prune_count": 4173,
+    "ltw_mutation_count": 419636
+  },
+  {
+    "generation": 240,
+    "epoch": 240,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.06129999831318855,
+    "mean_active_synapses": 83.99459838867188,
+    "sprout_count": 4564,
+    "prune_count": 4302,
+    "ltw_mutation_count": 419842
+  },
+  {
+    "generation": 241,
+    "epoch": 241,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.1808999925851822,
+    "mean_active_synapses": 84.018798828125,
+    "sprout_count": 4457,
+    "prune_count": 4149,
+    "ltw_mutation_count": 419940
+  },
+  {
+    "generation": 242,
+    "epoch": 242,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.5756999850273132,
+    "mean_active_synapses": 84.00450134277344,
+    "sprout_count": 4612,
+    "prune_count": 4083,
+    "ltw_mutation_count": 419758
+  },
+  {
+    "generation": 243,
+    "epoch": 243,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.1842999905347824,
+    "mean_active_synapses": 84.02359771728516,
+    "sprout_count": 4457,
+    "prune_count": 4271,
+    "ltw_mutation_count": 420025
+  },
+  {
+    "generation": 244,
+    "epoch": 244,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.1899999976158142,
+    "mean_active_synapses": 84.02579498291016,
+    "sprout_count": 4468,
+    "prune_count": 4102,
+    "ltw_mutation_count": 419946
+  },
+  {
+    "generation": 245,
+    "epoch": 245,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.34929999709129333,
+    "mean_active_synapses": 84.00550079345703,
+    "sprout_count": 4405,
+    "prune_count": 4226,
+    "ltw_mutation_count": 419938
+  },
+  {
+    "generation": 246,
+    "epoch": 246,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.1727999895811081,
+    "mean_active_synapses": 83.95469665527344,
+    "sprout_count": 4426,
+    "prune_count": 4117,
+    "ltw_mutation_count": 419619
+  },
+  {
+    "generation": 247,
+    "epoch": 247,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.31790000200271606,
+    "mean_active_synapses": 83.94779968261719,
+    "sprout_count": 4319,
+    "prune_count": 4233,
+    "ltw_mutation_count": 419696
+  },
+  {
+    "generation": 248,
+    "epoch": 248,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.1168999969959259,
+    "mean_active_synapses": 83.93769836425781,
+    "sprout_count": 4530,
+    "prune_count": 4297,
+    "ltw_mutation_count": 419572
+  },
+  {
+    "generation": 249,
+    "epoch": 249,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.3499999940395355,
+    "mean_active_synapses": 83.99169921875,
+    "sprout_count": 4435,
+    "prune_count": 4368,
+    "ltw_mutation_count": 419925
+  },
+  {
+    "generation": 250,
+    "epoch": 250,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.0010999999940395355,
+    "mean_active_synapses": 84.03260040283203,
+    "sprout_count": 4412,
+    "prune_count": 4214,
+    "ltw_mutation_count": 420064
+  },
+  {
+    "generation": 251,
+    "epoch": 251,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.5396000146865845,
+    "mean_active_synapses": 83.95989990234375,
+    "sprout_count": 4403,
+    "prune_count": 4216,
+    "ltw_mutation_count": 419706
+  },
+  {
+    "generation": 252,
+    "epoch": 252,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.22989998757839203,
+    "mean_active_synapses": 83.92919921875,
+    "sprout_count": 4535,
+    "prune_count": 4373,
+    "ltw_mutation_count": 419565
+  },
+  {
+    "generation": 253,
+    "epoch": 253,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3714999854564667,
+    "mean_active_synapses": 84.01940155029297,
+    "sprout_count": 4524,
+    "prune_count": 4278,
+    "ltw_mutation_count": 419974
+  },
+  {
+    "generation": 254,
+    "epoch": 254,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.3050999939441681,
+    "mean_active_synapses": 84.12680053710938,
+    "sprout_count": 4462,
+    "prune_count": 4210,
+    "ltw_mutation_count": 420508
+  },
+  {
+    "generation": 255,
+    "epoch": 255,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.4447999894618988,
+    "mean_active_synapses": 84.13150024414062,
+    "sprout_count": 4438,
+    "prune_count": 4241,
+    "ltw_mutation_count": 420559
+  },
+  {
+    "generation": 256,
+    "epoch": 256,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.27469998598098755,
+    "mean_active_synapses": 84.19349670410156,
+    "sprout_count": 4488,
+    "prune_count": 4347,
+    "ltw_mutation_count": 420897
+  },
+  {
+    "generation": 257,
+    "epoch": 257,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.037299998104572296,
+    "mean_active_synapses": 84.24689483642578,
+    "sprout_count": 4513,
+    "prune_count": 4238,
+    "ltw_mutation_count": 421097
+  },
+  {
+    "generation": 258,
+    "epoch": 258,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.10869999974966049,
+    "mean_active_synapses": 84.23699951171875,
+    "sprout_count": 4462,
+    "prune_count": 4274,
+    "ltw_mutation_count": 421091
+  },
+  {
+    "generation": 259,
+    "epoch": 259,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.02369999885559082,
+    "mean_active_synapses": 84.17539978027344,
+    "sprout_count": 4424,
+    "prune_count": 4202,
+    "ltw_mutation_count": 420766
+  },
+  {
+    "generation": 260,
+    "epoch": 260,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.350600004196167,
+    "mean_active_synapses": 84.1771011352539,
+    "sprout_count": 4442,
+    "prune_count": 4459,
+    "ltw_mutation_count": 420894
+  },
+  {
+    "generation": 261,
+    "epoch": 261,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.4106999933719635,
+    "mean_active_synapses": 84.24140167236328,
+    "sprout_count": 4500,
+    "prune_count": 4246,
+    "ltw_mutation_count": 421080
+  },
+  {
+    "generation": 262,
+    "epoch": 262,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.3473999798297882,
+    "mean_active_synapses": 84.31909942626953,
+    "sprout_count": 4458,
+    "prune_count": 4091,
+    "ltw_mutation_count": 421412
+  },
+  {
+    "generation": 263,
+    "epoch": 263,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.3296000063419342,
+    "mean_active_synapses": 84.4468994140625,
+    "sprout_count": 4436,
+    "prune_count": 4123,
+    "ltw_mutation_count": 422078
+  },
+  {
+    "generation": 264,
+    "epoch": 264,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.0026000000070780516,
+    "mean_active_synapses": 84.51189422607422,
+    "sprout_count": 4435,
+    "prune_count": 4182,
+    "ltw_mutation_count": 422433
+  },
+  {
+    "generation": 265,
+    "epoch": 265,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.1039000004529953,
+    "mean_active_synapses": 84.58100128173828,
+    "sprout_count": 4438,
+    "prune_count": 4132,
+    "ltw_mutation_count": 422752
+  },
+  {
+    "generation": 266,
+    "epoch": 266,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.11249999701976776,
+    "mean_active_synapses": 84.58219909667969,
+    "sprout_count": 4406,
+    "prune_count": 4330,
+    "ltw_mutation_count": 422873
+  },
+  {
+    "generation": 267,
+    "epoch": 267,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.1589999943971634,
+    "mean_active_synapses": 84.62770080566406,
+    "sprout_count": 4361,
+    "prune_count": 4332,
+    "ltw_mutation_count": 423124
+  },
+  {
+    "generation": 268,
+    "epoch": 268,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.1695999950170517,
+    "mean_active_synapses": 84.63749694824219,
+    "sprout_count": 4477,
+    "prune_count": 4262,
+    "ltw_mutation_count": 423080
+  },
+  {
+    "generation": 269,
+    "epoch": 269,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.47849997878074646,
+    "mean_active_synapses": 84.63349914550781,
+    "sprout_count": 4380,
+    "prune_count": 4261,
+    "ltw_mutation_count": 423108
+  },
+  {
+    "generation": 270,
+    "epoch": 270,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.001999999862164259,
+    "mean_active_synapses": 84.58329772949219,
+    "sprout_count": 4307,
+    "prune_count": 4322,
+    "ltw_mutation_count": 422924
+  },
+  {
+    "generation": 271,
+    "epoch": 271,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.2611999809741974,
+    "mean_active_synapses": 84.6885986328125,
+    "sprout_count": 4495,
+    "prune_count": 4165,
+    "ltw_mutation_count": 423278
+  },
+  {
+    "generation": 272,
+    "epoch": 272,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.16419999301433563,
+    "mean_active_synapses": 84.7603988647461,
+    "sprout_count": 4381,
+    "prune_count": 4249,
+    "ltw_mutation_count": 423736
+  },
+  {
+    "generation": 273,
+    "epoch": 273,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.13159999251365662,
+    "mean_active_synapses": 84.7896957397461,
+    "sprout_count": 4400,
+    "prune_count": 4199,
+    "ltw_mutation_count": 423848
+  },
+  {
+    "generation": 274,
+    "epoch": 274,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.1590999960899353,
+    "mean_active_synapses": 84.84439849853516,
+    "sprout_count": 4358,
+    "prune_count": 4294,
+    "ltw_mutation_count": 424190
+  },
+  {
+    "generation": 275,
+    "epoch": 275,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2264999896287918,
+    "mean_active_synapses": 84.87670135498047,
+    "sprout_count": 4396,
+    "prune_count": 4219,
+    "ltw_mutation_count": 424295
+  },
+  {
+    "generation": 276,
+    "epoch": 276,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.10639999806880951,
+    "mean_active_synapses": 84.88379669189453,
+    "sprout_count": 4391,
+    "prune_count": 4209,
+    "ltw_mutation_count": 424328
+  },
+  {
+    "generation": 277,
+    "epoch": 277,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.626800000667572,
+    "mean_active_synapses": 84.8230972290039,
+    "sprout_count": 4411,
+    "prune_count": 4318,
+    "ltw_mutation_count": 424069
+  },
+  {
+    "generation": 278,
+    "epoch": 278,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.06019999831914902,
+    "mean_active_synapses": 84.79789733886719,
+    "sprout_count": 4345,
+    "prune_count": 4282,
+    "ltw_mutation_count": 423958
+  },
+  {
+    "generation": 279,
+    "epoch": 279,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.19569998979568481,
+    "mean_active_synapses": 84.85440063476562,
+    "sprout_count": 4275,
+    "prune_count": 4217,
+    "ltw_mutation_count": 424243
+  },
+  {
+    "generation": 280,
+    "epoch": 280,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.3260999917984009,
+    "mean_active_synapses": 84.94839477539062,
+    "sprout_count": 4541,
+    "prune_count": 4263,
+    "ltw_mutation_count": 424603
+  },
+  {
+    "generation": 281,
+    "epoch": 281,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.33730000257492065,
+    "mean_active_synapses": 84.9417953491211,
+    "sprout_count": 4499,
+    "prune_count": 4243,
+    "ltw_mutation_count": 424581
+  },
+  {
+    "generation": 282,
+    "epoch": 282,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.2563000023365021,
+    "mean_active_synapses": 84.89299774169922,
+    "sprout_count": 4467,
+    "prune_count": 4117,
+    "ltw_mutation_count": 424290
+  },
+  {
+    "generation": 283,
+    "epoch": 283,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.2710999846458435,
+    "mean_active_synapses": 84.89769744873047,
+    "sprout_count": 4394,
+    "prune_count": 4313,
+    "ltw_mutation_count": 424448
+  },
+  {
+    "generation": 284,
+    "epoch": 284,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.07289999723434448,
+    "mean_active_synapses": 84.96269989013672,
+    "sprout_count": 4509,
+    "prune_count": 4176,
+    "ltw_mutation_count": 424647
+  },
+  {
+    "generation": 285,
+    "epoch": 285,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.0058999997563660145,
+    "mean_active_synapses": 84.88819885253906,
+    "sprout_count": 4259,
+    "prune_count": 4215,
+    "ltw_mutation_count": 424419
+  },
+  {
+    "generation": 286,
+    "epoch": 286,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.3238999843597412,
+    "mean_active_synapses": 84.93389892578125,
+    "sprout_count": 4538,
+    "prune_count": 4175,
+    "ltw_mutation_count": 424488
+  },
+  {
+    "generation": 287,
+    "epoch": 287,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.6572999954223633,
+    "mean_active_synapses": 85.00260162353516,
+    "sprout_count": 4528,
+    "prune_count": 4162,
+    "ltw_mutation_count": 424830
+  },
+  {
+    "generation": 288,
+    "epoch": 288,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.014299999922513962,
+    "mean_active_synapses": 85.03730010986328,
+    "sprout_count": 4472,
+    "prune_count": 4201,
+    "ltw_mutation_count": 425051
+  },
+  {
+    "generation": 289,
+    "epoch": 289,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.4834999740123749,
+    "mean_active_synapses": 85.08799743652344,
+    "sprout_count": 4468,
+    "prune_count": 4120,
+    "ltw_mutation_count": 425266
+  },
+  {
+    "generation": 290,
+    "epoch": 290,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.25849997997283936,
+    "mean_active_synapses": 85.07820129394531,
+    "sprout_count": 4330,
+    "prune_count": 4366,
+    "ltw_mutation_count": 425409
+  },
+  {
+    "generation": 291,
+    "epoch": 291,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.03059999831020832,
+    "mean_active_synapses": 85.1261978149414,
+    "sprout_count": 4328,
+    "prune_count": 4222,
+    "ltw_mutation_count": 425578
+  },
+  {
+    "generation": 292,
+    "epoch": 292,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.10300000011920929,
+    "mean_active_synapses": 85.02330017089844,
+    "sprout_count": 4396,
+    "prune_count": 4257,
+    "ltw_mutation_count": 425047
+  },
+  {
+    "generation": 293,
+    "epoch": 293,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.05079999938607216,
+    "mean_active_synapses": 85.0199966430664,
+    "sprout_count": 4408,
+    "prune_count": 4336,
+    "ltw_mutation_count": 425064
+  },
+  {
+    "generation": 294,
+    "epoch": 294,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.32199999690055847,
+    "mean_active_synapses": 85.0219955444336,
+    "sprout_count": 4366,
+    "prune_count": 4270,
+    "ltw_mutation_count": 425062
+  },
+  {
+    "generation": 295,
+    "epoch": 295,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.0038999998942017555,
+    "mean_active_synapses": 85.02369689941406,
+    "sprout_count": 4344,
+    "prune_count": 4399,
+    "ltw_mutation_count": 425146
+  },
+  {
+    "generation": 296,
+    "epoch": 296,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.6344000101089478,
+    "mean_active_synapses": 85.06999969482422,
+    "sprout_count": 4430,
+    "prune_count": 4230,
+    "ltw_mutation_count": 425250
+  },
+  {
+    "generation": 297,
+    "epoch": 297,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.7160999774932861,
+    "mean_active_synapses": 84.97219848632812,
+    "sprout_count": 4439,
+    "prune_count": 4193,
+    "ltw_mutation_count": 424738
+  },
+  {
+    "generation": 298,
+    "epoch": 298,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.16759999096393585,
+    "mean_active_synapses": 85.010498046875,
+    "sprout_count": 4325,
+    "prune_count": 4256,
+    "ltw_mutation_count": 425018
+  },
+  {
+    "generation": 299,
+    "epoch": 299,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.25209999084472656,
+    "mean_active_synapses": 85.07080078125,
+    "sprout_count": 4440,
+    "prune_count": 4300,
+    "ltw_mutation_count": 425284
+  },
+  {
+    "generation": 300,
+    "epoch": 300,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.06309999525547028,
+    "mean_active_synapses": 85.14440155029297,
+    "sprout_count": 4443,
+    "prune_count": 4461,
+    "ltw_mutation_count": 425731
+  },
+  {
+    "generation": 301,
+    "epoch": 301,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.32580000162124634,
+    "mean_active_synapses": 85.17070007324219,
+    "sprout_count": 4333,
+    "prune_count": 4308,
+    "ltw_mutation_count": 425841
+  },
+  {
+    "generation": 302,
+    "epoch": 302,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.14899998903274536,
+    "mean_active_synapses": 85.24949645996094,
+    "sprout_count": 4279,
+    "prune_count": 4150,
+    "ltw_mutation_count": 426183
+  },
+  {
+    "generation": 303,
+    "epoch": 303,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.3025999963283539,
+    "mean_active_synapses": 85.23989868164062,
+    "sprout_count": 4413,
+    "prune_count": 4264,
+    "ltw_mutation_count": 426125
+  },
+  {
+    "generation": 304,
+    "epoch": 304,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.311599999666214,
+    "mean_active_synapses": 85.27320098876953,
+    "sprout_count": 4355,
+    "prune_count": 4113,
+    "ltw_mutation_count": 426245
+  },
+  {
+    "generation": 305,
+    "epoch": 305,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.6775999665260315,
+    "mean_active_synapses": 85.3302993774414,
+    "sprout_count": 4419,
+    "prune_count": 4212,
+    "ltw_mutation_count": 426548
+  },
+  {
+    "generation": 306,
+    "epoch": 306,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.39409998059272766,
+    "mean_active_synapses": 85.32719421386719,
+    "sprout_count": 4284,
+    "prune_count": 4274,
+    "ltw_mutation_count": 426631
+  },
+  {
+    "generation": 307,
+    "epoch": 307,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.14829999208450317,
+    "mean_active_synapses": 85.3781967163086,
+    "sprout_count": 4266,
+    "prune_count": 4296,
+    "ltw_mutation_count": 426906
+  },
+  {
+    "generation": 308,
+    "epoch": 308,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.37599998712539673,
+    "mean_active_synapses": 85.36419677734375,
+    "sprout_count": 4333,
+    "prune_count": 4241,
+    "ltw_mutation_count": 426775
+  },
+  {
+    "generation": 309,
+    "epoch": 309,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.29269999265670776,
+    "mean_active_synapses": 85.46329498291016,
+    "sprout_count": 4250,
+    "prune_count": 4439,
+    "ltw_mutation_count": 427411
+  },
+  {
+    "generation": 310,
+    "epoch": 310,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.1574999988079071,
+    "mean_active_synapses": 85.50799560546875,
+    "sprout_count": 4452,
+    "prune_count": 4380,
+    "ltw_mutation_count": 427504
+  },
+  {
+    "generation": 311,
+    "epoch": 311,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.4814999997615814,
+    "mean_active_synapses": 85.53160095214844,
+    "sprout_count": 4229,
+    "prune_count": 4267,
+    "ltw_mutation_count": 427677
+  },
+  {
+    "generation": 312,
+    "epoch": 312,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3179999887943268,
+    "mean_active_synapses": 85.61470031738281,
+    "sprout_count": 4446,
+    "prune_count": 4291,
+    "ltw_mutation_count": 427996
+  },
+  {
+    "generation": 313,
+    "epoch": 313,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.42249998450279236,
+    "mean_active_synapses": 85.74250030517578,
+    "sprout_count": 4348,
+    "prune_count": 4243,
+    "ltw_mutation_count": 428660
+  },
+  {
+    "generation": 314,
+    "epoch": 314,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.25779998302459717,
+    "mean_active_synapses": 85.64949798583984,
+    "sprout_count": 4388,
+    "prune_count": 4239,
+    "ltw_mutation_count": 428173
+  },
+  {
+    "generation": 315,
+    "epoch": 315,
+    "max_fitness": 23.0,
+    "mean_population_fitness": 0.2644999921321869,
+    "mean_active_synapses": 85.66600036621094,
+    "sprout_count": 4225,
+    "prune_count": 4291,
+    "ltw_mutation_count": 428363
+  },
+  {
+    "generation": 316,
+    "epoch": 316,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.1127999946475029,
+    "mean_active_synapses": 85.58110046386719,
+    "sprout_count": 4421,
+    "prune_count": 4356,
+    "ltw_mutation_count": 427873
+  },
+  {
+    "generation": 317,
+    "epoch": 317,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.4770999848842621,
+    "mean_active_synapses": 85.59839630126953,
+    "sprout_count": 4449,
+    "prune_count": 4199,
+    "ltw_mutation_count": 427867
+  },
+  {
+    "generation": 318,
+    "epoch": 318,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.24609999358654022,
+    "mean_active_synapses": 85.60099792480469,
+    "sprout_count": 4377,
+    "prune_count": 4267,
+    "ltw_mutation_count": 427950
+  },
+  {
+    "generation": 319,
+    "epoch": 319,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.26179999113082886,
+    "mean_active_synapses": 85.63019561767578,
+    "sprout_count": 4296,
+    "prune_count": 4346,
+    "ltw_mutation_count": 428176
+  },
+  {
+    "generation": 320,
+    "epoch": 320,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.26809999346733093,
+    "mean_active_synapses": 85.58380126953125,
+    "sprout_count": 4266,
+    "prune_count": 4378,
+    "ltw_mutation_count": 427975
+  },
+  {
+    "generation": 321,
+    "epoch": 321,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.560699999332428,
+    "mean_active_synapses": 85.6115951538086,
+    "sprout_count": 4238,
+    "prune_count": 4228,
+    "ltw_mutation_count": 428053
+  },
+  {
+    "generation": 322,
+    "epoch": 322,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.28919997811317444,
+    "mean_active_synapses": 85.5624008178711,
+    "sprout_count": 4407,
+    "prune_count": 4307,
+    "ltw_mutation_count": 427762
+  },
+  {
+    "generation": 323,
+    "epoch": 323,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2232999950647354,
+    "mean_active_synapses": 85.5730972290039,
+    "sprout_count": 4304,
+    "prune_count": 4309,
+    "ltw_mutation_count": 427868
+  },
+  {
+    "generation": 324,
+    "epoch": 324,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.296099990606308,
+    "mean_active_synapses": 85.44249725341797,
+    "sprout_count": 4449,
+    "prune_count": 4244,
+    "ltw_mutation_count": 427110
+  },
+  {
+    "generation": 325,
+    "epoch": 325,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.12039999663829803,
+    "mean_active_synapses": 85.53459930419922,
+    "sprout_count": 4280,
+    "prune_count": 4308,
+    "ltw_mutation_count": 427687
+  },
+  {
+    "generation": 326,
+    "epoch": 326,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.4311999976634979,
+    "mean_active_synapses": 85.55809783935547,
+    "sprout_count": 4177,
+    "prune_count": 4264,
+    "ltw_mutation_count": 427834
+  },
+  {
+    "generation": 327,
+    "epoch": 327,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.280599981546402,
+    "mean_active_synapses": 85.51649475097656,
+    "sprout_count": 4208,
+    "prune_count": 4303,
+    "ltw_mutation_count": 427630
+  },
+  {
+    "generation": 328,
+    "epoch": 328,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.11669999361038208,
+    "mean_active_synapses": 85.50180053710938,
+    "sprout_count": 4295,
+    "prune_count": 4361,
+    "ltw_mutation_count": 427542
+  },
+  {
+    "generation": 329,
+    "epoch": 329,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.012999999336898327,
+    "mean_active_synapses": 85.51110076904297,
+    "sprout_count": 4348,
+    "prune_count": 4423,
+    "ltw_mutation_count": 427593
+  },
+  {
+    "generation": 330,
+    "epoch": 330,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.22429999709129333,
+    "mean_active_synapses": 85.48889923095703,
+    "sprout_count": 4354,
+    "prune_count": 4265,
+    "ltw_mutation_count": 427400
+  },
+  {
+    "generation": 331,
+    "epoch": 331,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.38519999384880066,
+    "mean_active_synapses": 85.45939636230469,
+    "sprout_count": 4247,
+    "prune_count": 4311,
+    "ltw_mutation_count": 427329
+  },
+  {
+    "generation": 332,
+    "epoch": 332,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.11429999768733978,
+    "mean_active_synapses": 85.51929473876953,
+    "sprout_count": 4283,
+    "prune_count": 4288,
+    "ltw_mutation_count": 427599
+  },
+  {
+    "generation": 333,
+    "epoch": 333,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.2345999926328659,
+    "mean_active_synapses": 85.54859924316406,
+    "sprout_count": 4304,
+    "prune_count": 4264,
+    "ltw_mutation_count": 427723
+  },
+  {
+    "generation": 334,
+    "epoch": 334,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2919999957084656,
+    "mean_active_synapses": 85.62189483642578,
+    "sprout_count": 4351,
+    "prune_count": 4282,
+    "ltw_mutation_count": 428075
+  },
+  {
+    "generation": 335,
+    "epoch": 335,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.4477999806404114,
+    "mean_active_synapses": 85.56710052490234,
+    "sprout_count": 4334,
+    "prune_count": 4251,
+    "ltw_mutation_count": 427794
+  },
+  {
+    "generation": 336,
+    "epoch": 336,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.3188000023365021,
+    "mean_active_synapses": 85.55159759521484,
+    "sprout_count": 4283,
+    "prune_count": 4409,
+    "ltw_mutation_count": 427821
+  },
+  {
+    "generation": 337,
+    "epoch": 337,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.40389999747276306,
+    "mean_active_synapses": 85.4500961303711,
+    "sprout_count": 4370,
+    "prune_count": 4301,
+    "ltw_mutation_count": 427216
+  },
+  {
+    "generation": 338,
+    "epoch": 338,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.12729999423027039,
+    "mean_active_synapses": 85.53499603271484,
+    "sprout_count": 4304,
+    "prune_count": 4350,
+    "ltw_mutation_count": 427698
+  },
+  {
+    "generation": 339,
+    "epoch": 339,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.23909999430179596,
+    "mean_active_synapses": 85.54000091552734,
+    "sprout_count": 4341,
+    "prune_count": 4247,
+    "ltw_mutation_count": 427653
+  },
+  {
+    "generation": 340,
+    "epoch": 340,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.10779999941587448,
+    "mean_active_synapses": 85.502197265625,
+    "sprout_count": 4416,
+    "prune_count": 4264,
+    "ltw_mutation_count": 427435
+  },
+  {
+    "generation": 341,
+    "epoch": 341,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.13570000231266022,
+    "mean_active_synapses": 85.47029876708984,
+    "sprout_count": 4275,
+    "prune_count": 4348,
+    "ltw_mutation_count": 427388
+  },
+  {
+    "generation": 342,
+    "epoch": 342,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.6169999837875366,
+    "mean_active_synapses": 85.49430084228516,
+    "sprout_count": 4342,
+    "prune_count": 4221,
+    "ltw_mutation_count": 427411
+  },
+  {
+    "generation": 343,
+    "epoch": 343,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.8470999598503113,
+    "mean_active_synapses": 85.63219451904297,
+    "sprout_count": 4343,
+    "prune_count": 4205,
+    "ltw_mutation_count": 428092
+  },
+  {
+    "generation": 344,
+    "epoch": 344,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.2540999948978424,
+    "mean_active_synapses": 85.65010070800781,
+    "sprout_count": 4299,
+    "prune_count": 4250,
+    "ltw_mutation_count": 428226
+  },
+  {
+    "generation": 345,
+    "epoch": 345,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.26729997992515564,
+    "mean_active_synapses": 85.60519409179688,
+    "sprout_count": 4583,
+    "prune_count": 4263,
+    "ltw_mutation_count": 427866
+  },
+  {
+    "generation": 346,
+    "epoch": 346,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.32519999146461487,
+    "mean_active_synapses": 85.56319427490234,
+    "sprout_count": 4343,
+    "prune_count": 4295,
+    "ltw_mutation_count": 427792
+  },
+  {
+    "generation": 347,
+    "epoch": 347,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.1589999943971634,
+    "mean_active_synapses": 85.65909576416016,
+    "sprout_count": 4333,
+    "prune_count": 4228,
+    "ltw_mutation_count": 428243
+  },
+  {
+    "generation": 348,
+    "epoch": 348,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.8069999814033508,
+    "mean_active_synapses": 85.67430114746094,
+    "sprout_count": 4288,
+    "prune_count": 4233,
+    "ltw_mutation_count": 428344
+  },
+  {
+    "generation": 349,
+    "epoch": 349,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.06920000165700912,
+    "mean_active_synapses": 85.76239776611328,
+    "sprout_count": 4321,
+    "prune_count": 4287,
+    "ltw_mutation_count": 428795
+  },
+  {
+    "generation": 350,
+    "epoch": 350,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.22429999709129333,
+    "mean_active_synapses": 85.80169677734375,
+    "sprout_count": 4307,
+    "prune_count": 4326,
+    "ltw_mutation_count": 429018
+  },
+  {
+    "generation": 351,
+    "epoch": 351,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.18529999256134033,
+    "mean_active_synapses": 85.87379455566406,
+    "sprout_count": 4343,
+    "prune_count": 4309,
+    "ltw_mutation_count": 429352
+  },
+  {
+    "generation": 352,
+    "epoch": 352,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.21130000054836273,
+    "mean_active_synapses": 85.84489440917969,
+    "sprout_count": 4232,
+    "prune_count": 4239,
+    "ltw_mutation_count": 429228
+  },
+  {
+    "generation": 353,
+    "epoch": 353,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.08329999446868896,
+    "mean_active_synapses": 85.78949737548828,
+    "sprout_count": 4306,
+    "prune_count": 4259,
+    "ltw_mutation_count": 428924
+  },
+  {
+    "generation": 354,
+    "epoch": 354,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.17659999430179596,
+    "mean_active_synapses": 85.7938003540039,
+    "sprout_count": 4302,
+    "prune_count": 4238,
+    "ltw_mutation_count": 428937
+  },
+  {
+    "generation": 355,
+    "epoch": 355,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.16679999232292175,
+    "mean_active_synapses": 85.73819732666016,
+    "sprout_count": 4342,
+    "prune_count": 4304,
+    "ltw_mutation_count": 428672
+  },
+  {
+    "generation": 356,
+    "epoch": 356,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.6225000023841858,
+    "mean_active_synapses": 85.75879669189453,
+    "sprout_count": 4237,
+    "prune_count": 4313,
+    "ltw_mutation_count": 428832
+  },
+  {
+    "generation": 357,
+    "epoch": 357,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.1386999934911728,
+    "mean_active_synapses": 85.74409484863281,
+    "sprout_count": 4339,
+    "prune_count": 4310,
+    "ltw_mutation_count": 428706
+  },
+  {
+    "generation": 358,
+    "epoch": 358,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.19029998779296875,
+    "mean_active_synapses": 85.79259490966797,
+    "sprout_count": 4288,
+    "prune_count": 4150,
+    "ltw_mutation_count": 428894
+  },
+  {
+    "generation": 359,
+    "epoch": 359,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.2554999887943268,
+    "mean_active_synapses": 85.63249969482422,
+    "sprout_count": 4317,
+    "prune_count": 4316,
+    "ltw_mutation_count": 428162
+  },
+  {
+    "generation": 360,
+    "epoch": 360,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.19329999387264252,
+    "mean_active_synapses": 85.5905990600586,
+    "sprout_count": 4325,
+    "prune_count": 4343,
+    "ltw_mutation_count": 427962
+  },
+  {
+    "generation": 361,
+    "epoch": 361,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.18400000035762787,
+    "mean_active_synapses": 85.55839538574219,
+    "sprout_count": 4309,
+    "prune_count": 4245,
+    "ltw_mutation_count": 427760
+  },
+  {
+    "generation": 362,
+    "epoch": 362,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.2809000015258789,
+    "mean_active_synapses": 85.6511001586914,
+    "sprout_count": 4399,
+    "prune_count": 4326,
+    "ltw_mutation_count": 428219
+  },
+  {
+    "generation": 363,
+    "epoch": 363,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.10260000079870224,
+    "mean_active_synapses": 85.7157974243164,
+    "sprout_count": 4319,
+    "prune_count": 4253,
+    "ltw_mutation_count": 428546
+  },
+  {
+    "generation": 364,
+    "epoch": 364,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.03999999910593033,
+    "mean_active_synapses": 85.68799591064453,
+    "sprout_count": 4281,
+    "prune_count": 4273,
+    "ltw_mutation_count": 428436
+  },
+  {
+    "generation": 365,
+    "epoch": 365,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.1403999924659729,
+    "mean_active_synapses": 85.72119903564453,
+    "sprout_count": 4387,
+    "prune_count": 4213,
+    "ltw_mutation_count": 428519
+  },
+  {
+    "generation": 366,
+    "epoch": 366,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.06719999760389328,
+    "mean_active_synapses": 85.74789428710938,
+    "sprout_count": 4409,
+    "prune_count": 4296,
+    "ltw_mutation_count": 428683
+  },
+  {
+    "generation": 367,
+    "epoch": 367,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.07440000027418137,
+    "mean_active_synapses": 85.86439514160156,
+    "sprout_count": 4330,
+    "prune_count": 4254,
+    "ltw_mutation_count": 429284
+  },
+  {
+    "generation": 368,
+    "epoch": 368,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.21050000190734863,
+    "mean_active_synapses": 85.9502944946289,
+    "sprout_count": 4220,
+    "prune_count": 4337,
+    "ltw_mutation_count": 429810
+  },
+  {
+    "generation": 369,
+    "epoch": 369,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.1266999989748001,
+    "mean_active_synapses": 86.00260162353516,
+    "sprout_count": 4213,
+    "prune_count": 4333,
+    "ltw_mutation_count": 430073
+  },
+  {
+    "generation": 370,
+    "epoch": 370,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.33390000462532043,
+    "mean_active_synapses": 85.9719009399414,
+    "sprout_count": 4392,
+    "prune_count": 4249,
+    "ltw_mutation_count": 429788
+  },
+  {
+    "generation": 371,
+    "epoch": 371,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.44039997458457947,
+    "mean_active_synapses": 85.87889862060547,
+    "sprout_count": 4348,
+    "prune_count": 4251,
+    "ltw_mutation_count": 429346
+  },
+  {
+    "generation": 372,
+    "epoch": 372,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.18449999392032623,
+    "mean_active_synapses": 85.90909576416016,
+    "sprout_count": 4397,
+    "prune_count": 4402,
+    "ltw_mutation_count": 429548
+  },
+  {
+    "generation": 373,
+    "epoch": 373,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.06709999591112137,
+    "mean_active_synapses": 85.85089874267578,
+    "sprout_count": 4342,
+    "prune_count": 4349,
+    "ltw_mutation_count": 429258
+  },
+  {
+    "generation": 374,
+    "epoch": 374,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.008700000122189522,
+    "mean_active_synapses": 85.87770080566406,
+    "sprout_count": 4247,
+    "prune_count": 4324,
+    "ltw_mutation_count": 429427
+  },
+  {
+    "generation": 375,
+    "epoch": 375,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.20889998972415924,
+    "mean_active_synapses": 85.85910034179688,
+    "sprout_count": 4365,
+    "prune_count": 4250,
+    "ltw_mutation_count": 429238
+  },
+  {
+    "generation": 376,
+    "epoch": 376,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.2830999791622162,
+    "mean_active_synapses": 85.96339416503906,
+    "sprout_count": 4344,
+    "prune_count": 4218,
+    "ltw_mutation_count": 429754
+  },
+  {
+    "generation": 377,
+    "epoch": 377,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.0007999999797903001,
+    "mean_active_synapses": 85.9749984741211,
+    "sprout_count": 4301,
+    "prune_count": 4409,
+    "ltw_mutation_count": 429929
+  },
+  {
+    "generation": 378,
+    "epoch": 378,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.1648000031709671,
+    "mean_active_synapses": 85.95869445800781,
+    "sprout_count": 4247,
+    "prune_count": 4326,
+    "ltw_mutation_count": 429833
+  },
+  {
+    "generation": 379,
+    "epoch": 379,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.0811999961733818,
+    "mean_active_synapses": 85.9397964477539,
+    "sprout_count": 4335,
+    "prune_count": 4271,
+    "ltw_mutation_count": 429667
+  },
+  {
+    "generation": 380,
+    "epoch": 380,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.2572999894618988,
+    "mean_active_synapses": 85.94259643554688,
+    "sprout_count": 4278,
+    "prune_count": 4236,
+    "ltw_mutation_count": 429692
+  },
+  {
+    "generation": 381,
+    "epoch": 381,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.11829999834299088,
+    "mean_active_synapses": 86.00489807128906,
+    "sprout_count": 4276,
+    "prune_count": 4247,
+    "ltw_mutation_count": 430010
+  },
+  {
+    "generation": 382,
+    "epoch": 382,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.19110000133514404,
+    "mean_active_synapses": 85.99929809570312,
+    "sprout_count": 4303,
+    "prune_count": 4326,
+    "ltw_mutation_count": 430008
+  },
+  {
+    "generation": 383,
+    "epoch": 383,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.19419999420642853,
+    "mean_active_synapses": 86.00809478759766,
+    "sprout_count": 4361,
+    "prune_count": 4228,
+    "ltw_mutation_count": 429974
+  },
+  {
+    "generation": 384,
+    "epoch": 384,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.0478999987244606,
+    "mean_active_synapses": 85.94229888916016,
+    "sprout_count": 4345,
+    "prune_count": 4308,
+    "ltw_mutation_count": 429693
+  },
+  {
+    "generation": 385,
+    "epoch": 385,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.010300000198185444,
+    "mean_active_synapses": 85.95880126953125,
+    "sprout_count": 4284,
+    "prune_count": 4238,
+    "ltw_mutation_count": 429771
+  },
+  {
+    "generation": 386,
+    "epoch": 386,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.4092999994754791,
+    "mean_active_synapses": 85.89529418945312,
+    "sprout_count": 4218,
+    "prune_count": 4333,
+    "ltw_mutation_count": 429534
+  },
+  {
+    "generation": 387,
+    "epoch": 387,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.09380000084638596,
+    "mean_active_synapses": 85.90959930419922,
+    "sprout_count": 4196,
+    "prune_count": 4252,
+    "ltw_mutation_count": 429576
+  },
+  {
+    "generation": 388,
+    "epoch": 388,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.4668999910354614,
+    "mean_active_synapses": 85.90979766845703,
+    "sprout_count": 4284,
+    "prune_count": 4282,
+    "ltw_mutation_count": 429548
+  },
+  {
+    "generation": 389,
+    "epoch": 389,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.1216999962925911,
+    "mean_active_synapses": 85.95539855957031,
+    "sprout_count": 4221,
+    "prune_count": 4291,
+    "ltw_mutation_count": 429812
+  },
+  {
+    "generation": 390,
+    "epoch": 390,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.4271000027656555,
+    "mean_active_synapses": 85.91299438476562,
+    "sprout_count": 4273,
+    "prune_count": 4263,
+    "ltw_mutation_count": 429560
+  },
+  {
+    "generation": 391,
+    "epoch": 391,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.05419999733567238,
+    "mean_active_synapses": 85.92729949951172,
+    "sprout_count": 4229,
+    "prune_count": 4186,
+    "ltw_mutation_count": 429615
+  },
+  {
+    "generation": 392,
+    "epoch": 392,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.10740000009536743,
+    "mean_active_synapses": 85.94960021972656,
+    "sprout_count": 4305,
+    "prune_count": 4341,
+    "ltw_mutation_count": 429766
+  },
+  {
+    "generation": 393,
+    "epoch": 393,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.041600000113248825,
+    "mean_active_synapses": 86.01679992675781,
+    "sprout_count": 4270,
+    "prune_count": 4228,
+    "ltw_mutation_count": 430063
+  },
+  {
+    "generation": 394,
+    "epoch": 394,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.3360999822616577,
+    "mean_active_synapses": 86.04129791259766,
+    "sprout_count": 4251,
+    "prune_count": 4332,
+    "ltw_mutation_count": 430247
+  },
+  {
+    "generation": 395,
+    "epoch": 395,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.12539999186992645,
+    "mean_active_synapses": 86.07170104980469,
+    "sprout_count": 4328,
+    "prune_count": 4327,
+    "ltw_mutation_count": 430358
+  },
+  {
+    "generation": 396,
+    "epoch": 396,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.12299999594688416,
+    "mean_active_synapses": 85.9646987915039,
+    "sprout_count": 4197,
+    "prune_count": 4290,
+    "ltw_mutation_count": 429870
+  },
+  {
+    "generation": 397,
+    "epoch": 397,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.23799999058246613,
+    "mean_active_synapses": 85.92659759521484,
+    "sprout_count": 4321,
+    "prune_count": 4291,
+    "ltw_mutation_count": 429618
+  },
+  {
+    "generation": 398,
+    "epoch": 398,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.2117999941110611,
+    "mean_active_synapses": 85.91529846191406,
+    "sprout_count": 4291,
+    "prune_count": 4252,
+    "ltw_mutation_count": 429557
+  },
+  {
+    "generation": 399,
+    "epoch": 399,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.12349999696016312,
+    "mean_active_synapses": 85.93429565429688,
+    "sprout_count": 4321,
+    "prune_count": 4260,
+    "ltw_mutation_count": 429641
+  },
+  {
+    "generation": 400,
+    "epoch": 400,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.04230000078678131,
+    "mean_active_synapses": 85.95169830322266,
+    "sprout_count": 4211,
+    "prune_count": 4456,
+    "ltw_mutation_count": 429881
+  },
+  {
+    "generation": 401,
+    "epoch": 401,
+    "max_fitness": 22.0,
+    "mean_population_fitness": -0.19990000128746033,
+    "mean_active_synapses": 85.95939636230469,
+    "sprout_count": 4281,
+    "prune_count": 4269,
+    "ltw_mutation_count": 429791
+  },
+  {
+    "generation": 402,
+    "epoch": 402,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.04399999976158142,
+    "mean_active_synapses": 85.93939971923828,
+    "sprout_count": 4213,
+    "prune_count": 4313,
+    "ltw_mutation_count": 429747
+  },
+  {
+    "generation": 403,
+    "epoch": 403,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.258899986743927,
+    "mean_active_synapses": 85.89529418945312,
+    "sprout_count": 4249,
+    "prune_count": 4256,
+    "ltw_mutation_count": 429480
+  },
+  {
+    "generation": 404,
+    "epoch": 404,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.07400000095367432,
+    "mean_active_synapses": 85.85009765625,
+    "sprout_count": 4377,
+    "prune_count": 4262,
+    "ltw_mutation_count": 429193
+  },
+  {
+    "generation": 405,
+    "epoch": 405,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.27059999108314514,
+    "mean_active_synapses": 85.9137954711914,
+    "sprout_count": 4175,
+    "prune_count": 4281,
+    "ltw_mutation_count": 429622
+  },
+  {
+    "generation": 406,
+    "epoch": 406,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.16849999129772186,
+    "mean_active_synapses": 85.94490051269531,
+    "sprout_count": 4394,
+    "prune_count": 4283,
+    "ltw_mutation_count": 429669
+  },
+  {
+    "generation": 407,
+    "epoch": 407,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.0421999990940094,
+    "mean_active_synapses": 85.86959838867188,
+    "sprout_count": 4288,
+    "prune_count": 4282,
+    "ltw_mutation_count": 429345
+  },
+  {
+    "generation": 408,
+    "epoch": 408,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.2531000077724457,
+    "mean_active_synapses": 85.8228988647461,
+    "sprout_count": 4320,
+    "prune_count": 4341,
+    "ltw_mutation_count": 429125
+  },
+  {
+    "generation": 409,
+    "epoch": 409,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.04089999943971634,
+    "mean_active_synapses": 85.76719665527344,
+    "sprout_count": 4405,
+    "prune_count": 4343,
+    "ltw_mutation_count": 428805
+  },
+  {
+    "generation": 410,
+    "epoch": 410,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.11219999939203262,
+    "mean_active_synapses": 85.75689697265625,
+    "sprout_count": 4265,
+    "prune_count": 4428,
+    "ltw_mutation_count": 428866
+  },
+  {
+    "generation": 411,
+    "epoch": 411,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.602400004863739,
+    "mean_active_synapses": 85.80509948730469,
+    "sprout_count": 4286,
+    "prune_count": 4351,
+    "ltw_mutation_count": 429058
+  },
+  {
+    "generation": 412,
+    "epoch": 412,
+    "max_fitness": 23.0,
+    "mean_population_fitness": -0.26179999113082886,
+    "mean_active_synapses": 85.84759521484375,
+    "sprout_count": 4240,
+    "prune_count": 4328,
+    "ltw_mutation_count": 429282
+  },
+  {
+    "generation": 413,
+    "epoch": 413,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.26659998297691345,
+    "mean_active_synapses": 85.71949768066406,
+    "sprout_count": 4350,
+    "prune_count": 4371,
+    "ltw_mutation_count": 428608
+  },
+  {
+    "generation": 414,
+    "epoch": 414,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.41200000047683716,
+    "mean_active_synapses": 85.68119812011719,
+    "sprout_count": 4302,
+    "prune_count": 4322,
+    "ltw_mutation_count": 428416
+  },
+  {
+    "generation": 415,
+    "epoch": 415,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.0851999968290329,
+    "mean_active_synapses": 85.82869720458984,
+    "sprout_count": 4252,
+    "prune_count": 4221,
+    "ltw_mutation_count": 429128
+  },
+  {
+    "generation": 416,
+    "epoch": 416,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.4406999945640564,
+    "mean_active_synapses": 85.8323974609375,
+    "sprout_count": 4374,
+    "prune_count": 4378,
+    "ltw_mutation_count": 429164
+  },
+  {
+    "generation": 417,
+    "epoch": 417,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.08739999681711197,
+    "mean_active_synapses": 85.92129516601562,
+    "sprout_count": 4333,
+    "prune_count": 4338,
+    "ltw_mutation_count": 429609
+  },
+  {
+    "generation": 418,
+    "epoch": 418,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.1809999942779541,
+    "mean_active_synapses": 85.95989990234375,
+    "sprout_count": 4255,
+    "prune_count": 4220,
+    "ltw_mutation_count": 429782
+  },
+  {
+    "generation": 419,
+    "epoch": 419,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.015099999494850636,
+    "mean_active_synapses": 85.96109771728516,
+    "sprout_count": 4215,
+    "prune_count": 4230,
+    "ltw_mutation_count": 429813
+  },
+  {
+    "generation": 420,
+    "epoch": 420,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.2953000068664551,
+    "mean_active_synapses": 86.0531997680664,
+    "sprout_count": 4267,
+    "prune_count": 4299,
+    "ltw_mutation_count": 430282
+  },
+  {
+    "generation": 421,
+    "epoch": 421,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.5971999764442444,
+    "mean_active_synapses": 85.95559692382812,
+    "sprout_count": 4264,
+    "prune_count": 4214,
+    "ltw_mutation_count": 429753
+  },
+  {
+    "generation": 422,
+    "epoch": 422,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.09200000017881393,
+    "mean_active_synapses": 85.914794921875,
+    "sprout_count": 4448,
+    "prune_count": 4194,
+    "ltw_mutation_count": 429447
+  },
+  {
+    "generation": 423,
+    "epoch": 423,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.6449999809265137,
+    "mean_active_synapses": 85.9552993774414,
+    "sprout_count": 4237,
+    "prune_count": 4300,
+    "ltw_mutation_count": 429808
+  },
+  {
+    "generation": 424,
+    "epoch": 424,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.20399999618530273,
+    "mean_active_synapses": 85.98649597167969,
+    "sprout_count": 4333,
+    "prune_count": 4274,
+    "ltw_mutation_count": 429903
+  },
+  {
+    "generation": 425,
+    "epoch": 425,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.31929999589920044,
+    "mean_active_synapses": 85.9760971069336,
+    "sprout_count": 4390,
+    "prune_count": 4343,
+    "ltw_mutation_count": 429857
+  },
+  {
+    "generation": 426,
+    "epoch": 426,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.3474999964237213,
+    "mean_active_synapses": 85.99919891357422,
+    "sprout_count": 4350,
+    "prune_count": 4216,
+    "ltw_mutation_count": 429929
+  },
+  {
+    "generation": 427,
+    "epoch": 427,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.12079999595880508,
+    "mean_active_synapses": 86.01319885253906,
+    "sprout_count": 4443,
+    "prune_count": 4265,
+    "ltw_mutation_count": 429977
+  },
+  {
+    "generation": 428,
+    "epoch": 428,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3052999973297119,
+    "mean_active_synapses": 86.07479858398438,
+    "sprout_count": 4364,
+    "prune_count": 4180,
+    "ltw_mutation_count": 430282
+  },
+  {
+    "generation": 429,
+    "epoch": 429,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.16669999063014984,
+    "mean_active_synapses": 86.13389587402344,
+    "sprout_count": 4329,
+    "prune_count": 4368,
+    "ltw_mutation_count": 430689
+  },
+  {
+    "generation": 430,
+    "epoch": 430,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.028999999165534973,
+    "mean_active_synapses": 86.11280059814453,
+    "sprout_count": 4319,
+    "prune_count": 4341,
+    "ltw_mutation_count": 430575
+  },
+  {
+    "generation": 431,
+    "epoch": 431,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.37849998474121094,
+    "mean_active_synapses": 86.0885009765625,
+    "sprout_count": 4266,
+    "prune_count": 4393,
+    "ltw_mutation_count": 430506
+  },
+  {
+    "generation": 432,
+    "epoch": 432,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.2125999927520752,
+    "mean_active_synapses": 86.07149505615234,
+    "sprout_count": 4455,
+    "prune_count": 4394,
+    "ltw_mutation_count": 430327
+  },
+  {
+    "generation": 433,
+    "epoch": 433,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.28049999475479126,
+    "mean_active_synapses": 86.00689697265625,
+    "sprout_count": 4244,
+    "prune_count": 4407,
+    "ltw_mutation_count": 430116
+  },
+  {
+    "generation": 434,
+    "epoch": 434,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.4373999834060669,
+    "mean_active_synapses": 86.0438003540039,
+    "sprout_count": 4250,
+    "prune_count": 4306,
+    "ltw_mutation_count": 430247
+  },
+  {
+    "generation": 435,
+    "epoch": 435,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.5503999590873718,
+    "mean_active_synapses": 85.90039825439453,
+    "sprout_count": 4158,
+    "prune_count": 4246,
+    "ltw_mutation_count": 429546
+  },
+  {
+    "generation": 436,
+    "epoch": 436,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.11759999394416809,
+    "mean_active_synapses": 85.88150024414062,
+    "sprout_count": 4290,
+    "prune_count": 4361,
+    "ltw_mutation_count": 429443
+  },
+  {
+    "generation": 437,
+    "epoch": 437,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.18940000236034393,
+    "mean_active_synapses": 85.9937973022461,
+    "sprout_count": 4376,
+    "prune_count": 4306,
+    "ltw_mutation_count": 429934
+  },
+  {
+    "generation": 438,
+    "epoch": 438,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.017899999395012856,
+    "mean_active_synapses": 85.86479949951172,
+    "sprout_count": 4233,
+    "prune_count": 4295,
+    "ltw_mutation_count": 429355
+  },
+  {
+    "generation": 439,
+    "epoch": 439,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.22010000050067902,
+    "mean_active_synapses": 85.9301986694336,
+    "sprout_count": 4405,
+    "prune_count": 4355,
+    "ltw_mutation_count": 429626
+  },
+  {
+    "generation": 440,
+    "epoch": 440,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.46629998087882996,
+    "mean_active_synapses": 85.87539672851562,
+    "sprout_count": 4277,
+    "prune_count": 4431,
+    "ltw_mutation_count": 429454
+  },
+  {
+    "generation": 441,
+    "epoch": 441,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.12549999356269836,
+    "mean_active_synapses": 85.83349609375,
+    "sprout_count": 4258,
+    "prune_count": 4295,
+    "ltw_mutation_count": 429186
+  },
+  {
+    "generation": 442,
+    "epoch": 442,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.5256999731063843,
+    "mean_active_synapses": 85.91899871826172,
+    "sprout_count": 4300,
+    "prune_count": 4242,
+    "ltw_mutation_count": 429566
+  },
+  {
+    "generation": 443,
+    "epoch": 443,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.06379999965429306,
+    "mean_active_synapses": 85.94760131835938,
+    "sprout_count": 4287,
+    "prune_count": 4489,
+    "ltw_mutation_count": 429839
+  },
+  {
+    "generation": 444,
+    "epoch": 444,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.20679999887943268,
+    "mean_active_synapses": 85.83049774169922,
+    "sprout_count": 4264,
+    "prune_count": 4385,
+    "ltw_mutation_count": 429213
+  },
+  {
+    "generation": 445,
+    "epoch": 445,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.24369999766349792,
+    "mean_active_synapses": 85.8073959350586,
+    "sprout_count": 4248,
+    "prune_count": 4438,
+    "ltw_mutation_count": 429132
+  },
+  {
+    "generation": 446,
+    "epoch": 446,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.09939999878406525,
+    "mean_active_synapses": 85.81659698486328,
+    "sprout_count": 4172,
+    "prune_count": 4328,
+    "ltw_mutation_count": 429161
+  },
+  {
+    "generation": 447,
+    "epoch": 447,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.10099999606609344,
+    "mean_active_synapses": 85.79650115966797,
+    "sprout_count": 4345,
+    "prune_count": 4228,
+    "ltw_mutation_count": 428924
+  },
+  {
+    "generation": 448,
+    "epoch": 448,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.29670000076293945,
+    "mean_active_synapses": 85.75149536132812,
+    "sprout_count": 4413,
+    "prune_count": 4270,
+    "ltw_mutation_count": 428686
+  },
+  {
+    "generation": 449,
+    "epoch": 449,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.03749999776482582,
+    "mean_active_synapses": 85.73709869384766,
+    "sprout_count": 4279,
+    "prune_count": 4286,
+    "ltw_mutation_count": 428689
+  },
+  {
+    "generation": 450,
+    "epoch": 450,
+    "max_fitness": 24.0,
+    "mean_population_fitness": -0.017099998891353607,
+    "mean_active_synapses": 85.64969635009766,
+    "sprout_count": 4255,
+    "prune_count": 4216,
+    "ltw_mutation_count": 428229
+  },
+  {
+    "generation": 451,
+    "epoch": 451,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.39469999074935913,
+    "mean_active_synapses": 85.65679931640625,
+    "sprout_count": 4413,
+    "prune_count": 4415,
+    "ltw_mutation_count": 428285
+  },
+  {
+    "generation": 452,
+    "epoch": 452,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.0364999994635582,
+    "mean_active_synapses": 85.67859649658203,
+    "sprout_count": 4330,
+    "prune_count": 4298,
+    "ltw_mutation_count": 428377
+  },
+  {
+    "generation": 453,
+    "epoch": 453,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.11169999837875366,
+    "mean_active_synapses": 85.80569458007812,
+    "sprout_count": 4388,
+    "prune_count": 4179,
+    "ltw_mutation_count": 428924
+  },
+  {
+    "generation": 454,
+    "epoch": 454,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.39640000462532043,
+    "mean_active_synapses": 85.66929626464844,
+    "sprout_count": 4346,
+    "prune_count": 4219,
+    "ltw_mutation_count": 428283
+  },
+  {
+    "generation": 455,
+    "epoch": 455,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.32670000195503235,
+    "mean_active_synapses": 85.74019622802734,
+    "sprout_count": 4213,
+    "prune_count": 4289,
+    "ltw_mutation_count": 428739
+  },
+  {
+    "generation": 456,
+    "epoch": 456,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.14459998905658722,
+    "mean_active_synapses": 85.85189819335938,
+    "sprout_count": 4345,
+    "prune_count": 4282,
+    "ltw_mutation_count": 429228
+  },
+  {
+    "generation": 457,
+    "epoch": 457,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.1265999972820282,
+    "mean_active_synapses": 85.85509490966797,
+    "sprout_count": 4252,
+    "prune_count": 4223,
+    "ltw_mutation_count": 429261
+  },
+  {
+    "generation": 458,
+    "epoch": 458,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.3308999836444855,
+    "mean_active_synapses": 85.7615966796875,
+    "sprout_count": 4224,
+    "prune_count": 4440,
+    "ltw_mutation_count": 428916
+  },
+  {
+    "generation": 459,
+    "epoch": 459,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.10649999976158142,
+    "mean_active_synapses": 85.74859619140625,
+    "sprout_count": 4330,
+    "prune_count": 4234,
+    "ltw_mutation_count": 428695
+  },
+  {
+    "generation": 460,
+    "epoch": 460,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.7601000070571899,
+    "mean_active_synapses": 85.8335952758789,
+    "sprout_count": 4335,
+    "prune_count": 4335,
+    "ltw_mutation_count": 429168
+  },
+  {
+    "generation": 461,
+    "epoch": 461,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.03449999913573265,
+    "mean_active_synapses": 85.82139587402344,
+    "sprout_count": 4282,
+    "prune_count": 4190,
+    "ltw_mutation_count": 429061
+  },
+  {
+    "generation": 462,
+    "epoch": 462,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.44929999113082886,
+    "mean_active_synapses": 85.86239624023438,
+    "sprout_count": 4311,
+    "prune_count": 4321,
+    "ltw_mutation_count": 429317
+  },
+  {
+    "generation": 463,
+    "epoch": 463,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.4041999876499176,
+    "mean_active_synapses": 85.96160125732422,
+    "sprout_count": 4325,
+    "prune_count": 4275,
+    "ltw_mutation_count": 429783
+  },
+  {
+    "generation": 464,
+    "epoch": 464,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.03779999911785126,
+    "mean_active_synapses": 85.90459442138672,
+    "sprout_count": 4321,
+    "prune_count": 4259,
+    "ltw_mutation_count": 429492
+  },
+  {
+    "generation": 465,
+    "epoch": 465,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.033900000154972076,
+    "mean_active_synapses": 85.96389770507812,
+    "sprout_count": 4347,
+    "prune_count": 4266,
+    "ltw_mutation_count": 429779
+  },
+  {
+    "generation": 466,
+    "epoch": 466,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.22360000014305115,
+    "mean_active_synapses": 85.97819519042969,
+    "sprout_count": 4420,
+    "prune_count": 4368,
+    "ltw_mutation_count": 429865
+  },
+  {
+    "generation": 467,
+    "epoch": 467,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.19979999959468842,
+    "mean_active_synapses": 85.9738998413086,
+    "sprout_count": 4341,
+    "prune_count": 4420,
+    "ltw_mutation_count": 429909
+  },
+  {
+    "generation": 468,
+    "epoch": 468,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3044999837875366,
+    "mean_active_synapses": 85.92589569091797,
+    "sprout_count": 4227,
+    "prune_count": 4238,
+    "ltw_mutation_count": 429635
+  },
+  {
+    "generation": 469,
+    "epoch": 469,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.012600000016391277,
+    "mean_active_synapses": 85.87339782714844,
+    "sprout_count": 4453,
+    "prune_count": 4219,
+    "ltw_mutation_count": 429250
+  },
+  {
+    "generation": 470,
+    "epoch": 470,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.17260000109672546,
+    "mean_active_synapses": 85.84729766845703,
+    "sprout_count": 4221,
+    "prune_count": 4194,
+    "ltw_mutation_count": 429223
+  },
+  {
+    "generation": 471,
+    "epoch": 471,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.14100000262260437,
+    "mean_active_synapses": 85.88579559326172,
+    "sprout_count": 4264,
+    "prune_count": 4376,
+    "ltw_mutation_count": 429485
+  },
+  {
+    "generation": 472,
+    "epoch": 472,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.09070000052452087,
+    "mean_active_synapses": 86.00619506835938,
+    "sprout_count": 4393,
+    "prune_count": 4241,
+    "ltw_mutation_count": 429955
+  },
+  {
+    "generation": 473,
+    "epoch": 473,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.18019999563694,
+    "mean_active_synapses": 85.90089416503906,
+    "sprout_count": 4270,
+    "prune_count": 4229,
+    "ltw_mutation_count": 429484
+  },
+  {
+    "generation": 474,
+    "epoch": 474,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.30730000138282776,
+    "mean_active_synapses": 86.0197982788086,
+    "sprout_count": 4316,
+    "prune_count": 4352,
+    "ltw_mutation_count": 430117
+  },
+  {
+    "generation": 475,
+    "epoch": 475,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.15209999680519104,
+    "mean_active_synapses": 86.04669952392578,
+    "sprout_count": 4253,
+    "prune_count": 4274,
+    "ltw_mutation_count": 430244
+  },
+  {
+    "generation": 476,
+    "epoch": 476,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.06149999797344208,
+    "mean_active_synapses": 86.0042953491211,
+    "sprout_count": 4296,
+    "prune_count": 4249,
+    "ltw_mutation_count": 429998
+  },
+  {
+    "generation": 477,
+    "epoch": 477,
+    "max_fitness": 16.0,
+    "mean_population_fitness": 0.6097999811172485,
+    "mean_active_synapses": 86.00059509277344,
+    "sprout_count": 4375,
+    "prune_count": 4191,
+    "ltw_mutation_count": 429911
+  },
+  {
+    "generation": 478,
+    "epoch": 478,
+    "max_fitness": 21.0,
+    "mean_population_fitness": 0.0746999979019165,
+    "mean_active_synapses": 86.06430053710938,
+    "sprout_count": 4292,
+    "prune_count": 4217,
+    "ltw_mutation_count": 430284
+  },
+  {
+    "generation": 479,
+    "epoch": 479,
+    "max_fitness": 18.0,
+    "mean_population_fitness": -0.19110000133514404,
+    "mean_active_synapses": 86.01409912109375,
+    "sprout_count": 4195,
+    "prune_count": 4328,
+    "ltw_mutation_count": 430137
+  },
+  {
+    "generation": 480,
+    "epoch": 480,
+    "max_fitness": 17.0,
+    "mean_population_fitness": 0.12239999324083328,
+    "mean_active_synapses": 86.09130096435547,
+    "sprout_count": 4266,
+    "prune_count": 4375,
+    "ltw_mutation_count": 430511
+  },
+  {
+    "generation": 481,
+    "epoch": 481,
+    "max_fitness": 15.0,
+    "mean_population_fitness": -0.41429999470710754,
+    "mean_active_synapses": 86.13710021972656,
+    "sprout_count": 4245,
+    "prune_count": 4300,
+    "ltw_mutation_count": 430713
+  },
+  {
+    "generation": 482,
+    "epoch": 482,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.014499999582767487,
+    "mean_active_synapses": 86.26749420166016,
+    "sprout_count": 4304,
+    "prune_count": 4203,
+    "ltw_mutation_count": 431287
+  },
+  {
+    "generation": 483,
+    "epoch": 483,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.44039997458457947,
+    "mean_active_synapses": 86.29949951171875,
+    "sprout_count": 4303,
+    "prune_count": 4342,
+    "ltw_mutation_count": 431517
+  },
+  {
+    "generation": 484,
+    "epoch": 484,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.09229999780654907,
+    "mean_active_synapses": 86.23479461669922,
+    "sprout_count": 4220,
+    "prune_count": 4178,
+    "ltw_mutation_count": 431153
+  },
+  {
+    "generation": 485,
+    "epoch": 485,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.0017999999690800905,
+    "mean_active_synapses": 86.28179931640625,
+    "sprout_count": 4266,
+    "prune_count": 4274,
+    "ltw_mutation_count": 431413
+  },
+  {
+    "generation": 486,
+    "epoch": 486,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.2874000072479248,
+    "mean_active_synapses": 86.28379821777344,
+    "sprout_count": 4276,
+    "prune_count": 4454,
+    "ltw_mutation_count": 431508
+  },
+  {
+    "generation": 487,
+    "epoch": 487,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.274399995803833,
+    "mean_active_synapses": 86.24189758300781,
+    "sprout_count": 4362,
+    "prune_count": 4293,
+    "ltw_mutation_count": 431175
+  },
+  {
+    "generation": 488,
+    "epoch": 488,
+    "max_fitness": 17.0,
+    "mean_population_fitness": -0.3845999836921692,
+    "mean_active_synapses": 86.28319549560547,
+    "sprout_count": 4320,
+    "prune_count": 4352,
+    "ltw_mutation_count": 431432
+  },
+  {
+    "generation": 489,
+    "epoch": 489,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.07239999622106552,
+    "mean_active_synapses": 86.3208999633789,
+    "sprout_count": 4234,
+    "prune_count": 4305,
+    "ltw_mutation_count": 431640
+  },
+  {
+    "generation": 490,
+    "epoch": 490,
+    "max_fitness": 16.0,
+    "mean_population_fitness": -0.48819997906684875,
+    "mean_active_synapses": 86.30780029296875,
+    "sprout_count": 4284,
+    "prune_count": 4366,
+    "ltw_mutation_count": 431580
+  },
+  {
+    "generation": 491,
+    "epoch": 491,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.33329999446868896,
+    "mean_active_synapses": 86.21039581298828,
+    "sprout_count": 4160,
+    "prune_count": 4308,
+    "ltw_mutation_count": 431126
+  },
+  {
+    "generation": 492,
+    "epoch": 492,
+    "max_fitness": 19.0,
+    "mean_population_fitness": 0.43699997663497925,
+    "mean_active_synapses": 86.24189758300781,
+    "sprout_count": 4254,
+    "prune_count": 4337,
+    "ltw_mutation_count": 431251
+  },
+  {
+    "generation": 493,
+    "epoch": 493,
+    "max_fitness": 20.0,
+    "mean_population_fitness": -0.1436000019311905,
+    "mean_active_synapses": 86.21649932861328,
+    "sprout_count": 4262,
+    "prune_count": 4449,
+    "ltw_mutation_count": 431176
+  },
+  {
+    "generation": 494,
+    "epoch": 494,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.24639999866485596,
+    "mean_active_synapses": 86.2239990234375,
+    "sprout_count": 4207,
+    "prune_count": 4371,
+    "ltw_mutation_count": 431202
+  },
+  {
+    "generation": 495,
+    "epoch": 495,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.0016999999061226845,
+    "mean_active_synapses": 86.06529998779297,
+    "sprout_count": 4329,
+    "prune_count": 4370,
+    "ltw_mutation_count": 430347
+  },
+  {
+    "generation": 496,
+    "epoch": 496,
+    "max_fitness": 22.0,
+    "mean_population_fitness": 0.31129997968673706,
+    "mean_active_synapses": 86.03829956054688,
+    "sprout_count": 4365,
+    "prune_count": 4290,
+    "ltw_mutation_count": 430154
+  },
+  {
+    "generation": 497,
+    "epoch": 497,
+    "max_fitness": 18.0,
+    "mean_population_fitness": 0.34379997849464417,
+    "mean_active_synapses": 86.02269744873047,
+    "sprout_count": 4108,
+    "prune_count": 4265,
+    "ltw_mutation_count": 430192
+  },
+  {
+    "generation": 498,
+    "epoch": 498,
+    "max_fitness": 21.0,
+    "mean_population_fitness": -0.07800000160932541,
+    "mean_active_synapses": 86.00149536132812,
+    "sprout_count": 4220,
+    "prune_count": 4349,
+    "ltw_mutation_count": 430072
+  },
+  {
+    "generation": 499,
+    "epoch": 499,
+    "max_fitness": 20.0,
+    "mean_population_fitness": 0.5212999582290649,
+    "mean_active_synapses": 86.02529907226562,
+    "sprout_count": 4272,
+    "prune_count": 4303,
+    "ltw_mutation_count": 430142
+  },
+  {
+    "generation": 500,
+    "epoch": 500,
+    "max_fitness": 19.0,
+    "mean_population_fitness": -0.015099999494850636,
+    "mean_active_synapses": 86.03340148925781,
+    "sprout_count": 4262,
+    "prune_count": 4420,
+    "ltw_mutation_count": 430246
+  }
+]

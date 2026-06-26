@@ -1,0 +1,4 @@
+group,seeds,original_final_epoch_best,perturbation_peak_best,recovery_final_epoch_best,recovery_retention_ratio,forgetting_delta,perturbation_gain_over_original,final_mean_active_synapses
+static_snn,10,8.3,13.3,8.7,1.0481927710843373,-0.3999999999999986,5.0,8.0
+full_plasticity_infant,10,19.6,25.3,18.9,0.9642857142857142,0.7000000000000028,5.699999999999999,85.90398712158203
+gated_plasticity_adult,10,18.4,24.2,17.0,0.923913043478261,1.3999999999999986,5.800000000000001,67.54438858032226

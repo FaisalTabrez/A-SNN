@@ -1,0 +1,334 @@
+# Phase 11 uploaded outputs review
+
+Date: 2026-06-26  
+Reviewer: Codex  
+Scope: `1st run` output bundle, uploaded plot images, and raw Sprint 11 files
+found in `C:\Users\FAISAL TABREZ\Downloads`.
+
+## Artifact inventory
+
+### Raw files available in workspace
+
+Folder: `1st run/`
+
+- `evolution_telemetry.json`
+- `evolution_telemetry.csv`
+- `evolution_telemetry.png`
+- `champion_connectome.json`
+- `champion_sparse_adjacency.json`
+- `colab_weights.json`
+
+Folder: `gen5/outputs/phase11_colab_2026-06-26/`
+
+- `multi_seed_trials.json`
+- `multi_seed_trials.csv`
+- `multi_seed_aggregate.csv`
+- `multi_seed_best_fitness_mean_std.png`
+- `plasticity_ablation.json`
+- `plasticity_ablation_records.csv`
+- `plasticity_ablation_summary.csv`
+- `plasticity_ablation_best_fitness.png`
+
+### Uploaded images available as attachments
+
+- `image-1.png`: AMMC Gen-5 Multi-Seed Convergence
+- `image-2.png`: AMMC Gen-5 Plasticity Ablation
+- `image-3.png`: AMMC Gen-5 Evolution Telemetry
+
+### Raw Sprint 11 files still not found
+
+The following expected files were not present in the workspace or attachment
+folder at review time:
+
+- `throughput_results.json`
+- `throughput_results.csv`
+- `baseline_comparison.json`
+- `baseline_comparison.csv`
+
+This means exact statistical claims for convergence and plasticity ablation are
+now supported by raw data, but hardware throughput and external baseline claims
+remain blocked until their raw JSON/CSV outputs are uploaded.
+
+## Validated champion-run evidence
+
+The raw `1st run` champion package validates cleanly.
+
+| Metric | Value |
+|---|---:|
+| Telemetry records | 500 |
+| First generation | 1 |
+| Last generation | 500 |
+| Best max fitness | 24.0 |
+| Best generations | 236, 450 |
+| First 25 generations mean max fitness | 15.48 |
+| First 100 generations mean max fitness | 17.77 |
+| Final 100 generations mean max fitness | 18.42 |
+| Overall mean max fitness | 18.408 |
+| Overall std max fitness | 1.834 |
+| Final generation max fitness | 19.0 |
+| Final generation mean population fitness | -0.0151 |
+| First generation mean active synapses | 9.156 |
+| Final mean active synapses | 86.033 |
+| Max mean active synapses | 86.321 |
+| First generation where mean active synapses >= 80 | 175 |
+| First generation where mean active synapses >= 85 | 287 |
+| Champion fitness in adjacency export | 24.0 |
+| Champion neurons | 16 |
+| Champion active edges | 88 |
+| Connectome synapses | 88 |
+| Sparse adjacency rows | 88 |
+| Colab weight sparse edges | 88 |
+
+Integrity checks:
+
+- Sparse adjacency row count matches browser connectome synapse count.
+- Colab weight sparse edge count matches sparse adjacency row count.
+- Champion bundle is internally consistent and suitable for browser replay.
+
+## Verified multi-seed statistical convergence
+
+Raw files:
+
+- `gen5/outputs/phase11_colab_2026-06-26/multi_seed_trials.json`
+- `gen5/outputs/phase11_colab_2026-06-26/multi_seed_trials.csv`
+- `gen5/outputs/phase11_colab_2026-06-26/multi_seed_aggregate.csv`
+
+Run shape:
+
+- Seeds: `42` through `51`
+- Trial records: `5,000`
+- Aggregate generations: `500`
+
+Final generation aggregate:
+
+| Metric | Value |
+|---|---:|
+| Generation | 500 |
+| Mean all-time best fitness | 26.0 |
+| Std all-time best fitness | 0.667 |
+| Min all-time best fitness | 25.0 |
+| Max all-time best fitness | 27.0 |
+| Mean population fitness | 0.0367 |
+| Mean active synapses | 85.888 |
+
+Final all-time best fitness by seed:
+
+| Seed | Final all-time best fitness |
+|---:|---:|
+| 42 | 26.0 |
+| 43 | 26.0 |
+| 44 | 27.0 |
+| 45 | 25.0 |
+| 46 | 26.0 |
+| 47 | 26.0 |
+| 48 | 26.0 |
+| 49 | 25.0 |
+| 50 | 27.0 |
+| 51 | 26.0 |
+
+Mean-best threshold crossing:
+
+| Mean best fitness threshold | First generation reached |
+|---:|---:|
+| 15 | 8 |
+| 20 | 20 |
+| 22 | 33 |
+| 24 | 91 |
+| 25 | 178 |
+| 26 | 446 |
+
+Interpretation:
+
+- The genetic loop converged reliably across all 10 seeds.
+- No seed collapsed or remained trapped in low-fitness behavior.
+- Final spread is tight: all seeds ended between `25` and `27`.
+- Topology again saturates near the upper edge-pool range, reinforcing the need
+  for active-edge pressure in future runs.
+
+## Verified plasticity ablation
+
+Raw files:
+
+- `gen5/outputs/phase11_colab_2026-06-26/plasticity_ablation.json`
+- `gen5/outputs/phase11_colab_2026-06-26/plasticity_ablation_records.csv`
+- `gen5/outputs/phase11_colab_2026-06-26/plasticity_ablation_summary.csv`
+
+Final summary:
+
+| Group | Seeds | Final mean best fitness | Std | Final mean active synapses |
+|---|---:|---:|---:|---:|
+| `static_snn` | 10 | 13.6 | 0.843 | 8.000 |
+| `full_plasticity_infant` | 10 | 25.9 | 0.994 | 85.951 |
+| `gated_plasticity_adult` | 10 | 24.6 | 1.075 | 66.995 |
+
+Final all-time best fitness by seed:
+
+| Group | Seed-level final best fitness |
+|---|---|
+| `static_snn` | 13, 14, 13, 12, 14, 15, 14, 14, 13, 14 |
+| `full_plasticity_infant` | 27, 28, 25, 25, 25, 26, 26, 25, 26, 26 |
+| `gated_plasticity_adult` | 24, 23, 24, 24, 25, 25, 24, 25, 27, 25 |
+
+Threshold success:
+
+| Group | Seeds >=20 | Seeds >=24 | Seeds >=25 | Mean generation to >=24 | Mean generation to >=25 |
+|---|---:|---:|---:|---:|---:|
+| `static_snn` | 0/10 | 0/10 | 0/10 | n/a | n/a |
+| `full_plasticity_infant` | 10/10 | 10/10 | 10/10 | 90.4 | 176.9 |
+| `gated_plasticity_adult` | 10/10 | 9/10 | 5/10 | 170.3 | 281.0 |
+
+Parameter-efficiency note:
+
+| Group | Fitness / mean active synapse |
+|---|---:|
+| `full_plasticity_infant` | 0.301 |
+| `gated_plasticity_adult` | 0.367 |
+
+Interpretation:
+
+- Structural plasticity clearly improves adaptation under the perturbed
+  food/toxin sensor condition.
+- Static topology fails to cross meaningful high-fitness thresholds.
+- Full/aggressive plasticity reaches the highest final fitness and fastest
+  threshold crossing.
+- Gated/adult plasticity sacrifices about `1.3` final fitness points compared
+  with full plasticity, but uses about `22%` fewer active synapses and has
+  better fitness per active synapse.
+- The current ablation supports "plasticity beats static" strongly.
+- It does not prove "gated adult plasticity is best" on raw fitness alone.
+
+Follow-up:
+
+The initial ablation measured perturbed-task adaptation but did not fully
+measure catastrophic forgetting. The uploaded retention bundle now closes that
+gap with an original -> perturbed -> original protocol.
+
+## Verified retention ablation
+
+Raw files:
+
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/retention_ablation/retention_ablation.json`
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/retention_ablation/retention_ablation_records.csv`
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/retention_ablation/retention_ablation_summary.csv`
+
+Records: `15,000`
+
+Summary:
+
+| Group | Seeds | Original final epoch best | Perturbation peak best | Recovery final epoch best | Recovery retention ratio | Forgetting delta | Final mean active synapses |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `static_snn` | 10 | 8.3 | 13.3 | 8.7 | 1.048 | -0.400 | 8.000 |
+| `full_plasticity_infant` | 10 | 19.6 | 25.3 | 18.9 | 0.964 | 0.700 | 85.904 |
+| `gated_plasticity_adult` | 10 | 18.4 | 24.2 | 17.0 | 0.924 | 1.400 | 67.544 |
+
+Interpretation:
+
+- Both plastic groups adapted far beyond static during the perturbation phase.
+- Full plasticity achieved the strongest raw retention in this run:
+  `18.9` recovery final epoch best and `0.964` retention ratio.
+- Gated/adult plasticity remained more compact but did not preserve more
+  original-task fitness under the current gate settings.
+- Static SNN has a superficially high retention ratio because its original
+  fitness was low; it did not learn the perturbed task to a competitive level.
+- The adult/gated thesis is therefore not validated yet. The mechanism is
+  promising for sparsity, but the current gate is too restrictive or is gating
+  the wrong plasticity events.
+
+## Verified throughput benchmark
+
+Raw files:
+
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/throughput/throughput_results.json`
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/throughput/throughput_results.csv`
+
+Run context:
+
+- Device: `cuda`
+- Dtype: `torch.float32`
+- `torch.compile`: requested and active for all runs
+- Steps per population size: `240`
+- Mean active synapses during throughput benchmark: `8.0`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 599.600 | 599,599.824 | 8.891 |
+| 10,000 | 595.072 | 5,950,716.818 | 53.471 |
+| 50,000 | 449.508 | 22,475,376.876 | 249.138 |
+| 100,000 | 292.883 | 29,288,333.833 | 486.647 |
+
+Interpretation:
+
+- Gen-5 ran at nearly `29.3M` agent-steps/sec at `100k` agents on CUDA.
+- Memory growth is close to linear with population size and remains below
+  `0.5GB` at `100k` agents for the benchmark configuration.
+- Tick rate drops as population increases, but aggregate agent-throughput keeps
+  rising, which supports the vectorized swarm direction.
+- Caveat: this benchmark used `8` mean active synapses, not the saturated
+  champion topology near `86` active synapses. A second throughput run should
+  benchmark dense/saturated evolved genomes.
+
+## Verified baseline comparison
+
+Raw files:
+
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/baselines/baseline_comparison.json`
+- `gen5/outputs/phase11_remaining_outputs_2026-06-26/gen5_outputs/baselines/baseline_comparison.csv`
+
+Results:
+
+| Baseline | Status | Agent-steps/sec | Active params | Total params | Parameter memory MB | Max fitness | Notes |
+|---|---|---:|---:|---:|---:|---:|---|
+| `ammc_sparse_evolver` | ok | 3,696,163 | 80,000 | 1,280,000 | 9.766 | 20 | Sparse AMMC policy counts active edges as active parameters |
+| `dense_lif_snn` | ok | 2,421,955 | 4,932 | 4,932 | 0.019 | 4 | snnTorch available; internal LIF surrogate used unless snnTorch training is installed |
+| `dense_mlp_policy` | ok | 2,901,829 | 4,866 | 4,866 | 0.019 | 3 | Dense MLP inference scaffold; PPO training hook is dependency-gated |
+| `ppo_mlp_policy` | skipped | n/a | n/a | n/a | n/a | n/a | `stable-baselines3` unavailable |
+
+Interpretation:
+
+- AMMC sparse evolution is faster than the dense LIF and dense MLP scaffolds in
+  this benchmark bundle.
+- AMMC also produced a much higher short-run max fitness (`20`) than the
+  untrained dense baselines (`4` and `3`).
+- This is a useful systems baseline, but it is not yet a fair learned-policy
+  comparison against trained BPTT SNN or trained PPO because the PPO dependency
+  was unavailable and the dense policies are scaffold baselines.
+
+## Image-level single-run telemetry read
+
+`image-3.png` shows a single 500-generation evolution run:
+
+- Max fitness rapidly improves early, then fluctuates on a plateau around
+  `18-20`, with occasional spikes above `25`.
+- Mean population fitness remains noisy around zero.
+- Mean active synapses rises quickly and saturates near the high 80s.
+
+This aligns with the validated raw champion package and reinforces the earlier
+finding that topology saturation is a real pressure.
+
+## Current evidence status
+
+| Requirement | Evidence status | Notes |
+|---|---|---|
+| Single champion export integrity | Proven | Raw files validate 16 neurons / 88 synapses / matched weights |
+| Multi-seed convergence | Proven | 10 seeds, final mean best `26.0 +/- 0.667`, all seeds `25-27` |
+| Plasticity benefit over static network | Proven | Full `25.9`, gated `24.6`, static `13.6` |
+| Gated adult plasticity best overall | Not proven | Full plasticity has higher raw fitness and better retention; gated is more synapse-efficient |
+| Catastrophic forgetting measured | Proven | Retention ablation now uploaded and analyzed |
+| Throughput scaling 1k/10k/50k/100k | Proven | CUDA `torch.compile` active; `29.3M` agent-steps/sec at 100k |
+| Baseline comparison against dense LIF / PPO | Partial | Dense LIF/MLP scaffold compared; PPO skipped due missing `stable-baselines3` |
+
+## Recommended next actions
+
+1. Add topology pressure to future evolution runs because both the single-run
+   telemetry and prior champion run show active-edge saturation.
+2. Add a saturated-topology throughput benchmark using champion-like `~86`
+   active synapses rather than the `8`-edge benchmark prior.
+3. Tune the adult/gated plasticity rule. Current settings improve compactness
+   but do not beat full plasticity on retention.
+4. Run trained baselines:
+   - BPTT-trained static LIF SNN
+   - PPO-trained MLP after installing `stable-baselines3`
+5. Track active-parameter-adjusted fitness and watts/memory-normalized
+   throughput in the next comparison report.
