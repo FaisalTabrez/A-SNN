@@ -617,6 +617,41 @@ Implication:
   - `--topology-preset saturated --active-edges 86`,
   - optionally `--topology-preset champion --adjacency-json ...`.
 
+### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
+
+Finding: a first-pass literature scan shows strong prior art for nearly every
+individual AMMC ingredient: structural plasticity, dynamic sparse rewiring,
+astrocyte-modulated SNNs, dopamine-STDP embodied robots, sleep/replay
+consolidation, and neuroevolution. The strongest defensible novelty is the
+system-level integration of these mechanisms into a benchmarkable, serialized,
+embodied, tensorized organism framework.
+
+Nearby prior art:
+
+- STDP pruning and energy-efficient SNN compression: Rathi et al. 2017.
+- Adaptive/evolved SNN structure with dopamine-modulated plasticity: Pan et
+  al. 2023.
+- Dynamic sparse rewiring: DEEP R, RigL, dynamic sparse RL.
+- Astrocyte-modulated computation: Tewari and Majumdar 2011, Tang et al. 2019,
+  Shen et al. 2023, Yang et al. 2025.
+- Sleep/replay SNNs: Whelan et al. 2021, Pietras et al. 2022, Massey et al.
+  2026.
+- Neuroevolution/co-evolution: NEAT, competitive coevolution, TensorNEAT.
+
+Implication:
+
+- Do not claim AMMC is the first SNN with pruning, astrocytes, replay, or
+  evolution.
+- Claim AMMC as an integrated sparse spiking-organism framework for embodied
+  continual learning, where structural plasticity, chemical modulation, sleep
+  consolidation, and evolutionary populations are tested together.
+- Publication strength will come from ablations showing that the integrated
+  stack outperforms component-stripped variants and fair baselines.
+
+Artifact:
+
+- `gen5/docs/LITERATURE_UNIQUENESS_REVIEW.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
