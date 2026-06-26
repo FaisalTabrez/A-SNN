@@ -85,6 +85,8 @@ class ThroughputResult:
     topology_preset: str
     requested_active_edges: int | None
     seeded_active_edges: int
+    edge_pool_capacity: int
+    active_edge_utilization: float
     adjacency_json: str | None
     population_size: int
     steps: int
@@ -196,6 +198,7 @@ def main() -> None:
                 "device": str(device),
                 "topology_preset": args.topology_preset,
                 "seeded_active_edges": len(seed_edges),
+                "edge_pool_capacity": args.max_edges,
                 "json": str(json_path),
                 "csv": str(csv_path),
                 "plot": str(plot_path),
@@ -300,6 +303,8 @@ def run_one_size(
         topology_preset=topology_preset,
         requested_active_edges=requested_active_edges,
         seeded_active_edges=len(seed_edges),
+        edge_pool_capacity=max_edges,
+        active_edge_utilization=len(seed_edges) / max_edges if max_edges else 0.0,
         adjacency_json=adjacency_json,
         population_size=population_size,
         steps=steps,

@@ -180,6 +180,8 @@ Main metrics:
 - `agent_steps_per_second`
 - `topology_preset`
 - `seeded_active_edges`
+- `edge_pool_capacity`
+- `active_edge_utilization`
 - CUDA memory allocated / max allocated when running CUDA
 - `accelerator_backend`, which should read `xla` on TPU runs
 

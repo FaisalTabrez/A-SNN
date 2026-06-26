@@ -789,6 +789,43 @@ Artifacts:
 - `gen5/benchmarks/benchmark_throughput.py`
 - `gen5/docs/PHASE11_COLAB_RUNBOOK.md`
 
+Champion compiled hotpath result added 2026-06-27:
+
+- Exact current champion topology benchmark completed on CUDA with
+  `torch.compile` active and `tick_mode: tensor_hot_path_no_epoch_control`.
+- The run used `gen5_outputs/champion/champion_sparse_adjacency.json` and
+  seeded `55` active edges, so it represents the fresh/current champion export,
+  not the older archived `88`-synapse champion.
+- At `100k` agents, the champion reached `37.25M` agent-steps/sec with
+  `488.19 MB` CUDA max memory.
+- Compared with the saturated `86`-edge compiled hotpath:
+  - `63.8%` throughput at `1k`,
+  - `35.2%` at `10k`,
+  - `78.6%` at `50k`,
+  - `95.2%` at `100k`.
+
+Interpretation:
+
+- The champion topology is highly scalable on the compiled CUDA hotpath.
+- The result exposes an important backend truth: active-edge count is currently
+  biological sparsity, not fully hardware sparsity. `TensorEvolver` stores
+  genomes as fixed `[population, max_edges]` tensors, and the benchmark used
+  `max_edges=128`, so the `55` active-edge champion still executes inside a
+  128-slot edge pool.
+- Future benchmark outputs now include `edge_pool_capacity` and
+  `active_edge_utilization` so active-edge claims cannot be confused with
+  physical kernel work.
+
+Next action:
+
+- Run champion eager hotpath for the exact-topology compiler control.
+- Run a champion capacity sweep with `--max-edges 64`, `96`, and `128` to
+  quantify fixed-pool overhead.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_2026-06-27/analysis.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1468,11 +1505,11 @@ Validation:
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
 2. Complete topology-aware hotpath throughput coverage:
-   - compare eager vs `--compile` for exact
-     `champion_sparse_adjacency.json`,
+   - run eager hotpath for exact `champion_sparse_adjacency.json`,
+   - sweep champion `--max-edges 64`, `96`, and `128`,
    - compare eager vs `--compile` for the `foraging` 8-edge prior,
-   - report `tick_mode`, memory, active-edge count, and agent-steps/sec at
-     1k/10k/50k/100k.
+   - report `tick_mode`, active-edge count, edge-pool capacity, utilization,
+     memory, and agent-steps/sec at 1k/10k/50k/100k.
 3. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,
    - add protected-core champion masks,

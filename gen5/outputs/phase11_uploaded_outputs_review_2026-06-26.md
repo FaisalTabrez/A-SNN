@@ -455,6 +455,58 @@ Interpretation:
   `39.15M` compiled agent-steps/sec versus `4.71M` eager agent-steps/sec at
   `100k` agents on the same tensor hotpath.
 
+## Verified champion-topology CUDA compiled hotpath follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `champion`
+- Adjacency JSON: `gen5_outputs/champion/champion_sparse_adjacency.json`
+- Active edges: `55`
+- Edge pool capacity: `128`
+- Active edge utilization: `42.97%`
+- `torch.compile`: requested and active
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 1,400.453 | 1,400,453.327 | 4.879 |
+| 10,000 | 778.297 | 7,782,966.959 | 49.200 |
+| 50,000 | 604.552 | 30,227,606.471 | 243.596 |
+| 100,000 | 372.509 | 37,250,874.070 | 488.195 |
+
+Comparison to saturated 86-edge compiled hotpath:
+
+| Population | Champion / saturated throughput | Champion / saturated max memory |
+|---:|---:|---:|
+| 1,000 | 0.638 | 0.551 |
+| 10,000 | 0.352 | 0.928 |
+| 50,000 | 0.786 | 0.987 |
+| 100,000 | 0.952 | 1.000 |
+
+Interpretation:
+
+- The current/fresh `55`-edge champion reaches `37.25M` agent-steps/sec at
+  `100k` agents on CUDA.
+- This is `95.2%` of the saturated 86-edge compiled hotpath throughput at the
+  same population size.
+- Fewer active edges do not yet translate into proportionally lower compute,
+  because `TensorEvolver` currently uses fixed-capacity `[population,
+  max_edges]` tensors. In this run, biological active-edge utilization is
+  `55 / 128 = 42.97%`, but the hardware tensor path is still shaped by the
+  128-slot edge pool.
+- This strengthens the case for reporting both active edges and edge-pool
+  capacity, and for a future compact/dynamic edge backend where active topology
+  maps more directly to hardware work.
+
 ## Verified baseline comparison
 
 Raw files:
