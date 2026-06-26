@@ -406,11 +406,54 @@ Interpretation:
 - This hotpath run is the current best throughput evidence for AMMC's vectorized
   compute loop. Full-step runs should still be kept as training-loop overhead
   measurements.
-- A clean eager-vs-compiled hotpath comparison still requires rerunning this
-  same `benchmark_tick()` path without `--compile`.
 - After this run, `TensorEnvironment2D.step()` gained
   `collect_telemetry=False`, and `benchmark_tick()` now uses that mode so
   diagnostics are skipped explicitly during benchmark/inference hotpaths.
+
+## Verified saturated-topology CUDA eager hotpath follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `saturated`
+- Active edges: `86`
+- `torch.compile`: not requested
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 434.755 | 434,755.009 | 8.823 |
+| 10,000 | 420.224 | 4,202,243.296 | 89.590 |
+| 50,000 | 93.323 | 4,666,166.963 | 440.950 |
+| 100,000 | 47.053 | 4,705,267.105 | 883.836 |
+
+Clean hotpath compiler comparison:
+
+| Population | Compiled / eager hotpath throughput | Compiled / eager hotpath max memory |
+|---:|---:|---:|
+| 1,000 | 5.053 | 1.003 |
+| 10,000 | 5.259 | 0.592 |
+| 50,000 | 8.242 | 0.560 |
+| 100,000 | 8.320 | 0.552 |
+
+Interpretation:
+
+- This control confirms that the compiled hotpath result is a real compiler
+  throughput win, not merely an artifact of removing telemetry.
+- Eager hotpath is only `1.001x` to `1.030x` faster than the earlier full-step
+  eager run, while compiled hotpath is `5.05x` to `8.32x` faster than eager
+  hotpath.
+- The publishable CUDA statement for saturated 86-edge AMMC is now:
+  `39.15M` compiled agent-steps/sec versus `4.71M` eager agent-steps/sec at
+  `100k` agents on the same tensor hotpath.
 
 ## Verified baseline comparison
 

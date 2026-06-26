@@ -736,6 +736,34 @@ Artifact:
 - `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/analysis.md`
 - `gen5/ammc_gen5/tensor_environment.py`
 
+Eager hotpath control added 2026-06-27:
+
+- Saturated CUDA eager hotpath completed with the same
+  `tick_mode: tensor_hot_path_no_epoch_control`.
+- At `100k` agents and `86` active edges, eager hotpath reached `4.71M`
+  agent-steps/sec with `883.84 MB` CUDA max memory.
+- Clean compiled/eager hotpath throughput ratios:
+  - `5.053x` at `1k`,
+  - `5.259x` at `10k`,
+  - `8.242x` at `50k`,
+  - `8.320x` at `100k`.
+- Eager hotpath was only `1.001x` to `1.030x` faster than previous full-step
+  eager runs, so the massive compiled hotpath improvement is not just a
+  telemetry-removal artifact.
+
+Implication:
+
+- The publishable CUDA saturated-topology statement is now:
+  `39.15M` compiled agent-steps/sec versus `4.71M` eager agent-steps/sec at
+  `100k` agents on the same tensor hotpath.
+- `torch.compile` is valuable for the CUDA path even before custom kernels,
+  especially at large population sizes where it reduces intermediate allocation
+  pressure.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/analysis.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1414,11 +1442,10 @@ Validation:
    - `--device xla` multi-seed convergence,
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
-2. Rerun topology-aware throughput on the new `benchmark_tick()` path:
-   - compare no-telemetry eager vs `--compile` for
-     `saturated --active-edges 86`,
-   - compare `foraging`, `saturated`, and exact
+2. Complete topology-aware hotpath throughput coverage:
+   - compare eager vs `--compile` for exact
      `champion_sparse_adjacency.json`,
+   - compare eager vs `--compile` for the `foraging` 8-edge prior,
    - report `tick_mode`, memory, active-edge count, and agent-steps/sec at
      1k/10k/50k/100k.
 3. Redesign gated/adult plasticity:

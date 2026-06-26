@@ -85,8 +85,10 @@ Prior reference:
 
 - This run measures the compiled tensor hotpath, not full epoch evolution,
   champion snapshotting, telemetry logging, or JSON/CSV output.
-- A clean eager-vs-compiled hotpath comparison still requires rerunning the
-  same `benchmark_tick()` path without `--compile`.
+- The clean eager-vs-compiled hotpath comparison has now been run and archived:
+  `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/analysis.md`.
+  At `100k`, compiled hotpath is `8.320x` faster than eager hotpath on the same
+  saturated 86-edge workload.
 
 ## Follow-up implementation
 
@@ -101,12 +103,8 @@ behavior.
 
 ## Next benchmark actions
 
-1. Rerun saturated CUDA hotpath without `--compile`:
-   `--topology-preset saturated --active-edges 86` with the same population
-   sizes.
-2. Run exact `champion_sparse_adjacency.json` hotpath with and without
+1. Run exact `champion_sparse_adjacency.json` hotpath with and without
    `--compile`.
-3. Add an explicit no-telemetry environment step mode for benchmark and
-   headless inference paths.
-4. Repeat `foraging`, `saturated`, and `champion` presets on TPU/XLA once the
+2. Run `foraging` hotpath with and without `--compile`.
+3. Repeat `foraging`, `saturated`, and `champion` presets on TPU/XLA once the
    Colab PyTorch/XLA runtime is ABI-clean.

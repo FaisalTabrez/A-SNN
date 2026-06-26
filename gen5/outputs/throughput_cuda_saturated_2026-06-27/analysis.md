@@ -79,11 +79,15 @@ agents with `488.19 MB` CUDA max memory:
 
 - `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_results.json`
 
+The matching eager hotpath control reached `4.71M` agent-steps/sec at `100k`,
+making the clean compiled/eager hotpath speedup `8.320x`:
+
+- `gen5/outputs/throughput_cuda_saturated_eager_hotpath_2026-06-27/throughput_results.json`
+
 ## Next benchmark actions
 
-1. Rerun saturated CUDA eager and compiled on the new `benchmark_tick()` path.
-2. Run exact `champion_sparse_adjacency.json` topology, not only synthetic
+1. Run exact `champion_sparse_adjacency.json` topology, not only synthetic
    saturated topology.
-3. Run `foraging`, `saturated`, and `champion` presets on TPU/XLA after the
+2. Run `foraging`, `saturated`, and `champion` presets on TPU/XLA after the
    PyTorch/XLA environment is fixed.
-4. Add active-edge-normalized throughput metrics to future benchmark summaries.
+3. Add active-edge-normalized throughput metrics to future benchmark summaries.
