@@ -360,6 +360,58 @@ Interpretation:
 - These uploaded compiled results should be treated as diagnostic evidence, not
   the final compiler benchmark.
 
+## Verified saturated-topology CUDA compiled hotpath follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `saturated`
+- Active edges: `86`
+- `torch.compile`: requested and active
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 2,196.607 | 2,196,606.636 | 8.848 |
+| 10,000 | 2,209.794 | 22,097,942.371 | 53.016 |
+| 50,000 | 769.127 | 38,456,327.383 | 246.852 |
+| 100,000 | 391.457 | 39,145,695.626 | 488.195 |
+
+Comparison to prior full-step saturated CUDA compile:
+
+| Population | Hotpath / full-step compiled throughput | Hotpath / full-step compiled max memory |
+|---:|---:|---:|
+| 1,000 | 4.994 | 0.825 |
+| 10,000 | 5.448 | 0.592 |
+| 50,000 | 8.377 | 0.560 |
+| 100,000 | 8.476 | 0.552 |
+
+Interpretation:
+
+- The compiler-friendly benchmark path resolves the earlier Dynamo host-counter
+  issue and exposes the pure tensor throughput story.
+- Saturated 86-edge AMMC compute now reaches `39.15M` agent-steps/sec at
+  `100k` agents on CUDA.
+- Memory at `100k` falls to `488.19 MB`, close to the earlier 8-edge benchmark,
+  indicating full-step diagnostics and unused return payloads were a major
+  allocation source.
+- This hotpath run is the current best throughput evidence for AMMC's vectorized
+  compute loop. Full-step runs should still be kept as training-loop overhead
+  measurements.
+- A clean eager-vs-compiled hotpath comparison still requires rerunning this
+  same `benchmark_tick()` path without `--compile`.
+- After this run, `TensorEnvironment2D.step()` gained
+  `collect_telemetry=False`, and `benchmark_tick()` now uses that mode so
+  diagnostics are skipped explicitly during benchmark/inference hotpaths.
+
 ## Verified baseline comparison
 
 Raw files:

@@ -695,6 +695,47 @@ Artifacts:
 - `gen5/benchmarks/benchmark_throughput.py`
 - `gen5/ammc_gen5/evolving_loop.py`
 
+Hotpath rerun added 2026-06-27:
+
+- The patched `benchmark_tick()` compiled CUDA run completed with
+  `tick_mode: tensor_hot_path_no_epoch_control`.
+- At `100k` agents and `86` active edges, throughput reached `39.15M`
+  agent-steps/sec with `488.19 MB` CUDA max memory.
+- Compared with the prior full-step compiled saturated run, hotpath throughput
+  improved by:
+  - `4.994x` at `1k`,
+  - `5.448x` at `10k`,
+  - `8.377x` at `50k`,
+  - `8.476x` at `100k`.
+- CUDA max memory at `100k` fell from `883.84 MB` to `488.19 MB`.
+
+Interpretation:
+
+- The earlier saturated `--compile` result did not show that the sparse AMMC
+  math was compiler-resistant. It showed that full training-step diagnostics,
+  return payloads, and Python host-control state were dominating the measured
+  path.
+- The clean compiled hotpath result is now the strongest throughput evidence
+  for pure vectorized AMMC compute.
+- Full-step benchmarks remain useful, but they should be labelled as
+  training-loop overhead measurements rather than raw brain/environment
+  throughput.
+
+Next action:
+
+- Run the same `benchmark_tick()` path without `--compile` to separate the
+  compiler speedup from the no-telemetry/no-host-control speedup.
+- The explicit no-telemetry environment step mode has been implemented:
+  `TensorEnvironment2D.step(..., collect_telemetry=False)`.
+- `benchmark_tick()` now uses `collect_telemetry=False`, so eager and compiled
+  hotpaths can measure the same intended workload instead of depending on
+  compiler dead-code elimination of unused diagnostics.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/analysis.md`
+- `gen5/ammc_gen5/tensor_environment.py`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1374,7 +1415,8 @@ Validation:
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
 2. Rerun topology-aware throughput on the new `benchmark_tick()` path:
-   - compare eager vs `--compile` for `saturated --active-edges 86`,
+   - compare no-telemetry eager vs `--compile` for
+     `saturated --active-edges 86`,
    - compare `foraging`, `saturated`, and exact
      `champion_sparse_adjacency.json`,
    - report `tick_mode`, memory, active-edge count, and agent-steps/sec at

@@ -75,13 +75,26 @@ This should prevent `torch.compile` from specializing on `_epoch_step_host` and
 separate compiler-hot-path measurements from full evolutionary training
 semantics.
 
+## Hotpath rerun
+
+The patched hotpath run was uploaded and archived here:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_results.json`
+- `tick_mode: tensor_hot_path_no_epoch_control`
+- Peak: `39.15M` agent-steps/sec at `100k`
+- CUDA max memory at `100k`: `488.19 MB`
+- Hotpath / full-step compiled throughput at `100k`: `8.476x`
+
+That hotpath run supersedes this file as the clean `torch.compile` throughput
+evidence for saturated AMMC tensor compute. This file remains useful as the
+diagnostic record that identified Python host epoch control as the recompile
+trigger.
+
 ## Next benchmark actions
 
-1. Rerun saturated CUDA with `--compile` after this patch and confirm the Dynamo
-   recompile warning disappears.
-2. Rerun saturated CUDA without `--compile` on the same `benchmark_tick()` path
+1. Rerun saturated CUDA without `--compile` on the same `benchmark_tick()` path
    so eager-vs-compiled comparisons share the same measured workload.
-3. Run the exact `champion_sparse_adjacency.json` topology using the same
+2. Run the exact `champion_sparse_adjacency.json` topology using the same
    benchmark path.
-4. Repeat `foraging`, `saturated`, and `champion` presets on TPU/XLA once the
+3. Repeat `foraging`, `saturated`, and `champion` presets on TPU/XLA once the
    Colab PyTorch/XLA runtime is ABI-clean.

@@ -32,7 +32,8 @@ The script reports both raw simulation ticks/sec and agent-steps/sec. The
 second number is usually the better scaling metric because one tick advances an
 entire population tensor. Throughput timing uses the control-free
 ``benchmark_tick()`` hot path, so ``torch.compile`` does not specialize on
-Python epoch counters used by full evolutionary training.
+Python epoch counters used by full evolutionary training. The hot path also
+skips cloned diagnostic telemetry from the environment step.
 
 Use `--topology-preset foraging` for the original 8-edge prior,
 `--topology-preset saturated --active-edges 86` for a champion-like active

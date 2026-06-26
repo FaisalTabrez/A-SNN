@@ -35,6 +35,15 @@ class TensorEnvironmentContractTest(unittest.TestCase):
         self.assertEqual(tuple(telemetry["nearest_food_vec"].shape), (128, 2))
         self.assertEqual(tuple(telemetry["nearest_toxin_vec"].shape), (128, 2))
 
+    def test_step_can_skip_diagnostic_telemetry(self) -> None:
+        env = TensorEnvironment2D(TensorEnvironmentConfig(agent_count=128, food_count=16, toxin_count=16))
+        action = torch.zeros((128, 2))
+
+        telemetry = env.step(action, collect_telemetry=False)
+
+        self.assertIsNone(telemetry)
+        self.assertEqual(tuple(env.fitness.shape), (128,))
+
     def test_transducer_loop_shapes(self) -> None:
         env = TensorEnvironment2D(TensorEnvironmentConfig(agent_count=32, food_count=8, toxin_count=8))
         brain = DynamicSparseLinear(16, 16, max_edges=8)
@@ -56,4 +65,3 @@ class TensorEnvironmentContractTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

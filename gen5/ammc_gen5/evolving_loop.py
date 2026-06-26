@@ -152,7 +152,7 @@ class EvolvingHeadlessAMMCLoop(nn.Module):
             self.membrane.copy_(membrane)
 
             action = self.transducer.decode_motors(spikes)
-            self.environment.step(action, generator=generator)
+            self.environment.step(action, generator=generator, collect_telemetry=False)
             self.epoch_step.add_(1)
             mark_step(self.environment.agent_pos.device)
             return action

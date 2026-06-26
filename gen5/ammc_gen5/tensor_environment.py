@@ -133,14 +133,19 @@ class TensorEnvironment2D(nn.Module):
         toxin = self._directional_drive(nearest["nearest_toxin_vec"], nearest["nearest_toxin_dist"])
         return torch.cat([food, toxin], dim=1)
 
-    def step(self, action, generator=None):
+    def step(self, action, generator=None, *, collect_telemetry: bool = True):
         """Advance physics by one batched tick.
 
         Args:
             action: Tensor shaped ``[A, 2]`` in normalized x/y acceleration.
+            collect_telemetry: When ``False``, skip nearest-object telemetry
+                and cloned diagnostic payloads. This is intended for benchmark
+                and inference hotpaths where callers only need environment
+                state mutation and fitness accumulation.
 
         Returns a dictionary of reward, punishment, fitness, and nearest-object
-        tensors for downstream astrocyte and evolutionary logic.
+        tensors for downstream astrocyte and evolutionary logic when
+        ``collect_telemetry`` is true; otherwise returns ``None``.
         """
 
         if action.shape != self.agent_pos.shape:
@@ -159,13 +164,16 @@ class TensorEnvironment2D(nn.Module):
         self._bounce_world_bounds()
 
         collisions = self._collide_and_respawn(generator=generator)
-        nearest = self.nearest_objects()
         reward = collisions["food_collision"].to(self.fitness.dtype)
         punishment = collisions["toxin_collision"].to(self.fitness.dtype)
         self.fitness.add_(reward - punishment)
         self.food_hits.add_(collisions["food_collision"].to(torch.long))
         self.toxin_hits.add_(collisions["toxin_collision"].to(torch.long))
 
+        if not collect_telemetry:
+            return None
+
+        nearest = self.nearest_objects()
         return {
             "reward": reward,
             "punishment": punishment,

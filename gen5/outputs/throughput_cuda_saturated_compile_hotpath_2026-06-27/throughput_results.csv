@@ -1,0 +1,5 @@
+topology_preset,requested_active_edges,seeded_active_edges,adjacency_json,population_size,steps,seconds,ticks_per_second,agent_steps_per_second,mean_active_synapses,device,dtype,torch_compile_requested,torch_compile_active,compile_error,tick_mode,cuda_memory_allocated_mb,cuda_max_memory_allocated_mb,accelerator_backend
+saturated,86,86,,1000,240,0.10925943499989899,2196.606636307628,2196606.636307628,86.00000762939453,cuda,torch.float32,True,True,,tensor_hot_path_no_epoch_control,4.6162109375,8.84765625,cuda
+saturated,86,86,,10000,240,0.10860739700001432,2209.7942371270383,22097942.371270385,86.0,cuda,torch.float32,True,True,,tensor_hot_path_no_epoch_control,46.59375,53.01611328125,cuda
+saturated,86,86,,50000,240,0.31204227800003537,769.1265476531767,38456327.38265883,86.0,cuda,torch.float32,True,True,,tensor_hot_path_no_epoch_control,230.603515625,246.8515625,cuda
+saturated,86,86,,100000,240,0.6130942270000332,391.4569562567207,39145695.625672065,86.0,cuda,torch.float32,True,True,,tensor_hot_path_no_epoch_control,462.23291015625,488.19482421875,cuda

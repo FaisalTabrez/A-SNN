@@ -74,6 +74,11 @@ Python integer on an `nn.Module`. The benchmark code has since been updated to
 use a control-free `benchmark_tick()` tensor hot path and to record
 `tick_mode: tensor_hot_path_no_epoch_control` in future outputs.
 
+The patched compiled hotpath rerun reached `39.15M` agent-steps/sec at `100k`
+agents with `488.19 MB` CUDA max memory:
+
+- `gen5/outputs/throughput_cuda_saturated_compile_hotpath_2026-06-27/throughput_results.json`
+
 ## Next benchmark actions
 
 1. Rerun saturated CUDA eager and compiled on the new `benchmark_tick()` path.
