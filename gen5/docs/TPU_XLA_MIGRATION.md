@@ -68,10 +68,24 @@ On a TPU runtime:
 ```python
 !python gen5/benchmarks/benchmark_throughput.py \
   --device xla \
+  --topology-preset foraging \
   --population-sizes 1000 10000 50000 100000 \
   --steps 240 \
   --warmup 30 \
   --output-dir gen5_outputs/throughput_xla
+```
+
+Champion-like saturated topology:
+
+```python
+!python gen5/benchmarks/benchmark_throughput.py \
+  --device xla \
+  --topology-preset saturated \
+  --active-edges 86 \
+  --population-sizes 1000 10000 50000 100000 \
+  --steps 240 \
+  --warmup 30 \
+  --output-dir gen5_outputs/throughput_xla_saturated
 ```
 
 ```python

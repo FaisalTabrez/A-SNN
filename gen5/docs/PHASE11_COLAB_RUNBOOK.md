@@ -72,10 +72,38 @@ Run this first on Colab TPU/XLA.
 ```python
 !python gen5/benchmarks/benchmark_throughput.py \
   --device xla \
+  --topology-preset foraging \
   --population-sizes 1000 10000 50000 100000 \
   --steps 240 \
   --warmup 30 \
   --output-dir gen5_outputs/throughput_xla
+```
+
+Run the saturated-topology comparison after the foraging-prior run:
+
+```python
+!python gen5/benchmarks/benchmark_throughput.py \
+  --device xla \
+  --topology-preset saturated \
+  --active-edges 86 \
+  --population-sizes 1000 10000 50000 100000 \
+  --steps 240 \
+  --warmup 30 \
+  --output-dir gen5_outputs/throughput_xla_saturated
+```
+
+If the champion adjacency file is present in Colab, run the exact champion
+topology:
+
+```python
+!python gen5/benchmarks/benchmark_throughput.py \
+  --device xla \
+  --topology-preset champion \
+  --adjacency-json gen5/outputs/colab_500_gen_2026-06-25/champion_sparse_adjacency.json \
+  --population-sizes 1000 10000 50000 100000 \
+  --steps 240 \
+  --warmup 30 \
+  --output-dir gen5_outputs/throughput_xla_champion
 ```
 
 Then optionally run the T4/L4 CUDA fallback for continuity with prior Phase 11
@@ -84,6 +112,7 @@ numbers:
 ```python
 !python gen5/benchmarks/benchmark_throughput.py \
   --device cuda \
+  --topology-preset foraging \
   --population-sizes 1000 10000 50000 100000 \
   --steps 240 \
   --warmup 30 \
@@ -101,6 +130,8 @@ Main metrics:
 
 - `ticks_per_second`
 - `agent_steps_per_second`
+- `topology_preset`
+- `seeded_active_edges`
 - CUDA memory allocated / max allocated when running CUDA
 - `accelerator_backend`, which should read `xla` on TPU runs
 
@@ -143,6 +174,8 @@ Main metrics:
 !zip -r phase11_remaining_outputs.zip \
   gen5_outputs/retention_ablation \
   gen5_outputs/throughput_xla \
+  gen5_outputs/throughput_xla_saturated \
+  gen5_outputs/throughput_xla_champion \
   gen5_outputs/throughput_cuda \
   gen5_outputs/baselines_xla
 ```

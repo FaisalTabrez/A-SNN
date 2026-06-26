@@ -580,6 +580,43 @@ Implication:
 - The next benchmark pass should rerun Phase 11 on `--device xla` and compare
   convergence, retention, and throughput against the existing CUDA/T4 evidence.
 
+### 17. Throughput benchmarks must report topology load
+
+Finding: the first Phase 11 throughput result used the original `8` active-edge
+foraging prior, while the evolved champion saturates near `86-88` active
+synapses. Population size alone is therefore not enough to characterize Gen-5
+runtime cost.
+
+Evidence:
+
+- Phase 11 throughput reached `29.29M` agent-steps/sec at `100k` agents, but
+  the benchmark reported `8.0` mean active synapses.
+- The exported champion bundle contains `88` active sparse edges.
+- Earlier evolution telemetry shows mean active synapses rising into the high
+  `80s`, so champion-like operation is roughly an order of magnitude denser
+  than the original throughput benchmark.
+
+Change made:
+
+- `gen5/benchmarks/benchmark_throughput.py` now supports topology presets:
+  - `foraging`: original `8`-edge seed prior,
+  - `saturated`: synthetic champion-like fixed active edge count,
+  - `champion`: load an exported `champion_sparse_adjacency.json`.
+- Output rows now include:
+  - `topology_preset`,
+  - `requested_active_edges`,
+  - `seeded_active_edges`,
+  - `adjacency_json`.
+
+Implication:
+
+- Future throughput claims should always include both population size and
+  active-edge load.
+- The next Colab TPU/XLA benchmark should run at least:
+  - `--topology-preset foraging`,
+  - `--topology-preset saturated --active-edges 86`,
+  - optionally `--topology-preset champion --adjacency-json ...`.
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1223,9 +1260,9 @@ Validation:
    - `--device xla` multi-seed convergence,
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
-2. Add saturated-topology throughput benchmarks:
-   - benchmark champion-like `~86` active synapses,
-   - compare against the current `8` active-synapse benchmark,
+2. Run the new saturated-topology throughput presets in Colab:
+   - compare `foraging` vs `saturated --active-edges 86`,
+   - optionally compare exact `champion_sparse_adjacency.json`,
    - report memory and agent-steps/sec at 1k/10k/50k/100k.
 3. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,

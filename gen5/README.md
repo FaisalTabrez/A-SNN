@@ -245,10 +245,37 @@ Measure raw tensor-loop scaling on Colab TPU/XLA:
 ```powershell
 python gen5/benchmarks/benchmark_throughput.py `
   --device xla `
+  --topology-preset foraging `
   --population-sizes 1000 10000 50000 100000 `
   --steps 240 `
   --warmup 30 `
   --output-dir gen5_outputs/throughput_xla
+```
+
+Run the champion-like saturated-topology comparison:
+
+```powershell
+python gen5/benchmarks/benchmark_throughput.py `
+  --device xla `
+  --topology-preset saturated `
+  --active-edges 86 `
+  --population-sizes 1000 10000 50000 100000 `
+  --steps 240 `
+  --warmup 30 `
+  --output-dir gen5_outputs/throughput_xla_saturated
+```
+
+If a champion sparse adjacency has been exported, benchmark that exact topology:
+
+```powershell
+python gen5/benchmarks/benchmark_throughput.py `
+  --device xla `
+  --topology-preset champion `
+  --adjacency-json gen5/outputs/colab_500_gen_2026-06-25/champion_sparse_adjacency.json `
+  --population-sizes 1000 10000 50000 100000 `
+  --steps 240 `
+  --warmup 30 `
+  --output-dir gen5_outputs/throughput_xla_champion
 ```
 
 For a Colab T4/L4 CUDA fallback:
@@ -256,6 +283,7 @@ For a Colab T4/L4 CUDA fallback:
 ```powershell
 python gen5/benchmarks/benchmark_throughput.py `
   --device cuda `
+  --topology-preset foraging `
   --population-sizes 1000 10000 50000 100000 `
   --steps 240 `
   --warmup 30 `
