@@ -1123,6 +1123,50 @@ Artifacts:
 - `gen5/examples/sprint13_sparse_efficiency_ablation.py`
 - `gen5/docs/PHASE11_COLAB_RUNBOOK.md`
 
+### 23. Sparse-efficiency screen: sparse pressure works, but the first protected core is too aggressive
+
+Finding: the checkpointed sparse-efficiency screen completed on CUDA for
+`baseline_capacity_fill` and `protected_sparse_core` across `3` seeds, `200`
+generations, and the `16/32/64` neuron scale points.
+
+Results:
+
+| Group | Neurons | Final mean best fitness | Active synapses | Utilization | Fitness / active synapse | Hidden-edge fraction | Threshold success |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| baseline_capacity_fill | 16 | 25.67 | 81.70 | 63.83% | 0.233 | 43.58% | 100% |
+| baseline_capacity_fill | 32 | 25.00 | 163.45 | 63.85% | 0.108 | 85.11% | 66.67% |
+| baseline_capacity_fill | 64 | 24.00 | 326.66 | 63.80% | 0.057 | 95.89% | 33.33% |
+| protected_sparse_core | 16 | 24.33 | 41.81 | 32.66% | 0.462 | 36.11% | 66.67% |
+| protected_sparse_core | 32 | 18.67 | 46.43 | 18.14% | 0.344 | 71.31% | 0% |
+| protected_sparse_core | 64 | 15.00 | 44.00 | 8.59% | 0.220 | 78.86% | 0% |
+
+Interpretation:
+
+- The baseline repeated the neuron-scaling pattern: larger edge pools filled to
+  about `64%` utilization without improving raw fitness.
+- The protected sparse core sharply reduced active synapses and nearly doubled
+  fitness-per-active-synapse at `16` neurons.
+- At `32` and `64` neurons, the same pressure underfit badly. It kept active
+  synapses near `42-46` across all scales, which is too restrictive for larger
+  networks.
+- Sparse pressure is therefore directionally useful, but it needs a gentler or
+  capacity-aware schedule.
+
+Decision:
+
+- Treat `protected_sparse_core` as a successful proof of efficiency pressure at
+  small scale, not as the final sparse rule.
+- Run component ablations next: `active_edge_penalty`, `low_ltw_pruning`, and
+  `scheduled_sprouting`.
+- Add a future gentler protected-core variant with lower penalty, lower
+  weak-edge prune probability, and/or a capacity-aware minimum active-edge
+  target.
+- Keep `16` neurons as the current simple-foraging Pareto baseline.
+
+Artifact:
+
+- `gen5/outputs/sparse_efficiency_screen_cuda_2026-06-28/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1763,10 +1807,9 @@ Validation:
 
 1. Run the sparse-efficiency ablation:
    - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - first screen `baseline_capacity_fill` vs `protected_sparse_core` with
-     seeds `42 43 44` and `200` generations,
-   - then compare `active_edge_penalty`, `low_ltw_pruning`,
-     `scheduled_sprouting`, and `protected_sparse_core` only as needed,
+   - next compare `active_edge_penalty`, `low_ltw_pruning`, and
+     `scheduled_sprouting` with seeds `42 43 44` and `200` generations,
+   - only after that, implement/run a gentler protected-core variant,
    - report final fitness, active synapses, utilization,
      fitness-per-active-synapse, hidden-edge fraction, and
      direct sensor-motor fraction across `16/32/64` neurons.

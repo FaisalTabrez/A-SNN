@@ -1,0 +1,14 @@
+{
+  "completed_trials": 18,
+  "total_trials": 18,
+  "current_group": "protected_sparse_core",
+  "current_neuron_count": 64,
+  "current_max_edges": 512,
+  "current_seed": 44,
+  "paths": {
+    "json": "gen5_outputs/sparse_efficiency_screen_cuda/sparse_efficiency.json",
+    "records_csv": "gen5_outputs/sparse_efficiency_screen_cuda/sparse_efficiency_records.csv",
+    "summary_csv": "gen5_outputs/sparse_efficiency_screen_cuda/sparse_efficiency_summary.csv",
+    "plot": "gen5_outputs/sparse_efficiency_screen_cuda/sparse_efficiency_summary.png"
+  }
+}
