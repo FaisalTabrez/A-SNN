@@ -974,6 +974,45 @@ Artifact:
 
 - `gen5/docs/LITERATURE_UNIQUENESS_REVIEW.md`
 
+### 19. Neuron scaling must be measured as capacity efficiency, not just larger topology
+
+Decision: add a dedicated Sprint 12 `NeuronScalingRunner` to test whether
+increasing hidden decision nodes improves embodied foraging performance after
+Gen-5's base convergence and throughput evidence.
+
+Rationale:
+
+- The current default transducer reserves `8` sensory channels and `4` motor
+  channels, so hidden decision capacity is `neuron_count - 12`.
+- More neurons are only useful if evolution discovers behaviorally valuable
+  intermediate structure. Otherwise, larger brains become a compute and memory
+  liability rather than a capability gain.
+- Raw best fitness is insufficient. The runner also records mean active
+  synapses, active edge-pool utilization, fitness per active synapse, threshold
+  success rate, and mean generation-to-threshold.
+
+Default sweep:
+
+- `16` neurons / `128` edge slots: current champion-class baseline.
+- `32` neurons / `256` edge slots: first expanded decision layer.
+- `64` neurons / `512` edge slots: larger Colab-scale decision layer.
+
+Interpretation plan:
+
+- If fitness rises while fitness-per-active-synapse stays stable or improves,
+  larger decision capacity is likely buying real behavioral expressivity.
+- If fitness plateaus while active synapses and utilization rise, topology is
+  bloating and we need stronger active-edge pressure.
+- If larger models converge slower but reach higher final fitness, the project
+  should separate "sample efficiency" from "asymptotic capability" in future
+  claims.
+
+Artifacts:
+
+- `gen5/ammc_gen5/evaluation.py`
+- `gen5/examples/sprint12_neuron_scaling.py`
+- `gen5/tests/test_evaluation_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1612,39 +1651,44 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the Phase 11 benchmark suite on Colab TPU/XLA:
+1. Run the Sprint 12 neuron-scaling sweep:
+   - `16/32/64` neurons with `128/256/512` edge slots,
+   - `10` seeds x `500` generations,
+   - report final best fitness, active synapses, utilization,
+     fitness-per-active-synapse, and generation-to-threshold.
+2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
-2. Complete topology-aware hotpath throughput coverage:
+3. Complete topology-aware hotpath throughput coverage:
    - sweep champion `--max-edges 96`, `128`, and optionally `160` using
      adjacency SHA `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`,
    - compare eager vs `--compile` for the `foraging` 8-edge prior,
    - report `tick_mode`, active-edge count, edge-pool capacity, utilization,
      `adjacency_sha256`, memory, and agent-steps/sec at 1k/10k/50k/100k.
-3. Redesign gated/adult plasticity:
+4. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,
    - add protected-core champion masks,
    - tune dopamine/fitness thresholds from retention results.
-4. Run fair trained baselines:
+5. Run fair trained baselines:
    - BPTT-trained static LIF SNN,
    - PPO-trained MLP after installing `stable-baselines3`,
    - report fitness, active parameters, memory, and inference speed.
-5. Add active-edge pressure to evolution:
+6. Add active-edge pressure to evolution:
    - fitness penalty per active edge,
    - lower sprout probability,
    - stronger low-LTW pruning,
    - compare fitness-per-active-synapse.
-6. Expand `DynamicSparseLinear` with delay buckets so polychronous timing can be
+7. Expand `DynamicSparseLinear` with delay buckets so polychronous timing can be
    benchmarked directly in Gen-5.
-7. Add astrocyte reward/punishment coupling from `TensorEnvironment2D` into
+8. Add astrocyte reward/punishment coupling from `TensorEnvironment2D` into
    `DualTensorManager`.
-8. Continue Gen-5 -> Gen-4 bridge calibration:
+9. Continue Gen-5 -> Gen-4 bridge calibration:
    - deterministic browser world seed,
    - Gen-5 sensor gain,
    - Gen-5 motor assist gain,
    - compare tensor-environment replay against browser replay for the same
      champion genome.
-9. Use `gen5/tools/verify_phase11_outputs.py` after every future output upload
+10. Use `gen5/tools/verify_phase11_outputs.py` after every future output upload
    to avoid ambiguous evidence status.

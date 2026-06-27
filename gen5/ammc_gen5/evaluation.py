@@ -50,6 +50,12 @@ def default_foraging_seed_edges() -> tuple[EdgeRecord, ...]:
     )
 
 
+def hidden_neuron_count(neuron_count: int) -> int:
+    """Return non-sensor/non-motor decision nodes for the default transducer."""
+
+    return max(0, int(neuron_count) - 12)
+
+
 @dataclass(frozen=True)
 class TrialRunnerConfig:
     """Configuration for repeated independent evolution trials."""
@@ -235,6 +241,217 @@ class TrialRunner:
             logger=logger,
         ).to(device)
         return loop, generator
+
+
+@dataclass(frozen=True)
+class NeuronScalePoint:
+    """One topology capacity point for neuron scaling experiments."""
+
+    neuron_count: int
+    max_edges: int
+
+
+def default_neuron_scale_points() -> tuple[NeuronScalePoint, ...]:
+    """Return conservative Colab-scale topology growth points."""
+
+    return (
+        NeuronScalePoint(neuron_count=16, max_edges=128),
+        NeuronScalePoint(neuron_count=32, max_edges=256),
+        NeuronScalePoint(neuron_count=64, max_edges=512),
+    )
+
+
+@dataclass(frozen=True)
+class NeuronScalingConfig:
+    """Configuration for decision-node scaling sweeps."""
+
+    seeds: tuple[int, ...] = tuple(range(42, 52))
+    generations: int = 500
+    epoch_steps: int = 120
+    population_size: int = 10_000
+    food_count: int = 128
+    toxin_count: int = 128
+    sensor_radius: float = 0.35
+    friction: float = 0.985
+    action_gain: float = 0.05
+    survivor_fraction: float = 0.5
+    ltw_noise_std: float = 0.02
+    sprout_probability: float = 0.02
+    prune_probability: float = 0.01
+    device: str = "auto"
+    seed_edges: tuple[EdgeRecord, ...] = field(default_factory=default_foraging_seed_edges)
+    scale_points: tuple[NeuronScalePoint, ...] = field(default_factory=default_neuron_scale_points)
+    adaptation_fitness_threshold: float = 25.0
+
+
+@dataclass(frozen=True)
+class NeuronScalingGenerationRecord:
+    """One generation-level row for one seed and one neuron scale point."""
+
+    neuron_count: int
+    hidden_neurons: int
+    max_edges: int
+    seed: int
+    generation: int
+    epoch_best_fitness: float
+    all_time_best_fitness: float
+    mean_population_fitness: float
+    mean_active_synapses: float
+    active_edge_utilization: float
+    sprout_count: int
+    prune_count: int
+    ltw_mutation_count: int
+
+
+@dataclass(frozen=True)
+class NeuronScalingSummaryRecord:
+    """Final scaling-law summary for one neuron scale point."""
+
+    neuron_count: int
+    hidden_neurons: int
+    max_edges: int
+    seeds: int
+    final_mean_best_fitness: float
+    final_std_best_fitness: float
+    final_mean_active_synapses: float
+    final_active_edge_utilization: float
+    final_fitness_per_active_synapse: float
+    threshold_success_rate: float
+    mean_generation_to_threshold: float | None
+
+
+@dataclass(frozen=True)
+class NeuronScalingResult:
+    """Complete neuron-scaling evaluation output."""
+
+    config: dict
+    records: list[NeuronScalingGenerationRecord]
+    summary: list[NeuronScalingSummaryRecord]
+
+    def to_json_dict(self) -> dict:
+        return {
+            "config": self.config,
+            "records": [asdict(row) for row in self.records],
+            "summary": [asdict(row) for row in self.summary],
+        }
+
+
+class NeuronScalingRunner:
+    """Run multi-seed experiments across increasing decision-node capacity."""
+
+    def __init__(self, config: NeuronScalingConfig | None = None) -> None:
+        self.config = config or NeuronScalingConfig()
+        if not self.config.seeds:
+            raise ValueError("at least one seed is required")
+        if not self.config.scale_points:
+            raise ValueError("at least one neuron scale point is required")
+        if self.config.generations <= 0:
+            raise ValueError("generations must be positive")
+        if self.config.epoch_steps <= 0:
+            raise ValueError("epoch_steps must be positive")
+        for point in self.config.scale_points:
+            if point.neuron_count < 12:
+                raise ValueError("neuron_count must be at least 12 for the default 8-sensor/4-motor transducer")
+            if point.max_edges < len(self.config.seed_edges):
+                raise ValueError("max_edges must be at least the seeded edge count")
+
+    def run(self) -> NeuronScalingResult:
+        _require_torch()
+        records: list[NeuronScalingGenerationRecord] = []
+        for point in self.config.scale_points:
+            trial_runner = TrialRunner(self._trial_config_for(point))
+            for seed in self.config.seeds:
+                trial_records = trial_runner.run_trial(seed)
+                records.extend(self._convert_records(point, trial_records))
+
+        summary = summarize_neuron_scaling_records(
+            records,
+            threshold=self.config.adaptation_fitness_threshold,
+        )
+        return NeuronScalingResult(
+            config=_jsonable_config(self.config),
+            records=records,
+            summary=summary,
+        )
+
+    def save_outputs(
+        self,
+        result: NeuronScalingResult,
+        output_dir: str | Path,
+        *,
+        plot: bool = True,
+    ) -> dict[str, str]:
+        output = Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+
+        json_path = output / "neuron_scaling.json"
+        json_path.write_text(json.dumps(result.to_json_dict(), indent=2) + "\n", encoding="utf-8")
+
+        records_csv = output / "neuron_scaling_records.csv"
+        _write_csv(records_csv, [asdict(row) for row in result.records])
+
+        summary_csv = output / "neuron_scaling_summary.csv"
+        _write_csv(summary_csv, [asdict(row) for row in result.summary])
+
+        paths = {
+            "json": str(json_path),
+            "records_csv": str(records_csv),
+            "summary_csv": str(summary_csv),
+        }
+        if plot:
+            try:
+                plot_path = output / "neuron_scaling_summary.png"
+                plot_neuron_scaling_result(result, plot_path)
+                paths["plot"] = str(plot_path)
+            except Exception as exc:  # pragma: no cover - optional plotting
+                paths["plot"] = f"skipped: {exc}"
+        return paths
+
+    def _trial_config_for(self, point: NeuronScalePoint) -> TrialRunnerConfig:
+        return TrialRunnerConfig(
+            seeds=self.config.seeds,
+            generations=self.config.generations,
+            epoch_steps=self.config.epoch_steps,
+            population_size=self.config.population_size,
+            neuron_count=point.neuron_count,
+            max_edges=point.max_edges,
+            food_count=self.config.food_count,
+            toxin_count=self.config.toxin_count,
+            sensor_radius=self.config.sensor_radius,
+            friction=self.config.friction,
+            action_gain=self.config.action_gain,
+            survivor_fraction=self.config.survivor_fraction,
+            ltw_noise_std=self.config.ltw_noise_std,
+            sprout_probability=self.config.sprout_probability,
+            prune_probability=self.config.prune_probability,
+            device=self.config.device,
+            seed_edges=self.config.seed_edges,
+        )
+
+    def _convert_records(
+        self,
+        point: NeuronScalePoint,
+        rows: list[TrialGenerationRecord],
+    ) -> list[NeuronScalingGenerationRecord]:
+        hidden = hidden_neuron_count(point.neuron_count)
+        return [
+            NeuronScalingGenerationRecord(
+                neuron_count=point.neuron_count,
+                hidden_neurons=hidden,
+                max_edges=point.max_edges,
+                seed=row.seed,
+                generation=row.generation,
+                epoch_best_fitness=row.epoch_best_fitness,
+                all_time_best_fitness=row.all_time_best_fitness,
+                mean_population_fitness=row.mean_population_fitness,
+                mean_active_synapses=row.mean_active_synapses,
+                active_edge_utilization=(row.mean_active_synapses / point.max_edges) if point.max_edges else 0.0,
+                sprout_count=row.sprout_count,
+                prune_count=row.prune_count,
+                ltw_mutation_count=row.ltw_mutation_count,
+            )
+            for row in rows
+        ]
 
 
 @dataclass(frozen=True)
@@ -711,6 +928,50 @@ def aggregate_trial_records(records: Iterable[TrialGenerationRecord]) -> list[Ag
     return output
 
 
+def summarize_neuron_scaling_records(
+    records: list[NeuronScalingGenerationRecord],
+    *,
+    threshold: float,
+) -> list[NeuronScalingSummaryRecord]:
+    summaries: list[NeuronScalingSummaryRecord] = []
+    scale_keys = sorted({(row.neuron_count, row.max_edges) for row in records})
+    for neuron_count, max_edges in scale_keys:
+        scale_rows = [row for row in records if row.neuron_count == neuron_count and row.max_edges == max_edges]
+        seeds = sorted({row.seed for row in scale_rows})
+        final_rows = [
+            max((row for row in scale_rows if row.seed == seed), key=lambda row: row.generation)
+            for seed in seeds
+        ]
+        threshold_generations: list[int] = []
+        for seed in seeds:
+            seed_rows = sorted((row for row in scale_rows if row.seed == seed), key=lambda row: row.generation)
+            reached = next((row.generation for row in seed_rows if row.all_time_best_fitness >= threshold), None)
+            if reached is not None:
+                threshold_generations.append(reached)
+
+        final_best = [row.all_time_best_fitness for row in final_rows]
+        final_active = [row.mean_active_synapses for row in final_rows]
+        final_active_mean = _mean(final_active)
+        summaries.append(
+            NeuronScalingSummaryRecord(
+                neuron_count=neuron_count,
+                hidden_neurons=hidden_neuron_count(neuron_count),
+                max_edges=max_edges,
+                seeds=len(seeds),
+                final_mean_best_fitness=_mean(final_best) if final_best else 0.0,
+                final_std_best_fitness=_std(final_best) if final_best else 0.0,
+                final_mean_active_synapses=final_active_mean,
+                final_active_edge_utilization=(final_active_mean / max_edges) if max_edges else 0.0,
+                final_fitness_per_active_synapse=(
+                    (_mean(final_best) / final_active_mean) if final_best and final_active_mean else 0.0
+                ),
+                threshold_success_rate=(len(threshold_generations) / len(seeds)) if seeds else 0.0,
+                mean_generation_to_threshold=_mean(threshold_generations) if threshold_generations else None,
+            )
+        )
+    return summaries
+
+
 def summarize_ablation_records(
     records: list[AblationGenerationRecord],
     *,
@@ -813,6 +1074,56 @@ def plot_multi_seed_result(result: StatisticalTrialResult, path: str | Path | No
     ax.set_ylabel("Best fitness")
     ax.grid(True, alpha=0.25)
     ax.legend()
+    fig.tight_layout()
+    if path is not None:
+        output = Path(path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(output, dpi=160)
+    if show:
+        plt.show()
+    return fig
+
+
+def plot_neuron_scaling_result(result: NeuronScalingResult, path: str | Path | None = None, *, show: bool = False):
+    if not result.summary:
+        raise ValueError("no neuron scaling summary records to plot")
+    import matplotlib.pyplot as plt
+
+    rows = sorted(result.summary, key=lambda row: row.neuron_count)
+    x = [row.neuron_count for row in rows]
+    fitness = [row.final_mean_best_fitness for row in rows]
+    fitness_std = [row.final_std_best_fitness for row in rows]
+    active = [row.final_mean_active_synapses for row in rows]
+    utilization = [row.final_active_edge_utilization * 100.0 for row in rows]
+
+    fig, axes = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+    axes[0].errorbar(
+        x,
+        fitness,
+        yerr=fitness_std,
+        marker="o",
+        color="#38bdf8",
+        linewidth=2,
+        capsize=4,
+        label="Final mean best fitness",
+    )
+    axes[0].set_title("AMMC Gen-5 Neuron Scaling")
+    axes[0].set_ylabel("Best fitness")
+    axes[0].grid(True, alpha=0.25)
+    axes[0].legend()
+
+    axes[1].plot(x, active, marker="o", color="#f59e0b", linewidth=2, label="Mean active synapses")
+    axes[1].set_xlabel("Neuron count")
+    axes[1].set_ylabel("Active synapses")
+    axes[1].grid(True, alpha=0.25)
+    twin = axes[1].twinx()
+    twin.plot(x, utilization, marker="s", color="#22c55e", linewidth=2, label="Edge utilization")
+    twin.set_ylabel("Edge utilization (%)")
+
+    handles, labels = axes[1].get_legend_handles_labels()
+    twin_handles, twin_labels = twin.get_legend_handles_labels()
+    axes[1].legend(handles + twin_handles, labels + twin_labels, loc="best")
+
     fig.tight_layout()
     if path is not None:
         output = Path(path)

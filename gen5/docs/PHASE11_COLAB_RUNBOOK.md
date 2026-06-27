@@ -222,7 +222,56 @@ Main metrics:
 - agent-steps/sec
 - mean/max fitness
 
-## 4. Zip and download all remaining outputs
+## 4. Neuron / decision-node scaling
+
+Use this after the base convergence and throughput evidence is stable. It tests
+whether more hidden decision nodes improve behavior or only inflate the active
+edge pool.
+
+```python
+!python gen5/examples/sprint12_neuron_scaling.py \
+  --device xla \
+  --seeds 42 43 44 45 46 47 48 49 50 51 \
+  --generations 500 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --neuron-counts 16 32 64 \
+  --max-edges 128 256 512 \
+  --output-dir gen5_outputs/neuron_scaling_xla
+```
+
+If XLA is unavailable, use the T4/L4 fallback:
+
+```python
+!python gen5/examples/sprint12_neuron_scaling.py \
+  --device cuda \
+  --seeds 42 43 44 45 46 47 48 49 50 51 \
+  --generations 500 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --neuron-counts 16 32 64 \
+  --max-edges 128 256 512 \
+  --output-dir gen5_outputs/neuron_scaling_cuda
+```
+
+Expected outputs:
+
+- `neuron_scaling.json`
+- `neuron_scaling_records.csv`
+- `neuron_scaling_summary.csv`
+- `neuron_scaling_summary.png`
+
+Main metrics:
+
+- `final_mean_best_fitness`
+- `final_std_best_fitness`
+- `final_mean_active_synapses`
+- `final_active_edge_utilization`
+- `final_fitness_per_active_synapse`
+- `threshold_success_rate`
+- `mean_generation_to_threshold`
+
+## 5. Zip and download all remaining outputs
 
 ```python
 !zip -r phase11_remaining_outputs.zip \
@@ -231,7 +280,9 @@ Main metrics:
   gen5_outputs/throughput_xla_saturated \
   gen5_outputs/throughput_xla_champion \
   gen5_outputs/throughput_cuda \
-  gen5_outputs/baselines_xla
+  gen5_outputs/baselines_xla \
+  gen5_outputs/neuron_scaling_xla \
+  gen5_outputs/neuron_scaling_cuda
 ```
 
 ```python
@@ -241,7 +292,7 @@ files.download("phase11_remaining_outputs.zip")
 
 Upload `phase11_remaining_outputs.zip` back into Codex for analysis.
 
-## 5. Verify package completeness
+## 6. Verify package completeness
 
 After copying/downloading outputs, run:
 

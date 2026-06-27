@@ -238,6 +238,34 @@ Outputs:
 - `retention_ablation_summary.csv`
 - `retention_ablation_phase_fitness.png`
 
+### Neuron / decision-node scaling
+
+Run a controlled sweep that keeps the 8 sensor channels and 4 motor channels
+fixed while increasing hidden decision nodes and edge-pool capacity:
+
+```powershell
+python gen5/examples/sprint12_neuron_scaling.py `
+  --device xla `
+  --seeds 42 43 44 45 46 47 48 49 50 51 `
+  --generations 500 `
+  --population-size 10000 `
+  --epoch-steps 120 `
+  --neuron-counts 16 32 64 `
+  --max-edges 128 256 512 `
+  --output-dir gen5_outputs/neuron_scaling
+```
+
+Outputs:
+
+- `neuron_scaling.json`
+- `neuron_scaling_records.csv`
+- `neuron_scaling_summary.csv`
+- `neuron_scaling_summary.png`
+
+The summary reports final mean best fitness, final active synapses, edge-pool
+utilization, fitness per active synapse, and the generation at which each scale
+first crossed the configured fitness threshold.
+
 ### Throughput benchmark
 
 Measure raw tensor-loop scaling on Colab TPU/XLA:
