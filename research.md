@@ -902,6 +902,43 @@ Artifact:
 
 - `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/analysis.md`
 
+Fingerprint-matched champion eager run added 2026-06-27:
+
+- Corrected fingerprinted champion eager hotpath files were uploaded and
+  verified against JSON and CSV.
+- Adjacency SHA-256 matched the compiled champion run:
+  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`.
+- Active edges: `86`.
+- Edge pool capacity: `128`.
+- Active edge utilization: `67.19%`.
+- At `100k` agents, eager champion throughput reached `5.60M`
+  agent-steps/sec with `853.89 MB` CUDA max memory.
+- Clean matched-SHA compiled/eager throughput ratios:
+  - `4.904x` at `1k`,
+  - `5.791x` at `10k`,
+  - `6.197x` at `50k`,
+  - `6.311x` at `100k`.
+- At `100k`, compiled memory was `57.2%` of eager memory.
+
+Interpretation:
+
+- This is the first publication-grade champion eager-vs-compiled comparison.
+- The champion-specific CUDA compiler story is now:
+  `35.35M` compiled agent-steps/sec versus `5.60M` eager agent-steps/sec at
+  `100k` agents on the same adjacency fingerprint.
+- This validates the earlier saturated-topology compile finding on a real
+  evolved topology, not only a synthetic edge-load preset.
+
+Next action:
+
+- Run foraging 8-edge hotpath with and without `--compile`.
+- Run champion capacity sweeps using the same adjacency SHA to quantify
+  fixed-pool overhead.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_fingerprinted_2026-06-27/analysis.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1581,9 +1618,8 @@ Validation:
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
 2. Complete topology-aware hotpath throughput coverage:
-   - rerun champion eager and compiled hotpaths with matching
-     `adjacency_sha256`,
-   - sweep champion `--max-edges 64`, `96`, and `128` after fingerprinting,
+   - sweep champion `--max-edges 96`, `128`, and optionally `160` using
+     adjacency SHA `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`,
    - compare eager vs `--compile` for the `foraging` 8-edge prior,
    - report `tick_mode`, active-edge count, edge-pool capacity, utilization,
      `adjacency_sha256`, memory, and agent-steps/sec at 1k/10k/50k/100k.

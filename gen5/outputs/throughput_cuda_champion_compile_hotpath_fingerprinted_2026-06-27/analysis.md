@@ -71,19 +71,17 @@ Saturated reference:
 
 ## Caveats
 
-- The available champion eager run seeded `83` active edges and predates
-  `adjacency_sha256` output, so it is not a valid eager pair for this
-  fingerprinted 86-edge compiled run.
-- A clean champion compiler speedup still requires rerunning eager hotpath
-  against the same adjacency SHA-256:
-  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`.
+- The earlier non-fingerprinted champion eager run seeded `83` active edges and
+  is not a valid pair for this compiled run.
+- The matched eager pair now exists at:
+  `gen5/outputs/throughput_cuda_champion_eager_hotpath_fingerprinted_2026-06-27/analysis.md`.
+  It uses the same adjacency SHA-256 and shows a `6.311x` compiled/eager
+  speedup at `100k`.
 
 ## Next benchmark actions
 
-1. Rerun champion eager hotpath using the same adjacency and confirm the same
-   `adjacency_sha256`.
-2. Run champion capacity sweeps with this same SHA:
+1. Run champion capacity sweeps with this same SHA:
    - `--max-edges 96`
    - `--max-edges 128`
    - optionally `--max-edges 160`
-3. Run foraging 8-edge hotpath with and without `--compile`.
+2. Run foraging 8-edge hotpath with and without `--compile`.

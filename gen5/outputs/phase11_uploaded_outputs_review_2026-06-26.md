@@ -609,6 +609,54 @@ Interpretation:
 - A clean champion eager-vs-compiled speedup still requires rerunning eager
   hotpath with the same `adjacency_sha256`.
 
+## Verified champion-topology CUDA eager hotpath, fingerprinted
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_fingerprinted_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_fingerprinted_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_fingerprinted_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `champion`
+- Adjacency JSON: `gen5_outputs/champion/champion_sparse_adjacency.json`
+- Adjacency SHA-256:
+  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`
+- Active edges: `86`
+- Edge pool capacity: `128`
+- Active edge utilization: `67.19%`
+- `torch.compile`: not requested
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 339.219 | 339,219.142 | 8.522 |
+| 10,000 | 367.500 | 3,675,002.299 | 86.594 |
+| 50,000 | 111.565 | 5,578,244.953 | 425.916 |
+| 100,000 | 56.013 | 5,601,273.103 | 853.889 |
+
+Matched-SHA champion compiler comparison:
+
+| Population | Compiled / eager throughput | Compiled / eager max memory |
+|---:|---:|---:|
+| 1,000 | 4.904 | 1.038 |
+| 10,000 | 5.791 | 0.612 |
+| 50,000 | 6.197 | 0.580 |
+| 100,000 | 6.311 | 0.572 |
+
+Interpretation:
+
+- This is the first clean champion eager-vs-compiled comparison with a matching
+  topology fingerprint.
+- At `100k` agents, `torch.compile` gives the champion a `6.31x` speedup:
+  `35.35M` compiled agent-steps/sec versus `5.60M` eager.
+- Compiled peak memory at `100k` is `57.2%` of eager memory.
+- This pair is now the publication-grade champion compiler evidence.
+
 ## Verified baseline comparison
 
 Raw files:
