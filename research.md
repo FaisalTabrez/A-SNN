@@ -1167,6 +1167,52 @@ Artifact:
 
 - `gen5/outputs/sparse_efficiency_screen_cuda_2026-06-28/analysis.md`
 
+### 24. Sparse-efficiency component screen: low-LTW pruning is the best single lever
+
+Finding: the component sparse-efficiency screen completed on CUDA for
+`active_edge_penalty`, `low_ltw_pruning`, and `scheduled_sprouting` across `3`
+seeds, `200` generations, and the `16/32/64` neuron scale points.
+
+Results:
+
+| Group | Neurons | Final mean best fitness | Active synapses | Utilization | Fitness / active synapse | Threshold success |
+|---|---:|---:|---:|---:|---:|---:|
+| active_edge_penalty | 16 | 24.67 | 61.14 | 47.77% | 0.273 | 33.33% |
+| active_edge_penalty | 32 | 23.67 | 133.01 | 51.96% | 0.123 | 0% |
+| active_edge_penalty | 64 | 23.67 | 274.02 | 53.52% | 0.073 | 33.33% |
+| low_ltw_pruning | 16 | 23.67 | 49.46 | 38.64% | 0.364 | 0% |
+| low_ltw_pruning | 32 | 26.00 | 98.00 | 38.28% | 0.191 | 100% |
+| low_ltw_pruning | 64 | 24.67 | 194.11 | 37.91% | 0.098 | 66.67% |
+| scheduled_sprouting | 16 | 24.00 | 82.21 | 64.23% | 0.243 | 0% |
+| scheduled_sprouting | 32 | 24.67 | 111.31 | 43.48% | 0.162 | 33.33% |
+| scheduled_sprouting | 64 | 23.33 | 134.13 | 26.20% | 0.142 | 33.33% |
+
+Interpretation:
+
+- `low_ltw_pruning` is the strongest single mechanism so far. At `32` neurons
+  it achieved the best raw fitness (`26.0`) while cutting active synapses to
+  `98`, versus `163.45` in the prior baseline screen.
+- `low_ltw_pruning` also preserved threshold success better than the other
+  component groups at `32` and `64` neurons.
+- `active_edge_penalty` is too blunt at the current coefficient. It reduces
+  wiring, but hurts threshold success and does not preserve raw fitness well.
+- `scheduled_sprouting` is useful at larger capacities, especially `64`
+  neurons, where it produces the best component-screen fitness per active
+  synapse. Its raw fitness is weaker than `low_ltw_pruning`.
+
+Decision:
+
+- Keep low-LTW pruning as the primary sparse-efficiency mechanism.
+- Combine low-LTW pruning with scheduled sprouting next.
+- Avoid or substantially reduce active-edge fitness penalty until its
+  coefficient is calibrated.
+- Do not reuse the original aggressive `protected_sparse_core`; design a
+  gentler capacity-aware variant.
+
+Artifact:
+
+- `gen5/outputs/sparse_efficiency_components_cuda_2026-06-28/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1807,9 +1853,12 @@ Validation:
 
 1. Run the sparse-efficiency ablation:
    - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - next compare `active_edge_penalty`, `low_ltw_pruning`, and
-     `scheduled_sprouting` with seeds `42 43 44` and `200` generations,
-   - only after that, implement/run a gentler protected-core variant,
+   - implement/run a gentler combined variant using low-LTW pruning plus
+     scheduled sprouting,
+   - use no active-edge penalty or a very small coefficient (`~0.005`) until
+     the penalty is calibrated,
+   - make protected-core behavior capacity-aware rather than forcing all scales
+     to converge to about `40-50` active edges,
    - report final fitness, active synapses, utilization,
      fitness-per-active-synapse, hidden-edge fraction, and
      direct sensor-motor fraction across `16/32/64` neurons.
