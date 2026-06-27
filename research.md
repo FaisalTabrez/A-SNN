@@ -1051,6 +1051,47 @@ Artifact:
 
 - `gen5/outputs/neuron_scaling_cuda_2026-06-27/analysis.md`
 
+### 21. Sparse-efficiency ablation is the next required gate before harder worlds or MNIST
+
+Decision: implement a dedicated sparse-efficiency ablation before moving to
+harder bot worlds or MNIST-style classification.
+
+Rationale:
+
+- The neuron-scaling run showed that larger brains fill edge capacity without
+  improving behavior on the current foraging task.
+- Moving to MNIST before solving this would risk importing the same topology
+  bloat into a harder benchmark, making failures ambiguous.
+- The next experiment must prove that AMMC can maintain fitness while reducing
+  active synapses and improving fitness-per-active-synapse.
+
+Implemented controls:
+
+- Active-edge fitness penalty: rank organisms by raw fitness minus metabolic
+  edge cost.
+- Low-LTW pruning pressure: add a separate pruning channel for weak long-term
+  connections.
+- Sprouting schedule: reduce sprouting probability as edge-pool capacity grows.
+- Protected core: preserve seeded/champion-like core pathways while allowing
+  peripheral plasticity.
+- Hidden-node diagnostics: record how much active topology actually touches
+  hidden decision nodes versus direct sensor-to-motor reflex edges.
+
+Success criterion:
+
+- Preserve or improve final best fitness.
+- Reduce mean active synapses and edge utilization.
+- Improve fitness-per-active-synapse.
+- Show whether larger hidden-node pools are actually used, rather than merely
+  filled.
+
+Artifacts:
+
+- `gen5/ammc_gen5/evolver.py`
+- `gen5/ammc_gen5/evolving_loop.py`
+- `gen5/ammc_gen5/evaluation.py`
+- `gen5/examples/sprint13_sparse_efficiency_ablation.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1689,12 +1730,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Implement a sparse-efficiency ablation:
-   - fitness penalty per active edge,
-   - lower sprout probability for larger edge pools,
-   - stronger pruning for low-LTW edges,
-   - compare final fitness, active synapses, utilization, and
-     fitness-per-active-synapse across `16/32/64` neurons.
+1. Run the sparse-efficiency ablation:
+   - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
+   - compare `baseline_capacity_fill`, `active_edge_penalty`,
+     `low_ltw_pruning`, `scheduled_sprouting`, and `protected_sparse_core`,
+   - report final fitness, active synapses, utilization,
+     fitness-per-active-synapse, hidden-edge fraction, and
+     direct sensor-motor fraction across `16/32/64` neurons.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

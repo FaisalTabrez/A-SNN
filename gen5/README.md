@@ -266,6 +266,35 @@ The summary reports final mean best fitness, final active synapses, edge-pool
 utilization, fitness per active synapse, and the generation at which each scale
 first crossed the configured fitness threshold.
 
+### Sparse-efficiency ablation
+
+Run the post-neuron-scaling optimization sweep. This isolates five mechanisms:
+active-edge fitness penalty, stronger low-LTW pruning, capacity-scaled
+sprouting, protected seeded core pathways, and hidden-node usage diagnostics.
+
+```powershell
+python gen5/examples/sprint13_sparse_efficiency_ablation.py `
+  --device xla `
+  --seeds 42 43 44 45 46 47 48 49 50 51 `
+  --generations 500 `
+  --population-size 10000 `
+  --epoch-steps 120 `
+  --neuron-counts 16 32 64 `
+  --max-edges 128 256 512 `
+  --output-dir gen5_outputs/sparse_efficiency
+```
+
+Outputs:
+
+- `sparse_efficiency.json`
+- `sparse_efficiency_records.csv`
+- `sparse_efficiency_summary.csv`
+- `sparse_efficiency_summary.png`
+
+The key success condition is preserving or improving final fitness while
+raising `final_fitness_per_active_synapse` and lowering unnecessary hidden-edge
+bloat.
+
 ### Throughput benchmark
 
 Measure raw tensor-loop scaling on Colab TPU/XLA:

@@ -108,6 +108,62 @@ class TensorEvolverContractTest(unittest.TestCase):
         reward_report = rewarded.evolve(torch.tensor([3.0, 2.0, -1.0, -2.0]))
         self.assertEqual(reward_report["prune_count"], 2)
 
+    def test_protected_core_survives_pruning_pressure(self) -> None:
+        evolver = TensorEvolver(
+            TensorEvolverConfig(
+                population_size=2,
+                neuron_count=16,
+                max_edges=3,
+                sprout_probability=0.0,
+                prune_probability=1.0,
+                ltw_noise_std=0.0,
+                low_ltw_prune_threshold=0.5,
+                low_ltw_prune_probability=1.0,
+                protected_edge_count=1,
+                protect_core_topology=True,
+            )
+        )
+        evolver.seed_from_edges(
+            [
+                EdgeRecord(0, 8, long_term_weight=0.2),
+                EdgeRecord(1, 9, long_term_weight=0.2),
+            ]
+        )
+
+        report = evolver.mutate_children(torch.tensor([0, 1]))
+
+        self.assertTrue(torch.all(evolver.active_mask[:, 0]))
+        self.assertTrue(torch.all(~evolver.active_mask[:, 1]))
+        self.assertEqual(report["prune_count"], 2)
+        self.assertEqual(report["low_ltw_prune_count"], 2)
+
+    def test_edge_usage_stats_reports_hidden_routing(self) -> None:
+        evolver = TensorEvolver(
+            TensorEvolverConfig(
+                population_size=2,
+                neuron_count=16,
+                max_edges=4,
+                sprout_probability=0.0,
+                prune_probability=0.0,
+                ltw_noise_std=0.0,
+            )
+        )
+        evolver.seed_from_edges(
+            [
+                EdgeRecord(0, 8, long_term_weight=0.2),
+                EdgeRecord(0, 12, long_term_weight=0.2),
+                EdgeRecord(12, 9, long_term_weight=0.2),
+                EdgeRecord(13, 14, long_term_weight=0.2),
+            ]
+        )
+
+        stats = evolver.edge_usage_stats()
+
+        self.assertAlmostEqual(stats["mean_active_synapses"], 4.0)
+        self.assertAlmostEqual(stats["mean_hidden_edges"], 3.0)
+        self.assertAlmostEqual(stats["mean_hidden_edge_fraction"], 0.75)
+        self.assertAlmostEqual(stats["mean_direct_sensor_motor_fraction"], 0.25)
+
 
 if __name__ == "__main__":
     unittest.main()

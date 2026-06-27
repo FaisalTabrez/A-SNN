@@ -22,10 +22,12 @@ from ammc_gen5 import (
     PlasticityAblationRunner,
     RetentionAblationConfig,
     RetentionAblationRunner,
+    SparseEfficiencyGenerationRecord,
     TrialRunner,
     TrialRunnerConfig,
     hidden_neuron_count,
     summarize_neuron_scaling_records,
+    summarize_sparse_efficiency_records,
 )
 
 
@@ -46,6 +48,34 @@ class NeuronScalingSummaryTest(unittest.TestCase):
         self.assertEqual(row.hidden_neurons, 4)
         self.assertAlmostEqual(row.final_mean_best_fitness, 25.0)
         self.assertAlmostEqual(row.final_mean_active_synapses, 8.5)
+        self.assertAlmostEqual(row.threshold_success_rate, 0.5)
+        self.assertAlmostEqual(row.mean_generation_to_threshold or 0.0, 2.0)
+
+
+class SparseEfficiencySummaryTest(unittest.TestCase):
+    def test_sparse_efficiency_summary_math_without_torch(self) -> None:
+        records = [
+            SparseEfficiencyGenerationRecord(
+                "edge_penalty", 16, 4, 128, 42, 1, 20.0, 20.0, 18.0, 0.1, -0.2,
+                80.0, 0.625, 0.25, 20.0, 0.25, 0.1, 1, 2, 1, 80,
+            ),
+            SparseEfficiencyGenerationRecord(
+                "edge_penalty", 16, 4, 128, 42, 2, 26.0, 26.0, 24.5, 0.2, -0.1,
+                70.0, 0.546875, 0.3714285714, 25.0, 0.35, 0.1, 1, 2, 1, 70,
+            ),
+            SparseEfficiencyGenerationRecord(
+                "edge_penalty", 16, 4, 128, 43, 1, 24.0, 24.0, 22.0, 0.1, -0.2,
+                60.0, 0.46875, 0.4, 18.0, 0.3, 0.1, 1, 2, 1, 60,
+            ),
+        ]
+        summary = summarize_sparse_efficiency_records(records, threshold=25.0)
+
+        self.assertEqual(len(summary), 1)
+        row = summary[0]
+        self.assertEqual(row.group, "edge_penalty")
+        self.assertEqual(row.seeds, 2)
+        self.assertAlmostEqual(row.final_mean_best_fitness, 25.0)
+        self.assertAlmostEqual(row.final_mean_active_synapses, 65.0)
         self.assertAlmostEqual(row.threshold_success_rate, 0.5)
         self.assertAlmostEqual(row.mean_generation_to_threshold or 0.0, 2.0)
 

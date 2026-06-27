@@ -43,6 +43,7 @@ class EvolvingLoopConfig:
 
     epoch_steps: int = 3_600
     reset_membrane_on_epoch: bool = True
+    active_edge_fitness_penalty: float = 0.0
 
 
 class EvolvingHeadlessAMMCLoop(nn.Module):
@@ -75,6 +76,8 @@ class EvolvingHeadlessAMMCLoop(nn.Module):
         self.config = config or EvolvingLoopConfig()
         if self.config.epoch_steps <= 0:
             raise ValueError("epoch_steps must be positive")
+        if self.config.active_edge_fitness_penalty < 0:
+            raise ValueError("active_edge_fitness_penalty cannot be negative")
 
         self.register_buffer(
             "membrane",
@@ -160,9 +163,11 @@ class EvolvingHeadlessAMMCLoop(nn.Module):
     def finish_epoch(self, generator=None) -> dict:
         """Evolve the population from environment fitness and reset positions."""
 
-        fitness = self.environment.fitness.detach().clone()
-        champion = self._update_all_time_champion(fitness)
-        report = self.evolver.evolve(fitness, generator=generator)
+        raw_fitness = self.environment.fitness.detach().clone()
+        active_edges = self.evolver.active_edge_counts().to(raw_fitness.device, dtype=raw_fitness.dtype)
+        selection_fitness = raw_fitness - self.config.active_edge_fitness_penalty * active_edges
+        champion = self._update_all_time_champion(raw_fitness)
+        report = self.evolver.evolve(selection_fitness, generator=generator)
         self.environment.reset(generator=generator)
         if self.config.reset_membrane_on_epoch:
             self.membrane.zero_()
@@ -175,6 +180,11 @@ class EvolvingHeadlessAMMCLoop(nn.Module):
             **report,
             "completed_generation": completed_generation,
             "next_generation": self._generation_host,
+            "raw_best_fitness": float(raw_fitness.max().detach().cpu().item()),
+            "raw_mean_fitness": float(raw_fitness.float().mean().detach().cpu().item()),
+            "selection_best_fitness": float(selection_fitness.max().detach().cpu().item()),
+            "selection_mean_fitness": float(selection_fitness.float().mean().detach().cpu().item()),
+            "active_edge_fitness_penalty": self.config.active_edge_fitness_penalty,
             "all_time_best_fitness": self.best_fitness,
             "all_time_best_generation": self.best_generation,
             "epoch_champion_index": champion["index"],

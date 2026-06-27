@@ -455,6 +455,318 @@ class NeuronScalingRunner:
 
 
 @dataclass(frozen=True)
+class SparseEfficiencyGroupConfig:
+    """One sparse-efficiency ablation group."""
+
+    name: str
+    description: str
+    active_edge_fitness_penalty: float = 0.0
+    sprout_probability: float = 0.02
+    prune_probability: float = 0.01
+    ltw_noise_std: float = 0.02
+    low_ltw_prune_threshold: float = 0.0
+    low_ltw_prune_probability: float = 0.0
+    sprout_scale_by_capacity: bool = False
+    protect_core: bool = False
+    protect_core_topology: bool = True
+    protect_core_weights: bool = True
+
+
+def default_sparse_efficiency_groups() -> tuple[SparseEfficiencyGroupConfig, ...]:
+    """Return sparse-efficiency groups that isolate each proposed optimization."""
+
+    return (
+        SparseEfficiencyGroupConfig(
+            name="baseline_capacity_fill",
+            description="Current mutation schedule; no explicit pressure against extra edges.",
+        ),
+        SparseEfficiencyGroupConfig(
+            name="active_edge_penalty",
+            description="Rank organisms by raw fitness minus active-edge metabolic cost.",
+            active_edge_fitness_penalty=0.015,
+        ),
+        SparseEfficiencyGroupConfig(
+            name="low_ltw_pruning",
+            description="Add stronger pruning pressure for weak long-term edges.",
+            low_ltw_prune_threshold=0.08,
+            low_ltw_prune_probability=0.05,
+        ),
+        SparseEfficiencyGroupConfig(
+            name="scheduled_sprouting",
+            description="Reduce sprout probability as edge-pool capacity grows.",
+            sprout_scale_by_capacity=True,
+        ),
+        SparseEfficiencyGroupConfig(
+            name="protected_sparse_core",
+            description="Protect seeded core pathways while applying edge cost, weak-edge pruning, and scheduled sprouting.",
+            active_edge_fitness_penalty=0.015,
+            low_ltw_prune_threshold=0.08,
+            low_ltw_prune_probability=0.05,
+            sprout_scale_by_capacity=True,
+            protect_core=True,
+        ),
+    )
+
+
+@dataclass(frozen=True)
+class SparseEfficiencyConfig:
+    """Configuration for sparse-efficiency ablations across neuron scale points."""
+
+    seeds: tuple[int, ...] = tuple(range(42, 52))
+    generations: int = 500
+    epoch_steps: int = 120
+    population_size: int = 10_000
+    food_count: int = 128
+    toxin_count: int = 128
+    sensor_radius: float = 0.35
+    friction: float = 0.985
+    action_gain: float = 0.05
+    survivor_fraction: float = 0.5
+    reference_max_edges: int = 128
+    adaptation_fitness_threshold: float = 25.0
+    device: str = "auto"
+    seed_edges: tuple[EdgeRecord, ...] = field(default_factory=default_foraging_seed_edges)
+    scale_points: tuple[NeuronScalePoint, ...] = field(default_factory=default_neuron_scale_points)
+    groups: tuple[SparseEfficiencyGroupConfig, ...] = field(default_factory=default_sparse_efficiency_groups)
+    protected_core_edge_count: int | None = None
+
+
+@dataclass(frozen=True)
+class SparseEfficiencyGenerationRecord:
+    """One generation-level row for sparse-efficiency evaluation."""
+
+    group: str
+    neuron_count: int
+    hidden_neurons: int
+    max_edges: int
+    seed: int
+    generation: int
+    epoch_best_fitness: float
+    all_time_best_fitness: float
+    selection_best_fitness: float
+    mean_population_fitness: float
+    selection_mean_fitness: float
+    mean_active_synapses: float
+    active_edge_utilization: float
+    fitness_per_active_synapse: float
+    mean_hidden_edges: float
+    mean_hidden_edge_fraction: float
+    mean_direct_sensor_motor_fraction: float
+    sprout_count: int
+    prune_count: int
+    low_ltw_prune_count: int
+    ltw_mutation_count: int
+
+
+@dataclass(frozen=True)
+class SparseEfficiencySummaryRecord:
+    """Final sparse-efficiency summary for one group and scale point."""
+
+    group: str
+    neuron_count: int
+    hidden_neurons: int
+    max_edges: int
+    seeds: int
+    final_mean_best_fitness: float
+    final_std_best_fitness: float
+    final_mean_selection_best_fitness: float
+    final_mean_active_synapses: float
+    final_active_edge_utilization: float
+    final_fitness_per_active_synapse: float
+    final_mean_hidden_edge_fraction: float
+    final_mean_direct_sensor_motor_fraction: float
+    threshold_success_rate: float
+    mean_generation_to_threshold: float | None
+
+
+@dataclass(frozen=True)
+class SparseEfficiencyResult:
+    """Complete sparse-efficiency evaluation output."""
+
+    config: dict
+    records: list[SparseEfficiencyGenerationRecord]
+    summary: list[SparseEfficiencySummaryRecord]
+
+    def to_json_dict(self) -> dict:
+        return {
+            "config": self.config,
+            "records": [asdict(row) for row in self.records],
+            "summary": [asdict(row) for row in self.summary],
+        }
+
+
+class SparseEfficiencyRunner:
+    """Evaluate active-edge pressure, pruning pressure, sprouting schedules, and protected cores."""
+
+    def __init__(self, config: SparseEfficiencyConfig | None = None) -> None:
+        self.config = config or SparseEfficiencyConfig()
+        if not self.config.seeds:
+            raise ValueError("at least one seed is required")
+        if not self.config.scale_points:
+            raise ValueError("at least one neuron scale point is required")
+        if not self.config.groups:
+            raise ValueError("at least one sparse-efficiency group is required")
+        if self.config.reference_max_edges <= 0:
+            raise ValueError("reference_max_edges must be positive")
+        for point in self.config.scale_points:
+            if point.neuron_count < 12:
+                raise ValueError("neuron_count must be at least 12 for the default 8-sensor/4-motor transducer")
+            if point.max_edges < len(self.config.seed_edges):
+                raise ValueError("max_edges must be at least the seeded edge count")
+
+    def run(self) -> SparseEfficiencyResult:
+        _require_torch()
+        records: list[SparseEfficiencyGenerationRecord] = []
+        for group in self.config.groups:
+            for point in self.config.scale_points:
+                for seed in self.config.seeds:
+                    records.extend(self.run_group_trial(group, point, seed))
+        summary = summarize_sparse_efficiency_records(
+            records,
+            threshold=self.config.adaptation_fitness_threshold,
+        )
+        return SparseEfficiencyResult(
+            config=_jsonable_config(self.config),
+            records=records,
+            summary=summary,
+        )
+
+    def run_group_trial(
+        self,
+        group: SparseEfficiencyGroupConfig,
+        point: NeuronScalePoint,
+        seed: int,
+    ) -> list[SparseEfficiencyGenerationRecord]:
+        loop, generator = self._build_loop(group, point, seed)
+        rows: list[SparseEfficiencyGenerationRecord] = []
+        for _ in range(self.config.generations):
+            loop.run(self.config.epoch_steps, generator=generator)
+            report = loop.last_epoch_report
+            if report is None:
+                raise RuntimeError("loop did not emit an epoch report")
+            usage = loop.evolver.edge_usage_stats()
+            mean_active = _float(usage["mean_active_synapses"])
+            epoch_best = _float(report.get("raw_best_fitness", report.get("best_fitness", 0.0)))
+            rows.append(
+                SparseEfficiencyGenerationRecord(
+                    group=group.name,
+                    neuron_count=point.neuron_count,
+                    hidden_neurons=hidden_neuron_count(point.neuron_count),
+                    max_edges=point.max_edges,
+                    seed=int(seed),
+                    generation=int(report["completed_generation"]),
+                    epoch_best_fitness=epoch_best,
+                    all_time_best_fitness=_float(report.get("all_time_best_fitness", 0.0)),
+                    selection_best_fitness=_float(report.get("selection_best_fitness", report.get("best_fitness", 0.0))),
+                    mean_population_fitness=_float(report.get("raw_mean_fitness", report.get("mean_fitness", 0.0))),
+                    selection_mean_fitness=_float(report.get("selection_mean_fitness", report.get("mean_fitness", 0.0))),
+                    mean_active_synapses=mean_active,
+                    active_edge_utilization=(mean_active / point.max_edges) if point.max_edges else 0.0,
+                    fitness_per_active_synapse=(epoch_best / mean_active) if mean_active else 0.0,
+                    mean_hidden_edges=_float(usage["mean_hidden_edges"]),
+                    mean_hidden_edge_fraction=_float(usage["mean_hidden_edge_fraction"]),
+                    mean_direct_sensor_motor_fraction=_float(usage["mean_direct_sensor_motor_fraction"]),
+                    sprout_count=int(report.get("sprout_count", 0)),
+                    prune_count=int(report.get("prune_count", 0)),
+                    low_ltw_prune_count=int(report.get("low_ltw_prune_count", 0)),
+                    ltw_mutation_count=int(report.get("ltw_mutation_count", 0)),
+                )
+            )
+        return rows
+
+    def save_outputs(
+        self,
+        result: SparseEfficiencyResult,
+        output_dir: str | Path,
+        *,
+        plot: bool = True,
+    ) -> dict[str, str]:
+        output = Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+
+        json_path = output / "sparse_efficiency.json"
+        json_path.write_text(json.dumps(result.to_json_dict(), indent=2) + "\n", encoding="utf-8")
+
+        records_csv = output / "sparse_efficiency_records.csv"
+        _write_csv(records_csv, [asdict(row) for row in result.records])
+
+        summary_csv = output / "sparse_efficiency_summary.csv"
+        _write_csv(summary_csv, [asdict(row) for row in result.summary])
+
+        paths = {
+            "json": str(json_path),
+            "records_csv": str(records_csv),
+            "summary_csv": str(summary_csv),
+        }
+        if plot:
+            try:
+                plot_path = output / "sparse_efficiency_summary.png"
+                plot_sparse_efficiency_result(result, plot_path)
+                paths["plot"] = str(plot_path)
+            except Exception as exc:  # pragma: no cover - optional plotting
+                paths["plot"] = f"skipped: {exc}"
+        return paths
+
+    def _build_loop(self, group: SparseEfficiencyGroupConfig, point: NeuronScalePoint, seed: int):
+        device = _resolve_device(self.config.device)
+        generator = _make_generator(seed, device)
+        environment = TensorEnvironment2D(
+            TensorEnvironmentConfig(
+                agent_count=self.config.population_size,
+                food_count=self.config.food_count,
+                toxin_count=self.config.toxin_count,
+                sensor_radius=self.config.sensor_radius,
+                friction=self.config.friction,
+                action_gain=self.config.action_gain,
+            ),
+            device=device,
+        )
+        environment.reset(generator=generator)
+        protected_count = 0
+        if group.protect_core:
+            protected_count = (
+                self.config.protected_core_edge_count
+                if self.config.protected_core_edge_count is not None
+                else len(self.config.seed_edges)
+            )
+        evolver = TensorEvolver(
+            TensorEvolverConfig(
+                population_size=self.config.population_size,
+                neuron_count=point.neuron_count,
+                max_edges=point.max_edges,
+                survivor_fraction=self.config.survivor_fraction,
+                ltw_noise_std=group.ltw_noise_std,
+                sprout_probability=self._sprout_probability_for(group, point),
+                prune_probability=group.prune_probability,
+                low_ltw_prune_threshold=group.low_ltw_prune_threshold,
+                low_ltw_prune_probability=group.low_ltw_prune_probability,
+                protected_edge_count=protected_count,
+                protect_core_topology=group.protect_core_topology,
+                protect_core_weights=group.protect_core_weights,
+            ),
+            device=device,
+        )
+        evolver.seed_from_edges(self.config.seed_edges)
+        loop = EvolvingHeadlessAMMCLoop(
+            environment,
+            evolver,
+            VectorizedTransducer(TransducerConfig(neuron_count=point.neuron_count)),
+            EvolvingLoopConfig(
+                epoch_steps=self.config.epoch_steps,
+                active_edge_fitness_penalty=group.active_edge_fitness_penalty,
+            ),
+            logger=EvolutionTelemetryLogger(),
+        ).to(device)
+        return loop, generator
+
+    def _sprout_probability_for(self, group: SparseEfficiencyGroupConfig, point: NeuronScalePoint) -> float:
+        if not group.sprout_scale_by_capacity:
+            return group.sprout_probability
+        scale = self.config.reference_max_edges / point.max_edges
+        return max(0.0, group.sprout_probability * scale)
+
+
+@dataclass(frozen=True)
 class AblationGroupConfig:
     """One seeded plasticity ablation group."""
 
@@ -972,6 +1284,60 @@ def summarize_neuron_scaling_records(
     return summaries
 
 
+def summarize_sparse_efficiency_records(
+    records: list[SparseEfficiencyGenerationRecord],
+    *,
+    threshold: float,
+) -> list[SparseEfficiencySummaryRecord]:
+    summaries: list[SparseEfficiencySummaryRecord] = []
+    keys = sorted({(row.group, row.neuron_count, row.max_edges) for row in records})
+    for group, neuron_count, max_edges in keys:
+        group_rows = [
+            row
+            for row in records
+            if row.group == group and row.neuron_count == neuron_count and row.max_edges == max_edges
+        ]
+        seeds = sorted({row.seed for row in group_rows})
+        final_rows = [
+            max((row for row in group_rows if row.seed == seed), key=lambda row: row.generation)
+            for seed in seeds
+        ]
+        threshold_generations: list[int] = []
+        for seed in seeds:
+            seed_rows = sorted((row for row in group_rows if row.seed == seed), key=lambda row: row.generation)
+            reached = next((row.generation for row in seed_rows if row.all_time_best_fitness >= threshold), None)
+            if reached is not None:
+                threshold_generations.append(reached)
+
+        final_best = [row.all_time_best_fitness for row in final_rows]
+        final_selection = [row.selection_best_fitness for row in final_rows]
+        final_active = [row.mean_active_synapses for row in final_rows]
+        final_utilization = [row.active_edge_utilization for row in final_rows]
+        final_fitness_per_edge = [row.fitness_per_active_synapse for row in final_rows]
+        final_hidden_fraction = [row.mean_hidden_edge_fraction for row in final_rows]
+        final_direct_fraction = [row.mean_direct_sensor_motor_fraction for row in final_rows]
+        summaries.append(
+            SparseEfficiencySummaryRecord(
+                group=group,
+                neuron_count=neuron_count,
+                hidden_neurons=hidden_neuron_count(neuron_count),
+                max_edges=max_edges,
+                seeds=len(seeds),
+                final_mean_best_fitness=_mean(final_best) if final_best else 0.0,
+                final_std_best_fitness=_std(final_best) if final_best else 0.0,
+                final_mean_selection_best_fitness=_mean(final_selection) if final_selection else 0.0,
+                final_mean_active_synapses=_mean(final_active) if final_active else 0.0,
+                final_active_edge_utilization=_mean(final_utilization) if final_utilization else 0.0,
+                final_fitness_per_active_synapse=_mean(final_fitness_per_edge) if final_fitness_per_edge else 0.0,
+                final_mean_hidden_edge_fraction=_mean(final_hidden_fraction) if final_hidden_fraction else 0.0,
+                final_mean_direct_sensor_motor_fraction=_mean(final_direct_fraction) if final_direct_fraction else 0.0,
+                threshold_success_rate=(len(threshold_generations) / len(seeds)) if seeds else 0.0,
+                mean_generation_to_threshold=_mean(threshold_generations) if threshold_generations else None,
+            )
+        )
+    return summaries
+
+
 def summarize_ablation_records(
     records: list[AblationGenerationRecord],
     *,
@@ -1123,6 +1489,57 @@ def plot_neuron_scaling_result(result: NeuronScalingResult, path: str | Path | N
     handles, labels = axes[1].get_legend_handles_labels()
     twin_handles, twin_labels = twin.get_legend_handles_labels()
     axes[1].legend(handles + twin_handles, labels + twin_labels, loc="best")
+
+    fig.tight_layout()
+    if path is not None:
+        output = Path(path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(output, dpi=160)
+    if show:
+        plt.show()
+    return fig
+
+
+def plot_sparse_efficiency_result(result: SparseEfficiencyResult, path: str | Path | None = None, *, show: bool = False):
+    if not result.summary:
+        raise ValueError("no sparse-efficiency summary records to plot")
+    import matplotlib.pyplot as plt
+
+    groups = sorted({row.group for row in result.summary})
+    fig, axes = plt.subplots(3, 1, figsize=(11, 11), sharex=True)
+    for group in groups:
+        rows = sorted((row for row in result.summary if row.group == group), key=lambda row: row.neuron_count)
+        x = [row.neuron_count for row in rows]
+        axes[0].plot(
+            x,
+            [row.final_mean_best_fitness for row in rows],
+            marker="o",
+            linewidth=2,
+            label=group,
+        )
+        axes[1].plot(
+            x,
+            [row.final_mean_active_synapses for row in rows],
+            marker="o",
+            linewidth=2,
+            label=group,
+        )
+        axes[2].plot(
+            x,
+            [row.final_fitness_per_active_synapse for row in rows],
+            marker="o",
+            linewidth=2,
+            label=group,
+        )
+
+    axes[0].set_title("AMMC Gen-5 Sparse-Efficiency Ablation")
+    axes[0].set_ylabel("Best fitness")
+    axes[1].set_ylabel("Active synapses")
+    axes[2].set_ylabel("Fitness / active synapse")
+    axes[2].set_xlabel("Neuron count")
+    for ax in axes:
+        ax.grid(True, alpha=0.25)
+        ax.legend(fontsize="small")
 
     fig.tight_layout()
     if path is not None:
