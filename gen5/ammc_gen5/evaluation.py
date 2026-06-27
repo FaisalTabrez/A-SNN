@@ -621,13 +621,81 @@ class SparseEfficiencyRunner:
             for point in self.config.scale_points:
                 for seed in self.config.seeds:
                     records.extend(self.run_group_trial(group, point, seed))
+        return self.result_from_records(records)
+
+    def run_with_checkpoints(
+        self,
+        output_dir: str | Path,
+        *,
+        plot: bool = True,
+        checkpoint_every_trials: int = 1,
+        print_progress: bool = True,
+    ) -> tuple[SparseEfficiencyResult, dict[str, str]]:
+        """Run sparse-efficiency trials and overwrite outputs after each checkpoint.
+
+        A full sparse-efficiency matrix is intentionally expensive. Checkpoints
+        avoid the Colab failure mode where several hours of completed trials are
+        lost because the script only writes files at the end.
+        """
+
+        _require_torch()
+        if checkpoint_every_trials <= 0:
+            raise ValueError("checkpoint_every_trials must be positive")
+
+        output = Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+        records: list[SparseEfficiencyGenerationRecord] = []
+        plan = [
+            (group, point, seed)
+            for group in self.config.groups
+            for point in self.config.scale_points
+            for seed in self.config.seeds
+        ]
+        total = len(plan)
+        paths: dict[str, str] = {}
+        result = self.result_from_records(records)
+        for index, (group, point, seed) in enumerate(plan, start=1):
+            if print_progress:
+                print(
+                    f"[{index}/{total}] group={group.name} "
+                    f"neurons={point.neuron_count} max_edges={point.max_edges} seed={seed}",
+                    flush=True,
+                )
+            records.extend(self.run_group_trial(group, point, seed))
+            should_checkpoint = index == total or index % checkpoint_every_trials == 0
+            if should_checkpoint:
+                result = self.result_from_records(records)
+                paths = self.save_outputs(result, output, plot=plot and index == total)
+                progress_path = output / "sparse_efficiency_progress.json"
+                progress_path.write_text(
+                    json.dumps(
+                        {
+                            "completed_trials": index,
+                            "total_trials": total,
+                            "current_group": group.name,
+                            "current_neuron_count": point.neuron_count,
+                            "current_max_edges": point.max_edges,
+                            "current_seed": seed,
+                            "paths": paths,
+                        },
+                        indent=2,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                paths["progress"] = str(progress_path)
+                if print_progress:
+                    print(f"checkpoint saved: {progress_path}", flush=True)
+        return result, paths
+
+    def result_from_records(self, records: list[SparseEfficiencyGenerationRecord]) -> SparseEfficiencyResult:
         summary = summarize_sparse_efficiency_records(
             records,
             threshold=self.config.adaptation_fitness_threshold,
         )
         return SparseEfficiencyResult(
             config=_jsonable_config(self.config),
-            records=records,
+            records=list(records),
             summary=summary,
         )
 

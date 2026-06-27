@@ -1092,6 +1092,37 @@ Artifacts:
 - `gen5/ammc_gen5/evaluation.py`
 - `gen5/examples/sprint13_sparse_efficiency_ablation.py`
 
+### 22. Sparse-efficiency runs need staged execution and checkpoints
+
+Finding: the first full sparse-efficiency command ran for more than `4` hours
+in Colab. This is expected: the full matrix is `5` ablation groups x `3`
+neuron scales x `10` seeds x `500` generations x `120` steps, making it about
+`5x` heavier than the earlier neuron-scaling sweep.
+
+Decision:
+
+- Keep the full matrix available, but do not use it as the default exploratory
+  workflow.
+- Add `--groups` filtering so individual mechanisms can be run independently.
+- Add checkpointing after each group/scale/seed trial so Colab interruptions do
+  not destroy completed work.
+- Add a recommended focused screen:
+  `baseline_capacity_fill` vs `protected_sparse_core`, seeds `42 43 44`,
+  `200` generations, full `16/32/64` scale points.
+
+Operational note:
+
+- The old no-checkpoint full run should be allowed to finish if it is still
+  actively using the accelerator and Colab is stable.
+- For future runs, prefer checkpointed screens and only expand to the full
+  matrix after a promising group is identified.
+
+Artifacts:
+
+- `gen5/ammc_gen5/evaluation.py`
+- `gen5/examples/sprint13_sparse_efficiency_ablation.py`
+- `gen5/docs/PHASE11_COLAB_RUNBOOK.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1732,8 +1763,10 @@ Validation:
 
 1. Run the sparse-efficiency ablation:
    - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - compare `baseline_capacity_fill`, `active_edge_penalty`,
-     `low_ltw_pruning`, `scheduled_sprouting`, and `protected_sparse_core`,
+   - first screen `baseline_capacity_fill` vs `protected_sparse_core` with
+     seeds `42 43 44` and `200` generations,
+   - then compare `active_edge_penalty`, `low_ltw_pruning`,
+     `scheduled_sprouting`, and `protected_sparse_core` only as needed,
    - report final fitness, active synapses, utilization,
      fitness-per-active-synapse, hidden-edge fraction, and
      direct sensor-motor fraction across `16/32/64` neurons.

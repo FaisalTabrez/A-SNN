@@ -271,6 +271,33 @@ first crossed the configured fitness threshold.
 Run the post-neuron-scaling optimization sweep. This isolates five mechanisms:
 active-edge fitness penalty, stronger low-LTW pruning, capacity-scaled
 sprouting, protected seeded core pathways, and hidden-node usage diagnostics.
+The full matrix is expensive, so start with a focused screen:
+
+```powershell
+python gen5/examples/sprint13_sparse_efficiency_ablation.py `
+  --device xla `
+  --groups baseline_capacity_fill protected_sparse_core `
+  --seeds 42 43 44 `
+  --generations 200 `
+  --population-size 10000 `
+  --epoch-steps 120 `
+  --neuron-counts 16 32 64 `
+  --max-edges 128 256 512 `
+  --output-dir gen5_outputs/sparse_efficiency_screen
+```
+
+The runner checkpoints after each group/scale/seed trial by default, writing
+`sparse_efficiency_progress.json` plus partial JSON/CSV files. Use
+`--checkpoint-every-trials N` to reduce checkpoint frequency or
+`--no-checkpoint` to restore the old end-only behavior.
+
+List available groups:
+
+```powershell
+python gen5/examples/sprint13_sparse_efficiency_ablation.py --list-groups
+```
+
+Full matrix:
 
 ```powershell
 python gen5/examples/sprint13_sparse_efficiency_ablation.py `

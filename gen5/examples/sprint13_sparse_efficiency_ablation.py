@@ -31,7 +31,12 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from ammc_gen5 import NeuronScalePoint, SparseEfficiencyConfig, SparseEfficiencyRunner
+from ammc_gen5 import (
+    NeuronScalePoint,
+    SparseEfficiencyConfig,
+    SparseEfficiencyRunner,
+    default_sparse_efficiency_groups,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -48,6 +53,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--threshold", type=float, default=25.0)
     parser.add_argument("--reference-max-edges", type=int, default=128)
     parser.add_argument("--protected-core-edge-count", type=int, default=None)
+    parser.add_argument(
+        "--groups",
+        nargs="+",
+        default=None,
+        help="Subset of sparse-efficiency groups to run. Use --list-groups to inspect names.",
+    )
+    parser.add_argument("--list-groups", action="store_true", help="Print available group names and exit")
+    parser.add_argument("--checkpoint-every-trials", type=int, default=1)
+    parser.add_argument("--no-checkpoint", action="store_true")
     parser.add_argument("--neuron-counts", nargs="+", type=int, default=[16, 32, 64])
     parser.add_argument("--max-edges", nargs="+", type=int, default=[128, 256, 512])
     parser.add_argument("--device", default="auto")
@@ -58,9 +72,14 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    available_groups = default_sparse_efficiency_groups()
+    if args.list_groups:
+        print(json.dumps([group.__dict__ for group in available_groups], indent=2))
+        return
     if len(args.neuron_counts) != len(args.max_edges):
         raise SystemExit("--neuron-counts and --max-edges must have the same length")
 
+    groups = select_groups(args.groups, available_groups)
     scale_points = tuple(
         NeuronScalePoint(neuron_count=neurons, max_edges=max_edges)
         for neurons, max_edges in zip(args.neuron_counts, args.max_edges)
@@ -80,21 +99,40 @@ def main() -> None:
             adaptation_fitness_threshold=args.threshold,
             device=args.device,
             scale_points=scale_points,
+            groups=groups,
             protected_core_edge_count=args.protected_core_edge_count,
         )
     )
-    result = runner.run()
-    paths = runner.save_outputs(result, args.output_dir, plot=not args.no_plot)
+    if args.no_checkpoint:
+        result = runner.run()
+        paths = runner.save_outputs(result, args.output_dir, plot=not args.no_plot)
+    else:
+        result, paths = runner.run_with_checkpoints(
+            args.output_dir,
+            plot=not args.no_plot,
+            checkpoint_every_trials=args.checkpoint_every_trials,
+        )
     print(
         json.dumps(
             {
                 "paths": paths,
                 "scale_points": [point.__dict__ for point in scale_points],
+                "groups": [group.name for group in groups],
                 "summary": [row.__dict__ for row in result.summary],
             },
             indent=2,
         )
     )
+
+
+def select_groups(group_names: list[str] | None, available_groups):
+    if not group_names:
+        return tuple(available_groups)
+    by_name = {group.name: group for group in available_groups}
+    missing = [name for name in group_names if name not in by_name]
+    if missing:
+        raise SystemExit(f"unknown sparse-efficiency group(s): {', '.join(missing)}")
+    return tuple(by_name[name] for name in group_names)
 
 
 if __name__ == "__main__":

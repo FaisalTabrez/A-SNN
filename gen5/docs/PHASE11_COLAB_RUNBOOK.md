@@ -276,6 +276,40 @@ Main metrics:
 Use this after the neuron-scaling sweep. It tests whether we can keep fitness
 while reducing structural bloat.
 
+First, run a focused screen. This is much cheaper than the full five-group
+matrix and produces checkpoints after every group/scale/seed trial:
+
+```python
+!python gen5/examples/sprint13_sparse_efficiency_ablation.py \
+  --device cuda \
+  --groups baseline_capacity_fill protected_sparse_core \
+  --seeds 42 43 44 \
+  --generations 200 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --neuron-counts 16 32 64 \
+  --max-edges 128 256 512 \
+  --output-dir gen5_outputs/sparse_efficiency_screen_cuda
+```
+
+List all available groups:
+
+```python
+!python gen5/examples/sprint13_sparse_efficiency_ablation.py --list-groups
+```
+
+The runner writes partial outputs by default:
+
+- `sparse_efficiency.json`
+- `sparse_efficiency_records.csv`
+- `sparse_efficiency_summary.csv`
+- `sparse_efficiency_progress.json`
+
+Use `--checkpoint-every-trials N` to checkpoint less frequently, or
+`--no-checkpoint` to only write at the end.
+
+After the screen, run the full matrix only if the runtime budget is acceptable:
+
 ```python
 !python gen5/examples/sprint13_sparse_efficiency_ablation.py \
   --device xla \
