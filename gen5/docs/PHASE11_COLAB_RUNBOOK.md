@@ -182,8 +182,12 @@ Main metrics:
 - `seeded_active_edges`
 - `edge_pool_capacity`
 - `active_edge_utilization`
+- `resolved_adjacency_json` and `adjacency_sha256` for champion runs
 - CUDA memory allocated / max allocated when running CUDA
 - `accelerator_backend`, which should read `xla` on TPU runs
+
+For exact champion eager-vs-compiled comparisons, only compare rows whose
+`adjacency_sha256` values match.
 
 ## 3. Baseline comparison
 

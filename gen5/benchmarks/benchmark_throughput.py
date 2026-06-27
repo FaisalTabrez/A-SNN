@@ -45,6 +45,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import pathlib
 import random
@@ -88,6 +89,8 @@ class ThroughputResult:
     edge_pool_capacity: int
     active_edge_utilization: float
     adjacency_json: str | None
+    resolved_adjacency_json: str | None
+    adjacency_sha256: str | None
     population_size: int
     steps: int
     seconds: float
@@ -148,11 +151,14 @@ def main() -> None:
 
     output_dir = pathlib.Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    adjacency_path = resolve_adjacency_path(args.adjacency_json) if args.topology_preset == "champion" else None
+    adjacency_sha256 = _file_sha256(adjacency_path) if adjacency_path is not None else None
     seed_edges = build_seed_edges(
         args.topology_preset,
         max_edges=args.max_edges,
         active_edges=args.active_edges,
         adjacency_json=args.adjacency_json,
+        resolved_adjacency_path=adjacency_path,
         seed=args.seed,
     )
 
@@ -169,6 +175,8 @@ def main() -> None:
             topology_preset=args.topology_preset,
             requested_active_edges=args.active_edges,
             adjacency_json=args.adjacency_json,
+            resolved_adjacency_json=str(adjacency_path) if adjacency_path is not None else None,
+            adjacency_sha256=adjacency_sha256,
             seed_edges=seed_edges,
             compile_requested=args.compile,
             seed=args.seed,
@@ -199,6 +207,8 @@ def main() -> None:
                 "topology_preset": args.topology_preset,
                 "seeded_active_edges": len(seed_edges),
                 "edge_pool_capacity": args.max_edges,
+                "resolved_adjacency_json": str(adjacency_path) if adjacency_path is not None else None,
+                "adjacency_sha256": adjacency_sha256,
                 "json": str(json_path),
                 "csv": str(csv_path),
                 "plot": str(plot_path),
@@ -222,6 +232,8 @@ def run_one_size(
     topology_preset: str,
     requested_active_edges: int | None,
     adjacency_json: str | None,
+    resolved_adjacency_json: str | None,
+    adjacency_sha256: str | None,
     seed_edges,
     compile_requested: bool,
     seed: int,
@@ -306,6 +318,8 @@ def run_one_size(
         edge_pool_capacity=max_edges,
         active_edge_utilization=len(seed_edges) / max_edges if max_edges else 0.0,
         adjacency_json=adjacency_json,
+        resolved_adjacency_json=resolved_adjacency_json,
+        adjacency_sha256=adjacency_sha256,
         population_size=population_size,
         steps=steps,
         seconds=seconds,
@@ -331,6 +345,7 @@ def build_seed_edges(
     active_edges: int | None,
     adjacency_json: str | None,
     seed: int,
+    resolved_adjacency_path: pathlib.Path | None = None,
 ):
     if topology_preset == "foraging":
         return default_foraging_seed_edges()
@@ -338,7 +353,7 @@ def build_seed_edges(
         count = active_edges if active_edges is not None else min(86, max_edges)
         return synthetic_saturated_edges(count, max_edges=max_edges, seed=seed)
     if topology_preset == "champion":
-        path = resolve_adjacency_path(adjacency_json)
+        path = resolved_adjacency_path or resolve_adjacency_path(adjacency_json)
         return load_adjacency_edges(path, max_edges=max_edges)
     raise ValueError(f"unsupported topology_preset: {topology_preset}")
 
@@ -486,6 +501,14 @@ def load_adjacency_edges(path: pathlib.Path, *, max_edges: int):
             )
         )
     return tuple(edges)
+
+
+def _file_sha256(path: pathlib.Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _edge_record(source, target, *, short_term_weight, long_term_weight, sign, delay_steps):

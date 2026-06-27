@@ -507,6 +507,56 @@ Interpretation:
   capacity, and for a future compact/dynamic edge backend where active topology
   maps more directly to hardware work.
 
+## Verified champion-topology CUDA eager hotpath follow-up
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `champion`
+- Adjacency JSON: `gen5_outputs/champion/champion_sparse_adjacency.json`
+- Active edges: `83`
+- Edge pool capacity: `128`
+- Active edge utilization: `64.84%`
+- `torch.compile`: not requested
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 491.532 | 491,531.557 | 8.522 |
+| 10,000 | 493.944 | 4,939,441.277 | 86.594 |
+| 50,000 | 112.804 | 5,640,190.208 | 425.916 |
+| 100,000 | 56.873 | 5,687,259.652 | 853.889 |
+
+Comparison to saturated 86-edge eager hotpath:
+
+| Population | Champion / saturated throughput | Champion / saturated max memory |
+|---:|---:|---:|
+| 1,000 | 1.131 | 0.966 |
+| 10,000 | 1.175 | 0.967 |
+| 50,000 | 1.209 | 0.966 |
+| 100,000 | 1.209 | 0.966 |
+
+Interpretation:
+
+- The current/fresh `83`-edge champion eager hotpath reaches `5.69M`
+  agent-steps/sec at `100k` agents.
+- It is about `1.21x` faster than the synthetic saturated 86-edge eager
+  hotpath at the same population.
+- This run is not directly comparable to the previous compiled champion
+  hotpath run because that run seeded `55` active edges from the same displayed
+  runtime path. The champion file changed between runs or a different file was
+  present at the same path.
+- Future benchmark outputs now include `resolved_adjacency_json` and
+  `adjacency_sha256` so exact-topology comparisons can be audited.
+
 ## Verified baseline comparison
 
 Raw files:

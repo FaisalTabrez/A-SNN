@@ -826,6 +826,43 @@ Artifact:
 
 - `gen5/outputs/throughput_cuda_champion_compile_hotpath_2026-06-27/analysis.md`
 
+Champion eager hotpath result added 2026-06-27:
+
+- Champion CUDA eager hotpath completed with `torch.compile` disabled and
+  `tick_mode: tensor_hot_path_no_epoch_control`.
+- The run used the displayed path
+  `gen5_outputs/champion/champion_sparse_adjacency.json`, but seeded `83`
+  active edges, while the previous compiled champion run using the same
+  displayed path seeded `55` active edges.
+- At `100k` agents, the `83`-edge champion eager hotpath reached `5.69M`
+  agent-steps/sec with `853.89 MB` CUDA max memory.
+- Compared with the saturated `86`-edge eager hotpath:
+  - `1.131x` throughput at `1k`,
+  - `1.175x` at `10k`,
+  - `1.209x` at `50k`,
+  - `1.209x` at `100k`.
+
+Interpretation:
+
+- This is valid evidence for the fresh `83`-edge champion eager runtime.
+- It is not a valid compiled/eager pair against the previous `55`-edge compiled
+  champion run. The same Colab display path can point to different champion
+  payloads across sessions or exports.
+- Exact-topology benchmark comparisons now require a topology fingerprint.
+  `benchmark_throughput.py` therefore records `resolved_adjacency_json` and
+  `adjacency_sha256` for future champion runs.
+
+Next action:
+
+- Rerun both champion eager and champion compiled hotpath after the SHA-256
+  schema patch, using the same printed `adjacency_sha256`.
+- Only then report a champion-specific compiled/eager speedup.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_champion_eager_hotpath_2026-06-27/analysis.md`
+- `gen5/benchmarks/benchmark_throughput.py`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every
@@ -1505,11 +1542,12 @@ Validation:
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
 2. Complete topology-aware hotpath throughput coverage:
-   - run eager hotpath for exact `champion_sparse_adjacency.json`,
-   - sweep champion `--max-edges 64`, `96`, and `128`,
+   - rerun champion eager and compiled hotpaths with matching
+     `adjacency_sha256`,
+   - sweep champion `--max-edges 64`, `96`, and `128` after fingerprinting,
    - compare eager vs `--compile` for the `foraging` 8-edge prior,
    - report `tick_mode`, active-edge count, edge-pool capacity, utilization,
-     memory, and agent-steps/sec at 1k/10k/50k/100k.
+     `adjacency_sha256`, memory, and agent-steps/sec at 1k/10k/50k/100k.
 3. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,
    - add protected-core champion masks,
