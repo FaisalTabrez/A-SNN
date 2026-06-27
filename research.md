@@ -1013,6 +1013,44 @@ Artifacts:
 - `gen5/examples/sprint12_neuron_scaling.py`
 - `gen5/tests/test_evaluation_contract.py`
 
+### 20. Neuron scaling result: current Gen-5 is structure-efficiency limited, not neuron-capacity limited
+
+Finding: the first Sprint 12 CUDA neuron-scaling run completed across `10`
+seeds, `500` generations, and `10,000` agents at `16`, `32`, and `64`
+neurons.
+
+Results:
+
+| Neurons | Hidden decision nodes | Edge slots | Final mean best fitness | Std | Mean active synapses | Utilization | Fitness / active synapse | Threshold success |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 16 | 4 | 128 | 25.9 | 1.10 | 85.92 | 67.13% | 0.301 | 100% |
+| 32 | 20 | 256 | 26.1 | 2.33 | 171.62 | 67.04% | 0.152 | 80% |
+| 64 | 52 | 512 | 25.5 | 1.35 | 343.62 | 67.11% | 0.074 | 70% |
+
+Interpretation:
+
+- More neurons did not materially improve final fitness on the current
+  foraging task.
+- Active synapses scaled almost exactly with edge-pool capacity, while edge
+  utilization stayed near `67%` across every condition.
+- Fitness per active synapse approximately halved with each capacity doubling:
+  `0.301 -> 0.152 -> 0.074`.
+- The current task and mutation schedule are not exploiting extra hidden
+  decision nodes. The system is filling available edge capacity rather than
+  discovering more efficient sparse computation.
+
+Decision:
+
+- Do not increase neuron count further as the next default capability lever.
+- Prioritize active-edge pressure, low-LTW pruning pressure, and
+  fitness-per-active-synapse as first-class optimization targets.
+- Treat `16` neurons / `128` edge slots as the current Pareto baseline for the
+  simple 2D foraging task until a sparse-efficiency ablation proves otherwise.
+
+Artifact:
+
+- `gen5/outputs/neuron_scaling_cuda_2026-06-27/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1651,11 +1689,12 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the Sprint 12 neuron-scaling sweep:
-   - `16/32/64` neurons with `128/256/512` edge slots,
-   - `10` seeds x `500` generations,
-   - report final best fitness, active synapses, utilization,
-     fitness-per-active-synapse, and generation-to-threshold.
+1. Implement a sparse-efficiency ablation:
+   - fitness penalty per active edge,
+   - lower sprout probability for larger edge pools,
+   - stronger pruning for low-LTW edges,
+   - compare final fitness, active synapses, utilization, and
+     fitness-per-active-synapse across `16/32/64` neurons.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
