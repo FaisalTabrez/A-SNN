@@ -863,6 +863,45 @@ Artifact:
 - `gen5/outputs/throughput_cuda_champion_eager_hotpath_2026-06-27/analysis.md`
 - `gen5/benchmarks/benchmark_throughput.py`
 
+Fingerprint-matched champion compiled run added 2026-06-27:
+
+- Corrected fingerprinted champion compiled hotpath files were uploaded and
+  verified against JSON and CSV.
+- Adjacency SHA-256:
+  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`.
+- Active edges: `86`.
+- Edge pool capacity: `128`.
+- Active edge utilization: `67.19%`.
+- At `100k` agents, compiled champion throughput reached `35.35M`
+  agent-steps/sec with `488.19 MB` CUDA max memory.
+- Compared with saturated 86-edge compiled hotpath, the fingerprinted champion
+  achieved:
+  - `75.7%` throughput at `1k`,
+  - `96.3%` at `10k`,
+  - `89.9%` at `50k`,
+  - `90.3%` at `100k`.
+
+Interpretation:
+
+- This is now the strongest champion-specific compiled throughput artifact.
+- The current champion topology is near saturated-topology throughput at scale,
+  but not identical: exact source/target scatter structure matters even when
+  active edge count and edge-pool capacity match.
+- The old `55`-edge non-fingerprinted champion compiled run should be treated
+  as historical diagnostic evidence, not the current publishable champion
+  result.
+- Memory equality with saturated compiled throughput reinforces that the
+  current fixed-capacity edge pool controls memory footprint.
+
+Next action:
+
+- Rerun champion eager hotpath and require the same `adjacency_sha256` before
+  reporting champion-specific compiled/eager speedup.
+
+Artifact:
+
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/analysis.md`
+
 ### 18. Literature scan: AMMC is likely unique as an integration, not as individual mechanisms
 
 Finding: a first-pass literature scan shows strong prior art for nearly every

@@ -557,6 +557,58 @@ Interpretation:
 - Future benchmark outputs now include `resolved_adjacency_json` and
   `adjacency_sha256` so exact-topology comparisons can be audited.
 
+## Verified champion-topology CUDA compiled hotpath, fingerprinted
+
+Raw files:
+
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/throughput_results.json`
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/throughput_results.csv`
+- `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/throughput_scaling.png`
+
+Run context:
+
+- Device: `cuda`
+- Topology preset: `champion`
+- Adjacency JSON: `gen5_outputs/champion/champion_sparse_adjacency.json`
+- Adjacency SHA-256:
+  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`
+- Active edges: `86`
+- Edge pool capacity: `128`
+- Active edge utilization: `67.19%`
+- `torch.compile`: requested and active
+- Tick mode: `tensor_hot_path_no_epoch_control`
+
+Results:
+
+| Population | Ticks/sec | Agent-steps/sec | CUDA max memory MB |
+|---:|---:|---:|---:|
+| 1,000 | 1,663.407 | 1,663,407.163 | 8.848 |
+| 10,000 | 2,128.179 | 21,281,787.331 | 53.016 |
+| 50,000 | 691.317 | 34,565,832.932 | 246.852 |
+| 100,000 | 353.486 | 35,348,599.664 | 488.195 |
+
+Comparison to saturated 86-edge compiled hotpath:
+
+| Population | Champion / saturated throughput | Champion / saturated max memory |
+|---:|---:|---:|
+| 1,000 | 0.757 | 1.000 |
+| 10,000 | 0.963 | 1.000 |
+| 50,000 | 0.899 | 1.000 |
+| 100,000 | 0.903 | 1.000 |
+
+Interpretation:
+
+- The fingerprinted 86-edge champion reaches `35.35M` agent-steps/sec at
+  `100k` agents on CUDA.
+- This is `90.3%` of synthetic saturated 86-edge compiled throughput at the
+  same population size.
+- Memory is identical to the saturated compiled hotpath, reinforcing that the
+  current backend's fixed edge-pool capacity dominates memory footprint.
+- This supersedes the earlier non-fingerprinted `55`-edge compiled champion
+  run as the publication-grade champion compiled throughput artifact.
+- A clean champion eager-vs-compiled speedup still requires rerunning eager
+  hotpath with the same `adjacency_sha256`.
+
 ## Verified baseline comparison
 
 Raw files:

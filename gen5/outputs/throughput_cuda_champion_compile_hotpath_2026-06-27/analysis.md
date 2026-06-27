@@ -20,6 +20,14 @@ Raw files:
 - `throughput_results.csv`
 - `throughput_scaling.png`
 
+Supersession note:
+
+- This run predates `adjacency_sha256` output and seeded `55` active edges.
+- The current publication-grade compiled champion artifact is:
+  `gen5/outputs/throughput_cuda_champion_compile_hotpath_fingerprinted_2026-06-27/analysis.md`.
+  It records `86` active edges and adjacency SHA-256
+  `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`.
+
 ## Results
 
 | Population | Ticks/sec | Agent-steps/sec | Mean active synapses | CUDA max memory MB |
