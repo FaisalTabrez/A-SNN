@@ -429,9 +429,9 @@ def _adjacency_path_candidates(requested: pathlib.Path | None) -> list[pathlib.P
                 ROOT.parent / "gen5_outputs" / "champion" / CHAMPION_ADJACENCY_NAME,
                 ROOT.parent / "gen5_outputs" / CHAMPION_ADJACENCY_NAME,
                 pathlib.Path.cwd() / "gen5" / "outputs" / "colab_500_gen_2026-06-25" / CHAMPION_ADJACENCY_NAME,
+                pathlib.Path.cwd() / "gen5" / "outputs" / "legacy_first_run_upload_2026-06-25" / CHAMPION_ADJACENCY_NAME,
                 pathlib.Path.cwd() / "gen5_outputs" / "champion" / CHAMPION_ADJACENCY_NAME,
                 pathlib.Path.cwd() / "gen5_outputs" / CHAMPION_ADJACENCY_NAME,
-                pathlib.Path.cwd() / "1st run" / CHAMPION_ADJACENCY_NAME,
             ]
         )
     return _unique_paths(candidates)

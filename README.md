@@ -1,40 +1,73 @@
-# A-SNN / AMMC Gen-5
+# A-SNN / AMMC
 
-Adaptive Spiking Neural Network research workspace for the AMMC line:
-browser-proven biological mechanics, Gen-5 headless tensor evolution, and
-accelerator-oriented benchmarking.
+Adaptive spiking-neural-network research workspace for the AMMC line: a
+browser-proven biological sandbox plus a headless Gen-5 tensor framework for
+large-scale embodied evolution.
 
-## What is in this repo
+The short version:
 
-- `index.html` — Gen-4 browser sandbox for visual neuromorphic inspection,
-  connectome import/export, PyTorch weight import, seeded replay, and embodied
-  foraging behavior.
-- `gen5/` — Python Gen-5 framework scaffold:
-  - dynamic sparse edge pools,
-  - STW/LTW memory separation,
-  - vectorized 2D embodiment,
-  - tensorized swarm evolution,
-  - champion export,
-  - statistical evaluation and benchmark harnesses.
-- `research.md` — living research log. We update this whenever project
-  decisions or findings change.
-- `design/` — project concept and UI reference assets.
-- `gen5/outputs/` — retained experiment outputs and Phase 11 evidence bundles.
+- `index.html` is the Gen-4 browser sandbox for visual inspection.
+- `gen5/` is the Python framework for headless tensor evolution and benchmarks.
+- `research.md` is the living project memory and decision log.
+- `gen5/outputs/` contains retained experiment evidence.
 
-## Current architecture direction
+## Start here
 
-Gen-5 is TPU/XLA-first for near-term Colab-scale work. CUDA/T4 remains
-supported through ordinary PyTorch, while custom CUDA kernels are deferred
-until the XLA-compatible algorithm surface stabilizes.
+If you are new to the repo, read these in order:
 
-Useful references:
+1. [Repository structure](docs/PROJECT_STRUCTURE.md)
+2. [Gen-5 architecture](gen5/docs/GEN5_ARCHITECTURE.md)
+3. [Current research log](research.md)
+4. [Gen-5 README](gen5/README.md)
+5. [Phase 11 Colab runbook](gen5/docs/PHASE11_COLAB_RUNBOOK.md)
 
-- `gen5/README.md`
-- `gen5/docs/GEN5_ARCHITECTURE.md`
-- `gen5/docs/TPU_XLA_MIGRATION.md`
-- `gen5/docs/PHASE11_COLAB_RUNBOOK.md`
+## Repository map
 
-## Quick validation
+```text
+.
+|-- index.html                 # Gen-4 browser sandbox / visual connectome lab
+|-- research.md                # living findings, decisions, and next steps
+|-- docs/                      # newcomer navigation and repo-level docs
+|-- assets/design/             # concept and UI reference images
+`-- gen5/
+    |-- ammc_gen5/             # Python package: sparse brains, environment, evolution
+    |-- examples/              # runnable sprint/evaluation scripts
+    |-- benchmarks/            # throughput and baseline comparisons
+    |-- tests/                 # unit/contract tests
+    |-- tools/                 # verification utilities
+    |-- docs/                  # Gen-5 technical runbooks and architecture notes
+    `-- outputs/               # retained experiment bundles and analyses
+```
+
+## Current research baseline
+
+For the simple 2D bot world, sparse-efficiency tuning is now frozen:
+
+- Default raw-survival baseline: `low_ltw_pruning`, `32` neurons.
+- Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
+- Next scientific step: harder bot-world variants that reward hidden-state
+  computation before expanding neuron count further.
+
+See [research.md](research.md) for the evidence trail.
+
+## Browser sandbox quick start
+
+From the repository root, serve the static sandbox:
+
+```powershell
+python -m http.server 4173
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4173/
+```
+
+The root `index.html` remains intentionally stable because it is the visual QA
+entry point for connectome import/export and Gen-5 champion replay.
+
+## Gen-5 quick validation
 
 From the repository root:
 
@@ -43,12 +76,24 @@ python -m compileall gen5
 python -m unittest discover -s gen5\tests -v
 ```
 
-Torch-dependent tests require a Python environment with PyTorch installed. The
-local bundled runtime used by Codex may skip those tests if PyTorch is absent.
+Torch-dependent tests require a Python environment with PyTorch installed.
 
-## Colab TPU/XLA smoke benchmark
+## Common Gen-5 commands
 
-On a Colab TPU runtime:
+List sparse-efficiency groups:
+
+```powershell
+python gen5/examples/sprint13_sparse_efficiency_ablation.py --list-groups
+```
+
+Run a small local smoke test:
+
+```powershell
+python gen5/examples/sprint1_smoke.py
+python gen5/examples/sprint4_5_vectorized_loop.py
+```
+
+Run the Colab/XLA throughput benchmark on a TPU runtime:
 
 ```python
 !python gen5/benchmarks/benchmark_throughput.py \
@@ -59,15 +104,11 @@ On a Colab TPU runtime:
   --output-dir gen5_outputs/throughput_xla
 ```
 
-## Research discipline
+## Evidence discipline
 
-The project uses `research.md` as the source of truth for:
+Experiment outputs kept in the repository should live under `gen5/outputs/`
+and include an `analysis.md` whenever possible. New research decisions should
+update [research.md](research.md) in the same change set.
 
-- core findings,
-- project decisions,
-- evidence status,
-- open questions,
-- next recommended steps.
-
-When a meaningful implementation or research decision is made, update
-`research.md` in the same change set.
+The repo is deliberately part lab notebook, part framework. The code tells us
+what can run; the evidence folders tell us what we have actually observed.

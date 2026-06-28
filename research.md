@@ -429,7 +429,8 @@ were analyzed later in finding 15.
 
 Evidence:
 
-- `1st run/evolution_telemetry.json` contains `500` generations.
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/evolution_telemetry.json`
+  contains `500` generations.
 - Best single-run max fitness was `24.0`, reached at generations `236` and
   `450`.
 - Champion export integrity is valid:
@@ -461,10 +462,10 @@ Source:
 - `gen5/outputs/phase11_colab_2026-06-26/multi_seed_aggregate.csv`
 - `gen5/outputs/phase11_colab_2026-06-26/plasticity_ablation.json`
 - `gen5/outputs/phase11_colab_2026-06-26/plasticity_ablation_summary.csv`
-- `1st run/evolution_telemetry.json`
-- `1st run/champion_sparse_adjacency.json`
-- `1st run/champion_connectome.json`
-- `1st run/colab_weights.json`
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/evolution_telemetry.json`
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/champion_sparse_adjacency.json`
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/champion_connectome.json`
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/colab_weights.json`
 - Uploaded images in `C:\Users\FAISAL TABREZ\.codex\attachments\f42f063e-171e-49e6-9543-fd631425666d\`
 
 Implication:
@@ -1346,6 +1347,38 @@ Decision:
 Artifact:
 
 - `gen5/outputs/sparse_efficiency_finalists_cuda_2026-06-28/analysis.md`
+
+### 28. Repository reorganization for newcomer accessibility
+
+Decision: reorganize the repository around stable newcomer entry points without
+breaking the browser sandbox path.
+
+Changes:
+
+- Keep `index.html` at the repository root so `http://127.0.0.1:4173/`
+  continues to open the visual sandbox.
+- Move concept images from `design/` to `assets/design/`.
+- Move the original root-level `1st run/` upload bundle to
+  `gen5/outputs/legacy_first_run_upload_2026-06-25/`.
+- Add repository-level documentation in `docs/`.
+- Add output-bundle guidance in `gen5/outputs/README.md`.
+
+Rationale:
+
+- Newcomers should see code, docs, and the browser entry point at the root
+  without raw experiment folders competing for attention.
+- Gen-5 outputs should all live under `gen5/outputs/` so evidence is easy to
+  audit.
+- Design images are assets, not source or experiment outputs.
+
+Artifacts:
+
+- `README.md`
+- `docs/README.md`
+- `docs/PROJECT_STRUCTURE.md`
+- `assets/README.md`
+- `gen5/outputs/README.md`
+- `gen5/outputs/legacy_first_run_upload_2026-06-25/README.md`
 
 ## Project decisions
 

@@ -2,14 +2,14 @@
 
 Date: 2026-06-26  
 Reviewer: Codex  
-Scope: `1st run` output bundle, uploaded plot images, and raw Sprint 11 files
+Scope: legacy first-run output bundle, uploaded plot images, and raw Sprint 11 files
 found in `C:\Users\FAISAL TABREZ\Downloads`.
 
 ## Artifact inventory
 
 ### Raw files available in workspace
 
-Folder: `1st run/`
+Folder: `gen5/outputs/legacy_first_run_upload_2026-06-25/`
 
 - `evolution_telemetry.json`
 - `evolution_telemetry.csv`
@@ -51,7 +51,7 @@ remain blocked until their raw JSON/CSV outputs are uploaded.
 
 ## Validated champion-run evidence
 
-The raw `1st run` champion package validates cleanly.
+The raw legacy first-run champion package validates cleanly.
 
 | Metric | Value |
 |---|---:|
