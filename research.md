@@ -1255,6 +1255,54 @@ Artifacts:
 - `gen5/ammc_gen5/evaluation.py`
 - `gen5/examples/sprint13_sparse_efficiency_ablation.py`
 
+### 26. Gentle sparse combination avoids edge collapse, but low-LTW pruning remains the raw-fitness leader
+
+Finding: the CUDA finalist screen completed for `gentle_ltw_scheduled`,
+`low_ltw_pruning`, and `scheduled_sprouting` across `3` seeds, `200`
+generations, and the `16/32/64` neuron scale points.
+
+Results:
+
+| Group | Neurons | Final mean best fitness | Active synapses | Utilization | Fitness / active synapse | Threshold success |
+|---|---:|---:|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 16 | 24.33 | 59.13 | 46.20% | 0.338 | 66.67% |
+| gentle_ltw_scheduled | 32 | 23.67 | 77.36 | 30.22% | 0.233 | 0% |
+| gentle_ltw_scheduled | 64 | 24.00 | 131.01 | 25.59% | 0.137 | 33.33% |
+| low_ltw_pruning | 16 | 24.33 | 49.54 | 38.71% | 0.404 | 66.67% |
+| low_ltw_pruning | 32 | 26.00 | 97.52 | 38.09% | 0.191 | 100% |
+| low_ltw_pruning | 64 | 23.00 | 193.42 | 37.78% | 0.100 | 0% |
+| scheduled_sprouting | 16 | 24.67 | 81.84 | 63.93% | 0.212 | 66.67% |
+| scheduled_sprouting | 32 | 24.67 | 111.81 | 43.68% | 0.164 | 66.67% |
+| scheduled_sprouting | 64 | 23.67 | 134.96 | 26.36% | 0.138 | 33.33% |
+
+Interpretation:
+
+- `low_ltw_pruning` remains the best raw-fitness candidate. At `32` neurons it
+  reached final mean best fitness `26.00` with `100%` threshold success.
+- `gentle_ltw_scheduled` achieved its structural purpose: active synapses grew
+  with capacity (`59.13 -> 77.36 -> 131.01`) instead of collapsing into the
+  overly restrictive `40-50` active-edge regime seen in the first
+  `protected_sparse_core` run.
+- The gentle schedule did not preserve enough raw fitness at `32` neurons to
+  replace `low_ltw_pruning` as the default rule.
+- `scheduled_sprouting` remains useful as a stabilizer, but it is not the
+  dominant mechanism on either raw fitness or sparse efficiency.
+- Hidden-edge usage rises with neuron count, so larger brains are routing
+  through hidden nodes; the current simple foraging world is not yet rewarding
+  that extra depth.
+
+Decision:
+
+- Promote `low_ltw_pruning` as the raw-fitness finalist.
+- Promote `gentle_ltw_scheduled` as the balanced sparse-efficiency finalist.
+- Stop running broad sparse-efficiency matrices for now. The next expensive
+  Colab run should compare only those two finalists across `10` seeds and
+  `500` generations.
+
+Artifact:
+
+- `gen5/outputs/sparse_efficiency_gentle_combo_cuda_2026-06-28/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1893,14 +1941,11 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the sparse-efficiency ablation:
+1. Run the sparse-efficiency finalist ablation:
    - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - run `low_ltw_pruning`, `scheduled_sprouting`, and
-     `gentle_ltw_scheduled` together for seeds `42 43 44` and `200`
-     generations,
-   - if `gentle_ltw_scheduled` preserves raw fitness while improving
-     fitness-per-active-synapse, expand it to `10` seeds and `500`
-     generations,
+   - run only `low_ltw_pruning` and `gentle_ltw_scheduled`,
+   - use seeds `42 43 44 45 46 47 48 49 50 51`,
+   - use `500` generations,
    - report final fitness, active synapses, utilization,
      fitness-per-active-synapse, hidden-edge fraction, and
      direct sensor-motor fraction across `16/32/64` neurons.
