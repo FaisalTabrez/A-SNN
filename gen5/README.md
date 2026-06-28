@@ -322,6 +322,25 @@ The key success condition is preserving or improving final fitness while
 raising `final_fitness_per_active_synapse` and lowering unnecessary hidden-edge
 bloat.
 
+After the first component screens, the recommended combined variant is:
+
+```powershell
+python gen5/examples/sprint13_sparse_efficiency_ablation.py `
+  --device xla `
+  --groups low_ltw_pruning scheduled_sprouting gentle_ltw_scheduled `
+  --seeds 42 43 44 `
+  --generations 200 `
+  --population-size 10000 `
+  --epoch-steps 120 `
+  --neuron-counts 16 32 64 `
+  --max-edges 128 256 512 `
+  --output-dir gen5_outputs/sparse_efficiency_gentle_combo
+```
+
+`gentle_ltw_scheduled` combines weak-LTW pruning with capacity-scaled sprouting
+and a `25%` active-edge floor, avoiding the underfitting collapse observed in
+the original aggressive `protected_sparse_core` group.
+
 ### Throughput benchmark
 
 Measure raw tensor-loop scaling on Colab TPU/XLA:

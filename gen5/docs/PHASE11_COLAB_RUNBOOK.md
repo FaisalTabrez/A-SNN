@@ -352,6 +352,27 @@ Main metrics:
 - `final_mean_direct_sensor_motor_fraction`
 - `threshold_success_rate`
 
+After the component screen, compare the gentler combined group against its two
+ingredients:
+
+```python
+!python gen5/examples/sprint13_sparse_efficiency_ablation.py \
+  --device cuda \
+  --groups low_ltw_pruning scheduled_sprouting gentle_ltw_scheduled \
+  --seeds 42 43 44 \
+  --generations 200 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --neuron-counts 16 32 64 \
+  --max-edges 128 256 512 \
+  --output-dir gen5_outputs/sparse_efficiency_gentle_combo_cuda
+```
+
+`gentle_ltw_scheduled` uses weak-LTW pruning plus scheduled sprouting with a
+capacity-aware active-edge floor. This is intended to preserve the efficiency
+gains without collapsing larger brains to an unrealistically tiny active edge
+budget.
+
 ## 6. Zip and download all remaining outputs
 
 ```python

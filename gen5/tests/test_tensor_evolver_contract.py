@@ -137,6 +137,33 @@ class TensorEvolverContractTest(unittest.TestCase):
         self.assertEqual(report["prune_count"], 2)
         self.assertEqual(report["low_ltw_prune_count"], 2)
 
+    def test_minimum_active_edge_floor_limits_pruning(self) -> None:
+        evolver = TensorEvolver(
+            TensorEvolverConfig(
+                population_size=2,
+                neuron_count=16,
+                max_edges=4,
+                sprout_probability=0.0,
+                prune_probability=1.0,
+                ltw_noise_std=0.0,
+                minimum_active_edge_count=2,
+            )
+        )
+        evolver.seed_from_edges(
+            [
+                EdgeRecord(0, 8, long_term_weight=0.2),
+                EdgeRecord(1, 9, long_term_weight=0.2),
+                EdgeRecord(2, 10, long_term_weight=0.2),
+                EdgeRecord(3, 11, long_term_weight=0.2),
+            ]
+        )
+
+        report = evolver.mutate_children(torch.tensor([0, 1]))
+
+        self.assertTrue(torch.all(evolver.active_edge_counts() == 2))
+        self.assertEqual(report["prune_count"], 4)
+        self.assertEqual(report["minimum_active_edge_floor"], 2)
+
     def test_edge_usage_stats_reports_hidden_routing(self) -> None:
         evolver = TensorEvolver(
             TensorEvolverConfig(

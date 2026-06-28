@@ -1213,6 +1213,48 @@ Artifact:
 
 - `gen5/outputs/sparse_efficiency_components_cuda_2026-06-28/analysis.md`
 
+### 25. Implement gentler sparse-efficiency combination with an active-edge floor
+
+Decision: add a new sparse-efficiency group, `gentle_ltw_scheduled`, combining
+the two most promising component mechanisms:
+
+- low-LTW pruning,
+- capacity-scaled sprouting.
+
+The group deliberately avoids the blunt active-edge fitness penalty and adds a
+capacity-aware active-edge floor so larger networks cannot collapse to the
+`40-50` active-edge regime observed in the original aggressive
+`protected_sparse_core` screen.
+
+Configuration:
+
+- `low_ltw_prune_threshold`: `0.08`
+- `low_ltw_prune_probability`: `0.03`
+- `sprout_scale_by_capacity`: enabled
+- `minimum_active_edge_fraction`: `0.25`
+- `active_edge_fitness_penalty`: `0.0`
+- protected core: disabled for this first gentle combination
+
+Rationale:
+
+- The component screen showed `low_ltw_pruning` best preserved raw fitness and
+  threshold success.
+- The same screen showed `scheduled_sprouting` provided useful edge control at
+  larger capacities.
+- The earlier `protected_sparse_core` screen proved sparse pressure can improve
+  fitness-per-active-synapse, but its combined pressure was too aggressive.
+
+Next test:
+
+Run `low_ltw_pruning`, `scheduled_sprouting`, and `gentle_ltw_scheduled`
+together on seeds `42 43 44`, `200` generations, and `16/32/64` neurons.
+
+Artifacts:
+
+- `gen5/ammc_gen5/evolver.py`
+- `gen5/ammc_gen5/evaluation.py`
+- `gen5/examples/sprint13_sparse_efficiency_ablation.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1853,12 +1895,12 @@ Validation:
 
 1. Run the sparse-efficiency ablation:
    - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - implement/run a gentler combined variant using low-LTW pruning plus
-     scheduled sprouting,
-   - use no active-edge penalty or a very small coefficient (`~0.005`) until
-     the penalty is calibrated,
-   - make protected-core behavior capacity-aware rather than forcing all scales
-     to converge to about `40-50` active edges,
+   - run `low_ltw_pruning`, `scheduled_sprouting`, and
+     `gentle_ltw_scheduled` together for seeds `42 43 44` and `200`
+     generations,
+   - if `gentle_ltw_scheduled` preserves raw fitness while improving
+     fitness-per-active-synapse, expand it to `10` seeds and `500`
+     generations,
    - report final fitness, active synapses, utilization,
      fitness-per-active-synapse, hidden-edge fraction, and
      direct sensor-motor fraction across `16/32/64` neurons.

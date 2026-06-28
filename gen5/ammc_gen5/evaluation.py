@@ -466,6 +466,8 @@ class SparseEfficiencyGroupConfig:
     ltw_noise_std: float = 0.02
     low_ltw_prune_threshold: float = 0.0
     low_ltw_prune_probability: float = 0.0
+    minimum_active_edge_count: int = 0
+    minimum_active_edge_fraction: float = 0.0
     sprout_scale_by_capacity: bool = False
     protect_core: bool = False
     protect_core_topology: bool = True
@@ -494,6 +496,14 @@ def default_sparse_efficiency_groups() -> tuple[SparseEfficiencyGroupConfig, ...
         SparseEfficiencyGroupConfig(
             name="scheduled_sprouting",
             description="Reduce sprout probability as edge-pool capacity grows.",
+            sprout_scale_by_capacity=True,
+        ),
+        SparseEfficiencyGroupConfig(
+            name="gentle_ltw_scheduled",
+            description="Gentle combined rule: weak-LTW pruning plus capacity-scaled sprouting with an active-edge floor.",
+            low_ltw_prune_threshold=0.08,
+            low_ltw_prune_probability=0.03,
+            minimum_active_edge_fraction=0.25,
             sprout_scale_by_capacity=True,
         ),
         SparseEfficiencyGroupConfig(
@@ -808,6 +818,8 @@ class SparseEfficiencyRunner:
                 prune_probability=group.prune_probability,
                 low_ltw_prune_threshold=group.low_ltw_prune_threshold,
                 low_ltw_prune_probability=group.low_ltw_prune_probability,
+                minimum_active_edge_count=group.minimum_active_edge_count,
+                minimum_active_edge_fraction=group.minimum_active_edge_fraction,
                 protected_edge_count=protected_count,
                 protect_core_topology=group.protect_core_topology,
                 protect_core_weights=group.protect_core_weights,

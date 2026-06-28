@@ -51,6 +51,8 @@ class TensorEvolverConfig:
     gate_sprouting_by_positive_fitness: bool = False
     low_ltw_prune_threshold: float = 0.0
     low_ltw_prune_probability: float = 0.0
+    minimum_active_edge_count: int = 0
+    minimum_active_edge_fraction: float = 0.0
     protected_edge_count: int = 0
     protect_core_topology: bool = False
     protect_core_weights: bool = False
@@ -80,6 +82,10 @@ class TensorEvolver(nn.Module):
             raise ValueError("protected_edge_count cannot be negative")
         if self.config.protected_edge_count > self.config.max_edges:
             raise ValueError("protected_edge_count cannot exceed max_edges")
+        if self.config.minimum_active_edge_count < 0:
+            raise ValueError("minimum_active_edge_count cannot be negative")
+        if not 0.0 <= self.config.minimum_active_edge_fraction <= 1.0:
+            raise ValueError("minimum_active_edge_fraction must be in [0, 1]")
 
         factory = {"device": device}
         float_dtype = dtype or torch.float32
@@ -266,6 +272,8 @@ class TensorEvolver(nn.Module):
         if cfg.protect_core_topology:
             prune_mask = prune_mask & ~protected
             low_ltw_prune_mask = low_ltw_prune_mask & ~protected
+        prune_mask = self._respect_minimum_active_edges(child_active, prune_mask, generator=generator)
+        low_ltw_prune_mask = low_ltw_prune_mask & prune_mask
         child_active = child_active & ~prune_mask
         child_stw = torch.where(prune_mask, torch.zeros_like(child_stw), child_stw)
         child_ltw = torch.where(prune_mask, torch.zeros_like(child_ltw), child_ltw)
@@ -332,6 +340,7 @@ class TensorEvolver(nn.Module):
             "prune_count": int(prune_mask.sum().item()),
             "low_ltw_prune_count": int(low_ltw_prune_mask.sum().item()),
             "protected_edge_count": int(cfg.protected_edge_count),
+            "minimum_active_edge_floor": int(self._minimum_active_edge_floor()),
         }
 
     def active_edge_counts(self):
@@ -428,6 +437,29 @@ class TensorEvolver(nn.Module):
             return torch.zeros(shape, dtype=torch.bool, device=self.active_mask.device)
         columns = torch.arange(shape[1], device=self.active_mask.device)
         return (columns < protected).unsqueeze(0).expand(shape[0], shape[1])
+
+    def _minimum_active_edge_floor(self) -> int:
+        fraction_floor = int(math.ceil(self.max_edges * self.config.minimum_active_edge_fraction))
+        return max(self.config.minimum_active_edge_count, fraction_floor)
+
+    def _respect_minimum_active_edges(self, child_active, prune_mask, *, generator=None):
+        floor = self._minimum_active_edge_floor()
+        if floor <= 0:
+            return prune_mask
+
+        active_counts = child_active.sum(dim=1)
+        allowed_prunes = torch.clamp(active_counts - floor, min=0).unsqueeze(1)
+
+        scores = torch.where(
+            prune_mask,
+            self._rand(prune_mask.shape, generator=generator),
+            torch.full(prune_mask.shape, 2.0, device=prune_mask.device, dtype=self.long_term_weight.dtype),
+        )
+        sorted_indices = torch.argsort(scores, dim=1)
+        ranks = torch.empty_like(sorted_indices)
+        ordinal = torch.arange(prune_mask.shape[1], device=prune_mask.device).unsqueeze(0).expand_as(sorted_indices)
+        ranks.scatter_(1, sorted_indices, ordinal)
+        return prune_mask & (ranks < allowed_prunes)
 
     @staticmethod
     def _coerce_edge(edge: EdgeRecord | Sequence[float]) -> EdgeRecord:
