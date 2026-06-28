@@ -1303,6 +1303,50 @@ Artifact:
 
 - `gen5/outputs/sparse_efficiency_gentle_combo_cuda_2026-06-28/analysis.md`
 
+### 27. Sparse-efficiency finalists: low-LTW pruning is the default; gentle schedule is the efficiency baseline
+
+Finding: the full CUDA finalist run completed for `low_ltw_pruning` and
+`gentle_ltw_scheduled` across `10` seeds, `500` generations, and the
+`16/32/64` neuron scale points.
+
+Results:
+
+| Group | Neurons | Final mean best fitness | Std | Active synapses | Utilization | Fitness / active synapse | Threshold success |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 16 | 26.00 | 1.41 | 61.08 | 47.72% | 0.306 | 90% |
+| gentle_ltw_scheduled | 32 | 25.70 | 1.34 | 80.48 | 31.44% | 0.222 | 80% |
+| gentle_ltw_scheduled | 64 | 24.40 | 0.97 | 131.30 | 25.65% | 0.133 | 50% |
+| low_ltw_pruning | 16 | 25.40 | 0.70 | 51.64 | 40.34% | 0.350 | 90% |
+| low_ltw_pruning | 32 | 26.00 | 1.33 | 103.54 | 40.45% | 0.177 | 100% |
+| low_ltw_pruning | 64 | 25.40 | 1.07 | 206.55 | 40.34% | 0.085 | 80% |
+
+Interpretation:
+
+- `low_ltw_pruning` is the best default survival rule. Its `32`-neuron setting
+  reached final mean best fitness `26.00` with `100%` threshold success.
+- `gentle_ltw_scheduled` is a valid sparse-efficiency baseline. At `32`
+  neurons it lost only `0.30` mean best fitness relative to `low_ltw_pruning`
+  while using about `22%` fewer active synapses (`80.48` vs `103.54`).
+- At `64` neurons, the gentle schedule used about `36%` fewer active synapses
+  than low-LTW pruning (`131.30` vs `206.55`) and had much better
+  fitness-per-active-synapse, but weaker survival reliability.
+- The simple bot world still does not reward larger brains. Hidden-edge
+  fraction rises strongly with neuron count, but final best fitness does not
+  improve.
+- The `16`-neuron gentle schedule remains surprisingly competitive, but
+  `32`-neuron low-LTW pruning is more reliable.
+
+Decision:
+
+- Freeze sparse-efficiency tuning on the current simple foraging world.
+- Use `low_ltw_pruning` at `32` neurons as the default raw-survival baseline.
+- Use `gentle_ltw_scheduled` at `32` neurons as the sparse-efficiency baseline.
+- Move next to harder bot worlds before expanding neuron count further.
+
+Artifact:
+
+- `gen5/outputs/sparse_efficiency_finalists_cuda_2026-06-28/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -1941,14 +1985,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the sparse-efficiency finalist ablation:
-   - `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - run only `low_ltw_pruning` and `gentle_ltw_scheduled`,
-   - use seeds `42 43 44 45 46 47 48 49 50 51`,
-   - use `500` generations,
-   - report final fitness, active synapses, utilization,
-     fitness-per-active-synapse, hidden-edge fraction, and
-     direct sensor-motor fraction across `16/32/64` neurons.
+1. Build the next harder bot-world benchmark:
+   - retain `32`-neuron `low_ltw_pruning` as the raw-survival baseline,
+   - retain `32`-neuron `gentle_ltw_scheduled` as the sparse-efficiency
+     baseline,
+   - add world variants that can reward hidden-state computation: larger
+     arena, moving toxins, delayed rewards, partial observability, and/or
+     multi-step resource chains.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

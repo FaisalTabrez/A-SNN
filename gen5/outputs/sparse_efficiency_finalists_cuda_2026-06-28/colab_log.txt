@@ -1,0 +1,251 @@
+[1/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[2/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[3/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[4/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[5/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[6/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[7/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[8/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[9/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[10/60] group=low_ltw_pruning neurons=16 max_edges=128 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[11/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[12/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[13/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[14/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[15/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[16/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[17/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[18/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[19/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[20/60] group=low_ltw_pruning neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[21/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[22/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[23/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[24/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[25/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[26/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[27/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[28/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[29/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[30/60] group=low_ltw_pruning neurons=64 max_edges=512 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[31/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[32/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[33/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[34/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[35/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[36/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[37/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[38/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[39/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[40/60] group=gentle_ltw_scheduled neurons=16 max_edges=128 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[41/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[42/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[43/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[44/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[45/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[46/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[47/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[48/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[49/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[50/60] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[51/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=42
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[52/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=43
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[53/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=44
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[54/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=45
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[55/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=46
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[56/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=47
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[57/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=48
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[58/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=49
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[59/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=50
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+[60/60] group=gentle_ltw_scheduled neurons=64 max_edges=512 seed=51
+checkpoint saved: gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json
+{
+  "paths": {
+    "json": "gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency.json",
+    "records_csv": "gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_records.csv",
+    "summary_csv": "gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_summary.csv",
+    "plot": "gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_summary.png",
+    "progress": "gen5_outputs/sparse_efficiency_finalists_cuda/sparse_efficiency_progress.json"
+  },
+  "scale_points": [
+    {
+      "neuron_count": 16,
+      "max_edges": 128
+    },
+    {
+      "neuron_count": 32,
+      "max_edges": 256
+    },
+    {
+      "neuron_count": 64,
+      "max_edges": 512
+    }
+  ],
+  "groups": [
+    "low_ltw_pruning",
+    "gentle_ltw_scheduled"
+  ],
+  "summary": [
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 16,
+      "hidden_neurons": 4,
+      "max_edges": 128,
+      "seeds": 10,
+      "final_mean_best_fitness": 26.0,
+      "final_std_best_fitness": 1.4142135623730951,
+      "final_mean_selection_best_fitness": 18.7,
+      "final_mean_active_synapses": 61.083678817749025,
+      "final_active_edge_utilization": 0.47721624076366426,
+      "final_fitness_per_active_synapse": 0.30604110412217544,
+      "final_mean_hidden_edge_fraction": 0.4473349034786224,
+      "final_mean_direct_sensor_motor_fraction": 0.14224985539913176,
+      "threshold_success_rate": 0.9,
+      "mean_generation_to_threshold": 156.33333333333334
+    },
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.7,
+      "final_std_best_fitness": 1.3374935098492586,
+      "final_mean_selection_best_fitness": 17.9,
+      "final_mean_active_synapses": 80.48309783935547,
+      "final_active_edge_utilization": 0.3143871009349823,
+      "final_fitness_per_active_synapse": 0.2223970878879446,
+      "final_mean_hidden_edge_fraction": 0.8561137437820434,
+      "final_mean_direct_sensor_motor_fraction": 0.04371592774987221,
+      "threshold_success_rate": 0.8,
+      "mean_generation_to_threshold": 174.25
+    },
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 64,
+      "hidden_neurons": 52,
+      "max_edges": 512,
+      "seeds": 10,
+      "final_mean_best_fitness": 24.4,
+      "final_std_best_fitness": 0.9660917830792959,
+      "final_mean_selection_best_fitness": 17.4,
+      "final_mean_active_synapses": 131.3046081542969,
+      "final_active_edge_utilization": 0.2564543128013611,
+      "final_fitness_per_active_synapse": 0.13251574459426566,
+      "final_mean_hidden_edge_fraction": 0.9521840989589692,
+      "final_mean_direct_sensor_motor_fraction": 0.022812921926379202,
+      "threshold_success_rate": 0.5,
+      "mean_generation_to_threshold": 217.6
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 16,
+      "hidden_neurons": 4,
+      "max_edges": 128,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.4,
+      "final_std_best_fitness": 0.6992058987801011,
+      "final_mean_selection_best_fitness": 18.1,
+      "final_mean_active_synapses": 51.63557929992676,
+      "final_active_edge_utilization": 0.4034029632806778,
+      "final_fitness_per_active_synapse": 0.35043382233254017,
+      "final_mean_hidden_edge_fraction": 0.4433184415102005,
+      "final_mean_direct_sensor_motor_fraction": 0.14295028597116471,
+      "threshold_success_rate": 0.9,
+      "mean_generation_to_threshold": 198.0
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 26.0,
+      "final_std_best_fitness": 1.3333333333333333,
+      "final_mean_selection_best_fitness": 18.3,
+      "final_mean_active_synapses": 103.53957748413086,
+      "final_active_edge_utilization": 0.40445147454738617,
+      "final_fitness_per_active_synapse": 0.1767355255829145,
+      "final_mean_hidden_edge_fraction": 0.8605394721031189,
+      "final_mean_direct_sensor_motor_fraction": 0.03898962214589119,
+      "threshold_success_rate": 1.0,
+      "mean_generation_to_threshold": 99.8
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 64,
+      "hidden_neurons": 52,
+      "max_edges": 512,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.4,
+      "final_std_best_fitness": 1.07496769977314,
+      "final_mean_selection_best_fitness": 17.6,
+      "final_mean_active_synapses": 206.55341644287108,
+      "final_active_edge_utilization": 0.4034246414899826,
+      "final_fitness_per_active_synapse": 0.08520549048186235,
+      "final_mean_hidden_edge_fraction": 0.9649258077144622,
+      "final_mean_direct_sensor_motor_fraction": 0.01061048498377204,
+      "threshold_success_rate": 0.8,
+      "mean_generation_to_threshold": 221.75
+    }
+  ]
+}
