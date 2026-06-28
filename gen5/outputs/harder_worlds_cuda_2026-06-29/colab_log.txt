@@ -1,0 +1,318 @@
+world=simple config={'agent_count': 10000, 'food_count': 128, 'toxin_count': 128, 'world_size': 1.0, 'dt': 0.016666666666666666, 'friction': 0.985, 'max_speed': 0.75, 'action_gain': 0.05, 'collision_radius': 0.025, 'sensor_radius': 0.35, 'respawn_margin': 0.05, 'food_reward': 1.0, 'toxin_penalty': 1.0, 'reward_delay_steps': 0, 'punishment_delay_steps': 0, 'moving_food_speed': 0.0, 'moving_toxin_speed': 0.0}
+[1/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[2/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[3/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[4/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[5/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[6/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[7/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[8/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[9/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[10/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[11/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[12/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[13/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[14/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[15/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[16/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[17/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[18/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[19/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+[20/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/simple/sparse_efficiency_progress.json
+world=moving_toxins config={'agent_count': 10000, 'food_count': 128, 'toxin_count': 128, 'world_size': 1.0, 'dt': 0.016666666666666666, 'friction': 0.985, 'max_speed': 0.75, 'action_gain': 0.05, 'collision_radius': 0.025, 'sensor_radius': 0.35, 'respawn_margin': 0.05, 'food_reward': 1.0, 'toxin_penalty': 1.0, 'reward_delay_steps': 0, 'punishment_delay_steps': 0, 'moving_food_speed': 0.0, 'moving_toxin_speed': 0.35}
+[1/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[2/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[3/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[4/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[5/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[6/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[7/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[8/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[9/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[10/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[11/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[12/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[13/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[14/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[15/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[16/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[17/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[18/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[19/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+[20/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/moving_toxins/sparse_efficiency_progress.json
+world=delayed_reward config={'agent_count': 10000, 'food_count': 128, 'toxin_count': 128, 'world_size': 1.0, 'dt': 0.016666666666666666, 'friction': 0.985, 'max_speed': 0.75, 'action_gain': 0.05, 'collision_radius': 0.025, 'sensor_radius': 0.35, 'respawn_margin': 0.05, 'food_reward': 1.0, 'toxin_penalty': 1.0, 'reward_delay_steps': 12, 'punishment_delay_steps': 0, 'moving_food_speed': 0.0, 'moving_toxin_speed': 0.0}
+[1/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[2/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[3/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[4/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[5/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[6/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[7/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[8/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[9/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[10/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[11/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[12/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[13/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[14/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[15/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[16/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[17/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[18/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[19/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+[20/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/delayed_reward/sparse_efficiency_progress.json
+world=gauntlet config={'agent_count': 10000, 'food_count': 128, 'toxin_count': 128, 'world_size': 2.0, 'dt': 0.016666666666666666, 'friction': 0.985, 'max_speed': 0.9, 'action_gain': 0.05, 'collision_radius': 0.025, 'sensor_radius': 0.25, 'respawn_margin': 0.05, 'food_reward': 1.0, 'toxin_penalty': 1.0, 'reward_delay_steps': 12, 'punishment_delay_steps': 0, 'moving_food_speed': 0.0, 'moving_toxin_speed': 0.4}
+[1/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[2/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[3/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[4/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[5/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[6/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[7/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[8/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[9/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[10/20] group=low_ltw_pruning neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[11/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=42
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[12/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=43
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[13/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=44
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[14/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=45
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[15/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=46
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[16/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=47
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[17/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=48
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[18/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=49
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[19/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=50
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+[20/20] group=gentle_ltw_scheduled neurons=32 max_edges=256 seed=51
+checkpoint saved: gen5_outputs/harder_worlds_cuda/gauntlet/sparse_efficiency_progress.json
+{
+  "paths": {
+    "json": "gen5_outputs/harder_worlds_cuda/harder_worlds.json",
+    "records_csv": "gen5_outputs/harder_worlds_cuda/harder_worlds_records.csv",
+    "summary_csv": "gen5_outputs/harder_worlds_cuda/harder_worlds_summary.csv",
+    "progress": "gen5_outputs/harder_worlds_cuda/harder_worlds_progress.json"
+  },
+  "summary": [
+    {
+      "world": "simple",
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 24.7,
+      "final_std_best_fitness": 0.8232726023485646,
+      "final_mean_selection_best_fitness": 18.6,
+      "final_mean_active_synapses": 80.53498764038086,
+      "final_active_edge_utilization": 0.31458979547023774,
+      "final_fitness_per_active_synapse": 0.23079926879373697,
+      "final_mean_hidden_edge_fraction": 0.8570908308029175,
+      "final_mean_direct_sensor_motor_fraction": 0.04353016689419746,
+      "threshold_success_rate": 0.5,
+      "mean_generation_to_threshold": 245.0
+    },
+    {
+      "world": "simple",
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 26.4,
+      "final_std_best_fitness": 2.2211108331943574,
+      "final_mean_selection_best_fitness": 17.9,
+      "final_mean_active_synapses": 103.25120620727539,
+      "final_active_edge_utilization": 0.4033250242471695,
+      "final_fitness_per_active_synapse": 0.17335035493045714,
+      "final_mean_hidden_edge_fraction": 0.8607089757919312,
+      "final_mean_direct_sensor_motor_fraction": 0.038672486692667006,
+      "threshold_success_rate": 0.8,
+      "mean_generation_to_threshold": 125.375
+    },
+    {
+      "world": "moving_toxins",
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.6,
+      "final_std_best_fitness": 1.6465452046971292,
+      "final_mean_selection_best_fitness": 17.4,
+      "final_mean_active_synapses": 79.81604690551758,
+      "final_active_edge_utilization": 0.31178143322467805,
+      "final_fitness_per_active_synapse": 0.2179939085767813,
+      "final_mean_hidden_edge_fraction": 0.8631052851676941,
+      "final_mean_direct_sensor_motor_fraction": 0.03879935964941979,
+      "threshold_success_rate": 0.9,
+      "mean_generation_to_threshold": 191.77777777777777
+    },
+    {
+      "world": "moving_toxins",
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.5,
+      "final_std_best_fitness": 0.97182531580755,
+      "final_mean_selection_best_fitness": 17.3,
+      "final_mean_active_synapses": 102.97273559570313,
+      "final_active_edge_utilization": 0.40223724842071534,
+      "final_fitness_per_active_synapse": 0.16799759634880979,
+      "final_mean_hidden_edge_fraction": 0.8616309642791748,
+      "final_mean_direct_sensor_motor_fraction": 0.037549876049160956,
+      "threshold_success_rate": 0.9,
+      "mean_generation_to_threshold": 203.88888888888889
+    },
+    {
+      "world": "delayed_reward",
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 20.8,
+      "final_std_best_fitness": 1.6865480854231356,
+      "final_mean_selection_best_fitness": 11.8,
+      "final_mean_active_synapses": 81.89040832519531,
+      "final_active_edge_utilization": 0.3198844075202942,
+      "final_fitness_per_active_synapse": 0.14415298574570795,
+      "final_mean_hidden_edge_fraction": 0.8343595743179322,
+      "final_mean_direct_sensor_motor_fraction": 0.05446363277733326,
+      "threshold_success_rate": 0.1,
+      "mean_generation_to_threshold": 70.0
+    },
+    {
+      "world": "delayed_reward",
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 21.4,
+      "final_std_best_fitness": 1.3498971154211057,
+      "final_mean_selection_best_fitness": 13.8,
+      "final_mean_active_synapses": 105.29691696166992,
+      "final_active_edge_utilization": 0.41131608188152313,
+      "final_fitness_per_active_synapse": 0.13106587246174195,
+      "final_mean_hidden_edge_fraction": 0.8476379632949829,
+      "final_mean_direct_sensor_motor_fraction": 0.04569617174565792,
+      "threshold_success_rate": 0.0,
+      "mean_generation_to_threshold": null
+    },
+    {
+      "world": "gauntlet",
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 10.6,
+      "final_std_best_fitness": 1.577621275493231,
+      "final_mean_selection_best_fitness": 4.1,
+      "final_mean_active_synapses": 77.82127838134765,
+      "final_active_edge_utilization": 0.30398936867713927,
+      "final_fitness_per_active_synapse": 0.05270802594634908,
+      "final_mean_hidden_edge_fraction": 0.8188016474246979,
+      "final_mean_direct_sensor_motor_fraction": 0.0711552694439888,
+      "threshold_success_rate": 0.0,
+      "mean_generation_to_threshold": null
+    },
+    {
+      "world": "gauntlet",
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 10.6,
+      "final_std_best_fitness": 1.3498971154211057,
+      "final_mean_selection_best_fitness": 3.8,
+      "final_mean_active_synapses": 100.58200759887696,
+      "final_active_edge_utilization": 0.3928984671831131,
+      "final_fitness_per_active_synapse": 0.0378136497771706,
+      "final_mean_hidden_edge_fraction": 0.8349609792232513,
+      "final_mean_direct_sensor_motor_fraction": 0.057261818274855616,
+      "threshold_success_rate": 0.0,
+      "mean_generation_to_threshold": null
+    }
+  ]
+}

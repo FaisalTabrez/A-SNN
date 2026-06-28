@@ -1,0 +1,14 @@
+{
+  "completed_worlds": [
+    "simple",
+    "moving_toxins",
+    "delayed_reward",
+    "gauntlet"
+  ],
+  "total_worlds": 4,
+  "paths": {
+    "json": "gen5_outputs/harder_worlds_cuda/harder_worlds.json",
+    "records_csv": "gen5_outputs/harder_worlds_cuda/harder_worlds_records.csv",
+    "summary_csv": "gen5_outputs/harder_worlds_cuda/harder_worlds_summary.csv"
+  }
+}

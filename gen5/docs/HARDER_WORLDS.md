@@ -72,3 +72,21 @@ Strong evidence would look like:
 - larger future neuron counts improving `gauntlet` or delayed-reward results,
 - hidden-edge usage correlating with fitness instead of merely increasing with
   capacity.
+
+## First CUDA result
+
+The first full CUDA run is archived at:
+
+- `gen5/outputs/harder_worlds_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- `moving_toxins` is not yet a meaningful capability wall.
+- `delayed_reward` is the first hard setting: mean best fitness dropped to
+  roughly `21` and threshold success collapsed.
+- `gauntlet` is too hard as a direct jump and should be treated as a curriculum
+  endpoint.
+
+Next recommendation: sweep `reward_delay_steps` across `3`, `6`, and `12`,
+then rerun neuron scaling only on the delay setting that is hard but not fully
+collapsed.

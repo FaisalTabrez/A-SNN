@@ -1431,6 +1431,51 @@ Artifacts:
 - `gen5/examples/sprint14_harder_worlds.py`
 - `gen5/docs/HARDER_WORLDS.md`
 
+### 30. Harder-world results: delayed reward is the real capability wall
+
+Finding: the first Sprint 14 harder-world benchmark completed on CUDA for
+`simple`, `moving_toxins`, `delayed_reward`, and `gauntlet` using the frozen
+`32`-neuron sparse-efficiency baselines.
+
+Results:
+
+| World | Group | Final mean best fitness | Active synapses | Fitness / active synapse | Threshold success |
+|---|---|---:|---:|---:|---:|
+| simple | gentle_ltw_scheduled | 24.70 | 80.53 | 0.231 | 50% |
+| simple | low_ltw_pruning | 26.40 | 103.25 | 0.173 | 80% |
+| moving_toxins | gentle_ltw_scheduled | 25.60 | 79.82 | 0.218 | 90% |
+| moving_toxins | low_ltw_pruning | 25.50 | 102.97 | 0.168 | 90% |
+| delayed_reward | gentle_ltw_scheduled | 20.80 | 81.89 | 0.144 | 10% |
+| delayed_reward | low_ltw_pruning | 21.40 | 105.30 | 0.131 | 0% |
+| gauntlet | gentle_ltw_scheduled | 10.60 | 77.82 | 0.053 | 0% |
+| gauntlet | low_ltw_pruning | 10.60 | 100.58 | 0.038 | 0% |
+
+Interpretation:
+
+- `moving_toxins` does not yet create a meaningful capability wall. Both groups
+  reached `90%` threshold success; the gentle schedule was slightly better in
+  raw mean fitness while retaining its sparse-edge advantage.
+- `delayed_reward` is the first clear hard setting. Mean best fitness dropped
+  to roughly `21`, and threshold success collapsed to `10%` or lower.
+- `gauntlet` is too hard as a direct jump. It should be treated as a curriculum
+  endpoint rather than the next pass/fail benchmark.
+- `gentle_ltw_scheduled` keeps about a `22%` active-edge reduction across all
+  worlds. Its efficiency advantage is robust, but efficiency alone does not
+  solve delayed credit assignment.
+
+Decision:
+
+- Promote delayed reward to the next main benchmark axis.
+- Run a delay-length curriculum or sweep before revisiting neuron scaling:
+  `reward_delay_steps = 3`, `6`, and `12`.
+- Re-run neuron scaling only on a delayed-reward setting that is hard but not
+  collapsed.
+- Keep gauntlet as a later curriculum endpoint.
+
+Artifact:
+
+- `gen5/outputs/harder_worlds_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2069,11 +2114,12 @@ Validation:
 
 ## Next recommended steps
 
-1. Build the next harder bot-world benchmark:
-   - run `gen5/examples/sprint14_harder_worlds.py`,
-   - start with `simple`, `moving_toxins`, `delayed_reward`, and `gauntlet`,
+1. Run a delayed-reward curriculum sweep:
+   - use `gen5/examples/sprint14_harder_worlds.py`,
+   - sweep `reward_delay_steps = 3`, `6`, and `12`,
    - compare `low_ltw_pruning` vs `gentle_ltw_scheduled` at `32` neurons,
-   - archive outputs under `gen5/outputs/harder_worlds_cuda_<date>/`.
+   - identify a hard-but-not-collapsed delayed-reward setting for the next
+     neuron-scaling test.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
