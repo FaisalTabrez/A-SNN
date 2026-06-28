@@ -12,6 +12,8 @@ remain in `gen5/docs/`.
   direction.
 - [Phase 11 Colab runbook](../gen5/docs/PHASE11_COLAB_RUNBOOK.md) lists the
   reproducible evaluation commands.
+- [Harder bot-world benchmarks](../gen5/docs/HARDER_WORLDS.md) defines the
+  next environment-difficulty benchmark.
 - [Literature uniqueness review](../gen5/docs/LITERATURE_UNIQUENESS_REVIEW.md)
   tracks how AMMC compares with existing work.
 

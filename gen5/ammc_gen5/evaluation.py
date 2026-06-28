@@ -26,7 +26,7 @@ from .evolving_loop import EvolvingHeadlessAMMCLoop, EvolvingLoopConfig
 from .evolver import TensorEvolver, TensorEvolverConfig
 from .runtime import make_generator, resolve_device, seed_everything
 from .telemetry import EvolutionTelemetryLogger
-from .tensor_environment import TensorEnvironment2D, TensorEnvironmentConfig
+from .tensor_environment import TensorEnvironment2D, TensorEnvironmentConfig, world_preset_config
 from .transducer import TransducerConfig, VectorizedTransducer
 
 
@@ -526,11 +526,22 @@ class SparseEfficiencyConfig:
     generations: int = 500
     epoch_steps: int = 120
     population_size: int = 10_000
+    world_preset: str = "simple"
     food_count: int = 128
     toxin_count: int = 128
-    sensor_radius: float = 0.35
-    friction: float = 0.985
-    action_gain: float = 0.05
+    sensor_radius: float | None = None
+    friction: float | None = None
+    action_gain: float | None = None
+    world_size: float | None = None
+    max_speed: float | None = None
+    collision_radius: float | None = None
+    respawn_margin: float | None = None
+    food_reward: float | None = None
+    toxin_penalty: float | None = None
+    reward_delay_steps: int | None = None
+    punishment_delay_steps: int | None = None
+    moving_food_speed: float | None = None
+    moving_toxin_speed: float | None = None
     survivor_fraction: float = 0.5
     reference_max_edges: int = 128
     adaptation_fitness_threshold: float = 25.0
@@ -789,14 +800,7 @@ class SparseEfficiencyRunner:
         device = _resolve_device(self.config.device)
         generator = _make_generator(seed, device)
         environment = TensorEnvironment2D(
-            TensorEnvironmentConfig(
-                agent_count=self.config.population_size,
-                food_count=self.config.food_count,
-                toxin_count=self.config.toxin_count,
-                sensor_radius=self.config.sensor_radius,
-                friction=self.config.friction,
-                action_gain=self.config.action_gain,
-            ),
+            _sparse_efficiency_environment_config(self.config),
             device=device,
         )
         environment.reset(generator=generator)
@@ -844,6 +848,28 @@ class SparseEfficiencyRunner:
             return group.sprout_probability
         scale = self.config.reference_max_edges / point.max_edges
         return max(0.0, group.sprout_probability * scale)
+
+
+def _sparse_efficiency_environment_config(config: SparseEfficiencyConfig) -> TensorEnvironmentConfig:
+    return world_preset_config(
+        config.world_preset,
+        agent_count=config.population_size,
+        food_count=config.food_count,
+        toxin_count=config.toxin_count,
+        sensor_radius=config.sensor_radius,
+        friction=config.friction,
+        action_gain=config.action_gain,
+        world_size=config.world_size,
+        max_speed=config.max_speed,
+        collision_radius=config.collision_radius,
+        respawn_margin=config.respawn_margin,
+        food_reward=config.food_reward,
+        toxin_penalty=config.toxin_penalty,
+        reward_delay_steps=config.reward_delay_steps,
+        punishment_delay_steps=config.punishment_delay_steps,
+        moving_food_speed=config.moving_food_speed,
+        moving_toxin_speed=config.moving_toxin_speed,
+    )
 
 
 @dataclass(frozen=True)

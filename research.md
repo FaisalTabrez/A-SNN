@@ -1380,6 +1380,57 @@ Artifacts:
 - `gen5/outputs/README.md`
 - `gen5/outputs/legacy_first_run_upload_2026-06-25/README.md`
 
+### 29. Add harder bot-world benchmark scaffolding
+
+Decision: shift the next benchmark axis from larger neuron counts to harder
+environment dynamics.
+
+Implementation:
+
+- Add named world presets to `TensorEnvironment2D`:
+  - `simple`,
+  - `wide_arena`,
+  - `sparse_cues`,
+  - `moving_toxins`,
+  - `delayed_reward`,
+  - `gauntlet`.
+- Add optional moving food/toxin object dynamics.
+- Add delayed reward and punishment buffers with static tensor shapes.
+- Add `sprint14_harder_worlds.py` to compare the current two sparse-efficiency
+  finalists across world presets.
+- Keep `simple` world defaults backward-compatible with existing baselines.
+
+Rationale:
+
+- Sparse-efficiency and neuron-scaling results show the simple world does not
+  reward more hidden decision nodes.
+- Harder worlds can test whether hidden recurrent structure becomes useful
+  when the agent needs search, memory, hazard tracking, or delayed-credit
+  assignment.
+- The current baselines remain:
+  - raw-survival: `low_ltw_pruning`, `32` neurons,
+  - sparse-efficiency: `gentle_ltw_scheduled`, `32` neurons.
+
+Next recommended command:
+
+```bash
+python gen5/examples/sprint14_harder_worlds.py \
+  --device cuda \
+  --worlds simple moving_toxins delayed_reward gauntlet \
+  --groups low_ltw_pruning gentle_ltw_scheduled \
+  --seeds 42 43 44 45 46 47 48 49 50 51 \
+  --generations 500 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --output-dir gen5_outputs/harder_worlds_cuda
+```
+
+Artifacts:
+
+- `gen5/ammc_gen5/tensor_environment.py`
+- `gen5/examples/sprint14_harder_worlds.py`
+- `gen5/docs/HARDER_WORLDS.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2019,12 +2070,10 @@ Validation:
 ## Next recommended steps
 
 1. Build the next harder bot-world benchmark:
-   - retain `32`-neuron `low_ltw_pruning` as the raw-survival baseline,
-   - retain `32`-neuron `gentle_ltw_scheduled` as the sparse-efficiency
-     baseline,
-   - add world variants that can reward hidden-state computation: larger
-     arena, moving toxins, delayed rewards, partial observability, and/or
-     multi-step resource chains.
+   - run `gen5/examples/sprint14_harder_worlds.py`,
+   - start with `simple`, `moving_toxins`, `delayed_reward`, and `gauntlet`,
+   - compare `low_ltw_pruning` vs `gentle_ltw_scheduled` at `32` neurons,
+   - archive outputs under `gen5/outputs/harder_worlds_cuda_<date>/`.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

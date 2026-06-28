@@ -43,6 +43,90 @@ class TensorEnvironmentConfig:
     collision_radius: float = 0.025
     sensor_radius: float = 0.35
     respawn_margin: float = 0.05
+    food_reward: float = 1.0
+    toxin_penalty: float = 1.0
+    reward_delay_steps: int = 0
+    punishment_delay_steps: int = 0
+    moving_food_speed: float = 0.0
+    moving_toxin_speed: float = 0.0
+
+
+@dataclass(frozen=True)
+class WorldPreset:
+    """Named world-difficulty preset.
+
+    The preset stores only values that differ from the caller's base
+    configuration. Population size, object counts, and explicit CLI overrides
+    can still be supplied separately.
+    """
+
+    name: str
+    description: str
+    overrides: dict[str, float | int]
+
+
+WORLD_PRESETS: tuple[WorldPreset, ...] = (
+    WorldPreset(
+        name="simple",
+        description="Original simple foraging world used for current baselines.",
+        overrides={},
+    ),
+    WorldPreset(
+        name="wide_arena",
+        description="Larger arena with unchanged sensor radius, making search and memory more important.",
+        overrides={"world_size": 2.0, "max_speed": 0.9},
+    ),
+    WorldPreset(
+        name="sparse_cues",
+        description="Shorter sensor radius for partial-observability pressure.",
+        overrides={"sensor_radius": 0.22},
+    ),
+    WorldPreset(
+        name="moving_toxins",
+        description="Toxins drift and bounce, forcing continual hazard tracking.",
+        overrides={"moving_toxin_speed": 0.35},
+    ),
+    WorldPreset(
+        name="delayed_reward",
+        description="Food collisions pay out after a short delay, rewarding memory traces.",
+        overrides={"reward_delay_steps": 12},
+    ),
+    WorldPreset(
+        name="gauntlet",
+        description="Combined hard world: larger arena, sparse cues, moving toxins, and delayed food reward.",
+        overrides={
+            "world_size": 2.0,
+            "sensor_radius": 0.25,
+            "moving_toxin_speed": 0.4,
+            "reward_delay_steps": 12,
+            "max_speed": 0.9,
+        },
+    ),
+)
+
+
+def available_world_presets() -> tuple[WorldPreset, ...]:
+    """Return supported named world presets."""
+
+    return WORLD_PRESETS
+
+
+def world_preset_names() -> tuple[str, ...]:
+    """Return just the supported preset names."""
+
+    return tuple(preset.name for preset in WORLD_PRESETS)
+
+
+def world_preset_config(name: str, **overrides) -> TensorEnvironmentConfig:
+    """Build a ``TensorEnvironmentConfig`` from a named preset plus overrides."""
+
+    by_name = {preset.name: preset for preset in WORLD_PRESETS}
+    if name not in by_name:
+        allowed = ", ".join(sorted(by_name))
+        raise ValueError(f"unknown world preset {name!r}; expected one of: {allowed}")
+    values = dict(by_name[name].overrides)
+    values.update({key: value for key, value in overrides.items() if value is not None})
+    return TensorEnvironmentConfig(**values)
 
 
 class TensorEnvironment2D(nn.Module):
@@ -67,12 +151,30 @@ class TensorEnvironment2D(nn.Module):
             raise ValueError("agent_count must be positive")
         if self.config.food_count <= 0 or self.config.toxin_count <= 0:
             raise ValueError("food_count and toxin_count must be positive")
+        if self.config.world_size <= 0:
+            raise ValueError("world_size must be positive")
+        if self.config.dt <= 0:
+            raise ValueError("dt must be positive")
+        if self.config.reward_delay_steps < 0 or self.config.punishment_delay_steps < 0:
+            raise ValueError("reward_delay_steps and punishment_delay_steps cannot be negative")
+        if self.config.moving_food_speed < 0 or self.config.moving_toxin_speed < 0:
+            raise ValueError("moving_food_speed and moving_toxin_speed cannot be negative")
 
         self._factory = {"device": device, "dtype": dtype or torch.float32}
         self.register_buffer("agent_pos", torch.empty((self.config.agent_count, 2), **self._factory))
         self.register_buffer("agent_vel", torch.zeros((self.config.agent_count, 2), **self._factory))
         self.register_buffer("food_pos", torch.empty((self.config.food_count, 2), **self._factory))
         self.register_buffer("toxin_pos", torch.empty((self.config.toxin_count, 2), **self._factory))
+        self.register_buffer("food_vel", torch.zeros((self.config.food_count, 2), **self._factory))
+        self.register_buffer("toxin_vel", torch.zeros((self.config.toxin_count, 2), **self._factory))
+        self.register_buffer(
+            "reward_delay_buffer",
+            torch.zeros((max(1, self.config.reward_delay_steps), self.config.agent_count), **self._factory),
+        )
+        self.register_buffer(
+            "punishment_delay_buffer",
+            torch.zeros((max(1, self.config.punishment_delay_steps), self.config.agent_count), **self._factory),
+        )
         self.register_buffer("food_hits", torch.zeros(self.config.agent_count, dtype=torch.long, device=device))
         self.register_buffer("toxin_hits", torch.zeros(self.config.agent_count, dtype=torch.long, device=device))
         self.register_buffer("fitness", torch.zeros(self.config.agent_count, **self._factory))
@@ -92,6 +194,10 @@ class TensorEnvironment2D(nn.Module):
             self.agent_vel.zero_()
             self.food_pos.uniform_(margin, size - margin, generator=generator)
             self.toxin_pos.uniform_(margin, size - margin, generator=generator)
+            self._reset_object_velocity(self.food_vel, self.config.moving_food_speed, generator=generator)
+            self._reset_object_velocity(self.toxin_vel, self.config.moving_toxin_speed, generator=generator)
+            self.reward_delay_buffer.zero_()
+            self.punishment_delay_buffer.zero_()
             self.food_hits.zero_()
             self.toxin_hits.zero_()
             self.fitness.zero_()
@@ -162,10 +268,13 @@ class TensorEnvironment2D(nn.Module):
 
         self.agent_pos.add_(self.agent_vel * cfg.dt)
         self._bounce_world_bounds()
+        self._move_objects()
 
         collisions = self._collide_and_respawn(generator=generator)
-        reward = collisions["food_collision"].to(self.fitness.dtype)
-        punishment = collisions["toxin_collision"].to(self.fitness.dtype)
+        raw_reward = collisions["food_collision"].to(self.fitness.dtype) * cfg.food_reward
+        raw_punishment = collisions["toxin_collision"].to(self.fitness.dtype) * cfg.toxin_penalty
+        reward = self._apply_delay(raw_reward, self.reward_delay_buffer, cfg.reward_delay_steps)
+        punishment = self._apply_delay(raw_punishment, self.punishment_delay_buffer, cfg.punishment_delay_steps)
         self.fitness.add_(reward - punishment)
         self.food_hits.add_(collisions["food_collision"].to(torch.long))
         self.toxin_hits.add_(collisions["toxin_collision"].to(torch.long))
@@ -206,6 +315,26 @@ class TensorEnvironment2D(nn.Module):
         )
         self.agent_vel.mul_(bounce)
 
+    def _move_objects(self) -> None:
+        if self.config.moving_food_speed > 0:
+            self._move_and_bounce(self.food_pos, self.food_vel)
+        if self.config.moving_toxin_speed > 0:
+            self._move_and_bounce(self.toxin_pos, self.toxin_vel)
+
+    def _move_and_bounce(self, positions, velocities) -> None:
+        size = self.config.world_size
+        positions.add_(velocities * self.config.dt)
+        below = positions < 0
+        above = positions > size
+        hit = below | above
+        positions.clamp_(0, size)
+        bounce = torch.where(
+            hit,
+            velocities.new_full(hit.shape, -1.0),
+            velocities.new_ones(hit.shape),
+        )
+        velocities.mul_(bounce)
+
     def _collide_and_respawn(self, generator=None):
         cfg = self.config
         food_delta = self.food_pos.unsqueeze(0) - self.agent_pos.unsqueeze(1)
@@ -220,6 +349,8 @@ class TensorEnvironment2D(nn.Module):
         toxin_touched = toxin_collision_matrix.any(dim=0)
         self._respawn(self.food_pos, food_touched, generator=generator)
         self._respawn(self.toxin_pos, toxin_touched, generator=generator)
+        self._reset_touched_velocities(self.food_vel, food_touched, cfg.moving_food_speed, generator=generator)
+        self._reset_touched_velocities(self.toxin_vel, toxin_touched, cfg.moving_toxin_speed, generator=generator)
         return {"food_collision": food_collision, "toxin_collision": toxin_collision}
 
     def _respawn(self, positions, mask, generator=None) -> None:
@@ -227,3 +358,28 @@ class TensorEnvironment2D(nn.Module):
         fresh = torch.empty_like(positions)
         fresh.uniform_(cfg.respawn_margin, cfg.world_size - cfg.respawn_margin, generator=generator)
         positions.copy_(torch.where(mask.unsqueeze(1), fresh, positions))
+
+    def _reset_object_velocity(self, velocities, speed: float, generator=None) -> None:
+        if speed <= 0:
+            velocities.zero_()
+            return
+        angles = torch.empty((velocities.shape[0],), device=velocities.device, dtype=velocities.dtype)
+        angles.uniform_(0.0, 2.0 * torch.pi, generator=generator)
+        velocities[:, 0] = torch.cos(angles) * speed
+        velocities[:, 1] = torch.sin(angles) * speed
+
+    def _reset_touched_velocities(self, velocities, mask, speed: float, generator=None) -> None:
+        if speed <= 0:
+            return
+        fresh = torch.empty_like(velocities)
+        self._reset_object_velocity(fresh, speed, generator=generator)
+        velocities.copy_(torch.where(mask.unsqueeze(1), fresh, velocities))
+
+    def _apply_delay(self, value, buffer, delay_steps: int):
+        if delay_steps <= 0:
+            return value
+        due = buffer[0].clone()
+        if buffer.shape[0] > 1:
+            buffer[:-1].copy_(buffer[1:].clone())
+        buffer[-1].copy_(value)
+        return due

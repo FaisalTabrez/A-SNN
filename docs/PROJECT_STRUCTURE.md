@@ -63,6 +63,8 @@ For the simple bot world:
 - use `gentle_ltw_scheduled` with `32` neurons as the sparse-efficiency
   baseline,
 - move next toward harder bot worlds instead of scaling neuron count further.
+- use `gen5/examples/sprint14_harder_worlds.py` to test whether harder
+  environments make hidden decision nodes useful.
 
 The detailed evidence lives in:
 

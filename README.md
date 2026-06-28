@@ -20,6 +20,7 @@ If you are new to the repo, read these in order:
 3. [Current research log](research.md)
 4. [Gen-5 README](gen5/README.md)
 5. [Phase 11 Colab runbook](gen5/docs/PHASE11_COLAB_RUNBOOK.md)
+6. [Harder bot-world benchmarks](gen5/docs/HARDER_WORLDS.md)
 
 ## Repository map
 
@@ -45,7 +46,7 @@ For the simple 2D bot world, sparse-efficiency tuning is now frozen:
 
 - Default raw-survival baseline: `low_ltw_pruning`, `32` neurons.
 - Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
-- Next scientific step: harder bot-world variants that reward hidden-state
+- Current scientific step: harder bot-world variants that reward hidden-state
   computation before expanding neuron count further.
 
 See [research.md](research.md) for the evidence trail.
@@ -102,6 +103,20 @@ Run the Colab/XLA throughput benchmark on a TPU runtime:
   --steps 240 \
   --warmup 30 \
   --output-dir gen5_outputs/throughput_xla
+```
+
+Run the harder-world benchmark on Colab CUDA/T4:
+
+```python
+!python gen5/examples/sprint14_harder_worlds.py \
+  --device cuda \
+  --worlds simple moving_toxins delayed_reward gauntlet \
+  --groups low_ltw_pruning gentle_ltw_scheduled \
+  --seeds 42 43 44 45 46 47 48 49 50 51 \
+  --generations 500 \
+  --population-size 10000 \
+  --epoch-steps 120 \
+  --output-dir gen5_outputs/harder_worlds_cuda
 ```
 
 ## Evidence discipline

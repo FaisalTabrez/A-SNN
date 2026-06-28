@@ -36,6 +36,7 @@ from ammc_gen5 import (
     SparseEfficiencyConfig,
     SparseEfficiencyRunner,
     default_sparse_efficiency_groups,
+    world_preset_names,
 )
 
 
@@ -45,11 +46,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--generations", type=int, default=500)
     parser.add_argument("--epoch-steps", type=int, default=120)
     parser.add_argument("--population-size", type=int, default=10_000)
+    parser.add_argument("--world-preset", default="simple", choices=world_preset_names())
     parser.add_argument("--food-count", type=int, default=128)
     parser.add_argument("--toxin-count", type=int, default=128)
-    parser.add_argument("--sensor-radius", type=float, default=0.35)
-    parser.add_argument("--friction", type=float, default=0.985)
-    parser.add_argument("--action-gain", type=float, default=0.05)
+    parser.add_argument("--sensor-radius", type=float, default=None)
+    parser.add_argument("--friction", type=float, default=None)
+    parser.add_argument("--action-gain", type=float, default=None)
+    parser.add_argument("--world-size", type=float, default=None)
+    parser.add_argument("--max-speed", type=float, default=None)
+    parser.add_argument("--collision-radius", type=float, default=None)
+    parser.add_argument("--respawn-margin", type=float, default=None)
+    parser.add_argument("--food-reward", type=float, default=None)
+    parser.add_argument("--toxin-penalty", type=float, default=None)
+    parser.add_argument("--reward-delay-steps", type=int, default=None)
+    parser.add_argument("--punishment-delay-steps", type=int, default=None)
+    parser.add_argument("--moving-food-speed", type=float, default=None)
+    parser.add_argument("--moving-toxin-speed", type=float, default=None)
     parser.add_argument("--threshold", type=float, default=25.0)
     parser.add_argument("--reference-max-edges", type=int, default=128)
     parser.add_argument("--protected-core-edge-count", type=int, default=None)
@@ -90,11 +102,22 @@ def main() -> None:
             generations=args.generations,
             epoch_steps=args.epoch_steps,
             population_size=args.population_size,
+            world_preset=args.world_preset,
             food_count=args.food_count,
             toxin_count=args.toxin_count,
             sensor_radius=args.sensor_radius,
             friction=args.friction,
             action_gain=args.action_gain,
+            world_size=args.world_size,
+            max_speed=args.max_speed,
+            collision_radius=args.collision_radius,
+            respawn_margin=args.respawn_margin,
+            food_reward=args.food_reward,
+            toxin_penalty=args.toxin_penalty,
+            reward_delay_steps=args.reward_delay_steps,
+            punishment_delay_steps=args.punishment_delay_steps,
+            moving_food_speed=args.moving_food_speed,
+            moving_toxin_speed=args.moving_toxin_speed,
             reference_max_edges=args.reference_max_edges,
             adaptation_fitness_threshold=args.threshold,
             device=args.device,

@@ -16,6 +16,13 @@ class RuntimeExportsContractTest(unittest.TestCase):
         self.assertTrue(callable(resolve_device))
         self.assertTrue(callable(sync))
 
+    def test_world_preset_helpers_are_exported_from_package_root(self) -> None:
+        from ammc_gen5 import available_world_presets, world_preset_config, world_preset_names
+
+        self.assertTrue(callable(available_world_presets))
+        self.assertTrue(callable(world_preset_config))
+        self.assertIn("simple", world_preset_names())
+
 
 if __name__ == "__main__":
     unittest.main()

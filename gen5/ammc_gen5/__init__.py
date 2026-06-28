@@ -59,7 +59,14 @@ from .runtime import (
     try_xla_device,
     xla_device,
 )
-from .tensor_environment import TensorEnvironment2D, TensorEnvironmentConfig
+from .tensor_environment import (
+    TensorEnvironment2D,
+    TensorEnvironmentConfig,
+    WorldPreset,
+    available_world_presets,
+    world_preset_config,
+    world_preset_names,
+)
 from .telemetry import EvolutionTelemetryLogger, EvolutionTelemetryRecord
 from .transducer import HeadlessAMMCLoop, TransducerConfig, VectorizedTransducer
 
@@ -113,7 +120,9 @@ __all__ = [
     "TrialRunnerConfig",
     "TransducerConfig",
     "VectorizedTransducer",
+    "WorldPreset",
     "accelerator_memory",
+    "available_world_presets",
     "clear_memory_stats",
     "default_neuron_scale_points",
     "default_sparse_efficiency_groups",
@@ -132,5 +141,7 @@ __all__ = [
     "summarize_sparse_efficiency_records",
     "sync",
     "try_xla_device",
+    "world_preset_config",
+    "world_preset_names",
     "xla_device",
 ]

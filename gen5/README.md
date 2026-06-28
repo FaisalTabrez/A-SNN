@@ -187,6 +187,34 @@ Outputs:
 - `multi_seed_aggregate.csv`
 - `multi_seed_best_fitness_mean_std.png`
 
+## Sprint 14 harder-world benchmark
+
+The simple bot world no longer rewards extra hidden neurons. Sprint 14 keeps
+the sparse-efficiency finalists fixed and varies environment difficulty:
+
+- `simple`
+- `wide_arena`
+- `sparse_cues`
+- `moving_toxins`
+- `delayed_reward`
+- `gauntlet`
+
+Run the default hard-world comparison:
+
+```powershell
+python gen5/examples/sprint14_harder_worlds.py `
+  --device cuda `
+  --worlds simple moving_toxins delayed_reward gauntlet `
+  --groups low_ltw_pruning gentle_ltw_scheduled `
+  --seeds 42 43 44 45 46 47 48 49 50 51 `
+  --generations 500 `
+  --population-size 10000 `
+  --epoch-steps 120 `
+  --output-dir gen5_outputs/harder_worlds_cuda
+```
+
+See `gen5/docs/HARDER_WORLDS.md`.
+
 ### Plasticity ablation
 
 Run the static/full/gated plasticity comparison under an inverted food/toxin
