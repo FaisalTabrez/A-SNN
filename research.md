@@ -1884,6 +1884,47 @@ Artifacts:
 - `gen5/examples/sprint15_frozen_representation_probe.py`
 - `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
 
+### 40. Frozen representation probe: readout is the main near-term bottleneck
+
+Finding: the first Sprint 15 frozen representation probe completed on CUDA.
+The sparse AMMC recurrent substrate remained frozen; only a linear classifier
+over final membrane plus spike-count features was trained.
+
+Results:
+
+| Task | Frozen motor | Linear probe | Probe train | Best reflex | Gain over frozen | Gain over best reflex |
+|---|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% | 0.00% |
+| anti_toxin | 25.00% | 100.00% | 100.00% | 24.98% | 75.00% | 75.02% |
+| cue_switch | 50.42% | 85.76% | 88.32% | 53.13% | 35.35% | 32.63% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% | 0.00% |
+| two_pulse_sum | 25.00% | 31.81% | 33.00% | 26.69% | 6.81% | 5.13% |
+
+Interpretation:
+
+- `anti_toxin` is a readout/transducer failure, not a representation failure.
+  The frozen substrate contains enough information for a linear readout to
+  reach `100%`, while the fixed motor readout is inactive.
+- `cue_switch` is partially represented. The probe reaches `85.76%`, which is
+  far above reflex baselines, but not perfect.
+- `two_pulse_sum` remains near chance even with the probe, so modular temporal
+  composition is not linearly recoverable from the current frozen substrate.
+- `direction_copy` and `delayed_recall` remain solved, but they are still
+  explainable as direct reflex / evidence integration.
+
+Decision:
+
+- Do not jump directly to full recurrent/plastic training.
+- First implement a minimal trainable readout/transducer adapter while keeping
+  the sparse recurrent AMMC substrate frozen.
+- Use the linear probe as a ceiling for what readout adaptation should recover.
+- After readout adaptation, revisit `two_pulse_sum`; if it remains near chance,
+  that is the first clear target for substrate learning or architecture change.
+
+Artifact:
+
+- `gen5/outputs/frozen_representation_probe_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2522,13 +2563,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the Sprint 15 frozen representation probe:
-   - use `gen5/examples/sprint15_frozen_representation_probe.py`,
-   - start with `16` neurons, `128` edge slots, `4096` samples, and `200`
-     probe epochs,
-   - compare probe accuracy against frozen motor readout and reflex baselines,
-   - use this to separate "bad readout/transducer" from "missing
-     representation."
+1. Implement a Sprint 15 trainable readout/transducer adapter:
+   - keep recurrent sparse AMMC weights frozen,
+   - train a small motor readout head on frozen AMMC traces,
+   - compare against the linear-probe ceiling,
+   - verify that `anti_toxin` becomes solvable with readout adaptation alone,
+   - use `cue_switch` and `two_pulse_sum` to decide when substrate learning is
+     actually required.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

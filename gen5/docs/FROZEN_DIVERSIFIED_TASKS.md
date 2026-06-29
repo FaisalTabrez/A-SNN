@@ -147,3 +147,22 @@ Expected outputs:
 - `frozen_representation_probe.json`
 - `frozen_representation_probe_summary.csv`
 - `frozen_representation_probe_summary.png`
+
+## First representation-probe result
+
+The first CUDA probe run is archived at:
+
+- `gen5/outputs/frozen_representation_probe_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- `anti_toxin` jumped from `25%` frozen motor accuracy to `100%` linear-probe
+  accuracy. This is a readout/transducer failure, not a representation failure.
+- `cue_switch` improved from roughly `50%` to `85.76%`, so context information
+  is partially present but not perfectly linearly disentangled.
+- `two_pulse_sum` only improved from `25%` to `31.81%`, so modular sequence
+  composition is still missing from the frozen substrate.
+
+Next recommendation: implement a minimal trainable readout/transducer adapter
+while keeping recurrent sparse AMMC weights frozen. Use that as the bridge
+between frozen probing and full recurrent/plastic training.
