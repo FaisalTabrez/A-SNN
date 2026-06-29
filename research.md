@@ -1708,6 +1708,40 @@ Artifact:
 
 - `gen5/outputs/neuron_scaling_delay2_cuda_console_2026-06-29/analysis.md`
 
+### 36. Delay-2 neuron scaling artifacts recovered
+
+Finding: the full Drive artifacts for the delay-`2` delayed-reward
+neuron-scaling run were recovered and archived locally. This upgrades the
+previous console-only evidence into full artifact evidence.
+
+Archived files:
+
+- `sparse_efficiency.json`
+- `sparse_efficiency_records.csv`
+- `sparse_efficiency_summary.csv`
+- `sparse_efficiency_summary.png`
+- `sparse_efficiency_progress.json`
+
+Validation:
+
+- `sparse_efficiency_progress.json` reports `60 / 60` completed trials.
+- `sparse_efficiency_summary.csv` matches the previous console summary.
+- The result remains unchanged: compact `16`-neuron brains outperform larger
+  `32`- and `64`-neuron brains under delay-`2`.
+
+Decision:
+
+- Promote the `16`-neuron / `128`-edge topology as the current delayed-reward
+  baseline.
+- Use `gentle_ltw_scheduled/16` as the raw-fitness compact baseline.
+- Use `low_ltw_pruning/16` as the sparse-efficiency compact baseline.
+- Do not spend more delay-`2` budget on larger hidden-node pools unless a new
+  mechanism preserves the useful direct core.
+
+Artifact:
+
+- `gen5/outputs/neuron_scaling_delay2_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2346,13 +2380,12 @@ Validation:
 
 ## Next recommended steps
 
-1. Consolidate the delay-`2` neuron-scaling result:
-   - upload the Drive artifacts from
-     `/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/`
-     if still available,
+1. Use the recovered delay-`2` neuron-scaling result:
    - treat `16` neurons as the current delayed-reward topology winner,
-   - run a focused `16`-neuron confirmation or move to delay `3` / moving-food
-     tasks to test whether hidden state becomes useful.
+   - run a focused `16`-neuron confirmation or move directly to delay `3`,
+     moving-food, cue-switching, or maze-like partial-observability tasks,
+   - only scale hidden-node count again after a harder task demonstrates that
+     hidden state improves fitness or retention.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

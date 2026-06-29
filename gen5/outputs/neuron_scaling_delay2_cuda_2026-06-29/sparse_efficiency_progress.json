@@ -1,0 +1,14 @@
+{
+  "completed_trials": 60,
+  "total_trials": 60,
+  "current_group": "low_ltw_pruning",
+  "current_neuron_count": 64,
+  "current_max_edges": 512,
+  "current_seed": 51,
+  "paths": {
+    "json": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency.json",
+    "records_csv": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_records.csv",
+    "summary_csv": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_summary.csv",
+    "plot": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_summary.png"
+  }
+}

@@ -153,8 +153,8 @@ delay-`2` neuron-scaling run.
 `gen5/outputs/neuron_scaling_delay2_cuda_console_2026-06-29/analysis.md`
 records the surviving console output from the delay-`2` neuron-scaling run.
 
-Caveat: the run wrote persistent Drive artifacts, but only the final console
-summary has been uploaded here so far.
+Caveat resolved: the full Drive artifacts were later recovered and archived at
+`gen5/outputs/neuron_scaling_delay2_cuda_2026-06-29/analysis.md`.
 
 Result: compact `16`-neuron brains outperformed larger `32`- and `64`-neuron
 brains under delayed reward. `gentle_ltw_scheduled/16` reached the best raw
