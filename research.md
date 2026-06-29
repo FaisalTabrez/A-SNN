@@ -1560,6 +1560,53 @@ Artifact:
 
 - `gen5/outputs/delayed_reward_delay1_screen_cuda_2026-06-29/analysis.md`
 
+### 33. Delay-2 screen: best hard-but-not-collapsed candidate so far
+
+Finding: the clean delay-`2` delayed-reward screen completed on CUDA using only
+`--worlds delayed_reward`.
+
+Results:
+
+| Group | Final mean best fitness | Active synapses | Fitness / active synapse | Threshold success | Mean generation to threshold |
+|---|---:|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 24.67 | 78.13 | 0.205 | 66.67% | 101 |
+| low_ltw_pruning | 24.67 | 98.45 | 0.169 | 33.33% | 70 |
+
+Comparison:
+
+| Delay | Group | Mean best fitness | Active synapses | Threshold success |
+|---:|---|---:|---:|---:|
+| 1 | gentle_ltw_scheduled | 23.00 | 77.55 | 0% |
+| 1 | low_ltw_pruning | 24.67 | 98.65 | 33.33% |
+| 2 | gentle_ltw_scheduled | 24.67 | 78.13 | 66.67% |
+| 2 | low_ltw_pruning | 24.67 | 98.45 | 33.33% |
+| 3 | gentle_ltw_scheduled | 22.67 | 77.83 | 0% |
+| 3 | low_ltw_pruning | 22.33 | 97.97 | 0% |
+
+Interpretation:
+
+- Delay `2` is now the strongest hard-but-not-collapsed delayed-reward
+  candidate.
+- `gentle_ltw_scheduled` matched `low_ltw_pruning` on raw mean best fitness
+  while using about `20.6%` fewer active synapses and achieving higher
+  threshold success.
+- `low_ltw_pruning` still reaches threshold faster when it succeeds, but it
+  succeeds in fewer seeds in this short screen.
+- Delay `1` was slightly too favorable to raw pruning, while delay `3` was too
+  unstable. Delay `2` is the first setting where sparse/gentle adult plasticity
+  looks behaviorally competitive rather than merely efficient.
+
+Decision:
+
+- Promote `reward_delay_steps = 2` to the next full statistical benchmark.
+- Run `10` seeds for `500` generations at `32` neurons and `256` edge slots.
+- If delay `2` holds, rerun neuron scaling on this delayed-reward setting.
+- Keep delay `1` as a fallback and delay `3` as the next curriculum target.
+
+Artifact:
+
+- `gen5/outputs/delayed_reward_delay2_screen_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2198,14 +2245,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Run a delayed-reward curriculum sweep:
+1. Run the full delay-`2` delayed-reward statistical benchmark:
    - use `gen5/examples/sprint14_harder_worlds.py`,
-   - use only `--worlds delayed_reward` to avoid duplicate effective configs,
-   - run the clean `reward_delay_steps = 2` screen next,
-   - compare delay `2` against the archived delay `1` and delay `3` screens,
-   - compare `low_ltw_pruning` vs `gentle_ltw_scheduled` at `32` neurons,
-   - identify a hard-but-not-collapsed delayed-reward setting for the next
-     neuron-scaling test.
+   - use only `--worlds delayed_reward`,
+   - set `--reward-delay-steps 2`,
+   - run `10` seeds x `500` generations at `32` neurons and `256` edge slots,
+   - compare `low_ltw_pruning` vs `gentle_ltw_scheduled`,
+   - if the short-screen result holds, rerun neuron scaling under delay `2`.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

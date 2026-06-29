@@ -112,4 +112,20 @@ records the clean delay-`1` screen.
 Result: `low_ltw_pruning` is the best short-screen survival result so far,
 with mean best fitness `24.67` and `33.33%` threshold success. It is not solved,
 but it is the first delayed-reward setting that looks close enough for a full
-evaluation. Screen delay `2` before committing the larger run.
+evaluation. Delay `2` has now superseded it as the next full-evaluation
+candidate.
+
+## Delay-2 screen note
+
+`gen5/outputs/delayed_reward_delay2_screen_cuda_2026-06-29/analysis.md`
+records the clean delay-`2` screen.
+
+Result: both carried-forward groups reached mean best fitness `24.67`.
+`gentle_ltw_scheduled` matched `low_ltw_pruning` while using about `20.6%`
+fewer active synapses and crossing the threshold in `66.67%` of seeds.
+`low_ltw_pruning` crossed threshold faster when it succeeded, but only in
+`33.33%` of seeds.
+
+Decision: promote `reward_delay_steps = 2` to the next `10`-seed,
+`500`-generation statistical benchmark. If it holds, rerun neuron scaling on
+this delayed-reward setting.

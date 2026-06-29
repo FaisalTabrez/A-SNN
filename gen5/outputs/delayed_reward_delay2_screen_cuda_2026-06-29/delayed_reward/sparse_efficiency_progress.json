@@ -1,0 +1,14 @@
+{
+  "completed_trials": 6,
+  "total_trials": 6,
+  "current_group": "gentle_ltw_scheduled",
+  "current_neuron_count": 32,
+  "current_max_edges": 256,
+  "current_seed": 44,
+  "paths": {
+    "json": "gen5_outputs/delayed_reward_delay2_screen_cuda/delayed_reward/sparse_efficiency.json",
+    "records_csv": "gen5_outputs/delayed_reward_delay2_screen_cuda/delayed_reward/sparse_efficiency_records.csv",
+    "summary_csv": "gen5_outputs/delayed_reward_delay2_screen_cuda/delayed_reward/sparse_efficiency_summary.csv",
+    "plot": "gen5_outputs/delayed_reward_delay2_screen_cuda/delayed_reward/sparse_efficiency_summary.png"
+  }
+}
