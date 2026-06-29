@@ -1,17 +1,14 @@
-"""Sprint 15: frozen readout adapter held-out-seed generalization.
+"""Sprint 15: frozen readout adapter robustness checks.
 
-The adapter sweep showed that an MLP readout can solve all current synthetic
-tasks from frozen AMMC traces. This runner asks the next harder question:
-
-    Does the trained readout generalize to new synthetic seeds without retraining?
-
-It trains one adapter per task on `--train-seed`, evaluates the held-out split
-from that seed, then evaluates fresh full batches from `--test-seeds`.
+Held-out seed generalization passed perfectly for the current synthetic task
+family. This runner makes the test less cozy: train the adapter once on the
+base distribution, then evaluate without retraining under one-axis perturbations
+such as amplitude shifts, sensory noise, and changed sequence length.
 
 Colab-scale run:
 
 ```python
-!python gen5/examples/sprint15_frozen_readout_adapter_generalization.py \
+!python gen5/examples/sprint15_frozen_readout_adapter_robustness.py \
   --device cuda \
   --adapter-kind mlp \
   --feature-mode full_trace \
@@ -21,7 +18,7 @@ Colab-scale run:
   --max-edges 128 \
   --epochs 200 \
   --test-seeds 43 44 45 46 47 \
-  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_generalization_cuda
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_robustness_cuda
 ```
 """
 
@@ -42,6 +39,7 @@ from ammc_gen5 import (  # noqa: E402
     FrozenReadoutAdapterConfig,
     FrozenReadoutAdapterRunner,
     FrozenTaskConfig,
+    FrozenTaskRunner,
     available_frozen_tasks,
     make_generator,
     mark_step,
@@ -57,7 +55,7 @@ except Exception:  # pragma: no cover
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Evaluate frozen readout adapter generalization on held-out seeds")
+    parser = argparse.ArgumentParser(description="Evaluate frozen readout adapter robustness under task perturbations")
     parser.add_argument("--tasks", nargs="+", default=list(available_frozen_tasks()), choices=available_frozen_tasks())
     parser.add_argument("--list-tasks", action="store_true", help="Print available synthetic tasks and exit")
     parser.add_argument("--sample-count", type=int, default=4096)
@@ -70,6 +68,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--leak", type=float, default=0.9)
     parser.add_argument("--threshold", type=float, default=1.0)
     parser.add_argument("--input-amplitude", type=float, default=0.75)
+    parser.add_argument("--amplitudes", nargs="+", type=float, default=[0.35, 0.55, 0.75, 1.0])
+    parser.add_argument("--noise-stds", nargs="+", type=float, default=[0.0, 0.05, 0.15])
+    parser.add_argument("--timestep-values", nargs="+", type=int, default=[4, 8, 12])
     parser.add_argument("--train-fraction", type=float, default=0.7)
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--learning-rate", type=float, default=0.05)
@@ -79,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden-units", type=int, default=32)
     parser.add_argument("--no-standardize", action="store_true")
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--output-dir", default="gen5_outputs/frozen_readout_adapter_generalization")
+    parser.add_argument("--output-dir", default="gen5_outputs/frozen_readout_adapter_robustness")
     parser.add_argument("--no-plot", action="store_true")
     return parser.parse_args()
 
@@ -90,23 +91,13 @@ def main() -> None:
         print(json.dumps(list(available_frozen_tasks()), indent=2))
         return
     if torch is None:
-        raise ImportError("frozen readout adapter generalization requires PyTorch")
+        raise ImportError("frozen readout adapter robustness requires PyTorch")
 
-    task_config = FrozenTaskConfig(
-        tasks=tuple(args.tasks),
-        sample_count=args.sample_count,
-        timesteps=args.timesteps,
-        seed=args.train_seed,
-        neuron_count=args.neuron_count,
-        max_edges=args.max_edges,
-        sensor_gain=args.sensor_gain,
-        leak=args.leak,
-        threshold=args.threshold,
-        input_amplitude=args.input_amplitude,
-        device=args.device,
-    )
+    device = resolve_device(args.device)
+    seed_everything(args.train_seed, device=device)
+    train_task_config = _task_config(args, seed=args.train_seed, timesteps=args.timesteps, amplitude=args.input_amplitude)
     adapter_config = FrozenReadoutAdapterConfig(
-        task_config=task_config,
+        task_config=train_task_config,
         train_fraction=args.train_fraction,
         epochs=args.epochs,
         learning_rate=args.learning_rate,
@@ -116,29 +107,26 @@ def main() -> None:
         hidden_units=args.hidden_units,
         standardize_features=not args.no_standardize,
     )
-    runner = FrozenReadoutAdapterRunner(adapter_config)
-    device = resolve_device(args.device)
-    seed_everything(args.train_seed, device=device)
-    split_generator = make_generator(args.train_seed + 40_000, device=device)
+    train_runner = FrozenReadoutAdapterRunner(adapter_config)
+    split_generator = make_generator(args.train_seed + 50_000, device=device)
 
+    conditions = _conditions(args)
     rows: list[dict] = []
-    for offset, task_name in enumerate(task_config.tasks):
+    for offset, task_name in enumerate(train_task_config.tasks):
         train_generator = make_generator(args.train_seed + offset + 1, device=device)
-        train_batch = runner.task_runner._make_task(task_name, train_generator, device)
-        train_trace = runner.task_runner._frozen_ammc_trace(train_batch.inputs, device)
-        train_features = runner._select_features(train_trace).detach()
-        train_targets = train_batch.targets
-
+        train_batch = train_runner.task_runner._make_task(task_name, train_generator, device)
+        train_trace = train_runner.task_runner._frozen_ammc_trace(train_batch.inputs, device)
+        train_features = train_runner._select_features(train_trace).detach()
         split = _split_features(
             train_features,
-            train_targets,
+            train_batch.targets,
             args.train_fraction,
             split_generator,
             device,
             standardize=not args.no_standardize,
         )
         adapter, final_loss = _train_adapter(
-            runner,
+            train_runner,
             split["x_train"],
             split["y_train"],
             device,
@@ -147,65 +135,57 @@ def main() -> None:
             args.weight_decay,
         )
 
-        rows.append(
-            _evaluate_batch(
-                adapter=adapter,
-                runner=runner,
-                task_name=task_name,
-                batch=train_batch,
-                trace=train_trace,
-                features=split["x_test_raw"],
-                targets=split["y_test"],
-                feature_mean=split["mean"],
-                feature_std=split["std"],
-                eval_scope="train_seed_split",
-                train_seed=args.train_seed,
-                eval_seed=args.train_seed,
-                final_train_loss=final_loss,
-                baseline_indices=split["test_idx"],
-            )
-        )
-
-        for test_seed in args.test_seeds:
-            test_generator = make_generator(test_seed + offset + 1, device=device)
-            test_batch = runner.task_runner._make_task(task_name, test_generator, device)
-            test_trace = runner.task_runner._frozen_ammc_trace(test_batch.inputs, device)
-            test_features = runner._select_features(test_trace).detach()
-            rows.append(
-                _evaluate_batch(
-                    adapter=adapter,
-                    runner=runner,
-                    task_name=task_name,
-                    batch=test_batch,
-                    trace=test_trace,
-                    features=test_features,
-                    targets=test_batch.targets,
-                    feature_mean=split["mean"],
-                    feature_std=split["std"],
-                    eval_scope="heldout_seed",
-                    train_seed=args.train_seed,
-                    eval_seed=test_seed,
-                    final_train_loss=final_loss,
-                    baseline_indices=None,
+        for condition in conditions:
+            for test_seed in args.test_seeds:
+                test_task_config = _task_config(
+                    args,
+                    seed=test_seed,
+                    timesteps=condition["timesteps"],
+                    amplitude=condition["amplitude"],
                 )
-            )
-            sync(device)
+                test_runner = FrozenTaskRunner(test_task_config)
+                test_generator = make_generator(test_seed + offset + 1, device=device)
+                test_batch = test_runner._make_task(task_name, test_generator, device)
+                eval_inputs = _apply_noise(test_batch.inputs, condition["noise_std"], test_seed, offset, device)
+                trace = test_runner._frozen_ammc_trace(eval_inputs, device)
+                features = train_runner._select_features(trace).detach()
+                rows.append(
+                    _evaluate(
+                        adapter=adapter,
+                        runner=train_runner,
+                        task_name=task_name,
+                        condition=condition,
+                        eval_seed=test_seed,
+                        inputs=eval_inputs,
+                        targets=test_batch.targets,
+                        trace=trace,
+                        features=features,
+                        feature_mean=split["mean"],
+                        feature_std=split["std"],
+                        final_train_loss=final_loss,
+                    )
+                )
+                sync(device)
 
     output_dir = pathlib.Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    json_path = output_dir / "frozen_readout_adapter_generalization.json"
-    summary_csv = output_dir / "frozen_readout_adapter_generalization_summary.csv"
+    json_path = output_dir / "frozen_readout_adapter_robustness.json"
+    summary_csv = output_dir / "frozen_readout_adapter_robustness_summary.csv"
     json_path.write_text(
         json.dumps(
             {
                 "config": {
-                    "tasks": list(task_config.tasks),
-                    "sample_count": task_config.sample_count,
-                    "timesteps": task_config.timesteps,
+                    "tasks": list(train_task_config.tasks),
+                    "sample_count": train_task_config.sample_count,
                     "train_seed": args.train_seed,
                     "test_seeds": args.test_seeds,
-                    "neuron_count": task_config.neuron_count,
-                    "max_edges": task_config.max_edges,
+                    "base_timesteps": args.timesteps,
+                    "base_input_amplitude": args.input_amplitude,
+                    "amplitudes": args.amplitudes,
+                    "noise_stds": args.noise_stds,
+                    "timestep_values": args.timestep_values,
+                    "neuron_count": args.neuron_count,
+                    "max_edges": args.max_edges,
                     "adapter_kind": args.adapter_kind,
                     "feature_mode": args.feature_mode,
                     "hidden_units": args.hidden_units,
@@ -214,7 +194,7 @@ def main() -> None:
                     "weight_decay": args.weight_decay,
                     "standardize_features": not args.no_standardize,
                     "device": args.device,
-                    "seed_edges": [asdict(edge) for edge in task_config.seed_edges],
+                    "seed_edges": [asdict(edge) for edge in train_task_config.seed_edges],
                 },
                 "summary": rows,
             },
@@ -231,8 +211,8 @@ def main() -> None:
     }
     if not args.no_plot:
         try:
-            plot_path = output_dir / "frozen_readout_adapter_generalization_summary.png"
-            _plot_generalization(rows, plot_path)
+            plot_path = output_dir / "frozen_readout_adapter_robustness_summary.png"
+            _plot_robustness(rows, plot_path)
             paths["plot"] = str(plot_path)
         except Exception as exc:  # pragma: no cover - optional plotting
             paths["plot"] = f"skipped: {exc}"
@@ -240,26 +220,63 @@ def main() -> None:
     print(json.dumps({"paths": paths, "summary": rows}, indent=2))
 
 
+def _task_config(args, *, seed: int, timesteps: int, amplitude: float) -> FrozenTaskConfig:
+    return FrozenTaskConfig(
+        tasks=tuple(args.tasks),
+        sample_count=args.sample_count,
+        timesteps=timesteps,
+        seed=seed,
+        neuron_count=args.neuron_count,
+        max_edges=args.max_edges,
+        sensor_gain=args.sensor_gain,
+        leak=args.leak,
+        threshold=args.threshold,
+        input_amplitude=amplitude,
+        device=args.device,
+    )
+
+
+def _conditions(args) -> list[dict]:
+    seen: set[tuple[str, float, int, float]] = set()
+    conditions: list[dict] = []
+
+    def add(name: str, *, amplitude: float, timesteps: int, noise_std: float) -> None:
+        key = (name, float(amplitude), int(timesteps), float(noise_std))
+        if key in seen:
+            return
+        seen.add(key)
+        conditions.append(
+            {
+                "condition": name,
+                "amplitude": float(amplitude),
+                "timesteps": int(timesteps),
+                "noise_std": float(noise_std),
+            }
+        )
+
+    add("base", amplitude=args.input_amplitude, timesteps=args.timesteps, noise_std=0.0)
+    for amplitude in args.amplitudes:
+        add(f"amplitude_{amplitude:g}", amplitude=amplitude, timesteps=args.timesteps, noise_std=0.0)
+    for noise_std in args.noise_stds:
+        add(f"noise_{noise_std:g}", amplitude=args.input_amplitude, timesteps=args.timesteps, noise_std=noise_std)
+    for timesteps in args.timestep_values:
+        add(f"timesteps_{timesteps}", amplitude=args.input_amplitude, timesteps=timesteps, noise_std=0.0)
+    return conditions
+
+
 def _split_features(features, targets, train_fraction: float, generator, device, *, standardize: bool) -> dict:
-    order = features.new_empty((targets.numel(),), dtype=torch.long)
-    order.copy_(torch.randperm(targets.numel(), device=device, generator=generator))
+    order = torch.randperm(targets.numel(), device=device, generator=generator)
     train_count = max(1, int(round(targets.numel() * train_fraction)))
     train_count = min(train_count, targets.numel() - 1)
     train_idx = order[:train_count]
-    test_idx = order[train_count:]
     x_train_raw = features.index_select(0, train_idx)
     y_train = targets.index_select(0, train_idx)
-    x_test_raw = features.index_select(0, test_idx)
-    y_test = targets.index_select(0, test_idx)
     mean = x_train_raw.mean(dim=0, keepdim=True)
     std = x_train_raw.std(dim=0, keepdim=True, unbiased=False).clamp_min(1e-6)
     x_train = (x_train_raw - mean) / std if standardize else x_train_raw
     return {
         "x_train": x_train,
         "y_train": y_train,
-        "x_test_raw": x_test_raw,
-        "y_test": y_test,
-        "test_idx": test_idx,
         "mean": mean,
         "std": std,
     }
@@ -280,56 +297,55 @@ def _train_adapter(runner, x_train, y_train, device, epochs: int, learning_rate:
     return adapter, final_loss
 
 
-def _evaluate_batch(
+def _apply_noise(inputs, noise_std: float, seed: int, offset: int, device):
+    if noise_std <= 0:
+        return inputs
+    generator = make_generator(seed + 60_000 + offset, device=device)
+    noise = torch.randn(inputs.shape, generator=generator, device=inputs.device, dtype=inputs.dtype) * noise_std
+    return torch.clamp(inputs + noise, min=0.0)
+
+
+def _evaluate(
     *,
     adapter,
     runner,
     task_name: str,
-    batch,
+    condition: dict,
+    eval_seed: int,
+    inputs,
+    targets,
     trace: dict,
     features,
-    targets,
     feature_mean,
     feature_std,
-    eval_scope: str,
-    train_seed: int,
-    eval_seed: int,
     final_train_loss: float,
-    baseline_indices,
 ) -> dict:
     task_cfg = runner.config.task_config
     x = (features - feature_mean) / feature_std if runner.config.standardize_features else features
     with torch.no_grad():
         adapter_predictions = adapter(x).argmax(dim=1)
 
-    if baseline_indices is None:
-        evidence = trace["evidence"].detach()
-        baseline_inputs = batch.inputs
-        baseline_targets = targets
-    else:
-        evidence = trace["evidence"].detach().index_select(0, baseline_indices)
-        baseline_inputs = batch.inputs.index_select(0, baseline_indices)
-        baseline_targets = batch.targets.index_select(0, baseline_indices)
-
+    evidence = trace["evidence"].detach()
     frozen_predictions = evidence.argmax(dim=1)
-    instant_reflex = _instant_reflex_predictions(baseline_inputs, task_cfg.motor_channels)
-    integrated_reflex = _integrated_reflex_predictions(baseline_inputs, task_cfg.motor_channels)
+    instant_reflex = _instant_reflex_predictions(inputs, task_cfg.motor_channels)
+    integrated_reflex = _integrated_reflex_predictions(inputs, task_cfg.motor_channels)
     inactive_rate = float((evidence.max(dim=1).values <= 1e-8).to(torch.float32).mean().item())
     return {
         "task": task_name,
-        "eval_scope": eval_scope,
-        "train_seed": train_seed,
+        "condition": condition["condition"],
         "eval_seed": eval_seed,
         "samples": int(targets.numel()),
-        "timesteps": task_cfg.timesteps,
+        "timesteps": int(condition["timesteps"]),
+        "amplitude": float(condition["amplitude"]),
+        "noise_std": float(condition["noise_std"]),
         "adapter_kind": runner.config.adapter_kind,
         "feature_mode": runner.config.feature_mode,
         "feature_dim": int(features.shape[1]),
         "hidden_units": int(runner.config.hidden_units),
         "adapter_accuracy": _accuracy(adapter_predictions, targets),
-        "frozen_ammc_accuracy": _accuracy(frozen_predictions, baseline_targets),
-        "instant_reflex_accuracy": _accuracy(instant_reflex, baseline_targets),
-        "integrated_reflex_accuracy": _accuracy(integrated_reflex, baseline_targets),
+        "frozen_ammc_accuracy": _accuracy(frozen_predictions, targets),
+        "instant_reflex_accuracy": _accuracy(instant_reflex, targets),
+        "integrated_reflex_accuracy": _accuracy(integrated_reflex, targets),
         "inactive_output_rate": inactive_rate,
         "final_train_loss": final_train_loss,
     }
@@ -360,32 +376,28 @@ def _write_csv(path: pathlib.Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def _plot_generalization(rows: Iterable[dict], output_path: pathlib.Path) -> None:
+def _plot_robustness(rows: Iterable[dict], output_path: pathlib.Path) -> None:
     import matplotlib.pyplot as plt  # type: ignore
 
     rows = list(rows)
     tasks = list(dict.fromkeys(row["task"] for row in rows))
-    split_values = []
-    heldout_values = []
-    for task in tasks:
-        task_rows = [row for row in rows if row["task"] == task]
-        split_values.append(next(row["adapter_accuracy"] for row in task_rows if row["eval_scope"] == "train_seed_split"))
-        heldout = [row["adapter_accuracy"] for row in task_rows if row["eval_scope"] == "heldout_seed"]
-        heldout_values.append(sum(heldout) / len(heldout) if heldout else 0.0)
-
-    x = list(range(len(tasks)))
-    width = 0.32
-    fig, ax = plt.subplots(figsize=(max(9, len(tasks) * 1.6), 5))
-    ax.bar([i - width / 2 for i in x], split_values, width, label="Train-seed held-out split")
-    ax.bar([i + width / 2 for i in x], heldout_values, width, label="Mean held-out seeds")
-    ax.axhline(0.25, color="gray", linestyle="--", linewidth=1, label="Random 4-way chance")
-    ax.set_ylim(0.0, 1.05)
-    ax.set_ylabel("Adapter accuracy")
-    ax.set_title("AMMC Gen-5 frozen readout adapter generalization")
-    ax.set_xticks(x)
-    ax.set_xticklabels(tasks, rotation=20, ha="right")
-    ax.legend()
-    ax.grid(axis="y", alpha=0.25)
+    conditions = list(dict.fromkeys(row["condition"] for row in rows))
+    fig, axes = plt.subplots(len(tasks), 1, figsize=(max(10, len(conditions) * 0.8), max(4, len(tasks) * 2.2)), sharex=True)
+    if len(tasks) == 1:
+        axes = [axes]
+    for ax, task in zip(axes, tasks):
+        values = []
+        for condition in conditions:
+            subset = [row["adapter_accuracy"] for row in rows if row["task"] == task and row["condition"] == condition]
+            values.append(sum(subset) / len(subset) if subset else 0.0)
+        ax.bar(range(len(conditions)), values)
+        ax.axhline(0.25, color="gray", linestyle="--", linewidth=1)
+        ax.set_ylim(0.0, 1.05)
+        ax.set_ylabel(task)
+        ax.grid(axis="y", alpha=0.25)
+    axes[-1].set_xticks(range(len(conditions)))
+    axes[-1].set_xticklabels(conditions, rotation=30, ha="right")
+    fig.suptitle("AMMC Gen-5 frozen readout adapter robustness")
     fig.tight_layout()
     fig.savefig(output_path, dpi=160)
     plt.close(fig)

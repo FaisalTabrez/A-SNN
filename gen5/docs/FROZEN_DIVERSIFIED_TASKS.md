@@ -333,3 +333,52 @@ Expected generalization outputs:
 - `frozen_readout_adapter_generalization.json`
 - `frozen_readout_adapter_generalization_summary.csv`
 - `frozen_readout_adapter_generalization_summary.png`
+
+## First readout-adapter generalization result
+
+The first generalization run trained `mlp/full_trace` adapters on
+`train_seed=42`, then evaluated without retraining on held-out seeds `43`
+through `47`.
+
+| Task | Train-seed split | Held-out seeds mean | Frozen held-out baseline |
+|---|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 25.00% |
+| cue_switch | 100.00% | 100.00% | ~50.02% |
+| delayed_recall | 100.00% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 100.00% | 25.00% |
+
+Archived analysis:
+
+- `gen5/outputs/frozen_readout_adapter_generalization_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- The nonlinear readout adapter generalizes across fresh synthetic seeds for
+  this task family.
+- This supports the reservoir interpretation: the frozen AMMC trace contains a
+  stable reusable representation, not just a memorized train/test split.
+- The next risk is distribution shift, not random-seed variation.
+
+Next run: evaluate robustness under amplitude, sensory-noise, and timestep
+perturbations.
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter_robustness.py \
+  --device cuda \
+  --adapter-kind mlp \
+  --feature-mode full_trace \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --test-seeds 43 44 45 46 47 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_robustness_cuda
+```
+
+Expected robustness outputs:
+
+- `frozen_readout_adapter_robustness.json`
+- `frozen_readout_adapter_robustness_summary.csv`
+- `frozen_readout_adapter_robustness_summary.png`

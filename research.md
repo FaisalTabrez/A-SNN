@@ -2071,6 +2071,49 @@ Artifacts:
 - `gen5/outputs/frozen_readout_adapter_sweep_cuda_2026-06-29/analysis.md`
 - `gen5/examples/sprint15_frozen_readout_adapter_generalization.py`
 
+### 44. Frozen readout-adapter generalization: held-out seeds pass
+
+Finding: the first held-out-seed generalization run completed on CUDA. It
+trained `mlp/full_trace` adapters on `train_seed=42` and evaluated the same
+trained adapters without retraining on seeds `43` through `47`.
+
+Results:
+
+| Task | Train-seed split | Held-out seeds mean | Frozen held-out baseline |
+|---|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 25.00% |
+| cue_switch | 100.00% | 100.00% | ~50.02% |
+| delayed_recall | 100.00% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 100.00% | 25.00% |
+
+Interpretation:
+
+- The nonlinear adapter is not merely memorizing one train/test split. It
+  generalizes perfectly across fresh synthetic seeds for the current task
+  family.
+- This supports the nonlinear-reservoir interpretation: the frozen AMMC trace
+  carries stable reusable information that can be decoded by a small MLP.
+- The main near-term threat to the claim is now distribution shift, not
+  seed-to-seed variation.
+
+Decision:
+
+- Add a robustness runner that trains on the base distribution, then evaluates
+  without retraining under one-axis perturbations:
+  - input-amplitude shifts,
+  - sensory noise,
+  - sequence-length/timestep shifts.
+- If robustness remains high, move back toward embodied harder-world tasks with
+  an adapter-equipped controller.
+- If robustness collapses, prioritize data/task augmentation before claiming a
+  robust reusable reservoir.
+
+Artifacts:
+
+- `gen5/outputs/frozen_readout_adapter_generalization_cuda_2026-06-29/analysis.md`
+- `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
