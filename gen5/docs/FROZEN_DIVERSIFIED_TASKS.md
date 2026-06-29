@@ -284,3 +284,52 @@ Expected sweep outputs:
 - `frozen_readout_adapter_sweep.json`
 - `frozen_readout_adapter_sweep_summary.csv`
 - `frozen_readout_adapter_sweep_summary.png`
+
+## First readout-adapter sweep result
+
+The first sweep compared `linear/full_trace`, `linear/motor_trace`, and
+`mlp/full_trace`.
+
+| Task | Linear full trace | Linear motor trace | MLP full trace | Frozen motor |
+|---|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 25.00% |
+| cue_switch | 73.39% | 73.39% | 100.00% | 50.42% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% |
+| two_pulse_sum | 41.50% | 34.09% | 100.00% | 25.00% |
+
+Archived analysis:
+
+- `gen5/outputs/frozen_readout_adapter_sweep_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- `anti_toxin` is already present in the motor trace; the fixed hardcoded
+  decision rule is the weak link.
+- `cue_switch` and `two_pulse_sum` are nonlinearly decodable from the frozen
+  trace.
+- The current frozen AMMC substrate behaves like a nonlinear reservoir: it
+  preserves and mixes useful signals, but the simple motor argmax discards much
+  of that structure.
+
+Next run: validate held-out-seed generalization.
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter_generalization.py \
+  --device cuda \
+  --adapter-kind mlp \
+  --feature-mode full_trace \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --test-seeds 43 44 45 46 47 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_generalization_cuda
+```
+
+Expected generalization outputs:
+
+- `frozen_readout_adapter_generalization.json`
+- `frozen_readout_adapter_generalization_summary.csv`
+- `frozen_readout_adapter_generalization_summary.png`

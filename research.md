@@ -2027,6 +2027,50 @@ Artifacts:
 - `gen5/outputs/frozen_readout_adapter_cuda_2026-06-29/analysis.md`
 - `gen5/examples/sprint15_frozen_readout_adapter_sweep.py`
 
+### 43. Frozen readout-adapter sweep: nonlinear reservoir behavior
+
+Finding: the first frozen readout-adapter sweep completed on CUDA. It compared
+`linear/full_trace`, `linear/motor_trace`, and `mlp/full_trace` on the same
+tasks, seed, and split.
+
+Results:
+
+| Task | Linear full trace | Linear motor trace | MLP full trace | Frozen motor |
+|---|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 25.00% |
+| cue_switch | 73.39% | 73.39% | 100.00% | 50.42% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% |
+| two_pulse_sum | 41.50% | 34.09% | 100.00% | 25.00% |
+
+Interpretation:
+
+- `anti_toxin` being solved by `linear/motor_trace` means the avoidant signal
+  already reaches motor-neuron state. The failure is not missing representation;
+  it is the fixed hardcoded motor decision rule.
+- `cue_switch` and `two_pulse_sum` are nonlinearly decodable from frozen AMMC
+  traces. The previous chance-level frozen readout was not sufficient evidence
+  that the substrate lacked temporal/compositional information.
+- The current frozen AMMC substrate is best described as a nonlinear reservoir:
+  useful temporal signals are preserved and mixed, but a trivial motor argmax
+  discards most of the structure.
+
+Decision:
+
+- Add a held-out-seed generalization runner.
+- Train each adapter on `train_seed=42`, then evaluate the same trained adapter
+  on fresh seeds such as `43` through `47` without retraining.
+- If `mlp/full_trace` remains high on held-out seeds, we can claim a reusable
+  reservoir representation for the synthetic task family.
+- If it collapses, the adapter is overfitting the current synthetic
+  distribution and we must diversify task generation before making stronger
+  claims.
+
+Artifacts:
+
+- `gen5/outputs/frozen_readout_adapter_sweep_cuda_2026-06-29/analysis.md`
+- `gen5/examples/sprint15_frozen_readout_adapter_generalization.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
