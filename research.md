@@ -1976,6 +1976,57 @@ Artifacts:
 - `gen5/examples/sprint15_frozen_readout_adapter.py`
 - `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
 
+### 42. First frozen readout-adapter result
+
+Finding: the first Sprint 15 frozen readout/transducer adapter run completed on
+CUDA. The recurrent sparse AMMC substrate remained frozen; only a linear
+adapter over `full_trace` features was trained.
+
+Configuration:
+
+- Adapter kind: `linear`
+- Feature mode: `full_trace`
+- Samples: `4096`
+- Train/test split: `2867 / 1229`
+- Timesteps: `8`
+- Neurons: `16`
+- Max edges: `128`
+- Feature dimension: `32`
+
+Results:
+
+| Task | Frozen motor | Adapter | Adapter train | Best reflex | Gain over frozen | Gain over best reflex |
+|---|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% | 0.00% |
+| anti_toxin | 25.00% | 100.00% | 100.00% | 25.31% | 75.00% | 74.69% |
+| cue_switch | 50.42% | 73.39% | 75.65% | 51.18% | 22.98% | 22.21% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% | 0.00% |
+| two_pulse_sum | 25.00% | 41.50% | 46.46% | 24.90% | 16.50% | 16.60% |
+
+Interpretation:
+
+- `anti_toxin` is confirmed as a readout/transducer failure. The frozen AMMC
+  trace contains the correct information, but the fixed motor readout was
+  unable to express it.
+- `cue_switch` improves materially above frozen and reflex baselines, but it is
+  lower than the earlier representation probe. This needs same-seed/same-split
+  variant comparison before over-interpreting the gap.
+- `two_pulse_sum` is still unsolved, but the adapter lifts it from chance to
+  `41.50%`. This means the previous "no sequence signal" interpretation was
+  too strong; the substrate contains partial sequence information.
+
+Decision:
+
+- Add a frozen readout-adapter sweep runner so `linear/full_trace`,
+  `linear/motor_trace`, and `mlp/full_trace` can be compared in one Colab run.
+- Use the sweep to decide whether the next bottleneck is fixed motor routing,
+  nonlinear readout separation, or missing recurrent temporal composition.
+
+Artifacts:
+
+- `gen5/outputs/frozen_readout_adapter_cuda_2026-06-29/analysis.md`
+- `gen5/examples/sprint15_frozen_readout_adapter_sweep.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

@@ -239,3 +239,48 @@ Interpretation:
   is not linearly separated.
 - If all adapter modes fail on `two_pulse_sum`, the recurrent substrate itself
   needs temporal/compositional learning rather than readout tuning.
+
+## First readout-adapter result
+
+The first CUDA readout-adapter run used `linear/full_trace` with `4096`
+samples, `8` timesteps, `16` neurons, and `128` max edges.
+
+| Task | Frozen motor | Adapter | Adapter train | Best reflex | Adapter gain vs frozen |
+|---|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% |
+| anti_toxin | 25.00% | 100.00% | 100.00% | 25.31% | 75.00% |
+| cue_switch | 50.42% | 73.39% | 75.65% | 51.18% | 22.98% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% | 0.00% |
+| two_pulse_sum | 25.00% | 41.50% | 46.46% | 24.90% | 16.50% |
+
+Archived analysis:
+
+- `gen5/outputs/frozen_readout_adapter_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- `anti_toxin` is confirmed as a readout/transducer failure.
+- `cue_switch` improves above frozen and reflex baselines, but remains below
+  the earlier representation-probe result.
+- `two_pulse_sum` is not solved, but it rises meaningfully above chance. The
+  frozen substrate appears to contain partial sequence information that readout
+  training can exploit.
+
+Next run: compare adapter variants on the same seed and tasks.
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter_sweep.py \
+  --device cuda \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_sweep_cuda
+```
+
+Expected sweep outputs:
+
+- `frozen_readout_adapter_sweep.json`
+- `frozen_readout_adapter_sweep_summary.csv`
+- `frozen_readout_adapter_sweep_summary.png`
