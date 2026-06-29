@@ -90,3 +90,16 @@ Main conclusion:
 Next recommendation: sweep `reward_delay_steps` across `3`, `6`, and `12`,
 then rerun neuron scaling only on the delay setting that is hard but not fully
 collapsed.
+
+## Delay-3 screen note
+
+`gen5/outputs/delayed_reward_delay3_screen_cuda_2026-06-29/analysis.md`
+records a short `reward_delay_steps = 3` screen.
+
+Important caveat: the CLI override was global, so both requested worlds
+resolved to the same effective delay-3 environment. Treat the rows as
+replicates, not distinct world conditions.
+
+Result: delay `3` is less collapsed than delay `12`, but still only reached
+`16.67%` combined threshold success in the short `3`-seed, `200`-generation
+screen. Next sweep delay `1`, `2`, and `3` with only `--worlds delayed_reward`.

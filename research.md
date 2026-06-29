@@ -1476,6 +1476,55 @@ Artifact:
 
 - `gen5/outputs/harder_worlds_cuda_2026-06-29/analysis.md`
 
+### 31. Delay-3 screen: less collapsed than delay-12, but not solved
+
+Finding: the short delayed-reward delay-`3` screen completed on CUDA for
+`3` seeds and `200` generations.
+
+Important caveat:
+
+The run used global `--reward-delay-steps 3`, so both requested world labels
+(`simple` and `delayed_reward`) resolved to the same effective environment
+configuration. Treat the two labels as replicate delay-`3` runs, not as
+separate world conditions.
+
+Results:
+
+| World label | Group | Final mean best fitness | Active synapses | Threshold success |
+|---|---|---:|---:|---:|
+| simple | gentle_ltw_scheduled | 24.00 | 77.37 | 33.33% |
+| simple | low_ltw_pruning | 23.67 | 98.09 | 33.33% |
+| delayed_reward | gentle_ltw_scheduled | 22.67 | 77.83 | 0% |
+| delayed_reward | low_ltw_pruning | 22.33 | 97.97 | 0% |
+
+Combined across the two identical effective configurations:
+
+| Group | Effective seeds | Mean best fitness | Active synapses | Threshold success |
+|---|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 6 | 23.33 | 77.60 | 16.67% |
+| low_ltw_pruning | 6 | 23.00 | 98.03 | 16.67% |
+
+Interpretation:
+
+- Delay `3` is less collapsed than the full delay-`12` result, but still not
+  solved in the short screen.
+- `gentle_ltw_scheduled` slightly beat `low_ltw_pruning` on raw mean fitness
+  while using about `21%` fewer active synapses.
+- Differences between the `simple` and `delayed_reward` labels are stochastic
+  variance because their effective configs were identical.
+
+Decision:
+
+- Run a clean delay sweep using only `--worlds delayed_reward`.
+- Sweep `reward_delay_steps = 1`, `2`, and `3` before running expensive
+  `10`-seed, `500`-generation evaluations.
+- Only rerun neuron scaling after identifying a delay setting that is hard but
+  not collapsed.
+
+Artifact:
+
+- `gen5/outputs/delayed_reward_delay3_screen_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2116,7 +2165,8 @@ Validation:
 
 1. Run a delayed-reward curriculum sweep:
    - use `gen5/examples/sprint14_harder_worlds.py`,
-   - sweep `reward_delay_steps = 3`, `6`, and `12`,
+   - use only `--worlds delayed_reward` to avoid duplicate effective configs,
+   - sweep `reward_delay_steps = 1`, `2`, and `3`,
    - compare `low_ltw_pruning` vs `gentle_ltw_scheduled` at `32` neurons,
    - identify a hard-but-not-collapsed delayed-reward setting for the next
      neuron-scaling test.

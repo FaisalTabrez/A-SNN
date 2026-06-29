@@ -1,0 +1,12 @@
+{
+  "completed_worlds": [
+    "simple",
+    "delayed_reward"
+  ],
+  "total_worlds": 2,
+  "paths": {
+    "json": "gen5_outputs/delayed_reward_delay3_screen_cuda/harder_worlds.json",
+    "records_csv": "gen5_outputs/delayed_reward_delay3_screen_cuda/harder_worlds_records.csv",
+    "summary_csv": "gen5_outputs/delayed_reward_delay3_screen_cuda/harder_worlds_summary.csv"
+  }
+}
