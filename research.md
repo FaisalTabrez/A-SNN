@@ -1525,6 +1525,41 @@ Artifact:
 
 - `gen5/outputs/delayed_reward_delay3_screen_cuda_2026-06-29/analysis.md`
 
+### 32. Delay-1 screen: first near-threshold delayed-reward candidate
+
+Finding: the clean delay-`1` delayed-reward screen completed on CUDA using only
+`--worlds delayed_reward`.
+
+Results:
+
+| Group | Final mean best fitness | Active synapses | Fitness / active synapse | Threshold success |
+|---|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 23.00 | 77.55 | 0.232 | 0% |
+| low_ltw_pruning | 24.67 | 98.65 | 0.193 | 33.33% |
+
+Interpretation:
+
+- Delay `1` is the best delayed-reward screen so far. It is not solved, but
+  `low_ltw_pruning` reached `24.67` mean best fitness and crossed threshold in
+  `1 / 3` seeds.
+- `low_ltw_pruning` reclaims the raw-survival lead at delay `1`.
+- `gentle_ltw_scheduled` remains about `21%` sparser, but its survival score is
+  weaker in this setting.
+- Compared with delay `3` and delay `12`, delay `1` is the first plausible
+  hard-but-not-collapsed candidate.
+
+Decision:
+
+- Run the clean delay-`2` screen before spending a full `10`-seed,
+  `500`-generation evaluation.
+- If delay `2` underperforms delay `1`, promote delay `1` to the next full
+  statistical benchmark.
+- After selecting the delay setting, rerun neuron scaling there.
+
+Artifact:
+
+- `gen5/outputs/delayed_reward_delay1_screen_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2166,7 +2201,8 @@ Validation:
 1. Run a delayed-reward curriculum sweep:
    - use `gen5/examples/sprint14_harder_worlds.py`,
    - use only `--worlds delayed_reward` to avoid duplicate effective configs,
-   - sweep `reward_delay_steps = 1`, `2`, and `3`,
+   - run the clean `reward_delay_steps = 2` screen next,
+   - compare delay `2` against the archived delay `1` and delay `3` screens,
    - compare `low_ltw_pruning` vs `gentle_ltw_scheduled` at `32` neurons,
    - identify a hard-but-not-collapsed delayed-reward setting for the next
      neuron-scaling test.

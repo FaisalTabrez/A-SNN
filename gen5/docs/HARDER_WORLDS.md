@@ -103,3 +103,13 @@ replicates, not distinct world conditions.
 Result: delay `3` is less collapsed than delay `12`, but still only reached
 `16.67%` combined threshold success in the short `3`-seed, `200`-generation
 screen. Next sweep delay `1`, `2`, and `3` with only `--worlds delayed_reward`.
+
+## Delay-1 screen note
+
+`gen5/outputs/delayed_reward_delay1_screen_cuda_2026-06-29/analysis.md`
+records the clean delay-`1` screen.
+
+Result: `low_ltw_pruning` is the best short-screen survival result so far,
+with mean best fitness `24.67` and `33.33%` threshold success. It is not solved,
+but it is the first delayed-reward setting that looks close enough for a full
+evaluation. Screen delay `2` before committing the larger run.
