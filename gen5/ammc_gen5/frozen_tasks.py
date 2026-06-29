@@ -30,7 +30,7 @@ except Exception:  # pragma: no cover
 from .dynamic_sparse import EdgeRecord
 from .evaluation import default_foraging_seed_edges
 from .evolver import TensorEvolver, TensorEvolverConfig
-from .runtime import make_generator, resolve_device, seed_everything, sync
+from .runtime import make_generator, mark_step, resolve_device, seed_everything, sync
 from .transducer import TransducerConfig, VectorizedTransducer
 
 
@@ -89,6 +89,55 @@ class FrozenTaskResult:
 
     config: dict
     summary: list[FrozenTaskSummaryRecord]
+
+    def to_json_dict(self) -> dict:
+        return {
+            "config": self.config,
+            "summary": [asdict(row) for row in self.summary],
+        }
+
+
+@dataclass(frozen=True)
+class FrozenProbeConfig:
+    """Configuration for linear probes over frozen AMMC traces."""
+
+    task_config: FrozenTaskConfig = field(default_factory=FrozenTaskConfig)
+    train_fraction: float = 0.7
+    epochs: int = 200
+    learning_rate: float = 0.05
+    weight_decay: float = 0.001
+    standardize_features: bool = True
+
+
+@dataclass(frozen=True)
+class FrozenProbeSummaryRecord:
+    """One row summarizing a linear probe for one frozen task."""
+
+    task: str
+    samples: int
+    train_samples: int
+    test_samples: int
+    timesteps: int
+    target_rule: str
+    feature_dim: int
+    frozen_ammc_accuracy: float
+    linear_probe_accuracy: float
+    linear_probe_train_accuracy: float
+    random_accuracy: float
+    instant_reflex_accuracy: float
+    integrated_reflex_accuracy: float
+    inactive_output_rate: float
+    representation_gain_over_frozen: float
+    representation_gain_over_best_reflex: float
+    final_probe_loss: float
+
+
+@dataclass(frozen=True)
+class FrozenProbeResult:
+    """Complete frozen representation probe result."""
+
+    config: dict
+    summary: list[FrozenProbeSummaryRecord]
 
     def to_json_dict(self) -> dict:
         return {
@@ -204,10 +253,16 @@ class FrozenTaskRunner:
         )
 
     def _frozen_ammc_evidence(self, inputs, device):
+        return self._frozen_ammc_trace(inputs, device)["evidence"]
+
+    def _frozen_ammc_trace(self, inputs, device) -> dict:
+        """Run frozen AMMC dynamics and return readout plus probe features."""
+
         cfg = self.config
+        batch_size = int(inputs.shape[0])
         brain = TensorEvolver(
             TensorEvolverConfig(
-                population_size=cfg.sample_count,
+                population_size=batch_size,
                 neuron_count=cfg.neuron_count,
                 max_edges=cfg.max_edges,
                 survivor_fraction=0.5,
@@ -230,21 +285,29 @@ class FrozenTaskRunner:
                 threshold=cfg.threshold,
             )
         )
-        membrane = inputs.new_zeros((cfg.sample_count, cfg.neuron_count))
+        membrane = inputs.new_zeros((batch_size, cfg.neuron_count))
+        spike_counts = inputs.new_zeros((batch_size, cfg.neuron_count))
         motor_start = cfg.sensor_channels
         motor_end = motor_start + cfg.motor_channels
-        evidence = inputs.new_zeros((cfg.sample_count, cfg.motor_channels))
+        evidence = inputs.new_zeros((batch_size, cfg.motor_channels))
         for step in range(cfg.timesteps):
             neural_input = transducer.encode_sensors(inputs[:, step, :])
             recurrent_current = brain(membrane)
             spikes, membrane = transducer.lif_step(neural_input + recurrent_current, membrane)
+            spike_counts = spike_counts + spikes
             evidence = evidence + spikes[:, motor_start:motor_end]
 
         # If the frozen circuit stays subthreshold, retain an analog readout of
         # final motor membrane. This keeps the benchmark about directional
         # evidence rather than only hard spike emission.
         evidence = evidence + torch.clamp(membrane[:, motor_start:motor_end], min=0.0)
-        return evidence
+        features = torch.cat([membrane, spike_counts], dim=1)
+        return {
+            "evidence": evidence,
+            "final_membrane": membrane,
+            "spike_counts": spike_counts,
+            "features": features,
+        }
 
     def _make_task(self, task_name: str, generator, device) -> _TaskBatch:
         builders: dict[str, Callable] = {
@@ -316,6 +379,169 @@ class FrozenTaskRunner:
         return cfg
 
 
+class FrozenRepresentationProbeRunner:
+    """Train tiny linear readouts on frozen AMMC trace features.
+
+    The sparse AMMC substrate is run once per task and then held fixed. Only a
+    linear classifier over final membrane and spike-count features is trained.
+    """
+
+    def __init__(self, config: FrozenProbeConfig | None = None) -> None:
+        self.config = config or FrozenProbeConfig()
+        if not 0.0 < self.config.train_fraction < 1.0:
+            raise ValueError("train_fraction must be in (0, 1)")
+        if self.config.epochs <= 0:
+            raise ValueError("epochs must be positive")
+        if self.config.learning_rate <= 0:
+            raise ValueError("learning_rate must be positive")
+        if self.config.task_config.sample_count < 4:
+            raise ValueError("sample_count must be at least 4 for train/test probing")
+        self.task_runner = FrozenTaskRunner(self.config.task_config)
+
+    def run(self) -> FrozenProbeResult:
+        _require_torch()
+        task_cfg = self.config.task_config
+        device = resolve_device(task_cfg.device)
+        seed_everything(task_cfg.seed, device=device)
+        split_generator = make_generator(task_cfg.seed + 10_000, device=device)
+
+        summary: list[FrozenProbeSummaryRecord] = []
+        for offset, task_name in enumerate(task_cfg.tasks):
+            task_generator = make_generator(task_cfg.seed + offset + 1, device=device)
+            batch = self.task_runner._make_task(task_name, task_generator, device)
+            trace = self.task_runner._frozen_ammc_trace(batch.inputs, device)
+            summary.append(
+                self._probe_task(
+                    task_name,
+                    batch,
+                    trace,
+                    split_generator,
+                    device,
+                )
+            )
+            sync(device)
+
+        return FrozenProbeResult(
+            config=self._jsonable_config(device),
+            summary=summary,
+        )
+
+    def save_outputs(
+        self,
+        result: FrozenProbeResult,
+        output_dir: str | Path,
+        *,
+        plot: bool = True,
+    ) -> dict[str, str]:
+        output = Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+
+        json_path = output / "frozen_representation_probe.json"
+        json_path.write_text(json.dumps(result.to_json_dict(), indent=2) + "\n", encoding="utf-8")
+
+        summary_csv = output / "frozen_representation_probe_summary.csv"
+        _write_csv(summary_csv, [asdict(row) for row in result.summary])
+
+        paths = {
+            "json": str(json_path),
+            "summary_csv": str(summary_csv),
+        }
+        if plot:
+            try:
+                plot_path = output / "frozen_representation_probe_summary.png"
+                plot_frozen_probe_result(result, plot_path)
+                paths["plot"] = str(plot_path)
+            except Exception as exc:  # pragma: no cover - optional plotting
+                paths["plot"] = f"skipped: {exc}"
+        return paths
+
+    def _probe_task(self, task_name: str, batch: _TaskBatch, trace: dict, split_generator, device) -> FrozenProbeSummaryRecord:
+        task_cfg = self.config.task_config
+        features = trace["features"].detach()
+        targets = batch.targets
+        evidence = trace["evidence"].detach()
+        frozen_predictions = evidence.argmax(dim=1)
+        frozen_accuracy = _accuracy(frozen_predictions, targets)
+        inactive_rate = float((evidence.max(dim=1).values <= 1e-8).to(torch.float32).mean().item())
+
+        order = torch.randperm(targets.numel(), device=device, generator=split_generator)
+        train_count = max(1, int(round(targets.numel() * self.config.train_fraction)))
+        train_count = min(train_count, targets.numel() - 1)
+        train_idx = order[:train_count]
+        test_idx = order[train_count:]
+
+        x_train = features.index_select(0, train_idx)
+        y_train = targets.index_select(0, train_idx)
+        x_test = features.index_select(0, test_idx)
+        y_test = targets.index_select(0, test_idx)
+        if self.config.standardize_features:
+            mean = x_train.mean(dim=0, keepdim=True)
+            std = x_train.std(dim=0, keepdim=True, unbiased=False).clamp_min(1e-6)
+            x_train = (x_train - mean) / std
+            x_test = (x_test - mean) / std
+
+        train_accuracy, test_accuracy, final_loss = self._train_linear_readout(x_train, y_train, x_test, y_test, device)
+
+        random_predictions = torch.randint(
+            0,
+            task_cfg.motor_channels,
+            y_test.shape,
+            device=device,
+            generator=split_generator,
+        )
+        instant_reflex = _instant_reflex_predictions(batch.inputs, task_cfg.motor_channels).index_select(0, test_idx)
+        integrated_reflex = _integrated_reflex_predictions(batch.inputs, task_cfg.motor_channels).index_select(0, test_idx)
+        best_reflex = max(_accuracy(instant_reflex, y_test), _accuracy(integrated_reflex, y_test))
+
+        return FrozenProbeSummaryRecord(
+            task=task_name,
+            samples=int(targets.numel()),
+            train_samples=int(y_train.numel()),
+            test_samples=int(y_test.numel()),
+            timesteps=task_cfg.timesteps,
+            target_rule=batch.target_rule,
+            feature_dim=int(features.shape[1]),
+            frozen_ammc_accuracy=frozen_accuracy,
+            linear_probe_accuracy=test_accuracy,
+            linear_probe_train_accuracy=train_accuracy,
+            random_accuracy=_accuracy(random_predictions, y_test),
+            instant_reflex_accuracy=_accuracy(instant_reflex, y_test),
+            integrated_reflex_accuracy=_accuracy(integrated_reflex, y_test),
+            inactive_output_rate=inactive_rate,
+            representation_gain_over_frozen=test_accuracy - frozen_accuracy,
+            representation_gain_over_best_reflex=test_accuracy - best_reflex,
+            final_probe_loss=final_loss,
+        )
+
+    def _train_linear_readout(self, x_train, y_train, x_test, y_test, device) -> tuple[float, float, float]:
+        classifier = torch.nn.Linear(x_train.shape[1], self.config.task_config.motor_channels).to(device)
+        optimizer = torch.optim.AdamW(
+            classifier.parameters(),
+            lr=self.config.learning_rate,
+            weight_decay=self.config.weight_decay,
+        )
+        final_loss = 0.0
+        for _ in range(self.config.epochs):
+            optimizer.zero_grad(set_to_none=True)
+            logits = classifier(x_train)
+            loss = torch.nn.functional.cross_entropy(logits, y_train)
+            loss.backward()
+            optimizer.step()
+            final_loss = float(loss.detach().item())
+            mark_step(device)
+
+        with torch.no_grad():
+            train_predictions = classifier(x_train).argmax(dim=1)
+            test_predictions = classifier(x_test).argmax(dim=1)
+        return _accuracy(train_predictions, y_train), _accuracy(test_predictions, y_test), final_loss
+
+    def _jsonable_config(self, device) -> dict:
+        cfg = asdict(self.config)
+        cfg["task_config"]["device"] = str(device)
+        cfg["task_config"]["seed_edges"] = [asdict(edge) for edge in self.config.task_config.seed_edges]
+        return cfg
+
+
 def available_frozen_tasks() -> tuple[str, ...]:
     """Return available synthetic frozen task names."""
 
@@ -344,6 +570,32 @@ def plot_frozen_task_result(result: FrozenTaskResult, output_path: str | Path) -
     ax.set_ylim(0.0, 1.05)
     ax.set_ylabel("Accuracy")
     ax.set_title("AMMC Gen-5 frozen diversified tasks")
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=20, ha="right")
+    ax.legend()
+    ax.grid(axis="y", alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=160)
+    plt.close(fig)
+
+
+def plot_frozen_probe_result(result: FrozenProbeResult, output_path: str | Path) -> None:
+    """Plot linear probe accuracy against frozen and reflex baselines."""
+
+    import matplotlib.pyplot as plt  # type: ignore
+
+    labels = [row.task for row in result.summary]
+    x = list(range(len(labels)))
+    width = 0.18
+    fig, ax = plt.subplots(figsize=(max(9, len(labels) * 1.6), 5))
+    ax.bar([i - 1.5 * width for i in x], [row.frozen_ammc_accuracy for row in result.summary], width, label="Frozen motor")
+    ax.bar([i - 0.5 * width for i in x], [row.linear_probe_accuracy for row in result.summary], width, label="Linear probe")
+    ax.bar([i + 0.5 * width for i in x], [row.instant_reflex_accuracy for row in result.summary], width, label="Instant reflex")
+    ax.bar([i + 1.5 * width for i in x], [row.integrated_reflex_accuracy for row in result.summary], width, label="Integrated reflex")
+    ax.axhline(0.25, color="gray", linestyle="--", linewidth=1, label="Random 4-way chance")
+    ax.set_ylim(0.0, 1.05)
+    ax.set_ylabel("Accuracy")
+    ax.set_title("AMMC Gen-5 frozen representation probe")
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=20, ha="right")
     ax.legend()

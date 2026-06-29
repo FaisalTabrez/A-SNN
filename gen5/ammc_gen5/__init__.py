@@ -43,11 +43,16 @@ from .evaluation import (
 from .evolving_loop import EvolvingHeadlessAMMCLoop, EvolvingLoopConfig
 from .evolver import TensorEvolver, TensorEvolverConfig
 from .frozen_tasks import (
+    FrozenProbeConfig,
+    FrozenProbeResult,
+    FrozenProbeSummaryRecord,
+    FrozenRepresentationProbeRunner,
     FrozenTaskConfig,
     FrozenTaskResult,
     FrozenTaskRunner,
     FrozenTaskSummaryRecord,
     available_frozen_tasks,
+    plot_frozen_probe_result,
     plot_frozen_task_result,
 )
 from .memory import LTWSTWConfig, LTWSTWMemory
@@ -95,6 +100,10 @@ __all__ = [
     "EvolvingLoopConfig",
     "EvolutionTelemetryLogger",
     "EvolutionTelemetryRecord",
+    "FrozenProbeConfig",
+    "FrozenProbeResult",
+    "FrozenProbeSummaryRecord",
+    "FrozenRepresentationProbeRunner",
     "FrozenTaskConfig",
     "FrozenTaskResult",
     "FrozenTaskRunner",
@@ -147,6 +156,7 @@ __all__ = [
     "mark_step",
     "memory_namespace",
     "plot_neuron_scaling_result",
+    "plot_frozen_probe_result",
     "plot_frozen_task_result",
     "plot_sparse_efficiency_result",
     "resolve_device",

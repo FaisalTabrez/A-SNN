@@ -115,3 +115,35 @@ Main conclusion:
 
 Next recommendation: add a frozen representation probe with a trainable linear
 readout while keeping the recurrent sparse AMMC substrate frozen.
+
+## Frozen representation probe
+
+The representation probe keeps the sparse AMMC recurrent substrate frozen, then
+trains only a small linear classifier over final membrane and spike-count
+features.
+
+This distinguishes two failure modes:
+
+- If the linear probe solves a task that the frozen motor readout failed, the
+  representation exists and the motor readout/transducer is the weak link.
+- If the linear probe also fails, the frozen substrate lacks the task-relevant
+  representation.
+
+Colab command:
+
+```python
+!python gen5/examples/sprint15_frozen_representation_probe.py \
+  --device cuda \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_representation_probe_cuda
+```
+
+Expected outputs:
+
+- `frozen_representation_probe.json`
+- `frozen_representation_probe_summary.csv`
+- `frozen_representation_probe_summary.png`

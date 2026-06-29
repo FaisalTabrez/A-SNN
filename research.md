@@ -1843,6 +1843,47 @@ Artifact:
 
 - `gen5/outputs/frozen_diversified_tasks_cuda_2026-06-29/analysis.md`
 
+### 39. Frozen representation probe implemented
+
+Decision: add a Sprint 15 frozen representation probe to separate readout
+failure from representation failure.
+
+Implementation:
+
+- Add `FrozenRepresentationProbeRunner`.
+- Add `FrozenProbeConfig`, `FrozenProbeResult`, and
+  `FrozenProbeSummaryRecord`.
+- Add `sprint15_frozen_representation_probe.py`.
+- Feature vector: final membrane state plus per-neuron spike counts from the
+  frozen recurrent sparse AMMC substrate.
+- Trainable component: only a small linear classifier over frozen features.
+- Frozen components: sparse recurrent edge topology, STW/LTW weights,
+  transducer dynamics, and generated task inputs.
+
+Metrics:
+
+- frozen motor-readout accuracy,
+- linear-probe test accuracy,
+- linear-probe train accuracy,
+- random accuracy,
+- instant-reflex accuracy,
+- integrated-reflex accuracy,
+- representation gain over frozen readout,
+- representation gain over best reflex baseline.
+
+Decision rule:
+
+- If probe accuracy beats frozen motor readout on `cue_switch`, `anti_toxin`, or
+  `two_pulse_sum`, prioritize readout/transducer learning.
+- If probe accuracy remains at chance, prioritize substrate learning,
+  plasticity, or architecture changes.
+
+Artifacts:
+
+- `gen5/ammc_gen5/frozen_tasks.py`
+- `gen5/examples/sprint15_frozen_representation_probe.py`
+- `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2481,11 +2522,10 @@ Validation:
 
 ## Next recommended steps
 
-1. Add the Sprint 15 frozen representation probe:
-   - keep the recurrent sparse AMMC substrate frozen,
-   - collect final membrane/spike traces from `direction_copy`, `anti_toxin`,
-     `cue_switch`, `delayed_recall`, and `two_pulse_sum`,
-   - train only a small linear readout on top of those traces,
+1. Run the Sprint 15 frozen representation probe:
+   - use `gen5/examples/sprint15_frozen_representation_probe.py`,
+   - start with `16` neurons, `128` edge slots, `4096` samples, and `200`
+     probe epochs,
    - compare probe accuracy against frozen motor readout and reflex baselines,
    - use this to separate "bad readout/transducer" from "missing
      representation."
