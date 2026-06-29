@@ -1,0 +1,133 @@
+{
+  "provenance": {
+    "source": "Colab console paste",
+    "status": "summary_only",
+    "note": "The run wrote persistent Drive outputs, but only the console log was provided in this turn. This archive preserves the surviving console log and final printed summary."
+  },
+  "run_context": {
+    "device": "cuda",
+    "world_preset": "delayed_reward",
+    "reward_delay_steps": 2,
+    "seeds": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+    "generations": 500,
+    "population_size": 10000,
+    "epoch_steps": 120,
+    "scale_points": [
+      {"neuron_count": 16, "max_edges": 128},
+      {"neuron_count": 32, "max_edges": 256},
+      {"neuron_count": 64, "max_edges": 512}
+    ],
+    "groups": ["gentle_ltw_scheduled", "low_ltw_pruning"],
+    "reported_paths": {
+      "json": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency.json",
+      "records_csv": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_records.csv",
+      "summary_csv": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_summary.csv",
+      "plot": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_summary.png",
+      "progress": "/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/sparse_efficiency_progress.json"
+    }
+  },
+  "summary": [
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 16,
+      "hidden_neurons": 4,
+      "max_edges": 128,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.4,
+      "final_std_best_fitness": 1.2649110640673518,
+      "final_mean_selection_best_fitness": 17.0,
+      "final_mean_active_synapses": 62.09585876464844,
+      "final_active_edge_utilization": 0.48512389659881594,
+      "final_fitness_per_active_synapse": 0.2737892332717614,
+      "final_mean_hidden_edge_fraction": 0.4425119191408157,
+      "final_mean_direct_sensor_motor_fraction": 0.14779848456382752,
+      "threshold_success_rate": 0.8,
+      "mean_generation_to_threshold": 300.625
+    },
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 23.7,
+      "final_std_best_fitness": 0.48304589153964794,
+      "final_mean_selection_best_fitness": 17.2,
+      "final_mean_active_synapses": 81.45065841674804,
+      "final_active_edge_utilization": 0.31816663444042204,
+      "final_fitness_per_active_synapse": 0.21115005536677006,
+      "final_mean_hidden_edge_fraction": 0.8459873259067535,
+      "final_mean_direct_sensor_motor_fraction": 0.05069571435451507,
+      "threshold_success_rate": 0.0,
+      "mean_generation_to_threshold": null
+    },
+    {
+      "group": "gentle_ltw_scheduled",
+      "neuron_count": 64,
+      "hidden_neurons": 52,
+      "max_edges": 512,
+      "seeds": 10,
+      "final_mean_best_fitness": 23.5,
+      "final_std_best_fitness": 1.0801234497346435,
+      "final_mean_selection_best_fitness": 15.3,
+      "final_mean_active_synapses": 131.3316452026367,
+      "final_active_edge_utilization": 0.2565071195363998,
+      "final_fitness_per_active_synapse": 0.11650007283332531,
+      "final_mean_hidden_edge_fraction": 0.9407554984092712,
+      "final_mean_direct_sensor_motor_fraction": 0.030392014235258103,
+      "threshold_success_rate": 0.2,
+      "mean_generation_to_threshold": 287.5
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 16,
+      "hidden_neurons": 4,
+      "max_edges": 128,
+      "seeds": 10,
+      "final_mean_best_fitness": 25.0,
+      "final_std_best_fitness": 1.4142135623730951,
+      "final_mean_selection_best_fitness": 17.4,
+      "final_mean_active_synapses": 52.578878784179686,
+      "final_active_edge_utilization": 0.4107724905014038,
+      "final_fitness_per_active_synapse": 0.3308971549032422,
+      "final_mean_hidden_edge_fraction": 0.43508159220218656,
+      "final_mean_direct_sensor_motor_fraction": 0.15115925669670105,
+      "threshold_success_rate": 0.7,
+      "mean_generation_to_threshold": 165.71428571428572
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 32,
+      "hidden_neurons": 20,
+      "max_edges": 256,
+      "seeds": 10,
+      "final_mean_best_fitness": 24.4,
+      "final_std_best_fitness": 0.8432740427115678,
+      "final_mean_selection_best_fitness": 16.5,
+      "final_mean_active_synapses": 104.72374572753907,
+      "final_active_edge_utilization": 0.4090771317481995,
+      "final_fitness_per_active_synapse": 0.1575610410387492,
+      "final_mean_hidden_edge_fraction": 0.8548653185367584,
+      "final_mean_direct_sensor_motor_fraction": 0.0439893800765276,
+      "threshold_success_rate": 0.4,
+      "mean_generation_to_threshold": 163.0
+    },
+    {
+      "group": "low_ltw_pruning",
+      "neuron_count": 64,
+      "hidden_neurons": 52,
+      "max_edges": 512,
+      "seeds": 10,
+      "final_mean_best_fitness": 24.6,
+      "final_std_best_fitness": 0.8432740427115678,
+      "final_mean_selection_best_fitness": 16.7,
+      "final_mean_active_synapses": 207.7074447631836,
+      "final_active_edge_utilization": 0.40567860305309295,
+      "final_fitness_per_active_synapse": 0.08041230505882374,
+      "final_mean_hidden_edge_fraction": 0.960502415895462,
+      "final_mean_direct_sensor_motor_fraction": 0.013939637690782547,
+      "threshold_success_rate": 0.6,
+      "mean_generation_to_threshold": 167.33333333333334
+    }
+  ]
+}

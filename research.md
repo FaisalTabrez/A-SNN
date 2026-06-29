@@ -1652,6 +1652,62 @@ Artifact:
 
 - `gen5/outputs/delayed_reward_delay2_full_cuda_console_2026-06-29/analysis.md`
 
+### 35. Delay-2 neuron scaling: compact brains still win
+
+Finding: the delay-`2` delayed-reward neuron-scaling run completed on CUDA for
+`10` seeds and `500` generations across `16`, `32`, and `64` neurons. The run
+wrote persistent Drive outputs, but only the console log was provided in this
+turn, so this is currently summary-only evidence.
+
+Important evidence caveat:
+
+- This is console-log-only evidence until the Drive artifacts are uploaded.
+- The final summary JSON survived in the console log.
+- The reported Drive output folder is
+  `/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/`.
+
+Results:
+
+| Group | Neurons | Hidden | Final mean best fitness | Active synapses | Fitness / active synapse | Hidden-edge fraction | Direct sensor-motor fraction | Threshold success |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| gentle_ltw_scheduled | 16 | 4 | 25.40 | 62.10 | 0.274 | 44.25% | 14.78% | 80% |
+| gentle_ltw_scheduled | 32 | 20 | 23.70 | 81.45 | 0.211 | 84.60% | 5.07% | 0% |
+| gentle_ltw_scheduled | 64 | 52 | 23.50 | 131.33 | 0.117 | 94.08% | 3.04% | 20% |
+| low_ltw_pruning | 16 | 4 | 25.00 | 52.58 | 0.331 | 43.51% | 15.12% | 70% |
+| low_ltw_pruning | 32 | 20 | 24.40 | 104.72 | 0.158 | 85.49% | 4.40% | 40% |
+| low_ltw_pruning | 64 | 52 | 24.60 | 207.71 | 0.080 | 96.05% | 1.39% | 60% |
+
+Interpretation:
+
+- Delay `2` did not unlock larger-brain scaling. The strongest points are still
+  the compact `16`-neuron models.
+- `gentle_ltw_scheduled` at `16` neurons has the best raw mean fitness
+  (`25.40`) and threshold success (`80%`).
+- `low_ltw_pruning` at `16` neurons has the best sparse efficiency
+  (`0.331` fitness per active synapse) and uses the fewest active synapses
+  (`52.58`).
+- Larger networks route overwhelmingly through hidden nodes while losing direct
+  sensor-motor pathways. Hidden-edge fraction rises to `85-96%`, while direct
+  sensor-motor fraction collapses to `1-5%`.
+- The current delayed-reward task still rewards compact sensor-motor loops more
+  than deep latent decision chains. Extra hidden capacity may dilute credit
+  assignment rather than improving memory.
+
+Decision:
+
+- Treat `16` neurons as the preferred topology for delay-`2` delayed reward.
+- Use `gentle_ltw_scheduled/16` as the raw-fitness compact baseline.
+- Use `low_ltw_pruning/16` as the sparse-efficiency compact baseline.
+- Stop treating `32` neurons as the default delayed-reward baseline until a
+  harder world proves hidden capacity is useful.
+- Next experiments should either preserve direct sensor-motor cores while
+  adding hidden nodes, or move to a harder task that genuinely requires hidden
+  state.
+
+Artifact:
+
+- `gen5/outputs/neuron_scaling_delay2_cuda_console_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2290,13 +2346,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Run delay-`2` neuron scaling with persistent Colab output:
-   - use `gen5/examples/sprint13_sparse_efficiency_ablation.py`,
-   - set `--world-preset delayed_reward` and `--reward-delay-steps 2`,
-   - compare `16`, `32`, and `64` neurons under delayed reward,
-   - keep both `gentle_ltw_scheduled` and `low_ltw_pruning`,
-   - save outputs to Drive or zip/download automatically before the session can
-     expire.
+1. Consolidate the delay-`2` neuron-scaling result:
+   - upload the Drive artifacts from
+     `/content/drive/MyDrive/A-SNN/gen5_outputs/neuron_scaling_delay2_cuda/`
+     if still available,
+   - treat `16` neurons as the current delayed-reward topology winner,
+   - run a focused `16`-neuron confirmation or move to delay `3` / moving-food
+     tasks to test whether hidden state becomes useful.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

@@ -147,3 +147,20 @@ Decision: treat `gentle_ltw_scheduled` at `reward_delay_steps = 2` as the
 preferred delayed-reward sparse-efficiency baseline. For publication-grade
 evidence, rerun with persistent output or use persistent output on the next
 delay-`2` neuron-scaling run.
+
+## Delay-2 neuron-scaling console note
+
+`gen5/outputs/neuron_scaling_delay2_cuda_console_2026-06-29/analysis.md`
+records the surviving console output from the delay-`2` neuron-scaling run.
+
+Caveat: the run wrote persistent Drive artifacts, but only the final console
+summary has been uploaded here so far.
+
+Result: compact `16`-neuron brains outperformed larger `32`- and `64`-neuron
+brains under delayed reward. `gentle_ltw_scheduled/16` reached the best raw
+fitness (`25.40`) and threshold success (`80%`), while `low_ltw_pruning/16`
+had the best sparse efficiency (`0.331` fitness per active synapse).
+
+Decision: use `16` neurons as the current delayed-reward topology baseline.
+Larger hidden-node pools should not be promoted again until a harder world
+shows a measurable benefit from hidden state.
