@@ -2114,6 +2114,49 @@ Artifacts:
 - `gen5/outputs/frozen_readout_adapter_generalization_cuda_2026-06-29/analysis.md`
 - `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
 
+### 45. Frozen readout-adapter robustness: noise and calibration fail
+
+Finding: the first robustness run completed on CUDA. It trained `mlp/full_trace`
+on the base synthetic distribution and evaluated without retraining under
+amplitude, sensory-noise, and timestep perturbations.
+
+Aggregate adapter accuracy:
+
+| Task | Base | Amp 0.35 | Amp 0.55 | Amp 1.0 | Noise 0.05 | Noise 0.15 | T=4 | T=12 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 25.00% | 100.00% | 18.84% | 23.64% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 100.00% | 27.99% | 25.55% | 100.00% | 100.00% |
+| cue_switch | 100.00% | 100.00% | 25.00% | 87.50% | 20.85% | 24.54% | 100.00% | 100.00% |
+| delayed_recall | 100.00% | 0.00% | 100.00% | 100.00% | 23.15% | 23.60% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 24.91% | 100.00% | 100.00% | 24.19% | 24.72% | 81.45% | 100.00% |
+
+Interpretation:
+
+- Clean timestep shifts are mostly robust.
+- Additive sensory noise is the dominant failure mode. Even `noise_std=0.05`
+  collapses nearly all tasks toward chance.
+- Several clean amplitude shifts also collapse, which means the current adapter
+  is not calibrated over reservoir-state scale.
+- The reusable-reservoir claim remains promising, but only on the clean
+  synthetic manifold. Robust deployment needs augmented adapter training or
+  explicit normalization.
+
+Decision:
+
+- Extend the robustness runner with optional augmented training conditions:
+  `--train-amplitudes`, `--train-noise-stds`, and
+  `--train-timestep-values`.
+- Next run should train on amplitude/noise/timestep augmentation and evaluate
+  against the same robustness suite.
+- If augmented readout training fixes the collapse, move toward adapter-equipped
+  embodied/harder-world experiments. If not, add explicit feature normalization,
+  denoising, or reservoir-level noise robustness.
+
+Artifacts:
+
+- `gen5/outputs/frozen_readout_adapter_robustness_cuda_2026-06-29/analysis.md`
+- `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

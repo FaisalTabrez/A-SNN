@@ -382,3 +382,49 @@ Expected robustness outputs:
 - `frozen_readout_adapter_robustness.json`
 - `frozen_readout_adapter_robustness_summary.csv`
 - `frozen_readout_adapter_robustness_summary.png`
+
+## First readout-adapter robustness result
+
+The first robustness run trained `mlp/full_trace` on the base distribution and
+evaluated under amplitude, sensory-noise, and timestep perturbations.
+
+| Task | Base | Amp 0.35 | Amp 0.55 | Amp 1.0 | Noise 0.05 | Noise 0.15 | T=4 | T=12 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 25.00% | 100.00% | 18.84% | 23.64% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 100.00% | 27.99% | 25.55% | 100.00% | 100.00% |
+| cue_switch | 100.00% | 100.00% | 25.00% | 87.50% | 20.85% | 24.54% | 100.00% | 100.00% |
+| delayed_recall | 100.00% | 0.00% | 100.00% | 100.00% | 23.15% | 23.60% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 24.91% | 100.00% | 100.00% | 24.19% | 24.72% | 81.45% | 100.00% |
+
+Archived analysis:
+
+- `gen5/outputs/frozen_readout_adapter_robustness_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- Clean timestep shifts are mostly robust.
+- Additive sensory noise is the dominant failure mode and collapses nearly all
+  tasks toward chance.
+- Some amplitude shifts are also brittle, especially `0.55` for direct/cue
+  tasks and `0.35` for delayed/two-pulse tasks.
+- The next bottleneck is readout calibration/data coverage, not seed
+  generalization.
+
+Next run: repeat robustness with augmented adapter training.
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter_robustness.py \
+  --device cuda \
+  --adapter-kind mlp \
+  --feature-mode full_trace \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --train-amplitudes 0.35 0.55 0.75 1.0 \
+  --train-noise-stds 0.0 0.05 0.15 \
+  --train-timestep-values 4 8 12 \
+  --test-seeds 43 44 45 46 47 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_augmented_robustness_cuda
+```

@@ -1,9 +1,14 @@
 """Sprint 15: frozen readout adapter robustness checks.
 
 Held-out seed generalization passed perfectly for the current synthetic task
-family. This runner makes the test less cozy: train the adapter once on the
-base distribution, then evaluate without retraining under one-axis perturbations
-such as amplitude shifts, sensory noise, and changed sequence length.
+family. This runner makes the test less cozy: train the adapter once, then
+evaluate without retraining under one-axis perturbations such as amplitude
+shifts, sensory noise, and changed sequence length.
+
+By default the adapter trains on the base distribution only. Pass
+``--train-amplitudes``, ``--train-noise-stds``, or ``--train-timestep-values``
+to train on augmented frozen AMMC traces and test whether augmentation repairs
+the observed brittleness.
 
 Colab-scale run:
 
@@ -19,6 +24,25 @@ Colab-scale run:
   --epochs 200 \
   --test-seeds 43 44 45 46 47 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_robustness_cuda
+```
+
+Augmented training run:
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter_robustness.py \
+  --device cuda \
+  --adapter-kind mlp \
+  --feature-mode full_trace \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --epochs 200 \
+  --train-amplitudes 0.35 0.55 0.75 1.0 \
+  --train-noise-stds 0.0 0.05 0.15 \
+  --train-timestep-values 4 8 12 \
+  --test-seeds 43 44 45 46 47 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_augmented_robustness_cuda
 ```
 """
 
@@ -71,6 +95,27 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--amplitudes", nargs="+", type=float, default=[0.35, 0.55, 0.75, 1.0])
     parser.add_argument("--noise-stds", nargs="+", type=float, default=[0.0, 0.05, 0.15])
     parser.add_argument("--timestep-values", nargs="+", type=int, default=[4, 8, 12])
+    parser.add_argument(
+        "--train-amplitudes",
+        nargs="+",
+        type=float,
+        default=None,
+        help="Optional amplitude values for augmented adapter training. Defaults to base input amplitude only.",
+    )
+    parser.add_argument(
+        "--train-noise-stds",
+        nargs="+",
+        type=float,
+        default=None,
+        help="Optional sensory-noise std values for augmented adapter training. Defaults to 0.0 only.",
+    )
+    parser.add_argument(
+        "--train-timestep-values",
+        nargs="+",
+        type=int,
+        default=None,
+        help="Optional timestep values for augmented adapter training. Defaults to base timesteps only.",
+    )
     parser.add_argument("--train-fraction", type=float, default=0.7)
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--learning-rate", type=float, default=0.05)
@@ -111,15 +156,20 @@ def main() -> None:
     split_generator = make_generator(args.train_seed + 50_000, device=device)
 
     conditions = _conditions(args)
+    train_conditions = _training_conditions(args)
     rows: list[dict] = []
     for offset, task_name in enumerate(train_task_config.tasks):
-        train_generator = make_generator(args.train_seed + offset + 1, device=device)
-        train_batch = train_runner.task_runner._make_task(task_name, train_generator, device)
-        train_trace = train_runner.task_runner._frozen_ammc_trace(train_batch.inputs, device)
-        train_features = train_runner._select_features(train_trace).detach()
+        train_features, train_targets = _collect_training_examples(
+            args=args,
+            train_runner=train_runner,
+            train_conditions=train_conditions,
+            task_name=task_name,
+            task_offset=offset,
+            device=device,
+        )
         split = _split_features(
             train_features,
-            train_batch.targets,
+            train_targets,
             args.train_fraction,
             split_generator,
             device,
@@ -184,6 +234,10 @@ def main() -> None:
                     "amplitudes": args.amplitudes,
                     "noise_stds": args.noise_stds,
                     "timestep_values": args.timestep_values,
+                    "train_amplitudes": args.train_amplitudes or [args.input_amplitude],
+                    "train_noise_stds": args.train_noise_stds or [0.0],
+                    "train_timestep_values": args.train_timestep_values or [args.timesteps],
+                    "train_condition_count": len(train_conditions),
                     "neuron_count": args.neuron_count,
                     "max_edges": args.max_edges,
                     "adapter_kind": args.adapter_kind,
@@ -262,6 +316,50 @@ def _conditions(args) -> list[dict]:
     for timesteps in args.timestep_values:
         add(f"timesteps_{timesteps}", amplitude=args.input_amplitude, timesteps=timesteps, noise_std=0.0)
     return conditions
+
+
+def _training_conditions(args) -> list[dict]:
+    amplitudes = args.train_amplitudes or [args.input_amplitude]
+    noise_stds = args.train_noise_stds or [0.0]
+    timestep_values = args.train_timestep_values or [args.timesteps]
+    seen: set[tuple[float, int, float]] = set()
+    conditions: list[dict] = []
+    for amplitude in amplitudes:
+        for timesteps in timestep_values:
+            for noise_std in noise_stds:
+                key = (float(amplitude), int(timesteps), float(noise_std))
+                if key in seen:
+                    continue
+                seen.add(key)
+                conditions.append(
+                    {
+                        "condition": f"train_amp_{amplitude:g}_t_{int(timesteps)}_noise_{noise_std:g}",
+                        "amplitude": float(amplitude),
+                        "timesteps": int(timesteps),
+                        "noise_std": float(noise_std),
+                    }
+                )
+    return conditions
+
+
+def _collect_training_examples(*, args, train_runner, train_conditions: list[dict], task_name: str, task_offset: int, device):
+    feature_batches = []
+    target_batches = []
+    for condition_offset, condition in enumerate(train_conditions):
+        task_config = _task_config(
+            args,
+            seed=args.train_seed,
+            timesteps=condition["timesteps"],
+            amplitude=condition["amplitude"],
+        )
+        task_runner = FrozenTaskRunner(task_config)
+        generator = make_generator(args.train_seed + task_offset + 1 + condition_offset * 10_000, device=device)
+        batch = task_runner._make_task(task_name, generator, device)
+        inputs = _apply_noise(batch.inputs, condition["noise_std"], args.train_seed, task_offset + condition_offset, device)
+        trace = task_runner._frozen_ammc_trace(inputs, device)
+        feature_batches.append(train_runner._select_features(trace).detach())
+        target_batches.append(batch.targets)
+    return torch.cat(feature_batches, dim=0), torch.cat(target_batches, dim=0)
 
 
 def _split_features(features, targets, train_fraction: float, generator, device, *, standardize: bool) -> dict:
