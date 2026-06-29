@@ -1925,6 +1925,57 @@ Artifact:
 
 - `gen5/outputs/frozen_representation_probe_cuda_2026-06-29/analysis.md`
 
+### 41. Frozen readout/transducer adapter implementation
+
+Decision: implement the trainable readout/transducer adapter as the deployable
+bridge between diagnostic probing and full recurrent/plastic learning.
+
+Implementation:
+
+- Add `FrozenReadoutAdapterConfig`, `FrozenReadoutAdapterResult`,
+  `FrozenReadoutAdapterSummaryRecord`, and `FrozenReadoutAdapterRunner`.
+- Add `sprint15_frozen_readout_adapter.py`.
+- Keep the sparse AMMC recurrent substrate frozen.
+- Train only a small adapter head over frozen trace features.
+- Support `linear` and `mlp` adapter heads.
+- Support two diagnostic feature modes:
+  - `full_trace`: final membrane plus spike counts for all neurons.
+  - `motor_trace`: final membrane plus spike counts for motor neurons only.
+
+Run command:
+
+```bash
+python gen5/examples/sprint15_frozen_readout_adapter.py \
+  --device cuda \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --adapter-kind linear \
+  --feature-mode full_trace \
+  --epochs 200 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_cuda
+```
+
+Decision rule:
+
+- If `linear/full_trace` reproduces the frozen representation probe, the
+  readout adapter is enough for tasks like `anti_toxin`.
+- If `motor_trace` fails while `full_trace` succeeds, useful information is
+  distributed in hidden/non-motor state and the fixed motor pathway is the
+  bottleneck.
+- If `mlp/full_trace` beats `linear/full_trace`, the substrate representation
+  exists but is not linearly separated.
+- If all modes remain near chance on `two_pulse_sum`, the next change must be
+  recurrent substrate learning or a temporal-composition mechanism, not a
+  readout-only fix.
+
+Artifacts:
+
+- `gen5/ammc_gen5/frozen_tasks.py`
+- `gen5/examples/sprint15_frozen_readout_adapter.py`
+- `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

@@ -166,3 +166,76 @@ Main conclusion:
 Next recommendation: implement a minimal trainable readout/transducer adapter
 while keeping recurrent sparse AMMC weights frozen. Use that as the bridge
 between frozen probing and full recurrent/plastic training.
+
+## Frozen readout/transducer adapter
+
+The readout adapter is the deployable version of the representation probe. It
+still freezes the recurrent sparse AMMC substrate, but now treats the trained
+readout as an adapter we may actually keep around the substrate.
+
+Supported feature modes:
+
+- `full_trace`: final membrane plus spike counts for every neuron. This should
+  reproduce the linear-probe ceiling when `--adapter-kind linear` is used.
+- `motor_trace`: final membrane plus spike counts for only the motor neurons.
+  This is the stricter diagnostic. If it fails while `full_trace` succeeds, the
+  useful state is distributed across the brain and the fixed motor pathway is
+  the bottleneck.
+
+Colab command:
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter.py \
+  --device cuda \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --adapter-kind linear \
+  --feature-mode full_trace \
+  --epochs 200 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_cuda
+```
+
+Strict motor-pathway diagnostic:
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter.py \
+  --device cuda \
+  --sample-count 4096 \
+  --timesteps 8 \
+  --neuron-count 16 \
+  --max-edges 128 \
+  --adapter-kind linear \
+  --feature-mode motor_trace \
+  --epochs 200 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_motor_trace_cuda
+```
+
+Optional nonlinear readout check:
+
+```python
+!python gen5/examples/sprint15_frozen_readout_adapter.py \
+  --device cuda \
+  --adapter-kind mlp \
+  --hidden-units 32 \
+  --feature-mode full_trace \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_mlp_cuda
+```
+
+Expected outputs:
+
+- `frozen_readout_adapter.json`
+- `frozen_readout_adapter_summary.csv`
+- `frozen_readout_adapter_summary.png`
+
+Interpretation:
+
+- If `linear/full_trace` matches the representation probe, the probe result is
+  reproducible as an adapter.
+- If `motor_trace` underperforms `full_trace`, the next engineering target is a
+  better sensor-to-motor transducer/readout map.
+- If `mlp/full_trace` beats `linear/full_trace`, the representation exists but
+  is not linearly separated.
+- If all adapter modes fail on `two_pulse_sum`, the recurrent substrate itself
+  needs temporal/compositional learning rather than readout tuning.

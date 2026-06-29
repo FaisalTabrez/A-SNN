@@ -147,6 +147,66 @@ class FrozenProbeResult:
 
 
 @dataclass(frozen=True)
+class FrozenReadoutAdapterConfig:
+    """Configuration for a deployable readout/transducer adapter.
+
+    The recurrent sparse AMMC substrate remains frozen. Only a small readout
+    head is trained over frozen trace features so we can test whether a practical
+    adapter can recover the representation-probe ceiling.
+    """
+
+    task_config: FrozenTaskConfig = field(default_factory=FrozenTaskConfig)
+    train_fraction: float = 0.7
+    epochs: int = 200
+    learning_rate: float = 0.05
+    weight_decay: float = 0.001
+    standardize_features: bool = True
+    adapter_kind: str = "linear"
+    hidden_units: int = 32
+    feature_mode: str = "full_trace"
+
+
+@dataclass(frozen=True)
+class FrozenReadoutAdapterSummaryRecord:
+    """One row summarizing a trainable readout adapter for one frozen task."""
+
+    task: str
+    samples: int
+    train_samples: int
+    test_samples: int
+    timesteps: int
+    target_rule: str
+    adapter_kind: str
+    feature_mode: str
+    feature_dim: int
+    hidden_units: int
+    frozen_ammc_accuracy: float
+    adapter_accuracy: float
+    adapter_train_accuracy: float
+    random_accuracy: float
+    instant_reflex_accuracy: float
+    integrated_reflex_accuracy: float
+    inactive_output_rate: float
+    adapter_gain_over_frozen: float
+    adapter_gain_over_best_reflex: float
+    final_adapter_loss: float
+
+
+@dataclass(frozen=True)
+class FrozenReadoutAdapterResult:
+    """Complete frozen readout/transducer adapter result."""
+
+    config: dict
+    summary: list[FrozenReadoutAdapterSummaryRecord]
+
+    def to_json_dict(self) -> dict:
+        return {
+            "config": self.config,
+            "summary": [asdict(row) for row in self.summary],
+        }
+
+
+@dataclass(frozen=True)
 class _TaskBatch:
     inputs: object
     targets: object
@@ -542,6 +602,224 @@ class FrozenRepresentationProbeRunner:
         return cfg
 
 
+class FrozenReadoutAdapterRunner:
+    """Train a minimal deployable adapter over frozen AMMC traces.
+
+    This is intentionally one step beyond a diagnostic probe: it models the
+    trainable transducer/readout layer we would actually keep around a frozen
+    sparse AMMC substrate. Two feature modes are supported:
+
+    - ``full_trace``: final membrane plus spike counts for all neurons.
+    - ``motor_trace``: final membrane plus spike counts for motor neurons only.
+
+    If ``full_trace`` succeeds but ``motor_trace`` fails, the useful state is
+    distributed across the substrate and the fixed motor readout is the weak
+    link. If both fail, the substrate representation is missing.
+    """
+
+    _ADAPTER_KINDS = {"linear", "mlp"}
+    _FEATURE_MODES = {"full_trace", "motor_trace"}
+
+    def __init__(self, config: FrozenReadoutAdapterConfig | None = None) -> None:
+        self.config = config or FrozenReadoutAdapterConfig()
+        if not 0.0 < self.config.train_fraction < 1.0:
+            raise ValueError("train_fraction must be in (0, 1)")
+        if self.config.epochs <= 0:
+            raise ValueError("epochs must be positive")
+        if self.config.learning_rate <= 0:
+            raise ValueError("learning_rate must be positive")
+        if self.config.hidden_units <= 0:
+            raise ValueError("hidden_units must be positive")
+        if self.config.adapter_kind not in self._ADAPTER_KINDS:
+            raise ValueError(f"adapter_kind must be one of {sorted(self._ADAPTER_KINDS)}")
+        if self.config.feature_mode not in self._FEATURE_MODES:
+            raise ValueError(f"feature_mode must be one of {sorted(self._FEATURE_MODES)}")
+        if self.config.task_config.sample_count < 4:
+            raise ValueError("sample_count must be at least 4 for train/test adapter evaluation")
+        self.task_runner = FrozenTaskRunner(self.config.task_config)
+
+    def run(self) -> FrozenReadoutAdapterResult:
+        _require_torch()
+        task_cfg = self.config.task_config
+        device = resolve_device(task_cfg.device)
+        seed_everything(task_cfg.seed, device=device)
+        split_generator = make_generator(task_cfg.seed + 20_000, device=device)
+
+        summary: list[FrozenReadoutAdapterSummaryRecord] = []
+        for offset, task_name in enumerate(task_cfg.tasks):
+            task_generator = make_generator(task_cfg.seed + offset + 1, device=device)
+            batch = self.task_runner._make_task(task_name, task_generator, device)
+            trace = self.task_runner._frozen_ammc_trace(batch.inputs, device)
+            summary.append(
+                self._adapt_task(
+                    task_name,
+                    batch,
+                    trace,
+                    split_generator,
+                    device,
+                )
+            )
+            sync(device)
+
+        return FrozenReadoutAdapterResult(
+            config=self._jsonable_config(device),
+            summary=summary,
+        )
+
+    def save_outputs(
+        self,
+        result: FrozenReadoutAdapterResult,
+        output_dir: str | Path,
+        *,
+        plot: bool = True,
+    ) -> dict[str, str]:
+        output = Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+
+        json_path = output / "frozen_readout_adapter.json"
+        json_path.write_text(json.dumps(result.to_json_dict(), indent=2) + "\n", encoding="utf-8")
+
+        summary_csv = output / "frozen_readout_adapter_summary.csv"
+        _write_csv(summary_csv, [asdict(row) for row in result.summary])
+
+        paths = {
+            "json": str(json_path),
+            "summary_csv": str(summary_csv),
+        }
+        if plot:
+            try:
+                plot_path = output / "frozen_readout_adapter_summary.png"
+                plot_frozen_readout_adapter_result(result, plot_path)
+                paths["plot"] = str(plot_path)
+            except Exception as exc:  # pragma: no cover - optional plotting
+                paths["plot"] = f"skipped: {exc}"
+        return paths
+
+    def _adapt_task(
+        self,
+        task_name: str,
+        batch: _TaskBatch,
+        trace: dict,
+        split_generator,
+        device,
+    ) -> FrozenReadoutAdapterSummaryRecord:
+        task_cfg = self.config.task_config
+        features = self._select_features(trace).detach()
+        targets = batch.targets
+        evidence = trace["evidence"].detach()
+        frozen_predictions = evidence.argmax(dim=1)
+        frozen_accuracy = _accuracy(frozen_predictions, targets)
+        inactive_rate = float((evidence.max(dim=1).values <= 1e-8).to(torch.float32).mean().item())
+
+        order = torch.randperm(targets.numel(), device=device, generator=split_generator)
+        train_count = max(1, int(round(targets.numel() * self.config.train_fraction)))
+        train_count = min(train_count, targets.numel() - 1)
+        train_idx = order[:train_count]
+        test_idx = order[train_count:]
+
+        x_train = features.index_select(0, train_idx)
+        y_train = targets.index_select(0, train_idx)
+        x_test = features.index_select(0, test_idx)
+        y_test = targets.index_select(0, test_idx)
+        if self.config.standardize_features:
+            mean = x_train.mean(dim=0, keepdim=True)
+            std = x_train.std(dim=0, keepdim=True, unbiased=False).clamp_min(1e-6)
+            x_train = (x_train - mean) / std
+            x_test = (x_test - mean) / std
+
+        train_accuracy, test_accuracy, final_loss = self._train_adapter(x_train, y_train, x_test, y_test, device)
+
+        random_predictions = torch.randint(
+            0,
+            task_cfg.motor_channels,
+            y_test.shape,
+            device=device,
+            generator=split_generator,
+        )
+        instant_reflex = _instant_reflex_predictions(batch.inputs, task_cfg.motor_channels).index_select(0, test_idx)
+        integrated_reflex = _integrated_reflex_predictions(batch.inputs, task_cfg.motor_channels).index_select(0, test_idx)
+        best_reflex = max(_accuracy(instant_reflex, y_test), _accuracy(integrated_reflex, y_test))
+
+        return FrozenReadoutAdapterSummaryRecord(
+            task=task_name,
+            samples=int(targets.numel()),
+            train_samples=int(y_train.numel()),
+            test_samples=int(y_test.numel()),
+            timesteps=task_cfg.timesteps,
+            target_rule=batch.target_rule,
+            adapter_kind=self.config.adapter_kind,
+            feature_mode=self.config.feature_mode,
+            feature_dim=int(features.shape[1]),
+            hidden_units=int(self.config.hidden_units),
+            frozen_ammc_accuracy=frozen_accuracy,
+            adapter_accuracy=test_accuracy,
+            adapter_train_accuracy=train_accuracy,
+            random_accuracy=_accuracy(random_predictions, y_test),
+            instant_reflex_accuracy=_accuracy(instant_reflex, y_test),
+            integrated_reflex_accuracy=_accuracy(integrated_reflex, y_test),
+            inactive_output_rate=inactive_rate,
+            adapter_gain_over_frozen=test_accuracy - frozen_accuracy,
+            adapter_gain_over_best_reflex=test_accuracy - best_reflex,
+            final_adapter_loss=final_loss,
+        )
+
+    def _select_features(self, trace: dict):
+        if self.config.feature_mode == "full_trace":
+            return trace["features"]
+        if self.config.feature_mode == "motor_trace":
+            task_cfg = self.config.task_config
+            motor_start = task_cfg.sensor_channels
+            motor_end = motor_start + task_cfg.motor_channels
+            return torch.cat(
+                [
+                    trace["final_membrane"][:, motor_start:motor_end],
+                    trace["spike_counts"][:, motor_start:motor_end],
+                ],
+                dim=1,
+            )
+        raise ValueError(f"unknown feature_mode: {self.config.feature_mode}")
+
+    def _train_adapter(self, x_train, y_train, x_test, y_test, device) -> tuple[float, float, float]:
+        adapter = self._build_adapter(int(x_train.shape[1]), device)
+        optimizer = torch.optim.AdamW(
+            adapter.parameters(),
+            lr=self.config.learning_rate,
+            weight_decay=self.config.weight_decay,
+        )
+        final_loss = 0.0
+        for _ in range(self.config.epochs):
+            optimizer.zero_grad(set_to_none=True)
+            logits = adapter(x_train)
+            loss = torch.nn.functional.cross_entropy(logits, y_train)
+            loss.backward()
+            optimizer.step()
+            final_loss = float(loss.detach().item())
+            mark_step(device)
+
+        with torch.no_grad():
+            train_predictions = adapter(x_train).argmax(dim=1)
+            test_predictions = adapter(x_test).argmax(dim=1)
+        return _accuracy(train_predictions, y_train), _accuracy(test_predictions, y_test), final_loss
+
+    def _build_adapter(self, feature_dim: int, device):
+        motor_channels = self.config.task_config.motor_channels
+        if self.config.adapter_kind == "linear":
+            return torch.nn.Linear(feature_dim, motor_channels).to(device)
+        if self.config.adapter_kind == "mlp":
+            return torch.nn.Sequential(
+                torch.nn.Linear(feature_dim, self.config.hidden_units),
+                torch.nn.ReLU(),
+                torch.nn.Linear(self.config.hidden_units, motor_channels),
+            ).to(device)
+        raise ValueError(f"unknown adapter_kind: {self.config.adapter_kind}")
+
+    def _jsonable_config(self, device) -> dict:
+        cfg = asdict(self.config)
+        cfg["task_config"]["device"] = str(device)
+        cfg["task_config"]["seed_edges"] = [asdict(edge) for edge in self.config.task_config.seed_edges]
+        return cfg
+
+
 def available_frozen_tasks() -> tuple[str, ...]:
     """Return available synthetic frozen task names."""
 
@@ -596,6 +874,32 @@ def plot_frozen_probe_result(result: FrozenProbeResult, output_path: str | Path)
     ax.set_ylim(0.0, 1.05)
     ax.set_ylabel("Accuracy")
     ax.set_title("AMMC Gen-5 frozen representation probe")
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=20, ha="right")
+    ax.legend()
+    ax.grid(axis="y", alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=160)
+    plt.close(fig)
+
+
+def plot_frozen_readout_adapter_result(result: FrozenReadoutAdapterResult, output_path: str | Path) -> None:
+    """Plot trainable adapter accuracy against frozen and reflex baselines."""
+
+    import matplotlib.pyplot as plt  # type: ignore
+
+    labels = [row.task for row in result.summary]
+    x = list(range(len(labels)))
+    width = 0.18
+    fig, ax = plt.subplots(figsize=(max(9, len(labels) * 1.6), 5))
+    ax.bar([i - 1.5 * width for i in x], [row.frozen_ammc_accuracy for row in result.summary], width, label="Frozen motor")
+    ax.bar([i - 0.5 * width for i in x], [row.adapter_accuracy for row in result.summary], width, label="Adapter")
+    ax.bar([i + 0.5 * width for i in x], [row.instant_reflex_accuracy for row in result.summary], width, label="Instant reflex")
+    ax.bar([i + 1.5 * width for i in x], [row.integrated_reflex_accuracy for row in result.summary], width, label="Integrated reflex")
+    ax.axhline(0.25, color="gray", linestyle="--", linewidth=1, label="Random 4-way chance")
+    ax.set_ylim(0.0, 1.05)
+    ax.set_ylabel("Accuracy")
+    ax.set_title("AMMC Gen-5 frozen readout adapter")
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=20, ha="right")
     ax.legend()
