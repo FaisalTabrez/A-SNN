@@ -1742,6 +1742,59 @@ Artifact:
 
 - `gen5/outputs/neuron_scaling_delay2_cuda_2026-06-29/analysis.md`
 
+### 37. Sprint 15 direction: freeze AMMC and diversify tasks
+
+Decision: before adding more plasticity or hidden capacity, evaluate the frozen
+AMMC sparse substrate on diversified non-foraging tasks.
+
+Rationale:
+
+- Delay-`2` neuron scaling showed that larger hidden-node pools do not improve
+  the current foraging benchmark.
+- Compact `16`-neuron models win because the task still rewards direct
+  sensor-motor loops.
+- A realistic view requires separating three effects:
+  1. what the frozen sparse wiring prior can already do,
+  2. what simple reflex baselines can do,
+  3. what genuinely requires learning, protected hidden expansion, or a new
+     task transducer.
+
+Implementation:
+
+- Add `FrozenTaskRunner` and `FrozenTaskConfig`.
+- Add `sprint15_frozen_diversified_tasks.py`.
+- Add download-free synthetic tasks:
+  - `direction_copy`,
+  - `anti_toxin`,
+  - `cue_switch`,
+  - `delayed_recall`,
+  - `two_pulse_sum`.
+- Report frozen AMMC accuracy against random, instant-reflex, integrated-reflex,
+  and oracle baselines.
+
+Important limitation:
+
+- Current archived evolution outputs contain population-level statistics, not a
+  single champion genome snapshot for the winning `16`-neuron organism.
+- Therefore Sprint 15 freezes the current sparse AMMC prior/seeded substrate,
+  not a fully trained champion. Champion-level frozen evaluation should be
+  added once future runs export best genomes automatically.
+
+Decision rule:
+
+- If frozen AMMC only wins direct/reflexive tasks, the next major work is task
+  transduction or learning, not scaling.
+- If frozen AMMC beats reflex baselines on temporal tasks, the current sparse
+  recurrent substrate already has useful memory.
+- If larger hidden models later beat `16` neurons on these tasks, hidden scaling
+  has finally earned its keep.
+
+Artifacts:
+
+- `gen5/ammc_gen5/frozen_tasks.py`
+- `gen5/examples/sprint15_frozen_diversified_tasks.py`
+- `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2380,12 +2433,13 @@ Validation:
 
 ## Next recommended steps
 
-1. Use the recovered delay-`2` neuron-scaling result:
-   - treat `16` neurons as the current delayed-reward topology winner,
-   - run a focused `16`-neuron confirmation or move directly to delay `3`,
-     moving-food, cue-switching, or maze-like partial-observability tasks,
-   - only scale hidden-node count again after a harder task demonstrates that
-     hidden state improves fitness or retention.
+1. Run the Sprint 15 frozen diversified task benchmark:
+   - use `gen5/examples/sprint15_frozen_diversified_tasks.py`,
+   - start with `16` neurons and `128` edge slots,
+   - compare frozen AMMC against random, instant-reflex, integrated-reflex, and
+     oracle baselines,
+   - use the failure pattern to decide whether the next major work is task
+     transduction, protected hidden expansion, or harder embodied worlds.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
