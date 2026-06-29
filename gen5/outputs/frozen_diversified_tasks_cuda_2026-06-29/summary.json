@@ -1,0 +1,79 @@
+{
+  "provenance": {
+    "source": "Colab console paste",
+    "status": "summary_only",
+    "note": "The final printed JSON summary survived. Full Drive artifacts were reported but not uploaded in this turn."
+  },
+  "paths": {
+    "json": "/content/drive/MyDrive/A-SNN/gen5_outputs/frozen_diversified_tasks_cuda/frozen_diversified_tasks.json",
+    "summary_csv": "/content/drive/MyDrive/A-SNN/gen5_outputs/frozen_diversified_tasks_cuda/frozen_diversified_tasks_summary.csv",
+    "plot": "/content/drive/MyDrive/A-SNN/gen5_outputs/frozen_diversified_tasks_cuda/frozen_diversified_tasks_summary.png"
+  },
+  "summary": [
+    {
+      "task": "direction_copy",
+      "samples": 4096,
+      "timesteps": 8,
+      "target_rule": "choose the active food-direction channel",
+      "frozen_ammc_accuracy": 1.0,
+      "random_accuracy": 0.2529296875,
+      "instant_reflex_accuracy": 1.0,
+      "integrated_reflex_accuracy": 1.0,
+      "oracle_accuracy": 1.0,
+      "inactive_output_rate": 0.0,
+      "mean_correct_evidence_margin": 2.0
+    },
+    {
+      "task": "anti_toxin",
+      "samples": 4096,
+      "timesteps": 8,
+      "target_rule": "choose the opposite direction of the active toxin channel",
+      "frozen_ammc_accuracy": 0.25,
+      "random_accuracy": 0.252685546875,
+      "instant_reflex_accuracy": 0.25,
+      "integrated_reflex_accuracy": 0.25,
+      "oracle_accuracy": 1.0,
+      "inactive_output_rate": 1.0,
+      "mean_correct_evidence_margin": 0.0
+    },
+    {
+      "task": "cue_switch",
+      "samples": 4096,
+      "timesteps": 8,
+      "target_rule": "if cue channel is active choose opposite, else choose direction",
+      "frozen_ammc_accuracy": 0.504150390625,
+      "random_accuracy": 0.244873046875,
+      "instant_reflex_accuracy": 0.504150390625,
+      "integrated_reflex_accuracy": 0.504150390625,
+      "oracle_accuracy": 1.0,
+      "inactive_output_rate": 0.0,
+      "mean_correct_evidence_margin": 0.1960143744945526
+    },
+    {
+      "task": "delayed_recall",
+      "samples": 4096,
+      "timesteps": 8,
+      "target_rule": "remember the initial food direction after blank delay",
+      "frozen_ammc_accuracy": 1.0,
+      "random_accuracy": 0.260498046875,
+      "instant_reflex_accuracy": 0.25,
+      "integrated_reflex_accuracy": 1.0,
+      "oracle_accuracy": 1.0,
+      "inactive_output_rate": 0.0,
+      "mean_correct_evidence_margin": 0.3188645541667938
+    },
+    {
+      "task": "two_pulse_sum",
+      "samples": 4096,
+      "timesteps": 8,
+      "target_rule": "classify modular sum of first and final directional pulses",
+      "frozen_ammc_accuracy": 0.25,
+      "random_accuracy": 0.24560546875,
+      "instant_reflex_accuracy": 0.25,
+      "integrated_reflex_accuracy": 0.060546875,
+      "oracle_accuracy": 1.0,
+      "inactive_output_rate": 0.0,
+      "mean_correct_evidence_margin": -0.3394688367843628
+    }
+  ]
+}

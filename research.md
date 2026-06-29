@@ -1795,6 +1795,54 @@ Artifacts:
 - `gen5/examples/sprint15_frozen_diversified_tasks.py`
 - `gen5/docs/FROZEN_DIVERSIFIED_TASKS.md`
 
+### 38. Frozen diversified tasks: current substrate is reflexive, not contextual
+
+Finding: the first Sprint 15 frozen diversified task run completed on CUDA for
+`4096` samples and `8` timesteps using the `16`-neuron / `128`-edge frozen
+sparse AMMC prior.
+
+Results:
+
+| Task | Frozen AMMC | Random | Instant reflex | Integrated reflex | Inactive output | Margin |
+|---|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 25.29% | 100.00% | 100.00% | 0.00% | 2.000 |
+| anti_toxin | 25.00% | 25.27% | 25.00% | 25.00% | 100.00% | 0.000 |
+| cue_switch | 50.42% | 24.49% | 50.42% | 50.42% | 0.00% | 0.196 |
+| delayed_recall | 100.00% | 26.05% | 25.00% | 100.00% | 0.00% | 0.319 |
+| two_pulse_sum | 25.00% | 24.56% | 25.00% | 6.05% | 0.00% | -0.339 |
+
+Interpretation:
+
+- `direction_copy` is solved, but reflex baselines solve it too. This confirms
+  the direct food-direction prior works.
+- `delayed_recall` is solved by frozen AMMC and integrated reflex, but not by
+  instant reflex. This is evidence accumulation across time, not yet proof of
+  hidden-state memory.
+- `anti_toxin` stays at chance with `100%` inactive output. The frozen toxin
+  prior suppresses motor output instead of actively routing to the opposite
+  direction.
+- `cue_switch` sits at about `50%`, matching reflex baselines. The frozen model
+  ignores the context cue.
+- `two_pulse_sum` is chance-level. The frozen circuit does not perform modular
+  temporal composition.
+
+Decision:
+
+- The current frozen AMMC substrate should be described as a reflex/evidence
+  integration system, not yet a context-routing or sequence-composition system.
+- The next Sprint 15 improvement should be a frozen representation probe:
+  collect final membrane/spike traces, train only a small linear readout, and
+  keep the recurrent sparse substrate frozen.
+- If a linear probe solves `cue_switch` or `two_pulse_sum`, the information is
+  present but the motor readout is wrong.
+- If the linear probe fails, the substrate itself lacks the needed
+  representation and will require training, plasticity, or architectural
+  changes.
+
+Artifact:
+
+- `gen5/outputs/frozen_diversified_tasks_cuda_2026-06-29/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -2433,13 +2481,14 @@ Validation:
 
 ## Next recommended steps
 
-1. Run the Sprint 15 frozen diversified task benchmark:
-   - use `gen5/examples/sprint15_frozen_diversified_tasks.py`,
-   - start with `16` neurons and `128` edge slots,
-   - compare frozen AMMC against random, instant-reflex, integrated-reflex, and
-     oracle baselines,
-   - use the failure pattern to decide whether the next major work is task
-     transduction, protected hidden expansion, or harder embodied worlds.
+1. Add the Sprint 15 frozen representation probe:
+   - keep the recurrent sparse AMMC substrate frozen,
+   - collect final membrane/spike traces from `direction_copy`, `anti_toxin`,
+     `cue_switch`, `delayed_recall`, and `two_pulse_sum`,
+   - train only a small linear readout on top of those traces,
+   - compare probe accuracy against frozen motor readout and reflex baselines,
+   - use this to separate "bad readout/transducer" from "missing
+     representation."
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

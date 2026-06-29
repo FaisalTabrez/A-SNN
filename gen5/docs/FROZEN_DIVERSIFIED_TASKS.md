@@ -93,3 +93,25 @@ Possible outcomes:
   protected hidden expansion, or a task-specific readout before broader
   cognitive claims.
 - Larger future hidden models win these tasks: then scaling has a real purpose.
+
+## First CUDA result
+
+The first CUDA run is archived at:
+
+- `gen5/outputs/frozen_diversified_tasks_cuda_2026-06-29/analysis.md`
+
+Main conclusion:
+
+- `direction_copy` reached `100%`, matching reflex baselines.
+- `delayed_recall` reached `100%`, but integrated reflex also reached `100%`,
+  so this is temporal evidence integration rather than proof of hidden-state
+  memory.
+- `anti_toxin` stayed at chance with `100%` inactive output, showing that the
+  frozen toxin prior suppresses rather than generates active avoidance.
+- `cue_switch` matched reflexes at roughly `50%`, meaning the context cue is
+  ignored.
+- `two_pulse_sum` stayed at chance, meaning the frozen circuit does not perform
+  sequence composition.
+
+Next recommendation: add a frozen representation probe with a trainable linear
+readout while keeping the recurrent sparse AMMC substrate frozen.

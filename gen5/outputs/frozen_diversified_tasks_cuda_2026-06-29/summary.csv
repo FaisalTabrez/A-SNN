@@ -1,0 +1,6 @@
+task,samples,timesteps,target_rule,frozen_ammc_accuracy,random_accuracy,instant_reflex_accuracy,integrated_reflex_accuracy,oracle_accuracy,inactive_output_rate,mean_correct_evidence_margin
+direction_copy,4096,8,choose the active food-direction channel,1.0,0.2529296875,1.0,1.0,1.0,0.0,2.0
+anti_toxin,4096,8,choose the opposite direction of the active toxin channel,0.25,0.252685546875,0.25,0.25,1.0,1.0,0.0
+cue_switch,4096,8,"if cue channel is active choose opposite, else choose direction",0.504150390625,0.244873046875,0.504150390625,0.504150390625,1.0,0.0,0.1960143744945526
+delayed_recall,4096,8,remember the initial food direction after blank delay,1.0,0.260498046875,0.25,1.0,1.0,0.0,0.3188645541667938
+two_pulse_sum,4096,8,classify modular sum of first and final directional pulses,0.25,0.24560546875,0.25,0.060546875,1.0,0.0,-0.3394688367843628
