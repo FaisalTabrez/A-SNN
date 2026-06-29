@@ -1,0 +1,3 @@
+world,group,neuron_count,hidden_neurons,max_edges,seeds,final_mean_best_fitness,final_std_best_fitness,final_mean_selection_best_fitness,final_mean_active_synapses,final_active_edge_utilization,final_fitness_per_active_synapse,final_mean_hidden_edge_fraction,final_mean_direct_sensor_motor_fraction,threshold_success_rate,mean_generation_to_threshold
+delayed_reward,gentle_ltw_scheduled,32,20,256,10,24.5,1.0801234497346435,16.3,81.39822845458984,0.31796182990074157,0.20018922232496497,0.8448110580444336,0.05141359344124794,0.5,169.2
+delayed_reward,low_ltw_pruning,32,20,256,10,24.5,1.4337208778404378,17.4,104.81551742553711,0.40943561494350433,0.16602100293992247,0.8524567365646363,0.04421648606657982,0.4,201.25

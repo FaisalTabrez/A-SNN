@@ -129,3 +129,21 @@ fewer active synapses and crossing the threshold in `66.67%` of seeds.
 Decision: promote `reward_delay_steps = 2` to the next `10`-seed,
 `500`-generation statistical benchmark. If it holds, rerun neuron scaling on
 this delayed-reward setting.
+
+## Delay-2 full-run console note
+
+`gen5/outputs/delayed_reward_delay2_full_cuda_console_2026-06-29/analysis.md`
+records the surviving console output from the full delay-`2` benchmark.
+
+Caveat: the Colab session ended before downloadable artifacts were recovered,
+so this is summary-only evidence. The final printed JSON summary survived.
+
+Result: both groups reached mean best fitness `24.50`. The sparse
+`gentle_ltw_scheduled` policy used about `22.3%` fewer active synapses
+(`81.40` vs. `104.82`), had lower variance, crossed threshold in more seeds
+(`50%` vs. `40%`), and reached threshold earlier on average.
+
+Decision: treat `gentle_ltw_scheduled` at `reward_delay_steps = 2` as the
+preferred delayed-reward sparse-efficiency baseline. For publication-grade
+evidence, rerun with persistent output or use persistent output on the next
+delay-`2` neuron-scaling run.
