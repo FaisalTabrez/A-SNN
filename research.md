@@ -2157,6 +2157,50 @@ Artifacts:
 - `gen5/outputs/frozen_readout_adapter_robustness_cuda_2026-06-29/analysis.md`
 - `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
 
+### 46. Augmented readout training repairs robustness
+
+Finding: the augmented robustness run completed on CUDA. The adapter was trained
+across amplitude, noise, and timestep variants, then evaluated on the same
+robustness suite used in Section 45.
+
+Aggregate adapter accuracy:
+
+| Task | Base | Amp 0.35 | Amp 0.55 | Amp 1.0 | Noise 0.05 | Noise 0.15 | T=4 | T=12 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.99% | 100.00% | 100.00% |
+| cue_switch | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.98% | 100.00% | 100.00% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.84% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.41% | 100.00% | 100.00% |
+
+Interpretation:
+
+- The previous noise/amplitude failure was primarily a readout data
+  coverage/calibration problem.
+- Once trained on augmented reservoir traces, the small MLP adapter decodes the
+  frozen AMMC substrate robustly across the tested perturbation grid.
+- This strengthens the current working model: AMMC Gen-5 can be framed as a
+  sparse evolved reservoir plus a lightweight trainable readout adapter, rather
+  than requiring immediate full recurrent retraining for these synthetic tasks.
+
+Decision:
+
+- Move the next major validation back to embodied/harder worlds.
+- Add or adapt an evaluation path where the frozen AMMC substrate feeds an
+  adapter-equipped motor policy.
+- Compare:
+  - fixed frozen motor argmax,
+  - frozen substrate plus unaugmented adapter,
+  - frozen substrate plus augmented adapter.
+- Only after embodied transfer should we move to external datasets such as
+  MNIST, because the current project thesis is embodied continuous learning
+  before static classification.
+
+Artifacts:
+
+- `gen5/outputs/frozen_readout_adapter_augmented_robustness_cuda_2026-07-28/analysis.md`
+- `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

@@ -428,3 +428,35 @@ Next run: repeat robustness with augmented adapter training.
   --test-seeds 43 44 45 46 47 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/frozen_readout_adapter_augmented_robustness_cuda
 ```
+
+## Augmented readout-adapter robustness result
+
+Augmented readout training used the same robustness runner, but trained the
+adapter across amplitude, noise, and timestep variants before evaluating the
+same perturbation suite.
+
+| Task | Base | Amp 0.35 | Amp 0.55 | Amp 1.0 | Noise 0.05 | Noise 0.15 | T=4 | T=12 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| direction_copy | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% |
+| anti_toxin | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.99% | 100.00% | 100.00% |
+| cue_switch | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.98% | 100.00% | 100.00% |
+| delayed_recall | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.84% | 100.00% | 100.00% |
+| two_pulse_sum | 100.00% | 100.00% | 100.00% | 100.00% | 100.00% | 99.41% | 100.00% | 100.00% |
+
+Archived analysis:
+
+- `gen5/outputs/frozen_readout_adapter_augmented_robustness_cuda_2026-07-28/analysis.md`
+
+Main conclusion:
+
+- The earlier robustness failure was primarily adapter data
+  coverage/calibration, not missing reservoir information.
+- With augmented training, the frozen AMMC substrate plus a small MLP readout is
+  robust across the tested amplitudes, noise levels, timesteps, and held-out
+  seeds.
+
+Next recommendation:
+
+- Move back to embodied/harder worlds with an adapter-equipped motor policy.
+- Compare frozen motor argmax, unaugmented adapter, and augmented adapter under
+  the same noisy/harder environment conditions.
