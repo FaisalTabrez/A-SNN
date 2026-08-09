@@ -4212,3 +4212,43 @@ at least a `+2` point mean gain over raw temporal. Frozen arms report zero LTW
 movement by construction. Failure of the spiking or LTW gate requires narrowing
 the AMMC mechanism claim; passing identifies what deserves the next structural
 plasticity experiment.
+
+## 2026-08-10 - Phase 39 sparse SHD mechanism result
+
+Evidence retained at `gen5/outputs/shd_sparse_mechanisms_cuda_2026-08-10/`
+from archive SHA-256
+`B4A021423C00270E4B29014250D196DAC10AD4CD7539E116CA72399F7BEEF002`.
+
+The raw temporal model reaches `77.959%`. Frozen and trainable sparse LIF reach
+`79.623%` and `79.608%`, while frozen and trainable sparse analog models both
+reach `80.624%` to displayed precision. Hard spiking is therefore `1.016`
+points worse than its matched analog control. No seed improves and the spiking
+gate fails in the opposite direction.
+
+LTW optimization also fails. Trainable LIF changes LTWs by `0.01525` on average
+but loses `0.015` points relative to frozen LIF. Trainable analog LTWs change by
+`0.00798`, yet the paired mean gain is effectively zero and seed effects cancel.
+The LIF sparse gain over raw temporal is only `+1.649` points, below its
+registered `+2` gate. Frozen analog retains the sole passing signal at `+2.665`
+points over raw temporal and runs about 23% faster than LIF.
+
+Decision: the current evidence does not support hard spikes, trainable LTWs,
+recurrence, or structural plasticity as the source of SHD performance. The
+surviving candidate is a frozen sparse analog expansion with leaky temporal
+state. Reclassify the current SHD result as an architecture observation, not an
+SNN-mechanism result, until analog dynamics and topology are decomposed.
+
+## 2026-08-10 - Phase 40 SHD analog/topology controls generated
+
+Decision: compare raw temporal decoding, matched dense recurrent LIF, dense
+analog feedforward and recurrent networks, and frozen sparse analog expansion
+with instant versus leaky state. All arms use the same data split, temporal
+pyramid family, parameter target, and seeds.
+
+Analog gate: dense recurrent analog must exceed dense recurrent LIF by `+2`
+mean points with two seeds gaining `+1`. Sparse-topology gate: sparse leaky
+analog must exceed dense feedforward analog by `+2` points with two one-point
+seed gains. Leak gate: sparse leaky analog must exceed sparse instant analog by
+`+1` mean point with at least two positive seeds. It must also retain the
+`+2`-point raw-temporal gain. These controls determine whether the remaining
+effect belongs to analog dynamics, low-cost sparse width, or temporal leak.
