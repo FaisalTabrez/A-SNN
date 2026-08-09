@@ -4459,3 +4459,42 @@ seeds within that margin and a non-degenerate spike rate between `1%` and
 `3` mean points and by at least `3` points on two seeds. Failure ends this
 redesign branch after one diagnostic phase; success permits mechanism and
 energy ablations.
+
+## 2026-08-10 - Phase 45 result: state placement fails before spike thresholding
+
+Evidence retained at
+`gen5/outputs/shd_spiking_temporal_conv_cuda_2026-08-10/` from archive SHA-256
+`66D5D92F64F290F7EACE46FCED03EF378F93E8E0B039A889B01D82CE457B30DF`.
+
+The replicated Conv1D reference reaches `82.921% +/- 0.998` points. Leaky
+analog state-only processing reaches `76.472% +/- 1.180`, a `-6.449`-point
+loss, and leaky LIF reaches `74.308% +/- 1.307`, a `-8.613`-point loss versus
+Conv1D and `-2.164` points versus analog. LIF is also `-0.795` points below the
+dense recurrent LIF reference and clears none of the required `+3`-point
+paired comparisons.
+
+The LIF spike rate is `28.963%` on average, with individual seeds from
+`24.800%` to `32.758%`. The model is therefore active rather than silent; dead
+neurons or an excessively high initial threshold cannot explain the primary
+accuracy loss. The analog predecessor already loses most of the performance,
+showing that replacing direct local Conv1D features with accumulated temporal
+state is the dominant failure. Thresholding adds a smaller secondary loss.
+
+Sanity decision: Phase 45 fails both the primary viability gate and the
+architectural-improvement gate. Do not tune thresholds or claim an energy
+advantage: LIF also processes only about `19,954` test examples/s versus
+`49,966` for Conv1D. Permit one branch-closing state-placement diagnostic.
+
+## 2026-08-10 - Phase 46 state-placement diagnostic generated
+
+Decision: compare state-only analog/LIF arms with matched residual variants
+that preserve pooled direct Conv1D features beside the accumulated state. This
+tests whether state replacement destroys a useful representation, without
+mislabeling a direct ANN bypass as a successful spiking core.
+
+Recovery gate: each residual arm must improve by at least `4` mean points over
+its matching state-only arm, with two seeds clearing `+4`, and finish within
+`2` mean points of Conv1D. If residual LIF recovers only because of the direct
+bypass, a subsequent component ablation must show that removing its spike
+branch causes a measurable loss before it can count as a spiking contribution.
+If the recovery gate fails, close the current SHD stateful redesign immediately.

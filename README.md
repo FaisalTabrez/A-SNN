@@ -615,6 +615,28 @@ leaky analog convolution, leaky LIF convolution, and dense recurrent LIF. The
 primary gate is whether the convolutional LIF comes within two test points of
 both analog temporal controls while maintaining non-degenerate spike activity.
 
+Phase 45 shows that replacing direct Conv1D features with temporal state causes
+the main loss before spiking. Diagnose whether preserving the direct features
+beside the state recovers performance:
+
+```python
+!python gen5/examples/sprint46_shd_state_placement_diagnostic.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --validation-fraction 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_state_placement_diagnostic_cuda
+```
+
+This is a branch-closing diagnostic, not a threshold sweep. Residual analog and
+LIF arms retain pooled ReLU convolution features beside their state traces.
+They must recover at least four points over the corresponding state-only arm
+and finish within two points of Conv1D to justify another mechanism phase.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
