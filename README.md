@@ -31,6 +31,7 @@ If you are new to the repo, read these in order:
 14. [Causal recurrence ablation](gen5/docs/RECURRENCE_ABLATION.md)
 15. [Streaming row-sequential MNIST](gen5/docs/SEQUENTIAL_MNIST.md)
 16. [Sequential LTW training](gen5/docs/TRAINABLE_SEQUENTIAL_MNIST.md)
+17. [Targeted sequential synaptogenesis](gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md)
 
 ## Repository map
 
@@ -63,8 +64,10 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   to the full linear representation and reduce MLP accuracy by `0.053` points.
 - Phase 24 showed that recurrence adds `+11.673` linear and `+17.240` MLP
   points when input rows must be remembered from final hidden state.
-- Current scientific step: Phase 25 tests warm-started LTW learning on that
-  fixed, causally useful recurrent topology.
+- Phase 25 showed that all-edge LTW learning adds `+2.113` linear and `+0.893`
+  MLP points, with useful weight movement concentrated in sensor projections.
+- Current scientific step: Phase 26 tests whether targeted sensor
+  synaptogenesis beats fixed-topology LTW learning.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -232,6 +235,19 @@ Train LTWs on the fixed recurrent sequential topology:
   --epochs 15 \
   --warmup-epochs 10 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/trainable_sequential_mnist_cuda
+```
+
+Test targeted synaptogenesis on the sequential topology:
+
+```python
+!python gen5/examples/sprint26_structural_sequential_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/structural_sequential_mnist_cuda
 ```
 
 ## Evidence discipline

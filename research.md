@@ -2788,6 +2788,54 @@ Artifacts:
 - `gen5/docs/TRAINABLE_SEQUENTIAL_MNIST.md`
 - `gen5/tests/test_trainable_sequential_mnist_contract.py`
 
+### 61. Phase 25 validates LTW learning and localizes the input bottleneck
+
+Date: 2026-08-09
+
+Finding: the paired warm-all intervention passes the durable-weight gate on
+the sequential task. It improves frozen recurrent accuracy by `+2.113`
+percentage points with a linear readout and `+0.893` points with an MLP. Every
+seed improves; two of three MLP seeds and all three linear seeds exceed the
+`0.5`-point practical threshold.
+
+Mechanistic findings:
+
+- Warm-all reaches `45.967%` linear and `56.427%` MLP accuracy.
+- Event-rate ratios remain bounded at `1.285` linear and `1.087` MLP.
+- Upper LTW saturation stays below `0.7%`; lower saturation is zero.
+- Sensor LTWs move `0.10045` linear and `0.04576` MLP on average, versus only
+  `0.01488` and `0.00415` for recurrent LTWs.
+- Recurrent-only LTW learning gives `+0.500` mean linear points but includes a
+  negative seed, and gives effectively zero MLP improvement.
+- The trained recurrent MLP remains `37.78` points below the raw-pixel MLP.
+
+Goal sanity boundary:
+
+- Supported: stable fixed-topology LTW learning can improve the recurrent
+  sequential substrate.
+- Supported: sparse sensor projection quality is the immediate optimization
+  bottleneck; recurrent weight adaptation alone is insufficient.
+- Not supported yet: beneficial synaptogenesis, pruning, online continual
+  learning, retention, or topology-driven efficiency gains.
+- Competitive classification and broad architecture-superiority claims remain
+  unsupported.
+
+Decision: unlock only targeted synaptogenesis. Phase 26 preserves the original
+272-edge graph and compares 16/48 additional sensor edges against 64 additional
+recurrent edges and the paired fixed warm-all control. New edges appear after
+the ten-epoch readout warmup and train from LTW `0.1`. Pruning remains disabled
+until a growth arm beats fixed topology by at least `0.5` points, improves two
+of three seeds, and preserves activity/saturation stability.
+
+Artifacts:
+
+- `gen5/outputs/trainable_sequential_mnist_cuda_2026-08-09/`
+- `gen5/outputs/trainable_sequential_mnist_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/structural_sequential_mnist.py`
+- `gen5/examples/sprint26_structural_sequential_mnist.py`
+- `gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md`
+- `gen5/tests/test_structural_sequential_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -3426,11 +3474,11 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 25 fixed-topology LTW training on row-sequential MNIST:
-   - compare frozen, all-edge LTW, and recurrent-only LTW paired interventions,
+1. Run Phase 26 targeted synaptogenesis on row-sequential MNIST:
+   - compare 16/48 sensor sprouts and 64 recurrent sprouts against fixed LTWs,
+   - protect the original recurrent core and disable pruning,
    - require a mean gain of at least `0.5` points and two improved seeds,
-   - reject activity ratios outside `[0.5, 2.0]` or material LTW saturation,
-   - permit structural plasticity only if durable-weight learning passes.
+   - unlock pruning only if controlled growth produces stable useful gains.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

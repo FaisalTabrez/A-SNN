@@ -106,6 +106,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - uses the stable ten-epoch warmup and `3e-4` LTW schedule from Phase 22
    - gates structural mutation on accuracy, activity, and saturation evidence
 
+26. Targeted synaptogenesis on sequential MNIST
+   - protects the causally useful 272-edge recurrent core
+   - sprouts 16/48 sensor edges or 64 recurrent edges after readout warmup
+   - compares growth against paired frozen and fixed warm-all controls
+   - defers pruning until topology growth shows a practical causal benefit
+
 ## Quick smoke test
 
 From the repo root:

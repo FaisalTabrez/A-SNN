@@ -53,4 +53,19 @@ LTW learning passes only if an intervention:
 
 A pass justifies a tightly scoped structural-plasticity experiment on the same
 sequential task. A failure means the next intervention should improve temporal
-credit assignment or optimization—not add or remove edges.
+credit assignment or optimization, not add or remove edges.
+
+## First CUDA result (2026-08-09)
+
+The all-edge warm-start intervention passes the durable-weight gate. It gains
+`+2.113` percentage points with a linear readout and `+0.893` points with an
+MLP, improving every seed. Event-rate ratios remain within bounds and LTW
+boundary saturation stays below `0.7%`.
+
+Recurrent-only LTW training produces only `+0.500` linear points and no mean
+MLP gain. Sensor-edge weights move about seven to eleven times more than
+recurrent weights in the successful arm, localizing the next capacity test to
+the input projection. Phase 26 therefore evaluates targeted sensor
+synaptogenesis while preserving the recurrent core.
+
+See the retained [Phase 25 analysis](../outputs/trainable_sequential_mnist_cuda_2026-08-09/analysis.md).
