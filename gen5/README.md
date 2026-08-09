@@ -130,6 +130,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares uniform and heterogeneous fixed-delay assignments
    - decides whether to optimize delays or move the temporal benchmark to SHD
 
+30. Trainable delay assignment
+   - adds differentiable 0/1/2 delay gates only to recurrent edges
+   - compares soft and straight-through assignment from fixed and flat starts
+   - keeps the winning fixed-distance arm as the paired control
+   - ends MNIST mechanism tuning before transfer to SHD
+
 ## Quick smoke test
 
 From the repo root:

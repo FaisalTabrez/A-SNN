@@ -34,6 +34,7 @@ If you are new to the repo, read these in order:
 17. [Targeted sequential synaptogenesis](gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md)
 18. [Adaptive-neuron sequential ablation](gen5/docs/ADAPTIVE_SEQUENTIAL_MNIST.md)
 19. [Executable-delay sequential ablation](gen5/docs/DELAYED_SEQUENTIAL_MNIST.md)
+20. [Trainable delay assignment](gen5/docs/TRAINABLE_DELAYS_MNIST.md)
 
 ## Repository map
 
@@ -76,9 +77,11 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Phase 28 rejected the tested adaptive-threshold rule: accuracy declined as
   adaptive coverage increased, with stable LTWs but progressively suppressed
   event flow.
-- Current scientific step: Phase 29 makes serialized axonal delays executable
-  and compares uniform and heterogeneous recurrent delay buckets against
-  paired no-delay LIF controls.
+- Phase 29 produced the strongest conventional temporal-mechanism result so
+  far: heterogeneous recurrent delays gained `+8.087` linear and `+7.593` MLP
+  points across all seeds with the same sparse topology.
+- Current scientific step: Phase 30 learns per-edge delay assignments against
+  the winning fixed-distance control, then closes the MNIST diagnostic track.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -305,6 +308,21 @@ Test executable recurrent delay buckets:
   --epochs 15 \
   --warmup-epochs 10 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/delayed_sequential_mnist_cuda
+```
+
+Optimize delay assignments without changing topology:
+
+```python
+!python gen5/examples/sprint30_trainable_delays_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --delay-learning-rate 0.003 \
+  --entropy-regularization 0.001 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/trainable_delays_mnist_cuda
 ```
 
 ## Evidence discipline

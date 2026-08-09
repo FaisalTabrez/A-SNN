@@ -3571,16 +3571,16 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 29 executable-delay ablation on row-sequential MNIST:
-   - retain ordinary LIF after the Phase 28 adaptive-threshold failure,
-   - make stored `delay_steps` causal through fixed history buckets,
-   - compare uniform and heterogeneous recurrent delays with paired no-delay
-     frozen and warm-LTW controls,
+1. Run Phase 30 trainable delay assignment on row-sequential MNIST:
+   - retain the Phase 29 distance-delay winner as paired control,
+   - compare soft and straight-through per-edge delay gates,
+   - test distance and flat initialization without changing topology,
    - require a paired `0.5`-point gain and two improved seeds.
-2. Use the Phase 29 gate to end the row-sequential MNIST diagnostic track:
-   - if fixed delays pass, optimize delay assignment before changing topology,
-   - if they fail, do not tune more MNIST-specific mechanisms,
-   - move the winning ordinary-LIF or delayed-LIF baseline to SHD, then SSC.
+2. End MNIST mechanism tuning after Phase 30:
+   - carry a passing learned-delay arm or the fixed Phase 29 winner,
+   - implement an SHD dataset/benchmark adapter with timing-preserving bins,
+   - compare no-delay and retained-delay sparse LIF against a standard SNN
+     baseline before proceeding to SSC.
 3. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
@@ -3745,3 +3745,62 @@ Pass gate: at least `+0.5` points over paired no-delay LIF, at least two of
 three seeds improved, event rate within `[0.5x, 2.0x]`, and no material LTW
 saturation. A pass permits delay-assignment optimization. A failure ends this
 MNIST diagnostic track and moves the retained LIF baseline to SHD.
+
+## 2026-08-09 - Phase 29 executable-delay result
+
+Evidence retained at
+`gen5/outputs/delayed_sequential_mnist_cuda_2026-08-09/` from archive SHA-256
+`DA0276966CD7A1F8D025C244E7812EDEA31BCD0FDC1B6ED1C6B00972BDA43890`.
+The run reproduces the no-delay controls and holds the 272-edge topology,
+initial LTWs, readout dimensions, and seed fixed across delay interventions.
+
+Core results:
+
+- No-delay warm LIF: `45.967%` linear and `56.440%` MLP.
+- Uniform recurrent delay one: `48.220%` linear and `54.133%` MLP, a
+  `+2.253` linear gain but `-2.307` MLP loss.
+- Heterogeneous hash delays 0-2: `53.967%` linear and `63.907%` MLP, gains of
+  `+8.000` and `+7.467` points.
+- Heterogeneous distance-proxy delays 0-2: `54.053%` linear and `64.033%` MLP,
+  gains of `+8.087` and `+7.593` points.
+- Every heterogeneous-delay arm improved all three seeds for both readouts.
+  Distance-arm paired gains ranged from `+6.16` to `+9.76` linear and `+6.36`
+  to `+8.42` MLP points.
+
+Mechanistic finding: heterogeneity is essential. Uniformly slowing recurrence
+does not transfer across readouts, whereas two distinct approximately balanced
+0/1/2 delay constructions produce nearly identical large improvements. Event
+rates remain about `0.98-1.02x` no-delay LIF, LTW movement is stable, and
+saturation remains below `0.8%`. The gain therefore comes from temporal routing
+rather than extra edges, extra neurons, global slowing, or activity inflation.
+
+Goal sanity check: this is the strongest controlled conventional-task result
+for the AMMC hypothesis. It supports sparse heterogeneous delays as a useful
+temporal representation mechanism. It does not establish state of the art:
+the best sparse arm reaches `64.03%` MLP versus the `94.21%` raw MLP ceiling.
+Claims should remain causal and mechanistic, not competitive.
+
+Decision: Phase 29 passes. Preserve the distance 0-2 arm as the new sequential
+baseline and proceed to one final MNIST phase that optimizes delay assignment.
+After that result, move the retained fixed or learned delay mechanism to SHD.
+
+## 2026-08-09 - Phase 30 trainable-delay experiment generated
+
+Decision: add three differentiable delay logits per recurrent edge while
+holding the 272-edge topology fixed. Sensor edges are forced to delay zero and
+their delay gradients are masked. LTWs and delay logits activate only after the
+ten-epoch readout warmup.
+
+The arms retain raw, no-delay, and fixed-distance controls and compare:
+
+- soft delay mixtures initialized near the winning distance assignment;
+- hard forward assignments with straight-through gradients from the same
+  initialization;
+- soft mixtures from flat one-third probabilities.
+
+Delay optimization adds 768 trainable logits and reports that cost explicitly,
+along with changed assignments, entropy, event rate, LTW movement, and
+saturation. Pass gate: at least `+0.5` points over the paired fixed-distance
+control, two improved seeds, and stable dynamics. Regardless of outcome, Phase
+30 ends row-sequential MNIST tuning; Phase 31 begins SHD with the retained
+winner.
