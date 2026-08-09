@@ -659,6 +659,28 @@ state-only, and batch-shuffled-state modes. A credible state contribution must
 lose at least one mean accuracy point when the state is removed and when its
 sample identity is shuffled, with both effects replicated on two seeds.
 
+Phase 47 establishes a causal SHD state contribution. Replicate the fixed
+protocol on the official 35-class Spiking Speech Commands train/validation/test
+splits:
+
+```python
+!python gen5/examples/sprint48_ssc_residual_lif_replication.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/ssc_residual_lif_replication_cuda
+```
+
+The first full run downloads roughly 1.6 GB of compressed official data and
+creates uint8 temporal caches. It uses all 75,466 training, 9,981 validation,
+and 20,382 test samples by default. `--train-samples`, `--validation-samples`,
+and `--test-samples` are available only for explicit screening runs; publishable
+replication evidence must use the complete official splits.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

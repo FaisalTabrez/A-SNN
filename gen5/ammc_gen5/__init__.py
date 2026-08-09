@@ -312,6 +312,13 @@ from .shd_residual_state_contribution import (
     run_shd_residual_state_contribution,
     summarize_shd_residual_state_contribution,
 )
+from .ssc_benchmark import SSC_FILES, ensure_ssc_files, load_ssc_tensors
+from .ssc_residual_lif_replication import (
+    SSCResidualLIFReplicationResult,
+    plot_ssc_residual_lif_replication,
+    run_ssc_residual_lif_replication,
+    summarize_ssc_residual_lif_replication,
+)
 from .structural_sequential_mnist import (
     STRUCTURAL_SEQUENTIAL_ARMS,
     StructuralSequentialArm,
@@ -508,6 +515,8 @@ __all__ = [
     "SHD_RESIDUAL_STATE_CONTRIBUTION_ARMS",
     "SHDResidualStateContributionArm",
     "SHDResidualStateContributionResult",
+    "SSC_FILES",
+    "SSCResidualLIFReplicationResult",
     "StreamingMNISTReservoir",
     "STRUCTURAL_SEQUENTIAL_ARMS",
     "StructuralSequentialArm",
@@ -568,6 +577,7 @@ __all__ = [
     "available_shd_spiking_temporal_conv_arms",
     "available_shd_state_placement_arms",
     "available_shd_residual_state_contribution_arms",
+    "ensure_ssc_files",
     "available_structural_sequential_arms",
     "available_trainable_delay_arms",
     "available_utility_gated_arms",
@@ -634,6 +644,7 @@ __all__ = [
     "plot_shd_spiking_temporal_conv",
     "plot_shd_state_placement_diagnostic",
     "plot_shd_residual_state_contribution",
+    "plot_ssc_residual_lif_replication",
     "plot_structural_sequential_mnist",
     "plot_utility_gated_structural_mnist",
     "prune_weak_sprouted_edges",
@@ -665,6 +676,7 @@ __all__ = [
     "run_shd_spiking_temporal_conv",
     "run_shd_state_placement_diagnostic",
     "run_shd_residual_state_contribution",
+    "run_ssc_residual_lif_replication",
     "run_structural_sequential_mnist",
     "run_utility_gated_structural_mnist",
     "select_gradient_sensor_edges",
@@ -697,9 +709,11 @@ __all__ = [
     "summarize_shd_spiking_temporal_conv",
     "summarize_shd_state_placement_diagnostic",
     "summarize_shd_residual_state_contribution",
+    "summarize_ssc_residual_lif_replication",
     "temporal_conv_parameter_count",
     "temporal_conv_state_parameter_count",
     "temporal_conv_residual_parameter_count",
+    "load_ssc_tensors",
     "parameter_matched_bottleneck",
     "summarize_structural_sequential_mnist",
     "summarize_utility_gated_structural_mnist",

@@ -4538,3 +4538,47 @@ shuffled-state accuracy by at least `1` mean point with two seeds clearing
 `+1`. Both gates and the existing within-two-points Conv1D viability condition
 must pass to justify cross-dataset replication. Otherwise close the residual
 state claim and retain Conv1D as the honest SHD result.
+
+## 2026-08-10 - Phase 47 result: residual state is causally used on SHD
+
+Evidence retained at
+`gen5/outputs/shd_residual_state_contribution_cuda_2026-08-10/` from archive
+SHA-256
+`3971FF33F009DC1242BC51F395CB1DBBF417C3B8E6C476315E3D136350BAF1E5`.
+
+Residual LIF reaches `83.908% +/- 0.435` points versus a paired Conv1D mean of
+`82.656%`, a `+1.251`-point mean gain. Removing its state features reduces
+accuracy to `77.488%`, a `6.419`-point loss. Shuffling state between samples
+reduces accuracy to `79.741%`, a `4.167`-point loss. All three seeds clear both
+pre-registered `+1`-point causal gates. State alone reaches only `22.144%`, so
+the result is cooperative rather than a standalone spiking solution.
+
+Residual analog shows even stronger co-dependence: full `83.746%`, direct-only
+`52.680%`, state-only `18.802%`, and shuffled state `59.364%`. Because removing
+features from a jointly trained classifier creates distribution shift, the
+direct-only drop alone is insufficient evidence. The shuffled-state test is
+more informative: it preserves the state distribution while breaking sample
+identity, and its replicated loss supports sample-specific state use.
+
+Sanity decision: this is the first causal evidence that the residual spike
+state contributes to classification beyond the direct path. It does not prove
+generalization beyond SHD, standalone SNN superiority, or efficiency; residual
+LIF throughput is only about `18,503` test examples/s. Proceed to one official
+cross-dataset replication before any broader claim.
+
+## 2026-08-10 - Phase 48 SSC residual-LIF replication generated
+
+Decision: use the official 35-class Spiking Speech Commands dataset with its
+provided `75,466/9,981/20,382` train/validation/test splits. Compare a matched
+Conv1D reference with residual LIF, then evaluate the best-validation residual
+checkpoint in full, direct-only, state-only, and shuffled-state modes. The
+default run uses all official samples and does not derive a validation split
+from training data.
+
+Replication gates: residual LIF must stay within `2` mean test points of Conv1D
+with all three seeds within that margin. Full must exceed direct-only and
+shuffled-state accuracy by at least `1` mean point, with two seeds clearing each
+`+1` threshold. Passing establishes cross-dataset causal replication; failing
+restricts the contribution claim to SHD. Absolute SSC accuracy is reported
+descriptively and is not compared to state of the art without stronger matched
+baselines.
