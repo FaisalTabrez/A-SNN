@@ -25,6 +25,7 @@ If you are new to the repo, read these in order:
 8. [Embodied action controls](gen5/docs/EMBODIED_ACTION_CONTROLS.md)
 9. [Frozen event-coded MNIST](gen5/docs/EVENT_MNIST.md)
 10. [Event representation decomposition](gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md)
+11. [Temporal-state MNIST](gen5/docs/TEMPORAL_STATE_MNIST.md)
 
 ## Repository map
 
@@ -146,6 +147,18 @@ Diagnose the Phase 18 representation loss:
   --test-samples 5000 \
   --epochs 15 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_decomposition_cuda
+```
+
+Preserve the full temporal neuron state:
+
+```python
+!python gen5/examples/sprint20_temporal_state_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_temporal_cuda
 ```
 
 ## Evidence discipline

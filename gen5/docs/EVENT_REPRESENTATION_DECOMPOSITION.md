@@ -74,3 +74,18 @@ With only three seeds, this remains an engineering diagnosis. Any winning
 configuration must later be rerun with more seeds and confirmed on the unused
 5,000-image complement of the official MNIST test split before a final
 generalization claim.
+
+## First CUDA result
+
+Flattened latency improved linear accuracy from `85.94%` to `88.11%`, showing
+that the event code retains useful class structure. The major loss occurs when
+time is collapsed: sensor-summary linear accuracy fell to `72.74%`. Hidden
+summary features did not reliably improve that result.
+
+Raw-plus-hidden features reached `86.92%` with a linear head, a consistent
+`+0.98` point gain over raw intensity, but their MLP remained below the raw MLP.
+The next phase preserves per-timestep neuron state and keeps a residual raw
+pathway.
+
+Full analysis:
+`gen5/outputs/event_mnist_decomposition_cuda_2026-08-09/analysis.md`.

@@ -101,6 +101,13 @@ from .tensor_environment import (
     world_preset_names,
 )
 from .telemetry import EvolutionTelemetryLogger, EvolutionTelemetryRecord
+from .temporal_mnist import (
+    TEMPORAL_FEATURES,
+    TemporalMNISTResult,
+    plot_temporal_mnist_result,
+    run_temporal_mnist,
+    summarize_temporal_mnist,
+)
 from .transducer import HeadlessAMMCLoop, TransducerConfig, VectorizedTransducer
 
 __all__ = [
@@ -165,6 +172,8 @@ __all__ = [
     "TensorEvolverConfig",
     "TensorEnvironment2D",
     "TensorEnvironmentConfig",
+    "TEMPORAL_FEATURES",
+    "TemporalMNISTResult",
     "TrialGenerationRecord",
     "TrialRunner",
     "TrialRunnerConfig",
@@ -193,13 +202,16 @@ __all__ = [
     "plot_frozen_readout_adapter_result",
     "plot_frozen_task_result",
     "plot_sparse_efficiency_result",
+    "plot_temporal_mnist_result",
     "resolve_device",
     "run_event_mnist",
     "run_event_mnist_decomposition",
+    "run_temporal_mnist",
     "seed_everything",
     "summarize_neuron_scaling_records",
     "summarize_event_mnist_records",
     "summarize_event_mnist_decomposition",
+    "summarize_temporal_mnist",
     "summarize_sparse_efficiency_records",
     "sync",
     "try_xla_device",

@@ -70,6 +70,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - explicit feature-generation throughput and hidden-spike diagnostics
    - identifies the coding/dynamics bottleneck before topology scaling
 
+20. Temporal-state preservation
+   - records pre-reset sensor and hidden state at every event timestep
+   - compares summary, temporal, and raw-residual representations
+   - preserves frozen topology so pooling and recurrence remain separable
+   - determines whether Phase 21 should train dynamics or retain a temporal path
+
 ## Quick smoke test
 
 From the repo root:

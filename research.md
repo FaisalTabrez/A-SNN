@@ -2459,6 +2459,81 @@ Artifacts:
 - `gen5/examples/sprint19_event_representation_decomposition.py`
 - `gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md`
 
+### 53. Phase 19 identifies temporal pooling as the MNIST bottleneck
+
+Date: 2026-08-09
+
+Finding: explicit latency events are more linearly separable than raw pixels,
+but final trace pooling destroys much of that advantage.
+
+| Representation | Linear | MLP |
+|---|---:|---:|
+| Raw intensity | 85.94% | 95.14% |
+| Flattened latency | 88.11% | 91.40% |
+| Sensor summary | 72.74% | 85.97% |
+| Hidden summary | 73.03% | 83.43% |
+| Full summary | 79.33% | 85.97% |
+| Raw plus hidden | 86.92% | 93.50% |
+
+Interpretation:
+
+- Latency encoding adds `+2.17` points of linear separability over raw input.
+- Collapsing latency into the sensor summary loses `15.37` linear points.
+- Hidden summary recurrence adds no stable standalone benefit.
+- Raw-plus-hidden yields a small, consistent `+0.98` linear gain, showing that
+  the hidden state contains complementary information even though it is weak.
+- The parameter-matched MLP result is partly affected by feature dimension:
+  higher-dimensional inputs require narrower hidden layers at a fixed budget.
+
+Decision:
+
+- Keep topology and weights frozen for one more controlled phase.
+- Implement Phase 20 per-timestep pre-reset state traces.
+- Compare sensor, hidden, full, and raw-residual temporal representations
+  against raw, latency, and Phase 19 summary baselines.
+- If temporal hidden state remains unhelpful, stop representation engineering
+  and move to trained/evolved substrate dynamics in Phase 21.
+
+Artifacts:
+
+- `gen5/outputs/event_mnist_decomposition_cuda_2026-08-09/`
+- `gen5/outputs/event_mnist_decomposition_cuda_2026-08-09/analysis.md`
+
+### 54. Phase 20 preserves pre-reset temporal state
+
+Date: 2026-08-09
+
+Decision: test the pooling hypothesis directly without changing event coding,
+topology, LTWs, neuron count, or plasticity.
+
+Implementation records the pre-reset membrane state for every sensor and
+hidden neuron at all eight timesteps. This representation retains
+subthreshold voltage and threshold crossings while avoiding separate doubled
+spike/membrane tensors.
+
+Comparisons:
+
+- raw intensity and flattened latency controls;
+- Phase 19 full summary;
+- sensor, hidden, and full temporal state;
+- raw plus hidden temporal residual;
+- linear and approximately 34k-parameter MLP heads.
+
+Decision boundary:
+
+- If temporal state recovers latency accuracy, make time-preserving readout a
+  core AMMC interface.
+- If hidden temporal state adds to sensor/raw features, tune or train sparse
+  recurrence in Phase 21.
+- If it remains unhelpful, stop frozen feature engineering and train/evolve
+  the substrate rather than scaling random recurrence.
+
+Artifacts:
+
+- `gen5/ammc_gen5/temporal_mnist.py`
+- `gen5/examples/sprint20_temporal_state_mnist.py`
+- `gen5/docs/TEMPORAL_STATE_MNIST.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

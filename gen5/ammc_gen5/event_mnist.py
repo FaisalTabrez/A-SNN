@@ -289,6 +289,29 @@ class FrozenEventReservoir(nn.Module):
             "full_trace": torch.cat((normalized, membrane), dim=1),
         }
 
+    def temporal_components(self, pixels) -> dict[str, object]:
+        """Return flattened pre-reset state at every simulated timestep."""
+
+        events = latency_encode(pixels, self.config.timesteps, self.config.event_threshold)
+        batch = pixels.shape[0]
+        membrane = pixels.new_zeros((batch, self.config.neuron_count))
+        spikes = torch.zeros_like(membrane)
+        states = []
+        for step in range(self.config.timesteps):
+            injected = torch.zeros_like(membrane)
+            injected[:, : self.config.sensor_neurons] = events[step] * self.config.input_gain
+            pre_reset = membrane * self.config.reservoir_leak + injected + self.graph(spikes)
+            spikes = (pre_reset >= self.config.reservoir_threshold).to(pre_reset.dtype)
+            membrane = pre_reset - spikes * self.config.reservoir_threshold
+            states.append(pre_reset)
+        temporal = torch.stack(states, dim=1)
+        split = self.config.sensor_neurons
+        return {
+            "sensor_temporal": temporal[:, :, :split].reshape(batch, -1),
+            "hidden_temporal": temporal[:, :, split:].reshape(batch, -1),
+            "full_temporal": temporal.reshape(batch, -1),
+        }
+
     def _simulate(self, pixels):
         events = latency_encode(pixels, self.config.timesteps, self.config.event_threshold)
         batch = pixels.shape[0]
