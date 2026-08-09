@@ -23,6 +23,7 @@ If you are new to the repo, read these in order:
 6. [Harder bot-world benchmarks](gen5/docs/HARDER_WORLDS.md)
 7. [Frozen embodied readout benchmark](gen5/docs/FROZEN_EMBODIED_ADAPTER.md)
 8. [Embodied action controls](gen5/docs/EMBODIED_ACTION_CONTROLS.md)
+9. [Frozen event-coded MNIST](gen5/docs/EVENT_MNIST.md)
 
 ## Repository map
 
@@ -44,12 +45,13 @@ If you are new to the repo, read these in order:
 
 ## Current research baseline
 
-For the simple 2D bot world, sparse-efficiency tuning is now frozen:
+For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 
 - Default raw-survival baseline: `low_ltw_pruning`, `32` neurons.
 - Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
-- Current scientific step: frozen readout transfer into noisy harder bot worlds
-  computation before expanding neuron count further.
+- Phase 17 activity-matched controls validate frozen-trace action decoding.
+- Current scientific step: Phase 18 frozen event-coded MNIST, compared against
+  raw-pixel linear and MLP controls.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -119,6 +121,18 @@ Run the harder-world benchmark on Colab CUDA/T4:
   --population-size 10000 \
   --epoch-steps 120 \
   --output-dir gen5_outputs/harder_worlds_cuda
+```
+
+Run the Phase 18 event-coded MNIST benchmark:
+
+```python
+!python gen5/examples/sprint18_event_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_cuda
 ```
 
 ## Evidence discipline

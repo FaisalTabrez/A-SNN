@@ -2289,6 +2289,96 @@ Artifacts:
 - `gen5/outputs/frozen_embodied_adapter_cuda_2026-08-09/`
 - `gen5/outputs/frozen_embodied_adapter_cuda_2026-08-09/analysis.md`
 
+### 49. Activity-matched controls validate the frozen AMMC representation
+
+Date: 2026-08-09
+
+Finding: Phase 17 evaluated six controllers across three worlds, three sensor
+noise levels, and five held-out seeds (270 evaluations). Both trainable
+frozen-trace adapters beat the full-activity random controller and the
+normalized fixed analog AMMC decoder in every paired condition (`45/45`).
+
+Overall mean fitness:
+
+| Policy | Mean fitness | Positive runs | Cue-action coverage | Oracle agreement |
+|---|---:|---:|---:|---:|
+| Augmented adapter | 1.860 | 45/45 | 100.0% | 64.8% |
+| Base adapter | 1.721 | 45/45 | 100.0% | 63.5% |
+| Direct sensor oracle | 3.083 | 45/45 | 100.0% | 100.0% |
+| Fixed analog cardinal | -0.139 | 19/45 | 73.3% | 26.0% |
+| Fixed motor spiking | -2.799 | 14/45 | 5.1% | 39.3% |
+| Random cardinal | -0.211 | 27/45 | 100.0% | 25.0% |
+
+Interpretation:
+
+- Full-time movement is not sufficient to explain the adapter advantage.
+- Fixed analog calibration is also insufficient; useful action information is
+  distributed in the frozen AMMC trace and is recoverable by a small readout.
+- The direct sensor oracle remains a substantial ceiling, particularly in the
+  simple world.
+- Augmentation is a mild, inconsistent improvement over clean training
+  (`+0.139` mean fitness; `29/45` paired wins), not a settled advantage.
+
+Decision:
+
+- Close the first bot-world validation cycle.
+- Implement Phase 18 as a frozen event-coded MNIST benchmark.
+- Compare frozen-AMMC linear and MLP readouts against raw-pixel linear and MLP
+  baselines on the official MNIST test split.
+- Keep the sparse recurrent topology frozen so the phase measures
+  representation usefulness rather than end-to-end training or plasticity.
+
+Scientific boundary:
+
+- Phase 17 demonstrates closed-loop representation-to-action decoding. It does
+  not demonstrate autonomous policy learning or broad task transfer.
+- Phase 18 is a classification benchmark, not evidence for continuous learning.
+
+Artifacts:
+
+- `gen5/outputs/embodied_action_controls_cuda_2026-08-09/`
+- `gen5/outputs/embodied_action_controls_cuda_2026-08-09/analysis.md`
+
+### 50. Phase 18 freezes the sparse substrate for event-coded MNIST
+
+Date: 2026-08-09
+
+Decision: implement the first external-data benchmark as a controlled frozen
+representation study rather than immediately enabling recurrent training or
+plasticity.
+
+Design:
+
+- resize MNIST to `8x8` and encode each pixel as a one-spike latency event;
+- use 64 sensor plus 64 hidden neurons;
+- freeze a 384-edge sparse AMMC reservoir in a 512-slot pool;
+- extract normalized spike counts plus final membrane state;
+- train linear and MLP readouts only;
+- compare against a linear head and a parameter-budget-matched MLP trained
+  directly on identical raw downsampled pixels;
+- evaluate three topology/readout seeds on the untouched official test split.
+
+Rationale:
+
+- Raw baselines distinguish representation value from ordinary readout
+  capacity.
+- Freezing the reservoir keeps this phase interpretable after the Phase 17
+  frozen-trace result.
+- Multi-seed reporting prevents a favorable random topology from being treated
+  as a general result.
+
+Decision rule: the primary representation test is
+`frozen_ammc_linear > raw_pixel_linear`. The stronger architectural test is
+`frozen_ammc_mlp > raw_pixel_mlp`. Beating chance alone is not meaningful on
+MNIST.
+
+Artifacts:
+
+- `gen5/ammc_gen5/event_mnist.py`
+- `gen5/examples/sprint18_event_mnist.py`
+- `gen5/docs/EVENT_MNIST.md`
+- `gen5/tests/test_event_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

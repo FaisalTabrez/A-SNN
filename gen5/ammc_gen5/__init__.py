@@ -2,6 +2,16 @@
 
 from .champion_export import ChampionExportConfig, ChampionExportResult, ChampionExporter
 from .dynamic_sparse import DynamicSparseLinear, DynamicSparseLinearFunction
+from .event_mnist import (
+    EventMNISTConfig,
+    EventMNISTResult,
+    FrozenEventReservoir,
+    build_event_reservoir_edges,
+    latency_encode,
+    plot_event_mnist_result,
+    run_event_mnist,
+    summarize_event_mnist_records,
+)
 from .dual_tensor import AstrocyteGridConfig, DualTensorManager
 from .evaluation import (
     AblationGenerationRecord,
@@ -105,7 +115,10 @@ __all__ = [
     "EvolvingLoopConfig",
     "EvolutionTelemetryLogger",
     "EvolutionTelemetryRecord",
+    "EventMNISTConfig",
+    "EventMNISTResult",
     "FrozenProbeConfig",
+    "FrozenEventReservoir",
     "FrozenProbeResult",
     "FrozenProbeSummaryRecord",
     "FrozenReadoutAdapterConfig",
@@ -155,6 +168,7 @@ __all__ = [
     "available_frozen_tasks",
     "available_world_presets",
     "clear_memory_stats",
+    "build_event_reservoir_edges",
     "default_neuron_scale_points",
     "default_sparse_efficiency_groups",
     "device_kind",
@@ -162,16 +176,20 @@ __all__ = [
     "is_cuda_device",
     "is_xla_device",
     "make_generator",
+    "latency_encode",
     "mark_step",
     "memory_namespace",
     "plot_neuron_scaling_result",
+    "plot_event_mnist_result",
     "plot_frozen_probe_result",
     "plot_frozen_readout_adapter_result",
     "plot_frozen_task_result",
     "plot_sparse_efficiency_result",
     "resolve_device",
+    "run_event_mnist",
     "seed_everything",
     "summarize_neuron_scaling_records",
+    "summarize_event_mnist_records",
     "summarize_sparse_efficiency_records",
     "sync",
     "try_xla_device",

@@ -58,6 +58,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - LTW for durable consolidated memory
    - optimizer parameter groups can treat them differently
 
+18. Frozen event-coded MNIST
+   - latency coding of downsampled MNIST pixels
+   - frozen `DynamicSparseLinear` LIF reservoir
+   - matched raw-pixel and frozen-reservoir linear/MLP readouts
+   - official test-split accuracy, parameter, and throughput reporting
+
 ## Quick smoke test
 
 From the repo root:

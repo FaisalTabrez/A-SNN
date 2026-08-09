@@ -52,3 +52,19 @@ Expected outputs are:
 - All full-activity policies perform similarly: the current world still rewards
   exploration more than representation quality and must be redesigned before
   MNIST or broader cognitive claims.
+
+## First CUDA result
+
+The complete run contains 270 evaluations. Both adapters beat the
+full-activity random controller and the normalized fixed analog decoder in all
+45 paired conditions:
+
+- augmented adapter minus random mean fitness: `+2.071` (`45/45` wins);
+- base adapter minus random: `+1.932` (`45/45` wins);
+- augmented adapter minus fixed analog: `+1.998` (`45/45` wins);
+- base adapter minus fixed analog: `+1.859` (`45/45` wins).
+
+This resolves the Phase 16 movement-opportunity confound. The direct sensor
+oracle remains the overall ceiling, and augmentation only slightly and
+inconsistently improves on the clean adapter. The full analysis is retained in
+`gen5/outputs/embodied_action_controls_cuda_2026-08-09/analysis.md`.
