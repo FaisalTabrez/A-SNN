@@ -681,6 +681,28 @@ and 20,382 test samples by default. `--train-samples`, `--validation-samples`,
 and `--test-samples` are available only for explicit screening runs; publishable
 replication evidence must use the complete official splits.
 
+Phase 48 replicates the causal state effect on SSC. Audit predictive and
+computational competitiveness against a matched two-layer dilated TCN:
+
+```python
+!python gen5/examples/sprint49_ssc_efficiency_baselines.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/ssc_efficiency_baselines_cuda
+```
+
+This uses the Phase 48 cache and compares matched Conv1D, dilated TCN, and
+residual LIF checkpoints. It reports accuracy, measured T4 throughput, dense
+MAC proxies, state updates, and spike-event counts. MACs are architecture
+proxies—not hardware energy measurements—and the current dense PyTorch
+implementation is not event-driven.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

@@ -4582,3 +4582,44 @@ shuffled-state accuracy by at least `1` mean point, with two seeds clearing each
 restricts the contribution claim to SHD. Absolute SSC accuracy is reported
 descriptively and is not compared to state of the art without stronger matched
 baselines.
+
+## 2026-08-10 - Phase 48 result: causal state contribution replicates on SSC
+
+Evidence retained at
+`gen5/outputs/ssc_residual_lif_replication_cuda_2026-08-10/` from archive
+SHA-256
+`2575EA0A0098C7E0CDF38AA97B69DD86D30AB68246D58A9A71C00FCE624C7477`.
+
+On all official `75,466/9,981/20,382` train/validation/test samples, residual
+LIF reaches `56.498% +/- 0.360` points versus `49.248%` for matched Conv1D, a
+`+7.250`-point gain. All three paired gains are positive (`+5.662`, `+5.279`,
+and `+10.809` points), so the predictive viability gate passes decisively.
+
+Removing state reduces accuracy to `45.226%`, an `11.271`-point mean loss.
+Shuffling state identity reduces accuracy to `53.518%`, a `2.980`-point loss.
+All three seeds clear both `+1`-point causal thresholds. State alone reaches
+only `6.216%`; the replicated computation remains cooperative. Mean spike rate
+is `4.813%`, showing that the state effect persists in a substantially sparser
+activity regime than SHD.
+
+Sanity decision: the sample-specific residual-state contribution now
+replicates across SHD and SSC. This supports a narrow architectural claim:
+pooled direct temporal features and LIF state provide complementary information
+in these two event-audio tasks. It does not establish standalone SNN or
+state-of-the-art performance. Residual LIF throughput is `15,361` examples/s,
+versus `48,003` for Conv1D, so there is no software efficiency advantage.
+
+## 2026-08-10 - Phase 49 SSC matched baseline and efficiency audit generated
+
+Decision: compare validation-selected Conv1D, a stronger two-layer dilated TCN,
+and residual LIF on the identical full SSC splits and approximately `133,631`
+trainable parameters. Report T4 throughput and explicit operation proxies:
+dense multiply-accumulates, state updates, and estimated spike events.
+
+Predictive gate: residual LIF must remain within `2` mean points of the best
+matched temporal baseline and no matched baseline may beat it by `2` points on
+two seeds. Efficiency claims require measured accelerator throughput or direct
+hardware energy; a lower operation proxy alone is insufficient because the
+current temporal convolution and Python LIF loop execute densely. This is the
+last empirical phase before the final evidence synthesis unless it exposes a
+specific correctness defect.
