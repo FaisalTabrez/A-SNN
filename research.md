@@ -4172,3 +4172,43 @@ The GRU is a conventional temporal reference, not a gate to be tuned against.
 Report inference throughput and activity alongside accuracy. If either matched
 baseline wins, the next phase must redesign AMMC dynamics or learning rather
 than further tune the temporal readout.
+
+## 2026-08-10 - Phase 38 SHD matched-baseline result
+
+Evidence retained at `gen5/outputs/shd_matched_baselines_cuda_2026-08-10/`
+from archive SHA-256
+`D2AD248E20CD0EB551A4B0BB089B969CC1C47E2E0DDE0B0D345AC2D789162928`.
+
+Sparse recurrent AMMC reaches `79.873%` versus `73.763%` for the matched dense
+recurrent LIF, a paired `+6.110` point gain. Every seed improves by at least one
+point, so the registered sparse-advantage gate passes. Sparse feedforward AMMC
+also reaches `79.417%` (`+5.654` points versus dense LIF), while recurrence adds
+only `+0.456` points over feedforward and fails its earlier causal gate again.
+
+The raw temporal control reaches `77.577%`, `+3.813` points above dense LIF and
+only `2.297` below sparse recurrent AMMC, while running about `5.18x` faster.
+Sparse recurrent activity is lower than dense LIF (`13.15%` versus `20.07%`),
+but the current implementation has no inference-throughput advantage. The GRU
+reference reaches only `44.464%` despite high train accuracy and large seed
+variance; treat it as an overfit/under-calibrated failed reference rather than
+evidence of general superiority.
+
+Decision: the defensible claim is narrow—this sparse feedforward LIF expansion
+beats this matched dense LIF. Recurrence, structural plasticity, state-of-the-art
+SHD performance, and hardware efficiency remain unsupported. Freeze recurrence
+tuning and isolate hard spikes and LTW optimization before continuing.
+
+## 2026-08-10 - Phase 39 sparse SHD mechanism ablation generated
+
+Decision: cross hard LIF versus analog leaky dynamics with frozen versus
+trainable LTWs while holding the 512-node feedforward sensor graph and temporal
+pyramid decoder fixed. Retain the raw temporal pyramid as the paired reference.
+
+Spiking gate: trainable-LTW LIF must exceed trainable-LTW analog by at least
+`+2` mean points, with at least two seeds gaining `+1` point. LTW gate:
+trainable-LTW LIF must exceed frozen-LTW LIF by at least `+1` mean point with at
+least two positive seeds. Sparse-representation gate: trainable LIF must retain
+at least a `+2` point mean gain over raw temporal. Frozen arms report zero LTW
+movement by construction. Failure of the spiking or LTW gate requires narrowing
+the AMMC mechanism claim; passing identifies what deserves the next structural
+plasticity experiment.

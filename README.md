@@ -472,6 +472,26 @@ standard-model comparison:
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_matched_baselines_cuda
 ```
 
+Phase 38 passed the matched dense-LIF gate, but feedforward and recurrent sparse
+models were nearly tied. Run the causal sparse-mechanism ablation:
+
+```python
+!python gen5/examples/sprint39_shd_sparse_mechanisms.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --hidden-neurons 512 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_sparse_mechanisms_cuda
+```
+
+This keeps the temporal decoder and sparse sensor graph fixed while crossing
+hard LIF versus analog leaky dynamics with frozen versus trainable LTWs. It is
+the mechanism checkpoint before any structural-plasticity or broader claims.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
