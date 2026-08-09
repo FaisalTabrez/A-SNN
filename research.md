@@ -2893,6 +2893,46 @@ Artifacts:
 - `gen5/docs/UTILITY_GATED_STRUCTURAL_MNIST.md`
 - `gen5/tests/test_utility_gated_structural_mnist_contract.py`
 
+### 63. Literature inference: temporal state and delays likely precede further topology scaling
+
+Date: 2026-08-09
+
+Finding: a focused primary-paper review changes the interpretation of the
+Phase 24-26 evidence. Strong temporal SNNs commonly combine adaptive neuron
+state, eligibility-based credit assignment, explicit delays, controlled sparse
+rewiring, and homeostatic regulation. AMMC currently tests only a subset of
+these mechanisms in the sequential MNIST path.
+
+Key project inferences:
+
+- Phase 26's sensor-localized gain suggests an information-entry or temporal
+  alignment bottleneck, not a general shortage of recurrent edges.
+- Adaptive LIF/LSNN neurons provide slow state without increasing topology and
+  should be tested before another neuron-count or recurrent-edge sweep.
+- Gen-5 `delay_steps` are serialized but are not executed by the Phase 24-27
+  sparse forward path; polychronization remains an architectural goal rather
+  than validated computation.
+- Phase 27 is a valid one-shot selector diagnostic, but dynamic sparse SNN
+  papers generally use repeated prune-regrow cycles and fixed sparsity budgets.
+- Continuous structural plasticity should add explicit firing-rate homeostasis
+  and log silent/hyperactive neurons, churn, and edge lifetimes.
+- Row-sequential MNIST should remain a causal smoke test. SHD, then SSC, should
+  become the main temporal benchmarks after adaptive-neuron and delay support.
+- STW/LTW and sleep replay must be evaluated through continual-learning
+  retention metrics, not single-task accuracy.
+- Efficiency claims must add NeuroBench-style spikes, effective synaptic
+  operations, latency, memory, and backend-specific energy measurements.
+
+Decision: run Phase 27 unchanged. Unless its result exposes an implementation
+problem, the next architecture phase should be a paired LIF-versus-adLIF/LSNN
+ablation at fixed topology. Delay buckets and an SHD benchmark follow before
+periodic structural rewiring. This ordering tests temporal mechanism before
+adding more capacity.
+
+Artifact:
+
+- `gen5/docs/SNN_PROJECT_INFERENCES_2026-08-09.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -3537,32 +3577,35 @@ Validation:
    - protect the original recurrent core,
    - allow pruning only among weak newly grown edges,
    - require a paired `0.5`-point gain over random growth and two improved seeds.
-2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
+2. Add temporal-mechanism ablations before further topology scaling:
+   - compare LIF with adLIF/LSNN at identical topology and parameter budget,
+   - make `delay_steps` executable through fixed delay buckets,
+   - compare no-delay, fixed-delay, and later learnable-delay arms,
+   - carry the winning mechanism to SHD, then SSC.
+3. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
    - `--device xla` plasticity and retention ablations,
    - compare against the existing CUDA/T4 evidence.
-3. Complete topology-aware hotpath throughput coverage:
+4. Complete topology-aware hotpath throughput coverage:
    - sweep champion `--max-edges 96`, `128`, and optionally `160` using
      adjacency SHA `de4cdb8f715389f8206e025435856cd2b4a55d8a7688b28b9cc3eabd5f3d904a`,
    - compare eager vs `--compile` for the `foraging` 8-edge prior,
    - report `tick_mode`, active-edge count, edge-pool capacity, utilization,
      `adjacency_sha256`, memory, and agent-steps/sec at 1k/10k/50k/100k.
-4. Redesign gated/adult plasticity:
+5. Redesign gated/adult plasticity:
    - test separate gates for sprouting, pruning, LTW decay, and LTW noise,
    - add protected-core champion masks,
    - tune dopamine/fitness thresholds from retention results.
-5. Run fair trained baselines:
+6. Run fair trained baselines:
    - BPTT-trained static LIF SNN,
    - PPO-trained MLP after installing `stable-baselines3`,
    - report fitness, active parameters, memory, and inference speed.
-6. Add active-edge pressure to evolution:
+7. Add active-edge pressure to evolution:
    - fitness penalty per active edge,
    - lower sprout probability,
    - stronger low-LTW pruning,
    - compare fitness-per-active-synapse.
-7. Expand `DynamicSparseLinear` with delay buckets so polychronous timing can be
-   benchmarked directly in Gen-5.
 8. Add astrocyte reward/punishment coupling from `TensorEnvironment2D` into
    `DualTensorManager`.
 9. Continue Gen-5 -> Gen-4 bridge calibration:

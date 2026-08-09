@@ -73,6 +73,9 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 
 See [research.md](research.md) for the evidence trail.
 
+The focused post-Phase-26 literature interpretation is documented in
+[SNN project inferences](gen5/docs/SNN_PROJECT_INFERENCES_2026-08-09.md).
+
 ## Browser sandbox quick start
 
 From the repository root, serve the static sandbox:
