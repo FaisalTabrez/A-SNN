@@ -2201,6 +2201,46 @@ Artifacts:
 - `gen5/outputs/frozen_readout_adapter_augmented_robustness_cuda_2026-07-28/analysis.md`
 - `gen5/examples/sprint15_frozen_readout_adapter_robustness.py`
 
+### 47. Decision: test frozen readout transfer in embodied harder worlds
+
+Date: 2026-08-09
+
+Finding: augmented MLP readouts decode the current synthetic frozen-AMMC task
+family almost perfectly under the tested amplitude, timestep, noise, and seed
+shifts. That evidence still stops short of physical closed-loop control: the
+adapter has not yet altered an agent's trajectory, food acquisition, or toxin
+exposure.
+
+Decision:
+
+- Implement Sprint 16 as a controlled three-arm embodied ablation:
+  - existing fixed motor-spike decoder,
+  - clean/nominal MLP readout,
+  - amplitude/noise-augmented MLP readout.
+- Freeze recurrent AMMC topology and every LTW/STW value in all arms.
+- Train the two adapters with an explicit sensor-space oracle that combines
+  food attraction with toxin repulsion.
+- Evaluate identical held-out world seeds across `simple`, `moving_toxins`, and
+  `gauntlet`, with sensor noise `0.0`, `0.05`, and `0.15`.
+- Report mean fitness, food hits, toxin hits, non-negative-fitness rate,
+  cue-conditioned action coverage, oracle agreement, and action magnitude.
+
+Scientific boundary:
+
+- This is a representation-to-action transfer test, not autonomous policy
+  discovery. Any improvement demonstrates that the frozen AMMC state supports a
+  more useful motor transducer; it does not demonstrate that evolution or local
+  plasticity learned the oracle policy.
+- The same finite trace reset schedule is applied to every arm to control
+  spike-count scale. A later continuous-state follow-up is required if episodic
+  windows succeed.
+
+Implementation:
+
+- `gen5/examples/sprint16_frozen_embodied_adapter.py`
+- `gen5/docs/FROZEN_EMBODIED_ADAPTER.md`
+- `gen5/tests/test_sprint16_embodied_adapter_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

@@ -215,6 +215,27 @@ python gen5/examples/sprint14_harder_worlds.py `
 
 See `gen5/docs/HARDER_WORLDS.md`.
 
+## Sprint 16 frozen embodied readout
+
+Compare the existing frozen motor decoder with clean-trained and
+robustness-trained MLP readouts in identical harder-world episodes:
+
+```powershell
+python gen5/examples/sprint16_frozen_embodied_adapter.py `
+  --device cuda `
+  --worlds simple moving_toxins gauntlet `
+  --eval-seeds 43 44 45 46 47 `
+  --population-size 10000 `
+  --steps 480 `
+  --sensor-noise-stds 0.0 0.05 0.15 `
+  --output-dir gen5_outputs/frozen_embodied_adapter_cuda
+```
+
+This freezes every AMMC recurrent weight and topology. The trained adapters use
+an explicit food-attraction/toxin-repulsion oracle, so the experiment evaluates
+readout deployment rather than autonomous policy learning. See
+`gen5/docs/FROZEN_EMBODIED_ADAPTER.md`.
+
 ### Plasticity ablation
 
 Run the static/full/gated plasticity comparison under an inverted food/toxin

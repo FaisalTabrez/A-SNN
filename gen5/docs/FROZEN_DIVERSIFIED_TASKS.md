@@ -460,3 +460,8 @@ Next recommendation:
 - Move back to embodied/harder worlds with an adapter-equipped motor policy.
 - Compare frozen motor argmax, unaugmented adapter, and augmented adapter under
   the same noisy/harder environment conditions.
+
+Implemented as Sprint 16:
+
+- `gen5/examples/sprint16_frozen_embodied_adapter.py`
+- `gen5/docs/FROZEN_EMBODIED_ADAPTER.md`
