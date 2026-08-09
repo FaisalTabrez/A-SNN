@@ -4498,3 +4498,43 @@ its matching state-only arm, with two seeds clearing `+4`, and finish within
 bypass, a subsequent component ablation must show that removing its spike
 branch causes a measurable loss before it can count as a spiking contribution.
 If the recovery gate fails, close the current SHD stateful redesign immediately.
+
+## 2026-08-10 - Phase 46 result: residual feature preservation recovers accuracy
+
+Evidence retained at
+`gen5/outputs/shd_state_placement_diagnostic_cuda_2026-08-10/` from archive
+SHA-256
+`F90F7D11AE2040E0AFD567F0053C7709C3144DBEDB79E8C19A7D655C0C78D312`.
+
+The matched Conv1D reference reaches `82.862% +/- 0.862` points. Residual
+analog reaches `83.142% +/- 1.007`, recovering `+5.933` mean points over its
+state-only arm; two seeds clear the `+4`-point gate and all three finish within
+two points of Conv1D. Residual LIF reaches `83.804% +/- 1.520`, recovering
+`+8.525` points over state-only; all three seeds clear `+4` and remain within
+two points of Conv1D. Both recovery gates pass.
+
+Residual LIF exceeds Conv1D by `+0.942` mean points, but the paired differences
+are `-1.413`, `+4.196`, and `+0.044` points. The mean gain is therefore driven
+mostly by seed `143` and is not a robust superiority result. It also processes
+about `19,587` test examples/s versus `51,781` for Conv1D. Healthy `25.736%`
+spike activity establishes viability, not efficiency or causal usefulness.
+
+Sanity decision: Phase 46 proves that the Phase 45 failure came from replacing
+direct local features with state. It establishes a viable hybrid architecture,
+not a successful standalone SNN. The residual model can still solve the task
+entirely through its direct Conv1D path. Require a post-training component
+ablation before making any claim about the state or spike branch.
+
+## 2026-08-10 - Phase 47 residual-state contribution ablation generated
+
+Decision: train matched residual analog and residual LIF models, select by the
+same validation protocol, then evaluate each fixed checkpoint in four modes:
+full, direct-only, state-only, and batch-shuffled state. No ablation mode is
+retrained, so the test measures dependence of the learned solution.
+
+Contribution gate: full accuracy must exceed direct-only by at least `1` mean
+point with two seeds clearing `+1`. Specificity gate: full must exceed
+shuffled-state accuracy by at least `1` mean point with two seeds clearing
+`+1`. Both gates and the existing within-two-points Conv1D viability condition
+must pass to justify cross-dataset replication. Otherwise close the residual
+state claim and retain Conv1D as the honest SHD result.

@@ -637,6 +637,28 @@ LIF arms retain pooled ReLU convolution features beside their state traces.
 They must recover at least four points over the corresponding state-only arm
 and finish within two points of Conv1D to justify another mechanism phase.
 
+Phase 46 passes the recovery gate, but the direct path could explain the whole
+gain. Ablate each trained residual model without retraining to test whether its
+state trace carries sample-specific information:
+
+```python
+!python gen5/examples/sprint47_shd_residual_state_contribution.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --validation-fraction 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_residual_state_contribution_cuda
+```
+
+The runner evaluates each best-validation checkpoint in full, direct-only,
+state-only, and batch-shuffled-state modes. A credible state contribution must
+lose at least one mean accuracy point when the state is removed and when its
+sample identity is shuffled, with both effects replicated on two seeds.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

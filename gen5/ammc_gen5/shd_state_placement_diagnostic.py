@@ -116,6 +116,7 @@ class ResidualTemporalConvStateClassifier(nn.Module):
         self.temporal_levels = tuple(int(level) for level in temporal_levels)
         self.dynamics = dynamics
         self.surrogate_slope = float(surrogate_slope)
+        self.ablation_mode = "full"
         self.temporal = nn.Conv1d(
             config.input_neurons,
             channels,
@@ -156,14 +157,27 @@ class ResidualTemporalConvStateClassifier(nn.Module):
                 activity_sum = activity_sum + state.abs().mean()
             state_trace.append(state)
         stacked_state = torch.stack(state_trace, dim=1)
+        final_state = torch.tanh(membrane) if self.dynamics == "analog" else membrane / threshold
+        if self.ablation_mode == "direct_only":
+            stacked_state = torch.zeros_like(stacked_state)
+            final_state = torch.zeros_like(final_state)
+        elif self.ablation_mode == "state_only":
+            direct_trace = torch.zeros_like(direct_trace)
+        elif self.ablation_mode == "shuffled_state":
+            stacked_state = torch.roll(stacked_state, shifts=1, dims=0)
+            final_state = torch.roll(final_state, shifts=1, dims=0)
         features = _multiscale_features(direct_trace, self.temporal_levels)
         features.extend(_multiscale_features(stacked_state, self.temporal_levels))
-        final_state = torch.tanh(membrane) if self.dynamics == "analog" else membrane / threshold
         features.append(final_state)
         logits = self.classifier(torch.cat(features, dim=1))
         if return_event_rate:
             return logits, activity_sum / int(currents.shape[1])
         return logits
+
+    def set_ablation_mode(self, mode: str) -> None:
+        if mode not in {"full", "direct_only", "state_only", "shuffled_state"}:
+            raise ValueError("unsupported residual-state ablation mode")
+        self.ablation_mode = mode
 
 
 @dataclass
