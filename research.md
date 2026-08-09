@@ -4623,3 +4623,46 @@ hardware energy; a lower operation proxy alone is insufficient because the
 current temporal convolution and Python LIF loop execute densely. This is the
 last empirical phase before the final evidence synthesis unless it exposes a
 specific correctness defect.
+
+## 2026-08-10 - Phase 49 result: causal mechanism survives, competitiveness does not
+
+Evidence retained at
+`gen5/outputs/ssc_efficiency_baselines_cuda_2026-08-10/` from archive SHA-256
+`55D3D7F0F68D525628715AC44129D89893C46640C98FE1FC978A7529C6FF1DC5`.
+
+The matched dilated TCN reaches `59.225% +/- 0.541` points, residual LIF reaches
+`55.973% +/- 0.018`, and Conv1D reaches `48.948% +/- 1.695`. TCN exceeds
+residual LIF by `+3.253` mean points, with all three seeds over the
+pre-registered `+2` threshold. The final predictive competitiveness gate
+therefore fails. Residual LIF is unusually stable across these three seeds,
+but stability does not compensate for the accuracy gap.
+
+Residual LIF uses a `6.527` million dense-MAC proxy per sample versus `7.381`
+million for TCN, an `11.569%` reduction, plus `1,856` state updates and about
+`95.5` spike events per sample. The implementation nevertheless achieves only
+`16,682` examples/s versus `53,080` for TCN: TCN is `3.182x` faster. Dense MAC
+counts do not capture Python-loop overhead and are not energy measurements.
+
+Sanity decision: retain the cross-dataset causal mechanism result, reject
+matched-baseline superiority and current software-efficiency claims, and stop
+architecture tuning for this milestone. The appropriate next step is a final
+evidence ledger followed by a new hardware-oriented workstream, not Phase 51
+on the same benchmark.
+
+## 2026-08-10 - Phase 50 evidence synthesis generated
+
+Decision: generate a reproducible report directly from committed Phase 44-49
+JSON files. The report must enumerate supported, rejected, proxy-only, and
+untested claims; preserve exact metrics and source paths; and define the next
+generation around compiled event-driven kernels, stronger accuracy scaling,
+non-audio replication, and subsequent continual-plasticity reintegration.
+
+This closes the current SHD/SSC empirical milestone. Future work should use a
+new roadmap and fresh preregistered gates rather than extending the phase count
+for incremental tuning of this architecture.
+
+The synthesis was executed locally and retained at
+`gen5/outputs/gen5_evidence_synthesis_2026-08-10/`. Its machine-readable ledger
+marks cross-dataset residual-state contribution as supported; standalone LIF,
+matched-baseline parity, and current T4 throughput advantage as rejected; lower
+dense-MAC arithmetic as proxy-only; and hardware energy efficiency as untested.

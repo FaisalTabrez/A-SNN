@@ -1,0 +1,4 @@
+arm,model_kind,runs,mean_test_accuracy,std_test_accuracy,mean_accuracy_gain_vs_residual_lif,two_point_seed_count_over_residual_lif,mean_activity,activity_kind,channels,effective_trainable_parameters,parameter_ratio_vs_target,dense_macs_per_sample,state_updates_per_sample,mean_estimated_spike_events_per_sample,mean_test_examples_per_second,mean_train_seconds
+temporal_conv1d,conv1d,3,0.4894841853923397,0.016951087500350424,-0.07024171654728027,0,0.28739287757964777,relu_activation,33,132893,0.994477329362199,7409325,0,0.0,48317.74988842477,44.48432320499993
+dilated_tcn,tcn,3,0.592254603735322,0.005410925724441513,0.03252870179570211,3,0.39720943907025213,relu_activation,32,131971,0.9875777327117211,7381408,0,0.0,53079.5751720352,38.8760957323334
+residual_lif,residual_lif,3,0.5597259019396199,0.00018063914266163364,0.0,0,0.05146637230249323,spike_rate,29,133087,0.9959290883103472,6527465,1856,95.52158699342743,16682.466205125947,210.33661286899996

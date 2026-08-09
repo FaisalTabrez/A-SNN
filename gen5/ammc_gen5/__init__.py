@@ -331,6 +331,12 @@ from .ssc_efficiency_baselines import (
     summarize_ssc_efficiency_baselines,
     temporal_tcn_parameter_count,
 )
+from .evidence_synthesis import (
+    EVIDENCE_FILENAMES,
+    Gen5EvidenceSynthesisResult,
+    plot_gen5_evidence_synthesis,
+    synthesize_gen5_evidence,
+)
 from .structural_sequential_mnist import (
     STRUCTURAL_SEQUENTIAL_ARMS,
     StructuralSequentialArm,
@@ -533,6 +539,8 @@ __all__ = [
     "SSCEfficiencyBaselineArm",
     "SSCEfficiencyBaselinesResult",
     "TemporalDilatedTCNClassifier",
+    "EVIDENCE_FILENAMES",
+    "Gen5EvidenceSynthesisResult",
     "StreamingMNISTReservoir",
     "STRUCTURAL_SEQUENTIAL_ARMS",
     "StructuralSequentialArm",
@@ -664,6 +672,7 @@ __all__ = [
     "plot_shd_residual_state_contribution",
     "plot_ssc_residual_lif_replication",
     "plot_ssc_efficiency_baselines",
+    "plot_gen5_evidence_synthesis",
     "plot_structural_sequential_mnist",
     "plot_utility_gated_structural_mnist",
     "prune_weak_sprouted_edges",
@@ -731,6 +740,7 @@ __all__ = [
     "summarize_shd_residual_state_contribution",
     "summarize_ssc_residual_lif_replication",
     "summarize_ssc_efficiency_baselines",
+    "synthesize_gen5_evidence",
     "temporal_conv_parameter_count",
     "temporal_conv_state_parameter_count",
     "temporal_conv_residual_parameter_count",

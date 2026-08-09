@@ -703,6 +703,20 @@ MAC proxies, state updates, and spike-event counts. MACs are architecture
 proxies—not hardware energy measurements—and the current dense PyTorch
 implementation is not event-driven.
 
+Phase 49 closes the empirical SSC audit. Generate the final machine-readable
+claim ledger, milestone report, and summary figure from committed evidence:
+
+```powershell
+python gen5/examples/sprint50_evidence_synthesis.py `
+  --evidence-root gen5/outputs `
+  --output-dir gen5/outputs/gen5_evidence_synthesis_2026-08-10
+```
+
+The synthesis distinguishes supported mechanism claims from rejected
+standalone, predictive-superiority, and software-efficiency claims. It also
+defines the next work as compiled event-driven execution, accuracy scaling,
+non-audio replication, and only then continual-plasticity reintegration.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
