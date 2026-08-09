@@ -594,6 +594,27 @@ temporal decoder against matched conventional temporal baselines:
 This compares validation-selected raw temporal pyramid, temporal Conv1D, GRU,
 and dense recurrent LIF models at approximately 133,631 trainable parameters.
 
+Phase 44 establishes temporal Conv1D as the calibrated target. Test whether its
+learned local temporal filters can be retained in a leaky spiking core:
+
+```python
+!python gen5/examples/sprint45_shd_spiking_temporal_conv.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --validation-fraction 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_spiking_temporal_conv_cuda
+```
+
+The five matched arms separate the raw temporal decoder, conventional Conv1D,
+leaky analog convolution, leaky LIF convolution, and dense recurrent LIF. The
+primary gate is whether the convolutional LIF comes within two test points of
+both analog temporal controls while maintaining non-degenerate spike activity.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

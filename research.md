@@ -4415,3 +4415,47 @@ considered competitive only if it remains within `2` mean test points of the
 best matched ANN. Any matched baseline exceeding raw by `+2` points across at
 least two seeds becomes the minimum target for a future spiking redesign. This
 phase establishes the honest SHD ceiling; it does not test an AMMC mechanism.
+
+## 2026-08-10 - Phase 44 result: local temporal convolution is the new target
+
+Evidence retained at
+`gen5/outputs/shd_calibrated_baselines_cuda_2026-08-10/` from archive SHA-256
+`558F9DAA53050B9A8F2EA6FE43B85B7FA5AC427615820DB96C6862CC4517FBAD`.
+
+The validation-selected temporal Conv1D reaches `82.847% +/- 0.930` points,
+versus `80.374% +/- 1.838` for the raw temporal pyramid and
+`75.103% +/- 2.355` for dense recurrent LIF. Conv1D improves over raw by
+`+2.473` mean points and wins all three seeds, but only one seed clears the
+strict `+2`-point threshold. Therefore raw fails the within-two-points
+competitive gate, while Conv1D shows directional rather than fully replicated
+strict dominance.
+
+Conv1D is also the most useful practical reference: about `51,371` test
+examples/s versus `37,997` for raw and `11,748` for dense LIF, with a lower
+three-seed accuracy deviation than raw. The calibrated GRU reaches only
+`46.363%`; its best validation accuracy is also low (`58.047%`), so this
+specific small-GRU formulation is unsuitable. This is not evidence that GRUs
+in general are weak.
+
+Sanity decision: do not claim SNN, sparse, or AMMC superiority from the current
+SHD work. The reproducible scientific result is that learned local temporal
+filters provide the strongest matched representation found so far. A future
+spiking core must reach at least `80.85%` (within two points of Conv1D) and
+materially exceed the `75.10%` dense-LIF reference before mechanism ablations
+are warranted.
+
+## 2026-08-10 - Phase 45 learned spiking temporal convolution generated
+
+Decision: transplant the successful trainable temporal Conv1D front end into
+two explicitly stateful variants: a leaky analog core and a surrogate-gradient
+LIF core. Compare them against the Phase 44 Conv1D, raw temporal pyramid, and
+dense recurrent LIF on identical splits, seeds, validation selection, and an
+approximately `133,631`-parameter budget.
+
+Primary viability gate: convolutional LIF must finish within `2` mean test
+points of both Conv1D and leaky analog controls, with at least two of three
+seeds within that margin and a non-degenerate spike rate between `1%` and
+`30%`. Architectural-improvement gate: it must beat dense recurrent LIF by
+`3` mean points and by at least `3` points on two seeds. Failure ends this
+redesign branch after one diagnostic phase; success permits mechanism and
+energy ablations.
