@@ -2738,6 +2738,56 @@ Artifacts:
 - `gen5/docs/SEQUENTIAL_MNIST.md`
 - `gen5/tests/test_sequential_mnist_contract.py`
 
+### 60. Phase 24 establishes a causal recurrence benefit under memory demand
+
+Date: 2026-08-09
+
+Finding: recurrence passes the pre-registered sequential-memory gate by a wide
+margin. With only final hidden state exposed, the 272-edge recurrent reservoir
+beats the paired 16-edge feedforward projection by `+11.673` percentage points
+for a linear readout and `+17.240` points for an MLP. Every seed improves, and
+the smallest paired gain is `+9.50` points.
+
+Mechanistic findings:
+
+- Recurrent final state reaches `43.853%` linear and `55.547%` MLP accuracy.
+- The orderless integrated-row controls reach only `34.787%` and `48.327%`;
+  recurrence therefore adds `+9.067` and `+7.220` points beyond an intensity
+  summary that discards row order.
+- Hidden event rate rises only about `5.3%` over feedforward, much less than the
+  accuracy effect.
+- Feedforward final-state MLP is weaker than even the last-row MLP, while the
+  recurrent MLP is `+11.413` points stronger than the last-row control.
+- Raw-pixel MLP remains much stronger at `94.207%`, leaving a `38.66`-point
+  absolute capability gap.
+
+Goal sanity boundary:
+
+- Supported: recurrence causally preserves useful information in a true
+  sequential/final-state task.
+- Supported: task design, rather than neuron count alone, determines whether
+  recurrent capacity becomes useful.
+- Not supported: competitive MNIST accuracy, useful LTW adaptation, structural
+  plasticity, continuous learning, or catastrophic-forgetting resistance.
+- Still unjustified: claims of being the best SNN or replacing Transformers.
+
+Decision: Phase 25 trains durable weights while keeping the proven recurrent
+topology fixed. It uses paired frozen, all-edge LTW, and recurrent-only LTW
+arms with the stable Phase 22 schedule: ten readout-only warmup epochs followed
+by five LTW epochs at `3e-4`, surrogate slope `10`. Structural plasticity
+remains locked until a trained arm gains at least `0.5` points over paired
+frozen, improves at least two of three seeds, holds event-rate ratio within
+`[0.5, 2.0]`, and avoids material LTW saturation.
+
+Artifacts:
+
+- `gen5/outputs/sequential_mnist_cuda_2026-08-09/`
+- `gen5/outputs/sequential_mnist_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/trainable_sequential_mnist.py`
+- `gen5/examples/sprint25_trainable_sequential_mnist.py`
+- `gen5/docs/TRAINABLE_SEQUENTIAL_MNIST.md`
+- `gen5/tests/test_trainable_sequential_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -3376,12 +3426,11 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 24 streaming row-sequential MNIST:
-   - compare final-state feedforward and recurrent reservoirs with paired seeds,
-   - require a mean recurrence gain of at least `0.5` points and at least two
-     improved seeds,
-   - compare against final-row and orderless integrated-row controls,
-   - train fixed-topology LTWs only if recurrence passes this causal gate.
+1. Run Phase 25 fixed-topology LTW training on row-sequential MNIST:
+   - compare frozen, all-edge LTW, and recurrent-only LTW paired interventions,
+   - require a mean gain of at least `0.5` points and two improved seeds,
+   - reject activity ratios outside `[0.5, 2.0]` or material LTW saturation,
+   - permit structural plasticity only if durable-weight learning passes.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,

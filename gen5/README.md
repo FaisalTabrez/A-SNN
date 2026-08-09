@@ -100,6 +100,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares matched feedforward and recurrent topology from the same seed
    - gates LTW learning on a practical causal recurrence effect
 
+25. Fixed-topology LTW training on sequential MNIST
+   - preserves the Phase 24 row-stream and final-state memory requirement
+   - pairs frozen, all-edge LTW, and recurrent-only LTW interventions
+   - uses the stable ten-epoch warmup and `3e-4` LTW schedule from Phase 22
+   - gates structural mutation on accuracy, activity, and saturation evidence
+
 ## Quick smoke test
 
 From the repo root:
