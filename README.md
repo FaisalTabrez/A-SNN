@@ -66,8 +66,10 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   points when input rows must be remembered from final hidden state.
 - Phase 25 showed that all-edge LTW learning adds `+2.113` linear and `+0.893`
   MLP points, with useful weight movement concentrated in sensor projections.
-- Current scientific step: Phase 26 tests whether targeted sensor
-  synaptogenesis beats fixed-topology LTW learning.
+- Phase 26 found a conditional `+0.767`-point linear gain from 48 random sensor
+  sprouts, but no mean MLP benefit; recurrent growth was weaker.
+- Current scientific step: Phase 27 tests gradient-ranked sensor growth and
+  peripheral-only pruning against a paired random-growth control.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -248,6 +250,21 @@ Test targeted synaptogenesis on the sequential topology:
   --epochs 15 \
   --warmup-epochs 10 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/structural_sequential_mnist_cuda
+```
+
+Test gradient-ranked growth and conservative peripheral pruning:
+
+```python
+!python gen5/examples/sprint27_utility_gated_structural_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --scoring-batches 4 \
+  --prune-after-epochs 3 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/utility_gated_structural_mnist_cuda
 ```
 
 ## Evidence discipline

@@ -112,6 +112,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares growth against paired frozen and fixed warm-all controls
    - defers pruning until topology growth shows a practical causal benefit
 
+27. Utility-gated structural plasticity
+   - ranks 192 inactive sensor candidates using task-loss gradients
+   - compares top-16/top-48 growth against paired random 48-edge growth
+   - permanently protects the original 272-edge recurrent graph
+   - allows one conservative arm to prune only weak newly grown edges
+
 ## Quick smoke test
 
 From the repo root:

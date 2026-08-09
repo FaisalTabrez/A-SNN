@@ -5,6 +5,22 @@ reservoir, with useful change concentrated in its 16 sensor-to-hidden edges.
 Phase 26 tests whether adding input projection capacity produces a benefit
 beyond the successful fixed-topology LTW intervention.
 
+## First CUDA result (2026-08-09)
+
+The 48-edge sensor arm gained `+0.767` linear accuracy points over the paired
+fixed warm-all control and improved two of three seeds by at least `0.5`
+points. The 16-edge sensor arm gained `+0.493` points and improved all three
+seeds, but only one cleared the practical threshold. Recurrent growth was
+weaker at `+0.207` points.
+
+No structural arm improved the MLP readout on average. Event rates remained
+bounded and LTW saturation was minor, so the result supports conditional
+sensor growth but not general-purpose synaptogenesis. Phase 27 therefore tests
+gradient-ranked candidates and peripheral-only pruning against a paired random
+growth control.
+
+See the retained [Phase 26 analysis](../outputs/structural_sequential_mnist_cuda_2026-08-09/analysis.md).
+
 ## Paired structural interventions
 
 Every recurrent arm begins with the same 272-edge graph and identical readout

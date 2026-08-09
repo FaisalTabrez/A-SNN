@@ -2836,6 +2836,63 @@ Artifacts:
 - `gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md`
 - `gen5/tests/test_structural_sequential_mnist_contract.py`
 
+### 62. Phase 26 conditionally validates sensor growth, not general structural plasticity
+
+Date: 2026-08-09
+
+Finding: 48 random sensor sprouts pass the predeclared gate with the linear
+readout, reaching `46.733%` versus `45.967%` for fixed warm-all, a paired mean
+gain of `+0.767` percentage points. Two of three seeds achieve at least a
+`0.5`-point gain, but the paired changes are heterogeneous: `-0.96`, `+1.20`,
+and `+2.06` points.
+
+Mechanistic findings:
+
+- The 16-edge sensor arm gains `+0.493` linear points and improves all three
+  seeds, but only one seed clears the practical threshold.
+- The 64-edge recurrent arm gains only `+0.207` linear points.
+- No structural arm improves MLP accuracy on average: sensor-16 is `-0.233`,
+  sensor-48 is `-0.207`, and recurrent-64 is `-0.080` points versus fixed.
+- Linear sensor sprouts move `0.0579-0.0705` from birth LTW, while recurrent
+  sprouts move only `0.0127`, again localizing useful adaptation to the input
+  projection.
+- Event-rate ratios remain within `1.07-1.38`; mean LTW saturation remains
+  below `0.6%` upper and `0.4%` lower.
+- The linear sensor-48 benefit costs 48 additional active edges, expanding the
+  graph from 272 to 320 edges for a small and seed-sensitive gain.
+
+Goal sanity boundary:
+
+- Supported: additional sensor routes can improve linear separability and can
+  learn nontrivial LTWs without destabilizing activity.
+- Supported: sensor growth is a better current direction than indiscriminate
+  recurrent growth.
+- Not supported: random synaptogenesis is not robust across readouts or seeds.
+- Not supported: core pruning, continual learning, competitive MNIST, or broad
+  SNN/Transformer-alternative claims.
+
+Decision: Phase 27 tests utility-gated growth. A deterministic pool of 192
+inactive sensor edges is ranked by absolute task-loss gradient after the
+readout warmup; only the top 16 or 48 are retained. A paired random sensor-48
+arm remains the causal control. The original 272 edges stay protected. One
+conservative arm may prune at most half of the new edges, and only when their
+LTW falls below 95% of birth weight after three training epochs.
+
+Acceptance gate: gradient growth must beat paired random growth by at least
+`0.5` points on average, improve at least two of three seeds, preserve an event
+ratio in `[0.5, 2.0]`, and avoid material LTW saturation. Peripheral pruning
+must remain within `0.25` points of the unpruned guided arm while actually
+removing edges.
+
+Artifacts:
+
+- `gen5/outputs/structural_sequential_mnist_cuda_2026-08-09/`
+- `gen5/outputs/structural_sequential_mnist_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/utility_gated_structural_mnist.py`
+- `gen5/examples/sprint27_utility_gated_structural_mnist.py`
+- `gen5/docs/UTILITY_GATED_STRUCTURAL_MNIST.md`
+- `gen5/tests/test_utility_gated_structural_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -3474,11 +3531,12 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 26 targeted synaptogenesis on row-sequential MNIST:
-   - compare 16/48 sensor sprouts and 64 recurrent sprouts against fixed LTWs,
-   - protect the original recurrent core and disable pruning,
-   - require a mean gain of at least `0.5` points and two improved seeds,
-   - unlock pruning only if controlled growth produces stable useful gains.
+1. Run Phase 27 utility-gated structural plasticity on row-sequential MNIST:
+   - rank 192 inactive sensor candidates by task-loss gradient,
+   - compare top-16/top-48 guided growth with paired random sensor-48 growth,
+   - protect the original recurrent core,
+   - allow pruning only among weak newly grown edges,
+   - require a paired `0.5`-point gain over random growth and two improved seeds.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
