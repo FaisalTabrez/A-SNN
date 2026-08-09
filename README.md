@@ -32,6 +32,7 @@ If you are new to the repo, read these in order:
 15. [Streaming row-sequential MNIST](gen5/docs/SEQUENTIAL_MNIST.md)
 16. [Sequential LTW training](gen5/docs/TRAINABLE_SEQUENTIAL_MNIST.md)
 17. [Targeted sequential synaptogenesis](gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md)
+18. [Adaptive-neuron sequential ablation](gen5/docs/ADAPTIVE_SEQUENTIAL_MNIST.md)
 
 ## Repository map
 
@@ -68,8 +69,12 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   MLP points, with useful weight movement concentrated in sensor projections.
 - Phase 26 found a conditional `+0.767`-point linear gain from 48 random sensor
   sprouts, but no mean MLP benefit; recurrent growth was weaker.
-- Current scientific step: Phase 27 tests gradient-ranked sensor growth and
-  peripheral-only pruning against a paired random-growth control.
+- Phase 27 rejected one-shot absolute-gradient sprouting: every guided arm
+  lost to paired random growth on every seed, although peripheral pruning
+  recovered part of the deficit without touching the recurrent core.
+- Current scientific step: Phase 28 freezes topology and tests fixed adaptive
+  thresholds at 25%, 50%, and 100% of hidden neurons against paired LIF
+  controls with identical readout and LTW schedules.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -268,6 +273,21 @@ Test gradient-ranked growth and conservative peripheral pruning:
   --scoring-batches 4 \
   --prune-after-epochs 3 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/utility_gated_structural_mnist_cuda
+```
+
+Test fixed adaptive thresholds on the proven sequential topology:
+
+```python
+!python gen5/examples/sprint28_adaptive_sequential_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --adaptation-decay 0.95 \
+  --adaptation-strength 0.5 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/adaptive_sequential_mnist_cuda
 ```
 
 ## Evidence discipline

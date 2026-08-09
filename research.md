@@ -3571,16 +3571,15 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 27 utility-gated structural plasticity on row-sequential MNIST:
-   - rank 192 inactive sensor candidates by task-loss gradient,
-   - compare top-16/top-48 guided growth with paired random sensor-48 growth,
-   - protect the original recurrent core,
-   - allow pruning only among weak newly grown edges,
-   - require a paired `0.5`-point gain over random growth and two improved seeds.
-2. Add temporal-mechanism ablations before further topology scaling:
-   - compare LIF with adLIF/LSNN at identical topology and parameter budget,
-   - make `delay_steps` executable through fixed delay buckets,
-   - compare no-delay, fixed-delay, and later learnable-delay arms,
+1. Run Phase 28 adaptive-neuron ablation on row-sequential MNIST:
+   - freeze the proven 272-edge topology,
+   - compare 25%, 50%, and 100% fixed adaptive-threshold populations,
+   - retain paired LIF frozen and warm-LTW controls,
+   - require a paired `0.5`-point gain and two improved seeds.
+2. Add executable temporal delays after the adaptive-neuron gate:
+   - carry ALIF only if Phase 28 passes; otherwise retain ordinary LIF,
+   - implement static delay buckets with no topology changes,
+   - compare no-delay and fixed-delay arms before learnable delays,
    - carry the winning mechanism to SHD, then SSC.
 3. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
@@ -3616,3 +3615,73 @@ Validation:
      champion genome.
 10. Use `gen5/tools/verify_phase11_outputs.py` after every future output upload
    to avoid ambiguous evidence status.
+
+## 2026-08-09 - Phase 27 utility-gated structural MNIST result
+
+Evidence retained at
+`gen5/outputs/utility_gated_structural_mnist_cuda_2026-08-09/` from archive
+SHA-256
+`34CABEF370422F71E60F4ECEF1FEE5758509A6BD76D9308243DA59FA4628348C`.
+The CUDA run used seeds 42-44, 20,000 train and 5,000 engineering-validation
+examples, the proven 64-hidden-neuron/272-core-edge sequential graph, 15
+epochs, a ten-epoch readout warmup, four candidate-scoring batches, and
+peripheral pruning three epochs after growth.
+
+Core results:
+
+- `random_sensor_48`: `46.733%` linear and `56.193%` MLP.
+- `gradient_sensor_16`: `45.260%` linear and `55.073%` MLP, deficits of
+  `-1.473` and `-1.120` points versus paired random growth.
+- `gradient_sensor_48`: `45.027%` linear and `54.093%` MLP, deficits of
+  `-1.707` and `-2.100` points.
+- `gradient_sensor_48_prune`: `45.360%` linear and `55.220%` MLP, still
+  `-1.373` and `-0.973` points below random.
+- Every guided-versus-random paired delta was negative across all three seeds
+  and both readouts.
+- Pruning removed exactly 24 of the 48 new edges, improved the unpruned guided
+  arm by `+0.333` linear and `+1.127` MLP points, and never touched the core.
+
+Mechanistic finding: this was not an activity-collapse or boundary-saturation
+failure. Event-rate ratios remained about `1.06-1.39`. The linear guided edges
+ended near `0.082-0.090` LTW from a `0.1` birth weight, while random edges rose
+to about `0.127`; the optimizer later suppressed many candidates ranked highly
+by absolute gradient at zero. MLP gradient magnitudes were much larger without
+better performance. One-shot absolute sensitivity is therefore not a valid
+durable utility estimate in this implementation.
+
+Decision: reject the Phase 27 selector and schedule. Do not scale it or tune
+its candidate count. Preserve conservative peripheral pruning as a validated
+mechanism, but do not generalize it to the core from this experiment. This is a
+negative result about one-shot absolute-gradient rewiring, not a disproof of
+all structural plasticity or online gradient rewiring.
+
+Goal sanity check: the evidence still supports the project's narrower claim
+that sparse recurrent spike dynamics carry useful temporal state and can
+benefit from durable LTW optimization. It does not yet support a claim that
+structural growth improves conventional sequence learning. Topology quantity
+is not the present bottleneck; temporal computation is the next controlled
+target.
+
+## 2026-08-09 - Phase 28 adaptive-neuron experiment generated
+
+Decision: freeze topology and test an adaptive LIF/LSNN-style slow threshold
+state before implementing delays. Phase 28 adds no trainable neuron parameters
+and keeps the readout input at final spikes plus membrane, so the comparison
+isolates dynamics rather than readout capacity.
+
+Paired arms:
+
+- `lif_frozen` and `lif_warm_all` controls;
+- `alif50_frozen` to isolate fixed adaptive dynamics;
+- `alif25_warm_all`, `alif50_warm_all`, and `alif100_warm_all` for a dose
+  response under the successful Phase 25 LTW schedule;
+- the raw linear/parameter-matched MLP ceiling.
+
+Default state equations use adaptation decay `0.95` and threshold increment
+`0.5 * adaptation`. Adaptive neuron identities are deterministically shuffled
+per seed. LIF and ALIF arms share graph, LTWs, readout shape, data, and seed.
+
+Pass gate: at least `+0.5` accuracy points over the paired LIF control, at
+least two of three seeds improved, event rate within `[0.5x, 2.0x]` paired LIF,
+and no material LTW saturation. A pass carries adaptive neurons into fixed
+delay buckets. A failure carries ordinary LIF into the delay experiment.

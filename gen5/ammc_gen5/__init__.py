@@ -1,5 +1,15 @@
 """AMMC Gen-5 neuromorphic framework scaffold."""
 
+from .adaptive_sequential_mnist import (
+    ADAPTIVE_SEQUENTIAL_ARMS,
+    AdaptiveSequentialArm,
+    AdaptiveSequentialClassifier,
+    AdaptiveSequentialMNISTResult,
+    available_adaptive_sequential_arms,
+    plot_adaptive_sequential_mnist,
+    run_adaptive_sequential_mnist,
+    summarize_adaptive_sequential_mnist,
+)
 from .champion_export import ChampionExportConfig, ChampionExportResult, ChampionExporter
 from .dynamic_sparse import DynamicSparseLinear, DynamicSparseLinearFunction
 from .event_mnist import (
@@ -179,6 +189,10 @@ from .trainable_sequential_mnist import (
 from .transducer import HeadlessAMMCLoop, TransducerConfig, VectorizedTransducer
 
 __all__ = [
+    "ADAPTIVE_SEQUENTIAL_ARMS",
+    "AdaptiveSequentialArm",
+    "AdaptiveSequentialClassifier",
+    "AdaptiveSequentialMNISTResult",
     "AstrocyteGridConfig",
     "AblationGenerationRecord",
     "AblationGroupConfig",
@@ -271,6 +285,7 @@ __all__ = [
     "VectorizedTransducer",
     "WorldPreset",
     "accelerator_memory",
+    "available_adaptive_sequential_arms",
     "available_frozen_tasks",
     "available_ltw_diagnostic_arms",
     "available_sequential_ltw_arms",
@@ -293,6 +308,7 @@ __all__ = [
     "mark_step",
     "memory_namespace",
     "plot_neuron_scaling_result",
+    "plot_adaptive_sequential_mnist",
     "plot_event_mnist_result",
     "plot_event_mnist_decomposition",
     "plot_frozen_probe_result",
@@ -310,6 +326,7 @@ __all__ = [
     "prune_weak_sprouted_edges",
     "resolve_device",
     "run_event_mnist",
+    "run_adaptive_sequential_mnist",
     "run_event_mnist_decomposition",
     "run_temporal_mnist",
     "run_trainable_temporal_mnist",
@@ -322,6 +339,7 @@ __all__ = [
     "select_gradient_sensor_edges",
     "seed_everything",
     "summarize_neuron_scaling_records",
+    "summarize_adaptive_sequential_mnist",
     "summarize_event_mnist_records",
     "summarize_event_mnist_decomposition",
     "summarize_temporal_mnist",
