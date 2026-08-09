@@ -4132,3 +4132,43 @@ mean points with at least two seeds gaining `+1` point. If raw temporal matches
 or wins, Phase 36 is primarily a readout result and the recurrent core must be
 redesigned before further scaling. Activity and LTW saturation must remain
 stable.
+
+## 2026-08-10 - Phase 37 SHD temporal-control result
+
+Evidence retained at `gen5/outputs/shd_temporal_controls_cuda_2026-08-10/`
+from archive SHA-256
+`0D075AD9404F7E0769454189DDCCD6F6022014FD025C7BB2DCC621001B017E7E`.
+
+Mean accuracies are `51.914%` for event-count MLP, `77.959%` for the matched
+raw temporal pyramid, `60.998%` for global AMMC, `79.623%` for feedforward AMMC
+pyramid, and `80.271%` for recurrent AMMC pyramid.
+
+The reservoir gate passes narrowly: recurrent AMMC gains `+2.312` mean points
+over raw temporal, all seeds improve, and two gain at least one point. The
+recurrence gate fails: recurrent AMMC gains only `+0.648` points over the
+feedforward sparse model, no seed gains two points, and one seed declines.
+
+Recurrence increases hidden event rate from `8.34%` to `13.16%` for that small
+gain. The raw temporal control is roughly 5.7 times faster than recurrent AMMC
+and uses 98.0% as many effective parameters. Current evidence therefore
+attributes most of Phase 36 to temporal decoding, a modest amount to sparse
+feedforward LIF transformation, and no practical causal value to the tested
+random recurrent graph.
+
+Decision: freeze recurrence tuning. Establish matched conventional baselines
+before redesigning the core.
+
+## 2026-08-10 - Phase 38 SHD matched-baseline suite generated
+
+Decision: compare event-count and raw temporal controls, a parameter-matched
+standard dense recurrent LIF trained by BPTT, a parameter-matched GRU, sparse
+feedforward AMMC, and sparse recurrent AMMC on the identical SHD split and
+three seeds.
+
+All trainable comparators must remain within `10%` of the recurrent AMMC
+effective parameter budget. Sparse-advantage gate: recurrent AMMC must exceed
+the dense LIF mean by `+2` points with at least two seeds gaining `+1` point.
+The GRU is a conventional temporal reference, not a gate to be tuned against.
+Report inference throughput and activity alongside accuracy. If either matched
+baseline wins, the next phase must redesign AMMC dynamics or learning rather
+than further tune the temporal readout.

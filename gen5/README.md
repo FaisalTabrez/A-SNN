@@ -154,6 +154,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - measures the paired recurrence gain under the winning pyramid readout
    - gates further AMMC optimization on value beyond the temporal decoder
 
+38. Parameter-matched SHD baseline suite
+   - adds a standard dense recurrent LIF trained with surrogate-gradient BPTT
+   - adds a conventional GRU temporal reference
+   - matches both comparators to the sparse AMMC effective parameter budget
+   - reports accuracy, activity, and throughput before core redesign
+
 ## Quick smoke test
 
 From the repo root:

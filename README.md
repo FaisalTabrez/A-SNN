@@ -37,6 +37,7 @@ If you are new to the repo, read these in order:
 20. [Trainable delay assignment](gen5/docs/TRAINABLE_DELAYS_MNIST.md)
 21. [SHD temporal-pyramid readout](gen5/docs/SHD_TEMPORAL_PYRAMID.md)
 22. [SHD temporal-control decomposition](gen5/docs/SHD_TEMPORAL_CONTROLS.md)
+23. [SHD matched baselines](gen5/docs/SHD_MATCHED_BASELINES.md)
 
 ## Repository map
 
@@ -88,8 +89,10 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   robust cross-capacity delay effect; delays also cost roughly 40% throughput.
 - Phase 36 raises the 512-neuron mean to `80.065%`, beating global pooling by
   `+19.287` points and fixed-shuffled timing by `+6.257` points.
-- Current scientific step: Phase 37 separates the temporal decoder's value
-  from sparse feedforward expansion and recurrent AMMC dynamics.
+- Phase 37 finds only `+0.648` points from recurrence over feedforward AMMC;
+  the tested recurrent topology fails its causal gate.
+- Current scientific step: Phase 38 compares AMMC with parameter-matched dense
+  recurrent LIF and GRU baselines before any recurrent redesign.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -451,6 +454,23 @@ This compares event counts, a parameter-matched temporal model over raw events,
 global AMMC pooling, feedforward AMMC temporal features, and recurrent AMMC
 temporal features. It determines whether the new 80.1% result belongs mainly
 to the readout or also requires recurrent sparse computation.
+
+Phase 37 found no practical random-recurrence advantage. Run the matched
+standard-model comparison:
+
+```python
+!python gen5/examples/sprint38_shd_matched_baselines.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --sparse-hidden-neurons 512 \
+  --dense-lif-hidden-neurons 128 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_matched_baselines_cuda
+```
 
 ## Evidence discipline
 
