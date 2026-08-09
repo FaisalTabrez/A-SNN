@@ -4375,3 +4375,43 @@ Checkpointing should reduce sparse test standard deviation by at least 25%
 without reducing its mean by more than `0.5` points. Failure closes the current
 SHD sparse-expansion branch; passing would identify overfitting rather than the
 transform itself as the primary weakness.
+
+## 2026-08-10 - Phase 43 SHD validation-selected checkpoint result
+
+Evidence retained at `gen5/outputs/shd_validation_checkpoint_cuda_2026-08-10/`
+from archive SHA-256
+`663F7AC8BFD01A549981FDA669CA70FFCB4122DF2794A3875F46C65AC5192877`.
+
+Raw temporal improves from `78.092%` at the final epoch to `80.374%` using the
+best validation checkpoint. Sparse 512 changes from `78.195%` to `78.023%`.
+The validation-selected sparse model trails its paired raw reference by
+`2.351` points, wins only `2/9` pairs, and exceeds raw by two points in only one
+pair. The final sparse gate fails decisively.
+
+Checkpoint selection does not stabilize sparse performance. Sparse standard
+deviation rises from `1.301` to `1.577` points and mean accuracy falls by
+`0.172` points. Raw checkpointing raises accuracy by `2.282` points, although
+its three-seed deviation also rises. Sparse best validation accuracy is only
+`83.606%`, versus `91.830%` for raw, showing a representation/optimization
+deficit rather than simple late-epoch overfitting.
+
+Decision: close the current SHD sparse-expansion branch. Its isolated high
+scores do not survive independent initialization or validation selection.
+Retain the temporal pyramid as the reproducible result, freeze claims about
+spiking, recurrence, LTW/STW plasticity, and sparse superiority, and establish
+calibrated conventional temporal baselines before designing a new spiking core.
+
+## 2026-08-10 - Phase 44 calibrated SHD temporal baselines generated
+
+Decision: compare four validation-selected models on the identical stratified
+split and seeds at an approximately `133,631` trainable-parameter budget: raw
+temporal pyramid, a one-layer temporal Conv1D with multi-scale pooling, a GRU,
+and dense recurrent LIF. This repairs the under-calibrated GRU reference from
+Phase 38 and adds a strong local-temporal ANN control.
+
+Calibration gate: each model is selected only by validation accuracy and must
+remain within 5% of the target parameter budget. The raw temporal decoder is
+considered competitive only if it remains within `2` mean test points of the
+best matched ANN. Any matched baseline exceeding raw by `+2` points across at
+least two seeds becomes the minimum target for a future spiking redesign. This
+phase establishes the honest SHD ceiling; it does not test an AMMC mechanism.

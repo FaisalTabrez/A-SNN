@@ -575,6 +575,25 @@ audit before freezing the SHD sparse branch:
 The runner uses a fixed stratified validation split and reports both final-epoch
 and best-validation test accuracy. Sparse topology and LTWs remain frozen.
 
+Phase 43 closed the current sparse SHD branch. Calibrate the reproducible raw
+temporal decoder against matched conventional temporal baselines:
+
+```python
+!python gen5/examples/sprint44_shd_calibrated_baselines.py \
+  --device cuda \
+  --readout-seeds 142 143 144 \
+  --validation-fraction 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_calibrated_baselines_cuda
+```
+
+This compares validation-selected raw temporal pyramid, temporal Conv1D, GRU,
+and dense recurrent LIF models at approximately 133,631 trainable parameters.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
