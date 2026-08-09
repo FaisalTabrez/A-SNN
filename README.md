@@ -725,3 +725,40 @@ update [research.md](research.md) in the same change set.
 
 The repo is deliberately part lab notebook, part framework. The code tells us
 what can run; the evidence folders tell us what we have actually observed.
+
+## Consolidated milestone workflow
+
+The numbered experiment sequence ended with the Phase 50 evidence synthesis.
+New work follows the three decision milestones in
+[gen5/docs/MILESTONE_ROADMAP.md](gen5/docs/MILESTONE_ROADMAP.md): architecture,
+hardware, and generalization/continual learning. A milestone performs its own
+cheap screen, promotes only qualifying arms, runs confirmation and causal
+controls, and emits an explicit stop/go decision.
+
+Milestone A can be launched in one Colab cell after pulling the latest commit:
+
+```python
+!python gen5/examples/milestone_a_architecture.py \
+  --device cuda \
+  --screen-seed 142 \
+  --confirm-seeds 142 143 144 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 4 \
+  --confirm-epochs 15 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/milestone_a_architecture_cuda
+```
+
+The cached official SSC tensors from Phases 48–49 are reused. The runner first
+tests all five arms on reduced subsets, then automatically runs the full
+official train/validation/test confirmation only for the best conventional
+control and qualifying causal candidates. Upload the resulting output folder
+or ZIP; there is no separate screen-result round trip. Progress is atomically
+checkpointed after every arm/seed run in `milestone_a_progress.json`. Repeating
+the identical command resumes completed work after a Colab interruption.

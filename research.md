@@ -4666,3 +4666,32 @@ The synthesis was executed locally and retained at
 marks cross-dataset residual-state contribution as supported; standalone LIF,
 matched-baseline parity, and current T4 throughput advantage as rejected; lower
 dense-MAC arithmetic as proxy-only; and hardware energy efficiency as untested.
+
+## 2026-08-10 - Numbered phases replaced by three decision milestones
+
+Decision: stop extending the project with one numbered phase per diagnostic.
+The evidence ledger already identifies three distinct remaining uncertainties,
+so work is consolidated into Milestone A (accuracy/architecture), Milestone B
+(compiled event-driven hardware efficiency), and Milestone C (non-audio
+generalization plus continual learning). Each milestone must contain its own
+low-cost screen, validation-only promotion, multi-seed confirmation, causal
+controls, and terminal `pass` or `stop` decision. This reduces result-transfer
+round trips while preserving evidence discipline.
+
+Milestone A is implemented as a single SSC runner. It screens matched Conv1D,
+dilated TCN, residual LIF, hierarchical residual analog, and hierarchical
+residual LIF arms with one seed and reduced official subsets. Only the best
+conventional arm and causal candidates within `2` validation points, within
+`95–105%` of the parameter budget, and with non-degenerate LIF activity are
+promoted to full-split, three-seed confirmation. Test labels do not influence
+promotion.
+
+The confirmatory gate is deliberately branch-closing. A causal LIF architecture
+must stay within `2` mean test points of the best conventional model, lose at
+least `1` mean point in both direct-only and batch-shuffled-state ablations,
+replicate each loss on at least two of three seeds, and maintain `1–30%` spike
+activity. Passing freezes the architecture and opens Milestone B. Failure
+closes this architecture branch rather than triggering another tuning phase.
+The combined run writes an atomic progress checkpoint after every arm/seed
+pair; an identical restart skips completed records, while a configuration
+mismatch fails explicitly instead of mixing evidence from different protocols.
