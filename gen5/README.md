@@ -94,6 +94,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares sensor, hidden, and full temporal state with paired readouts
    - determines whether static MNIST provides evidence for recurrence at all
 
+24. Streaming row-sequential MNIST
+   - presents one 8-pixel row at each neural step
+   - exposes only final hidden spikes and membrane state to sparse readouts
+   - compares matched feedforward and recurrent topology from the same seed
+   - gates LTW learning on a practical causal recurrence effect
+
 ## Quick smoke test
 
 From the repo root:

@@ -29,6 +29,7 @@ If you are new to the repo, read these in order:
 12. [Fixed-topology LTW training](gen5/docs/TRAINABLE_TEMPORAL_MNIST.md)
 13. [LTW optimization diagnostic](gen5/docs/LTW_OPTIMIZATION_DIAGNOSTIC.md)
 14. [Causal recurrence ablation](gen5/docs/RECURRENCE_ABLATION.md)
+15. [Streaming row-sequential MNIST](gen5/docs/SEQUENTIAL_MNIST.md)
 
 ## Repository map
 
@@ -57,8 +58,10 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Phase 17 activity-matched controls validate frozen-trace action decoding.
 - Phase 20 established that full temporal AMMC state is informative.
 - Phase 22 stabilized LTW training but found no practically meaningful gain.
-- Current scientific step: Phase 23 causal recurrence ablation before moving
-  from static MNIST to a genuinely temporal task.
+- Phase 23 showed that 256 recurrent edges add only `+0.107` accuracy points
+  to the full linear representation and reduce MLP accuracy by `0.053` points.
+- Current scientific step: Phase 24 tests recurrence on row-sequential MNIST
+  using final hidden state, where earlier input rows must be remembered.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -201,6 +204,18 @@ Test recurrence against paired feedforward expansion:
   --test-samples 5000 \
   --epochs 15 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/recurrence_ablation_cuda
+```
+
+Test final-state memory on row-sequential MNIST:
+
+```python
+!python gen5/examples/sprint24_sequential_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/sequential_mnist_cuda
 ```
 
 ## Evidence discipline

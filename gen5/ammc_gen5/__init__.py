@@ -110,6 +110,14 @@ from .runtime import (
     try_xla_device,
     xla_device,
 )
+from .sequential_mnist import (
+    SEQUENTIAL_MNIST_FEATURES,
+    SequentialMNISTResult,
+    StreamingMNISTReservoir,
+    plot_sequential_mnist,
+    run_sequential_mnist,
+    summarize_sequential_mnist,
+)
 from .tensor_environment import (
     TensorEnvironment2D,
     TensorEnvironmentConfig,
@@ -188,6 +196,9 @@ __all__ = [
     "PlasticityAblationRunner",
     "RECURRENCE_ABLATION_FEATURES",
     "RecurrenceAblationResult",
+    "SEQUENTIAL_MNIST_FEATURES",
+    "SequentialMNISTResult",
+    "StreamingMNISTReservoir",
     "RetentionAblationConfig",
     "RetentionAblationResult",
     "RetentionAblationRunner",
@@ -245,6 +256,7 @@ __all__ = [
     "plot_trainable_temporal_mnist",
     "plot_ltw_diagnostic",
     "plot_recurrence_ablation",
+    "plot_sequential_mnist",
     "resolve_device",
     "run_event_mnist",
     "run_event_mnist_decomposition",
@@ -252,6 +264,7 @@ __all__ = [
     "run_trainable_temporal_mnist",
     "run_ltw_optimization_diagnostic",
     "run_recurrence_ablation",
+    "run_sequential_mnist",
     "seed_everything",
     "summarize_neuron_scaling_records",
     "summarize_event_mnist_records",
@@ -260,6 +273,7 @@ __all__ = [
     "summarize_trainable_temporal_mnist",
     "summarize_ltw_diagnostic",
     "summarize_recurrence_ablation",
+    "summarize_sequential_mnist",
     "summarize_sparse_efficiency_records",
     "sync",
     "try_xla_device",

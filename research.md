@@ -2689,6 +2689,55 @@ Artifacts:
 - `gen5/docs/RECURRENCE_ABLATION.md`
 - `gen5/tests/test_recurrence_ablation_contract.py`
 
+### 59. Phase 23 closes static MNIST as evidence for recurrence
+
+Date: 2026-08-09
+
+Finding: the paired causal recurrence ablation fails its practical-effect gate.
+The full 384-edge recurrent state improves the full linear representation by
+only `+0.107` percentage points over the matched 128-edge feedforward graph,
+despite improving all three seeds. With an MLP readout, recurrence changes
+accuracy by `-0.053` points and is negative in all three seeds. Both effects
+are far below the pre-registered `0.5`-point threshold.
+
+Mechanistic findings:
+
+- Full feedforward temporal state already reaches `91.407%` linear and
+  `92.613%` MLP accuracy.
+- The extra 256 recurrent edges increase hidden event rate by about `11.7%`
+  but provide no practical return.
+- The full feedforward state adds `+1.620` linear points over sensor temporal
+  state, so sparse random expansion is useful even though recurrence is not.
+- Raw-pixel MLP remains the strongest tested static-MNIST model at `95.140%`.
+
+Goal sanity boundary:
+
+- Supported: sparse temporal/feedforward expansion can improve representation.
+- Not supported on static MNIST: useful causal recurrence, useful LTW
+  adaptation, structural plasticity, or superiority over conventional dense
+  readouts.
+- Not yet tested: whether recurrent state helps when information actually
+  arrives sequentially and only final state is available.
+- No claim of a Transformer alternative, best SNN, or continuous-learning
+  advantage is currently justified by these image experiments.
+
+Decision: close the static-MNIST recurrence/plasticity branch. Phase 24 streams
+one image row per step and exposes only final hidden spikes and membrane
+state. It compares paired 16-edge feedforward and 272-edge recurrent graphs,
+plus raw, last-row, and orderless integrated-row controls. Recurrence must gain
+at least `0.5` points on average and improve at least two of three seeds. A pass
+unlocks fixed-topology LTW training on this sequential task; a failure triggers
+time-constant and delay-buffer redesign before any plasticity claim.
+
+Artifacts:
+
+- `gen5/outputs/recurrence_ablation_cuda_2026-08-09/`
+- `gen5/outputs/recurrence_ablation_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/sequential_mnist.py`
+- `gen5/examples/sprint24_sequential_mnist.py`
+- `gen5/docs/SEQUENTIAL_MNIST.md`
+- `gen5/tests/test_sequential_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
@@ -3327,13 +3376,12 @@ Validation:
 
 ## Next recommended steps
 
-1. Implement a Sprint 15 trainable readout/transducer adapter:
-   - keep recurrent sparse AMMC weights frozen,
-   - train a small motor readout head on frozen AMMC traces,
-   - compare against the linear-probe ceiling,
-   - verify that `anti_toxin` becomes solvable with readout adaptation alone,
-   - use `cue_switch` and `two_pulse_sum` to decide when substrate learning is
-     actually required.
+1. Run Phase 24 streaming row-sequential MNIST:
+   - compare final-state feedforward and recurrent reservoirs with paired seeds,
+   - require a mean recurrence gain of at least `0.5` points and at least two
+     improved seeds,
+   - compare against final-row and orderless integrated-row controls,
+   - train fixed-topology LTWs only if recurrence passes this causal gate.
 2. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
