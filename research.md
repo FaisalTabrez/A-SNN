@@ -4089,3 +4089,46 @@ least `+2` points over 256 across two seeds to justify further width. The runner
 reports accuracy per 1,000 effective parameters, activity, LTW saturation, and
 throughput to identify the useful scaling knee. The 256 delay comparator keeps
 the universal-delay hypothesis falsifiable without expanding delay tuning.
+
+## 2026-08-09 - Phase 36 SHD temporal-pyramid result
+
+Evidence retained at `gen5/outputs/shd_temporal_pyramid_cuda_2026-08-09/`
+from archive SHA-256
+`419F26034B7FA13995025808901C58BFCD23A049414B7D94DEE572B88B76D8C7`.
+
+The parameter-matched ordered temporal pyramid reaches `76.193%` at 256 hidden
+neurons and `80.065%` at 512. These are paired gains of `+23.910` and `+19.287`
+points over global pooling. Every seed clears the registered practical gate.
+At 512 neurons the ordered model exceeds the parameter-identical fixed-shuffle
+control by `+6.257` points, with every seed gaining more than five points.
+
+The fixed shuffle itself reaches `73.807%`, `+13.030` points over global. Since
+the permutation is fixed across examples, it preserves position-specific
+information while disrupting natural chronology and local recurrent
+continuity. The combined evidence says time-resolved features provide most of
+the gain, with an additional robust chronology-sensitive component.
+
+The result is not caused by extra capacity or unstable dynamics: the 512
+pyramid uses `99.38%` of global effective parameters, lowers event rate from
+`14.00%` to `13.16%`, lowers LTW movement and saturation, and costs only about
+9% inference throughput. This is the project's strongest SHD result, but
+`80.065%` remains below strong published systems and does not justify
+state-of-the-art claims.
+
+Decision: do not tune pyramid resolution yet. First isolate whether recurrence
+and the sparse reservoir add value beyond a parameter-matched temporal decoder
+on raw events.
+
+## 2026-08-09 - Phase 37 SHD temporal-control decomposition generated
+
+Decision: compare five paired 512-neuron or matched-budget arms: event-count
+MLP, raw-event temporal pyramid, global AMMC, feedforward AMMC temporal pyramid
+with recurrent edges disabled, and recurrent AMMC temporal pyramid.
+
+Recurrence gate: recurrent pyramid must beat feedforward pyramid by at least
+`+3` mean points with at least two seeds gaining `+2` points. Reservoir gate:
+recurrent pyramid must beat the matched raw temporal model by at least `+2`
+mean points with at least two seeds gaining `+1` point. If raw temporal matches
+or wins, Phase 36 is primarily a readout result and the recurrent core must be
+redesigned before further scaling. Activity and LTW saturation must remain
+stable.

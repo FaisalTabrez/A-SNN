@@ -148,6 +148,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares 256- and 512-neuron global versus pyramid readouts
    - includes a parameter-identical fixed time-shuffle causal control
 
+37. SHD temporal-control decomposition
+   - compares count-only and parameter-matched raw temporal baselines
+   - disables recurrent AMMC edges while preserving sensor projections
+   - measures the paired recurrence gain under the winning pyramid readout
+   - gates further AMMC optimization on value beyond the temporal decoder
+
 ## Quick smoke test
 
 From the repo root:
