@@ -3985,6 +3985,55 @@ Decision: retain MLP decoding and 256 hidden neurons as the new SHD baseline.
 Retire delays from the next optimization phase. Validate scaling and locate the
 capacity/efficiency knee before adding new biological mechanisms.
 
+## 2026-08-09 - Phase 34 SHD capacity-scaling result
+
+Evidence retained at `gen5/outputs/shd_capacity_cuda_2026-08-09/` from archive
+SHA-256
+`B6ABF47978285467E8F77108733D390AFFB7666B91D9D5F8C2AA56771D34C794`.
+
+Core no-delay results:
+
+- 128 neurons: `42.624%`, 36,688 effective parameters, event rate `35.07%`.
+- 192 neurons: `48.837%`, a `+6.213` point gain.
+- 256 neurons: `51.929%`, a `+9.305` point gain; all seeds improve and two
+  clear the registered `+8` point primary gate.
+- 384 neurons: `57.759%`, a `+5.830` point gain over 256.
+- 512 neurons: `60.615%`, a `+8.687` point gain over 256; all seeds clear the
+  `+2` point secondary gate.
+
+Mechanistic finding: width robustly improves accuracy and lowers hidden event
+rate from `35.07%` at 128 neurons to `14.00%` at 512, while LTW movement and
+saturation remain stable. But accuracy per thousand effective parameters falls
+monotonically from `0.01162` to `0.00444`; width is an accuracy lever, not an
+efficiency improvement. The 256-neuron no-delay model matches the 51.914%
+event-count MLP with 24% fewer effective parameters, while 384 and 512 exceed
+it with more parameters.
+
+Unexpected delay interaction: the 256-neuron distance-delay arm reaches
+`54.682%`, `+2.753` points over no delay. All seeds improve, but paired gains
+are uneven (`+1.634`, `+6.581`, `+0.044`). Delays add roughly 55% training time
+and reduce inference throughput by about one third.
+
+Goal sanity check: AMMC now shows robust sparse-capacity scaling and beats the
+count control, but 60.6% remains noncompetitive and parameter efficiency
+declines. More width alone is not the endpoint. The apparent width-dependent
+delay gain needs factorial replication before it can revise the prior delay
+conclusion.
+
+## 2026-08-09 - Phase 35 SHD capacity-delay interaction generated
+
+Decision: test 256 and 512 hidden neurons under four paired timing patterns:
+no delay, uniform recurrent delay one, heterogeneous hash delays 0-2, and
+heterogeneous distance delays 0-2. Each scale/pattern retains identical graph,
+initial LTWs, MLP readout, optimizer schedule, data, and seed.
+
+Pass gate for a heterogeneous pattern: at least `+2` mean points versus paired
+no delay, at least two seeds gain `+1` point, event rate remains within
+`[0.5x, 2.0x]`, and LTW saturation remains stable. Uniform delay one is the
+generic-slowing control. A heterogeneous pass at both widths establishes a
+capacity-delay interaction; a one-width or one-seed effect is treated as
+unstable and the next phase moves to temporal encoder redesign.
+
 ## 2026-08-09 - Phase 34 SHD capacity-scaling experiment generated
 
 Decision: run paired no-delay MLP reservoirs at 128, 192, 256, 384, and 512

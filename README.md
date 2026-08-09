@@ -384,6 +384,24 @@ delay arm is a paired 256-neuron falsification control; the remaining scales
 measure accuracy, activity, parameter efficiency, and throughput without delay
 overhead.
 
+Test whether heterogeneous delays interact reproducibly with hidden capacity:
+
+```python
+!python gen5/examples/sprint35_shd_delay_interaction.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --hidden-neuron-counts 256 512 \
+  --timesteps 64 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_delay_interaction_cuda
+```
+
+At each width, this runs paired no-delay, uniform-delay, hash-heterogeneous,
+and distance-heterogeneous arms. A heterogeneous pattern must gain at least two
+mean points with at least two one-point seed gains and stable dynamics to pass.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
