@@ -364,6 +364,26 @@ This registered diagnostic separates four hypotheses: linear-readout
 underfitting, delay transfer under an MLP readout, insufficient hidden capacity,
 and excessive firing activity. It reuses the cached official SHD tensors.
 
+Validate the no-delay capacity curve and locate its efficiency knee:
+
+```python
+!python gen5/examples/sprint34_shd_capacity_scaling.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --hidden-neuron-counts 128 192 256 384 512 \
+  --delay-anchor 256 \
+  --timesteps 64 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_capacity_cuda
+```
+
+The primary comparison is no-delay 256 versus no-delay 128 neurons. The sole
+delay arm is a paired 256-neuron falsification control; the remaining scales
+measure accuracy, activity, parameter efficiency, and throughput without delay
+overhead.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

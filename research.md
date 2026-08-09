@@ -3947,3 +3947,55 @@ decoding, `+1` point for delay transfer under MLP, `+3` points for capacity,
 and `+2` points for activity control with a materially lower event rate. The
 winner, if any, becomes the registered SHD baseline; otherwise the next step is
 a redesigned temporal encoder rather than larger reservoirs.
+
+## 2026-08-09 - Phase 33 SHD representation result
+
+Evidence retained at `gen5/outputs/shd_representation_cuda_2026-08-09/` from
+archive SHA-256
+`A36329DB52A5526CF9A0393574EF4B2F8F31453EE9256C3BC9CAB3E2D17B916B`.
+This result corresponds to the repository's Phase 32 diagnostic runner and the
+project's externally numbered Phase 33 result.
+
+Core results:
+
+- Sparse 128 linear no delay: `36.278%`.
+- Sparse 128 MLP no delay: `42.535%`, a `+6.257` point decoder gain; all three
+  seeds clear the registered `+3` point gate.
+- Sparse 128 MLP distance delays: `42.609%`, only `+0.074` points over paired
+  MLP no delay. Delays fail again.
+- Sparse 256 MLP distance delays: `54.711%`, a `+12.102` point capacity gain;
+  all three seeds clear the `+3` point gate.
+- Sparse 128 threshold 1.5: `44.405%`, a directional `+1.796` point gain that
+  misses the `+2` point gate.
+- Event-count MLP: `51.914%` with 92,308 parameters. The 256-neuron sparse arm
+  exceeds it by `2.80` points with 69,968 effective parameters.
+
+Mechanistic finding: both readout nonlinearity and hidden width are genuine
+bottlenecks. Width is dominant. The 256-neuron graph also lowers event rate to
+`23.59%` from `35.46%`, moves LTWs by only `~0.022`, and keeps upper saturation
+below `0.4%`. The fixed-delay effect remains negligible under the MLP decoder,
+so delays cannot explain the wider model's gain.
+
+Goal sanity check: this is positive evidence for sparse recurrent temporal
+representation rather than a universal delay mechanism. The model now beats a
+count-based MLP control with fewer effective parameters, but `54.71%` is not a
+competitive SHD result and does not support state-of-the-art claims.
+
+Decision: retain MLP decoding and 256 hidden neurons as the new SHD baseline.
+Retire delays from the next optimization phase. Validate scaling and locate the
+capacity/efficiency knee before adding new biological mechanisms.
+
+## 2026-08-09 - Phase 34 SHD capacity-scaling experiment generated
+
+Decision: run paired no-delay MLP reservoirs at 128, 192, 256, 384, and 512
+hidden neurons, plus the event-count MLP reference and one 256-neuron fixed-delay
+comparator. All scales retain one sensor projection per channel, four recurrent
+edges per hidden neuron, the same optimizer schedule, and the same three seeds.
+
+Primary gate: the no-delay 256-neuron arm must improve by at least `+8` points
+over no-delay 128 neurons across at least two seeds, confirming that Phase 33
+was not a delay interaction. Secondary gate: 384 or 512 neurons must add at
+least `+2` points over 256 across two seeds to justify further width. The runner
+reports accuracy per 1,000 effective parameters, activity, LTW saturation, and
+throughput to identify the useful scaling knee. The 256 delay comparator keeps
+the universal-delay hypothesis falsifiable without expanding delay tuning.
