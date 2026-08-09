@@ -40,6 +40,15 @@ MODEL_NAMES = (
     "frozen_ammc_mlp",
 )
 
+DECOMPOSITION_FEATURES = (
+    "raw_intensity",
+    "flattened_latency",
+    "sensor_trace",
+    "hidden_trace",
+    "full_trace",
+    "raw_plus_hidden",
+)
+
 
 def _require_torch() -> None:
     if torch is None:
@@ -115,6 +124,44 @@ class EventMNISTResult:
         if plot:
             plot_path = output / "event_mnist_summary.png"
             plot_event_mnist_result(self.summary, plot_path)
+            paths["plot"] = str(plot_path)
+        return paths
+
+
+@dataclass
+class EventMNISTDecompositionResult:
+    """Feature-level decomposition records for Phase 19."""
+
+    config: EventMNISTConfig
+    device: str
+    active_edges: int
+    records: list[dict]
+    summary: list[dict]
+
+    def save(self, output_dir: str | pathlib.Path, *, plot: bool = True) -> dict[str, str]:
+        output = pathlib.Path(output_dir)
+        output.mkdir(parents=True, exist_ok=True)
+        json_path = output / "event_mnist_decomposition.json"
+        records_path = output / "event_mnist_decomposition_records.csv"
+        summary_path = output / "event_mnist_decomposition_summary.csv"
+        payload = {
+            "config": asdict(self.config),
+            "device": self.device,
+            "active_edges": self.active_edges,
+            "records": self.records,
+            "summary": self.summary,
+        }
+        json_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        _write_csv(records_path, self.records)
+        _write_csv(summary_path, self.summary)
+        paths = {
+            "json": str(json_path),
+            "records_csv": str(records_path),
+            "summary_csv": str(summary_path),
+        }
+        if plot:
+            plot_path = output / "event_mnist_decomposition_summary.png"
+            plot_event_mnist_decomposition(self.summary, plot_path)
             paths["plot"] = str(plot_path)
         return paths
 
@@ -225,6 +272,24 @@ class FrozenEventReservoir(nn.Module):
         return self.graph.active_edge_count
 
     def forward(self, pixels):  # type: ignore[override]
+        spike_counts, membrane = self._simulate(pixels)
+        return torch.cat((spike_counts / self.config.timesteps, membrane), dim=1)
+
+    def trace_components(self, pixels) -> dict[str, object]:
+        """Return sensor, hidden, and full frozen traces without changing state."""
+
+        spike_counts, membrane = self._simulate(pixels)
+        normalized = spike_counts / self.config.timesteps
+        split = self.config.sensor_neurons
+        sensor_trace = torch.cat((normalized[:, :split], membrane[:, :split]), dim=1)
+        hidden_trace = torch.cat((normalized[:, split:], membrane[:, split:]), dim=1)
+        return {
+            "sensor_trace": sensor_trace,
+            "hidden_trace": hidden_trace,
+            "full_trace": torch.cat((normalized, membrane), dim=1),
+        }
+
+    def _simulate(self, pixels):
         events = latency_encode(pixels, self.config.timesteps, self.config.event_threshold)
         batch = pixels.shape[0]
         membrane = pixels.new_zeros((batch, self.config.neuron_count))
@@ -237,7 +302,7 @@ class FrozenEventReservoir(nn.Module):
             spikes = (membrane >= self.config.reservoir_threshold).to(membrane.dtype)
             membrane = membrane - spikes * self.config.reservoir_threshold
             spike_counts = spike_counts + spikes
-        return torch.cat((spike_counts / self.config.timesteps, membrane), dim=1)
+        return spike_counts, membrane
 
 
 class _Classifier(nn.Module):
@@ -323,6 +388,112 @@ def run_event_mnist(config: EventMNISTConfig, *, device="auto") -> EventMNISTRes
     )
 
 
+def run_event_mnist_decomposition(
+    config: EventMNISTConfig,
+    *,
+    device="auto",
+) -> EventMNISTDecompositionResult:
+    """Locate information loss across raw, event, sensor, and hidden features."""
+
+    _require_torch()
+    _validate_config(config)
+    resolved = resolve_device(device)
+    train_pixels, train_labels, test_pixels, test_labels = load_mnist_tensors(config)
+    total_examples = train_pixels.shape[0] + test_pixels.shape[0]
+    latency_start = time.perf_counter()
+    train_latency = _extract_latency_features(train_pixels, config, config.batch_size, resolved)
+    test_latency = _extract_latency_features(test_pixels, config, config.batch_size, resolved)
+    sync(resolved)
+    latency_seconds = time.perf_counter() - latency_start
+    sensor_start = time.perf_counter()
+    train_sensor = _extract_sensor_trace(train_pixels, config, config.batch_size, resolved)
+    test_sensor = _extract_sensor_trace(test_pixels, config, config.batch_size, resolved)
+    sync(resolved)
+    sensor_seconds = time.perf_counter() - sensor_start
+    records: list[dict] = []
+    expected_edges = config.sensor_neurons * config.sensor_fanout + config.hidden_neurons * config.recurrent_fanout
+    target_dim = config.neuron_count * 2
+
+    for seed in config.seeds:
+        seed_everything(seed, device=resolved)
+        reservoir = FrozenEventReservoir(config, seed=seed, device=resolved)
+        reservoir.eval()
+        feature_start = time.perf_counter()
+        train_components = _extract_reservoir_components(reservoir, train_pixels, config.batch_size, resolved)
+        test_components = _extract_reservoir_components(reservoir, test_pixels, config.batch_size, resolved)
+        sync(resolved)
+        reservoir_seconds = time.perf_counter() - feature_start
+        train_components["raw_plus_hidden"] = torch.cat(
+            (train_pixels, train_components["hidden_trace"]), dim=1
+        )
+        test_components["raw_plus_hidden"] = torch.cat(
+            (test_pixels, test_components["hidden_trace"]), dim=1
+        )
+        hidden_rate = float(train_components["hidden_trace"][:, : config.hidden_neurons].mean().item())
+        feature_sets = {
+            "raw_intensity": (train_pixels, test_pixels, 0.0, 0),
+            "flattened_latency": (train_latency, test_latency, latency_seconds, 0),
+            "sensor_trace": (train_sensor, test_sensor, sensor_seconds, 0),
+            "hidden_trace": (
+                train_components["hidden_trace"],
+                test_components["hidden_trace"],
+                reservoir_seconds,
+                reservoir.active_edge_count,
+            ),
+            "full_trace": (
+                train_components["full_trace"],
+                test_components["full_trace"],
+                reservoir_seconds,
+                reservoir.active_edge_count,
+            ),
+            "raw_plus_hidden": (
+                train_components["raw_plus_hidden"],
+                test_components["raw_plus_hidden"],
+                reservoir_seconds,
+                reservoir.active_edge_count,
+            ),
+        }
+        for feature_index, feature_name in enumerate(DECOMPOSITION_FEATURES):
+            train_features, test_features, feature_seconds, active_edges = feature_sets[feature_name]
+            for classifier_index, classifier in enumerate(("linear", "mlp")):
+                hidden_units = 0
+                if classifier == "mlp":
+                    hidden_units = _matched_raw_hidden_units(
+                        train_features.shape[1],
+                        target_dim,
+                        config.readout_hidden_units,
+                    )
+                model_name = f"{feature_name}_{classifier}"
+                record = _fit_and_measure(
+                    model_name,
+                    classifier,
+                    train_features,
+                    train_labels,
+                    test_features,
+                    test_labels,
+                    config,
+                    seed,
+                    resolved,
+                    feature_seconds,
+                    active_edges,
+                    hidden_units,
+                    model_seed_offset=feature_index * 2 + classifier_index,
+                    hidden_spike_rate=hidden_rate if active_edges else 0.0,
+                )
+                record["feature"] = feature_name
+                record["classifier"] = classifier
+                record["total_feature_examples"] = int(total_examples)
+                records.append(record)
+
+    return EventMNISTDecompositionResult(
+        config=config,
+        device=device_kind(resolved),
+        active_edges=expected_edges,
+        records=records,
+        summary=summarize_event_mnist_decomposition(records),
+    )
+
+
 def load_mnist_tensors(config: EventMNISTConfig):
     """Load deterministic subsets from the official torchvision MNIST splits."""
 
@@ -386,6 +557,44 @@ def summarize_event_mnist_records(records: Iterable[dict]) -> list[dict]:
     return summary
 
 
+def summarize_event_mnist_decomposition(records: Iterable[dict]) -> list[dict]:
+    """Aggregate Phase 19 records by representation and classifier."""
+
+    grouped: dict[tuple[str, str], list[dict]] = {}
+    for row in records:
+        grouped.setdefault((str(row["feature"]), str(row["classifier"])), []).append(row)
+    summary: list[dict] = []
+    for feature in DECOMPOSITION_FEATURES:
+        for classifier in ("linear", "mlp"):
+            rows = grouped.get((feature, classifier), [])
+            if not rows:
+                continue
+            accuracy = [float(row["test_accuracy"]) for row in rows]
+            summary.append(
+                {
+                    "feature": feature,
+                    "classifier": classifier,
+                    "seeds": len(rows),
+                    "mean_test_accuracy": statistics.fmean(accuracy),
+                    "std_test_accuracy": statistics.pstdev(accuracy),
+                    "mean_train_accuracy": statistics.fmean(float(row["train_accuracy"]) for row in rows),
+                    "feature_dim": int(rows[0]["feature_dim"]),
+                    "trainable_parameters": int(rows[0]["trainable_parameters"]),
+                    "classifier_hidden_units": int(rows[0]["classifier_hidden_units"]),
+                    "frozen_active_edges": int(rows[0]["frozen_active_edges"]),
+                    "mean_hidden_spike_rate": statistics.fmean(
+                        float(row["mean_hidden_spike_rate"]) for row in rows
+                    ),
+                    "mean_feature_seconds": statistics.fmean(float(row["feature_seconds"]) for row in rows),
+                    "mean_feature_examples_per_second": statistics.fmean(
+                        float(row["feature_examples_per_second"]) for row in rows
+                    ),
+                    "mean_train_seconds": statistics.fmean(float(row["train_seconds"]) for row in rows),
+                }
+            )
+    return summary
+
+
 def plot_event_mnist_result(summary: list[dict], path: str | pathlib.Path) -> None:
     """Plot accuracy and trainable-parameter comparisons."""
 
@@ -405,6 +614,31 @@ def plot_event_mnist_result(summary: list[dict], path: str | pathlib.Path) -> No
     axes[1].set_ylabel("Trainable parameters")
     axes[1].set_yscale("log")
     figure.suptitle("AMMC Gen-5 Phase 18: Frozen Event-Coded MNIST")
+    figure.savefig(path, dpi=160)
+    plt.close(figure)
+
+
+def plot_event_mnist_decomposition(summary: list[dict], path: str | pathlib.Path) -> None:
+    """Render paired linear/MLP accuracy for every Phase 19 representation."""
+
+    import matplotlib.pyplot as plt
+
+    rows = {(row["feature"], row["classifier"]): row for row in summary}
+    features = [feature for feature in DECOMPOSITION_FEATURES if (feature, "linear") in rows]
+    positions = list(range(len(features)))
+    width = 0.38
+    linear = [100.0 * float(rows[(feature, "linear")]["mean_test_accuracy"]) for feature in features]
+    mlp = [100.0 * float(rows[(feature, "mlp")]["mean_test_accuracy"]) for feature in features]
+    linear_error = [100.0 * float(rows[(feature, "linear")]["std_test_accuracy"]) for feature in features]
+    mlp_error = [100.0 * float(rows[(feature, "mlp")]["std_test_accuracy"]) for feature in features]
+    figure, axis = plt.subplots(figsize=(14, 7), constrained_layout=True)
+    axis.bar([value - width / 2 for value in positions], linear, width, yerr=linear_error, capsize=4, label="linear")
+    axis.bar([value + width / 2 for value in positions], mlp, width, yerr=mlp_error, capsize=4, label="parameter-matched MLP")
+    axis.set_xticks(positions, [feature.replace("_", "\n") for feature in features])
+    axis.set_ylabel("Official test accuracy (%)")
+    axis.set_ylim(0, 100)
+    axis.set_title("AMMC Gen-5 Phase 19: Event Representation Decomposition")
+    axis.legend()
     figure.savefig(path, dpi=160)
     plt.close(figure)
 
@@ -451,6 +685,50 @@ def _extract_reservoir_features(reservoir, pixels, batch_size: int, device):
     return torch.cat(outputs, dim=0)
 
 
+def _extract_latency_features(pixels, config: EventMNISTConfig, batch_size: int, device):
+    outputs = []
+    with torch.no_grad():
+        for start in range(0, pixels.shape[0], batch_size):
+            batch = pixels[start : start + batch_size].to(device)
+            events = latency_encode(batch, config.timesteps, config.event_threshold)
+            outputs.append(events.permute(1, 0, 2).reshape(batch.shape[0], -1).cpu())
+            mark_step(device)
+    sync(device)
+    return torch.cat(outputs, dim=0)
+
+
+def _extract_sensor_trace(pixels, config: EventMNISTConfig, batch_size: int, device):
+    outputs = []
+    with torch.no_grad():
+        for start in range(0, pixels.shape[0], batch_size):
+            batch = pixels[start : start + batch_size].to(device)
+            events = latency_encode(batch, config.timesteps, config.event_threshold)
+            membrane = torch.zeros_like(batch)
+            counts = torch.zeros_like(batch)
+            for step in range(config.timesteps):
+                membrane = membrane * config.reservoir_leak + events[step] * config.input_gain
+                spikes = (membrane >= config.reservoir_threshold).to(membrane.dtype)
+                membrane = membrane - spikes * config.reservoir_threshold
+                counts = counts + spikes
+            outputs.append(torch.cat((counts / config.timesteps, membrane), dim=1).cpu())
+            mark_step(device)
+    sync(device)
+    return torch.cat(outputs, dim=0)
+
+
+def _extract_reservoir_components(reservoir, pixels, batch_size: int, device):
+    outputs: dict[str, list] = {"hidden_trace": [], "full_trace": []}
+    with torch.no_grad():
+        for start in range(0, pixels.shape[0], batch_size):
+            batch = pixels[start : start + batch_size].to(device)
+            components = reservoir.trace_components(batch)
+            for name in outputs:
+                outputs[name].append(components[name].cpu())
+            mark_step(device)
+    sync(device)
+    return {name: torch.cat(chunks, dim=0) for name, chunks in outputs.items()}
+
+
 def _fit_and_measure(
     model_name,
     kind,
@@ -464,8 +742,13 @@ def _fit_and_measure(
     feature_seconds,
     frozen_active_edges,
     hidden_units,
+    *,
+    model_seed_offset=None,
+    hidden_spike_rate=None,
 ):
-    seed_everything(seed + MODEL_NAMES.index(model_name) * 10_000, device=device)
+    if model_seed_offset is None:
+        model_seed_offset = MODEL_NAMES.index(model_name)
+    seed_everything(seed + int(model_seed_offset) * 10_000, device=device)
     model = _Classifier(
         train_features.shape[1],
         kind=kind,
@@ -492,11 +775,14 @@ def _fit_and_measure(
     train_accuracy, _ = _measure_accuracy(model, train_features, train_labels, config.batch_size, device)
     test_accuracy, inference_seconds = _measure_accuracy(model, test_features, test_labels, config.batch_size, device)
     parameters = sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad)
-    hidden_spike_rate = 0.0
-    if model_name.startswith("frozen_"):
+    if hidden_spike_rate is None and model_name.startswith("frozen_"):
         hidden_spike_rate = float(
             train_features[:, config.sensor_neurons : config.neuron_count].mean().item()
         )
+    if hidden_spike_rate is None:
+        hidden_spike_rate = 0.0
+    total_feature_examples = int(train_features.shape[0] + test_features.shape[0])
+    feature_rate = total_feature_examples / feature_seconds if feature_seconds > 0 else 0.0
     return {
         "seed": int(seed),
         "model": model_name,
@@ -510,6 +796,7 @@ def _fit_and_measure(
         "train_accuracy": train_accuracy,
         "test_accuracy": test_accuracy,
         "feature_seconds": float(feature_seconds),
+        "feature_examples_per_second": float(feature_rate),
         "train_seconds": float(train_seconds),
         "inference_seconds": float(inference_seconds),
         "inference_examples_per_second": float(test_features.shape[0] / max(inference_seconds, 1e-12)),

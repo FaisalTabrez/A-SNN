@@ -2379,6 +2379,86 @@ Artifacts:
 - `gen5/docs/EVENT_MNIST.md`
 - `gen5/tests/test_event_mnist_contract.py`
 
+### 51. Phase 18 shows a representation deficit on MNIST
+
+Date: 2026-08-09
+
+Finding: the frozen event-coded AMMC reservoir underperformed both raw-input
+controls across all three seeds.
+
+| Model | Test accuracy | Parameters |
+|---|---:|---:|
+| Raw pixel linear | 85.94% | 650 |
+| Frozen AMMC linear | 79.31% | 2,570 |
+| Raw pixel MLP | 95.14% | 34,210 |
+| Frozen AMMC MLP | 86.11% | 34,186 |
+
+Paired deficits were `-6.63` percentage points for the linear comparison and
+`-9.03` points for the parameter-matched MLP comparison. Hidden neurons were
+not silent, but their mean spike rate was only `2.37%`.
+
+Interpretation:
+
+- The current event code plus random frozen reservoir degrades MNIST
+  information rather than improving it.
+- Scaling neuron count now would add compute without identifying the loss.
+- Readout-only throughput is not end-to-end AMMC throughput because reservoir
+  feature extraction is excluded.
+- Three seeds establish a consistent engineering signal but remain too few for
+  a publication-grade statistical claim.
+
+Decision:
+
+- Do not enable plasticity or scale topology yet.
+- Implement Phase 19 representation decomposition:
+  - raw intensities;
+  - flattened latency events;
+  - sensor trace;
+  - hidden trace;
+  - full sensor-plus-hidden trace;
+  - raw-plus-hidden residual features.
+- Train linear and parameter-budget-matched MLP heads on each representation.
+- Record end-to-end feature throughput and hidden spike rate.
+- Use the decomposition to choose the Phase 20 coding/dynamics intervention.
+
+Artifacts:
+
+- `gen5/outputs/event_mnist_cuda_2026-08-09/`
+- `gen5/outputs/event_mnist_cuda_2026-08-09/analysis.md`
+
+### 52. Phase 19 isolates event-coding and recurrent information loss
+
+Date: 2026-08-09
+
+Decision: preserve the Phase 18 dataset, topology, and frozen-weight contract,
+then decompose the representation instead of tuning multiple mechanisms at
+once.
+
+The runner compares raw intensity, flattened latency events, sensor trace,
+hidden trace, full trace, and raw-plus-hidden features. Every feature receives
+both a linear head and an approximately 34k-parameter MLP head.
+
+Rationale:
+
+- A latency deficit isolates temporal quantization as the first bottleneck.
+- A sensor-summary deficit isolates final-state pooling.
+- A hidden/full deficit isolates recurrent dynamics.
+- A raw-plus-hidden gain demonstrates complementary reservoir information and
+  motivates a residual sensor pathway.
+- If raw-plus-hidden also loses, the frozen random reservoir has not earned
+  further scale; Phase 20 must train/evolve or fundamentally recode it.
+
+Scientific boundary: this is a causal decomposition by controlled feature
+substitution, not a final MNIST performance run. Phase 19 reuses the same
+5,000-image official-test subset whose Phase 18 result motivated the design;
+it is therefore an engineering validation subset now. Reserve the unused
+5,000-image complement for confirmation after the intervention is fixed.
+
+Artifacts:
+
+- `gen5/examples/sprint19_event_representation_decomposition.py`
+- `gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

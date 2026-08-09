@@ -98,3 +98,22 @@ Download those four files, or zip the directory, after the run.
 
 Do not compare only against chance. MNIST is easy for conventional models, so
 the raw-pixel MLP is the minimum credible performance baseline.
+
+## First CUDA result
+
+The first three-seed run failed both representation decision rules:
+
+| Model | Mean test accuracy |
+|---|---:|
+| Raw pixel linear | 85.94% |
+| Frozen AMMC linear | 79.31% |
+| Raw pixel MLP | 95.14% |
+| Frozen AMMC MLP | 86.11% |
+
+The frozen reservoir was active at a mean hidden spike rate of `2.37%`, but it
+lost `6.63` percentage points against raw linear features and `9.03` points
+against the parameter-matched raw MLP. The next phase decomposes raw, event,
+sensor, and hidden representations before any topology scaling or plasticity.
+
+Full analysis:
+`gen5/outputs/event_mnist_cuda_2026-08-09/analysis.md`.

@@ -64,6 +64,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - matched raw-pixel and frozen-reservoir linear/MLP readouts
    - official test-split accuracy, parameter, and throughput reporting
 
+19. Event representation decomposition
+   - raw, latency, sensor, hidden, full, and residual feature comparisons
+   - linear and parameter-budget-matched MLP readouts
+   - explicit feature-generation throughput and hidden-spike diagnostics
+   - identifies the coding/dynamics bottleneck before topology scaling
+
 ## Quick smoke test
 
 From the repo root:

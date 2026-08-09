@@ -24,6 +24,7 @@ If you are new to the repo, read these in order:
 7. [Frozen embodied readout benchmark](gen5/docs/FROZEN_EMBODIED_ADAPTER.md)
 8. [Embodied action controls](gen5/docs/EMBODIED_ACTION_CONTROLS.md)
 9. [Frozen event-coded MNIST](gen5/docs/EVENT_MNIST.md)
+10. [Event representation decomposition](gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md)
 
 ## Repository map
 
@@ -133,6 +134,18 @@ Run the Phase 18 event-coded MNIST benchmark:
   --test-samples 5000 \
   --epochs 15 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_cuda
+```
+
+Diagnose the Phase 18 representation loss:
+
+```python
+!python gen5/examples/sprint19_event_representation_decomposition.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_decomposition_cuda
 ```
 
 ## Evidence discipline
