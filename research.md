@@ -4335,3 +4335,43 @@ least six positive pairs. Report between-topology and mean within-topology
 readout standard deviations. If neither sparse width passes, the temporal
 decoder remains the principal SHD contribution and sparse expansion is demoted
 to an initialization-sensitive auxiliary transform.
+
+## 2026-08-10 - Phase 42 SHD initialization robustness result
+
+Evidence retained at
+`gen5/outputs/shd_initialization_robustness_cuda_2026-08-10/` from archive
+SHA-256 `70AF5E4E662B195862063DFD68FC98893D975376BAF59C9230DAB6C5817A0394`.
+
+Across independent readout/optimizer seeds, raw temporal reaches `78.357%`,
+sparse 512 reaches `78.058%`, and sparse 1024 reaches `77.380%`. Sparse 512 has
+a paired `-0.299` point mean gain versus raw and wins only `3/9` pairs; sparse
+1024 has a `-0.977` point gain and also wins `3/9`. Both robust sparse gates
+fail. The 1024 model is `0.677` points worse than paired 512 and wins `4/9`, so
+the further-scaling gate fails too.
+
+Readout/optimizer initialization is the larger variance source. At width 512,
+mean within-topology readout standard deviation is `1.863` points versus
+`1.025` points between topology means. At 1024 these are `1.268` and `0.854`
+points. The best individual sparse result (`81.449%`) is therefore a selection
+outlier, not evidence of a stable architectural gain.
+
+Decision: demote the frozen sparse analog expansion to an
+initialization-sensitive auxiliary transform. The reproducible SHD contribution
+is the temporal pyramid decoder. Run one validation-selected checkpoint audit
+to test whether conventional overfitting explains the instability; if sparse
+still fails, freeze this branch and move to calibrated temporal baselines or a
+fundamentally new spiking formulation.
+
+## 2026-08-10 - Phase 43 SHD validation-selected checkpoint audit generated
+
+Decision: compare raw temporal and sparse-512 models using a fixed stratified
+10% validation split. Run three raw readout seeds and a `3 topology x 3 readout`
+sparse matrix. Train all models for 15 epochs, then report both final-epoch and
+best-validation checkpoints without consulting test accuracy.
+
+Final sparse gate: the validation-selected sparse checkpoint must beat its
+paired raw checkpoint by `+2` mean points with at least six positive pairs.
+Checkpointing should reduce sparse test standard deviation by at least 25%
+without reducing its mean by more than `0.5` points. Failure closes the current
+SHD sparse-expansion branch; passing would identify overfitting rather than the
+transform itself as the primary weakness.

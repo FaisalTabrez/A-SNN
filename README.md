@@ -555,6 +555,26 @@ This runs three raw readout seeds and a 3x3 topology/readout seed matrix for
 both 512 and 1024 sparse nodes, explicitly reseeding the final readout after
 topology construction.
 
+Phase 42 found no robust sparse advantage. Run the final validation-selected
+audit before freezing the SHD sparse branch:
+
+```python
+!python gen5/examples/sprint43_shd_validation_checkpoint.py \
+  --device cuda \
+  --topology-seeds 42 43 44 \
+  --readout-seeds 142 143 144 \
+  --validation-fraction 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_validation_checkpoint_cuda
+```
+
+The runner uses a fixed stratified validation split and reports both final-epoch
+and best-validation test accuracy. Sparse topology and LTWs remain frozen.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
