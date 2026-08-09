@@ -4034,6 +4034,47 @@ generic-slowing control. A heterogeneous pass at both widths establishes a
 capacity-delay interaction; a one-width or one-seed effect is treated as
 unstable and the next phase moves to temporal encoder redesign.
 
+## 2026-08-09 - Phase 35 SHD capacity-delay interaction result
+
+Evidence retained at `gen5/outputs/shd_delay_interaction_cuda_2026-08-09/`
+from archive SHA-256
+`8452829B4AB6AF10DB51A3A49998C156914A5767756FC0ED117D799D4F1761FB`.
+
+At 256 neurons, uniform, hash 0-2, and distance 0-2 delays improve over the
+paired no-delay mean by `+2.532`, `+2.577`, and `+2.473` points respectively.
+The heterogeneous arms clear the registered single-width gate, but the nearly
+identical uniform-delay gain and concentration of improvement in seed 43 make
+the mechanism consistent with generic temporal slowing rather than uniquely
+heterogeneous polychronization.
+
+At 512 neurons, uniform, hash, and distance delays add only `+0.103`, `+0.324`,
+and `+0.427` points. No delayed arm has a seed gaining one point, so the
+registered cross-capacity hypothesis fails. Activity, LTW movement, and
+saturation stay stable; the negative result is not caused by firing collapse.
+Delayed inference is also roughly 40% slower at 512 neurons.
+
+The 512-neuron no-delay mean (`60.704%`) reproduces Phase 34 (`60.615%`) within
+`0.089` points. Decision: retain 512/no-delay as the reliable SHD baseline,
+stop delay tuning, and test whether preserving temporal order at the readout is
+the next useful lever. Accuracy remains far from competitive SHD systems, so
+the evidence does not support state-of-the-art claims.
+
+## 2026-08-09 - Phase 36 SHD temporal-pyramid experiment generated
+
+Decision: replace global spike averaging with a parameter-matched temporal
+pyramid over 1, 2, 4, and 8 contiguous windows while retaining final membrane
+state. A shared 32-dimensional projection keeps readout capacity close to the
+paired global MLP budget. Test global versus pyramid readouts at 256 and 512
+hidden neurons, plus a fixed time-shuffled pyramid at 512 neurons.
+
+Primary gate: the ordered 512-neuron pyramid must improve by at least `+3` mean
+accuracy points over the paired global readout, with at least two seeds gaining
+`+2` points and event rate remaining within `[0.5x, 2.0x]`. Causal timing gate:
+ordered pyramid must exceed the parameter-identical shuffled-time control by at
+least `+2` mean points across two seeds. Parameter counts must remain within
+`10%` of the global baseline. Passing only the first gate indicates richer
+summary features; passing both supports temporal-order-sensitive computation.
+
 ## 2026-08-09 - Phase 34 SHD capacity-scaling experiment generated
 
 Decision: run paired no-delay MLP reservoirs at 128, 192, 256, 384, and 512

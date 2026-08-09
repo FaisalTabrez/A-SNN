@@ -35,6 +35,7 @@ If you are new to the repo, read these in order:
 18. [Adaptive-neuron sequential ablation](gen5/docs/ADAPTIVE_SEQUENTIAL_MNIST.md)
 19. [Executable-delay sequential ablation](gen5/docs/DELAYED_SEQUENTIAL_MNIST.md)
 20. [Trainable delay assignment](gen5/docs/TRAINABLE_DELAYS_MNIST.md)
+21. [SHD temporal-pyramid readout](gen5/docs/SHD_TEMPORAL_PYRAMID.md)
 
 ## Repository map
 
@@ -80,8 +81,12 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Phase 29 produced the strongest conventional temporal-mechanism result so
   far: heterogeneous recurrent delays gained `+8.087` linear and `+7.593` MLP
   points across all seeds with the same sparse topology.
-- Current scientific step: Phase 30 learns per-edge delay assignments against
-  the winning fixed-distance control, then closes the MNIST diagnostic track.
+- Phase 34 established reproducible SHD capacity scaling to `60.615%` at 512
+  hidden neurons, though parameter efficiency declined with width.
+- Phase 35 reproduced the 512/no-delay baseline at `60.704%` and rejected a
+  robust cross-capacity delay effect; delays also cost roughly 40% throughput.
+- Current scientific step: Phase 36 tests a parameter-matched multi-scale
+  temporal readout with a fixed shuffled-time control.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -401,6 +406,27 @@ Test whether heterogeneous delays interact reproducibly with hidden capacity:
 At each width, this runs paired no-delay, uniform-delay, hash-heterogeneous,
 and distance-heterogeneous arms. A heterogeneous pattern must gain at least two
 mean points with at least two one-point seed gains and stable dynamics to pass.
+
+Phase 35 did not pass across widths. Test whether preserving temporal order at
+the readout is the missing bottleneck:
+
+```python
+!python gen5/examples/sprint36_shd_temporal_pyramid.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --projection-dim 32 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_temporal_pyramid_cuda
+```
+
+The pyramid arms preserve coarse timing at four scales while matching the
+global MLP's readout parameter budget. The 512-neuron shuffled-time arm has the
+same graph and decoder shape, so only ordered-over-shuffled improvement counts
+as evidence that natural SHD timing is causally useful.
 
 ## Evidence discipline
 

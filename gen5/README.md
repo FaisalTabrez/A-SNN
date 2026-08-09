@@ -136,6 +136,18 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - keeps the winning fixed-distance arm as the paired control
    - ends MNIST mechanism tuning before transfer to SHD
 
+31-35. SHD transfer, representation, capacity, and delay falsification
+   - uses the official Spiking Heidelberg Digits event streams
+   - establishes MLP decoding and hidden width as meaningful accuracy levers
+   - reproduces a `~60.7%` 512-neuron no-delay baseline
+   - rejects heterogeneous delays as a robust cross-capacity mechanism
+
+36. Parameter-matched SHD temporal pyramid
+   - pools hidden spikes over 1, 2, 4, and 8 contiguous temporal windows
+   - shares a compact projection and matches the global MLP parameter budget
+   - compares 256- and 512-neuron global versus pyramid readouts
+   - includes a parameter-identical fixed time-shuffle causal control
+
 ## Quick smoke test
 
 From the repo root:
