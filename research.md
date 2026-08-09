@@ -3804,3 +3804,61 @@ saturation. Pass gate: at least `+0.5` points over the paired fixed-distance
 control, two improved seeds, and stable dynamics. Regardless of outcome, Phase
 30 ends row-sequential MNIST tuning; Phase 31 begins SHD with the retained
 winner.
+
+## 2026-08-09 - Phase 30 trainable-delay result
+
+Evidence retained at
+`gen5/outputs/trainable_delays_mnist_cuda_2026-08-09/` from archive SHA-256
+`447E5512BAB6084E0E9B3D094D07343A2ECD821CEC72485F857DF685524E3EDB`.
+The run held the 272-edge graph, initial LTWs, readout dimensions, seeds, and
+training schedule fixed while adding 768 delay logits to learned arms.
+
+Core results:
+
+- Fixed distance 0-2: `54.053%` linear and `64.073%` MLP.
+- Soft distance initialization: `53.467%` linear and `64.013%` MLP, deficits
+  of `-0.587` and `-0.060` points.
+- Straight-through distance initialization: `54.307%` linear and `64.173%`
+  MLP, gains of only `+0.253` and `+0.100` points.
+- Soft flat initialization: `50.280%` linear and `57.993%` MLP, deficits of
+  `-3.773` and `-6.080` points.
+
+Mechanistic finding: the straight-through arm changed few assignments and
+provided only marginal, non-practical gains. Soft distance gates slightly
+degraded both readouts. Flat soft gates retained high entropy (`~1.06`),
+changed many assignments, and biased selected delays toward zero instead of
+recovering the balanced 0/1/2 structure. Event rates, LTW movement, and
+saturation remained stable, so this is an optimization failure rather than an
+activity collapse.
+
+Decision: Phase 30 fails the registered `+0.5` point mean-improvement gate.
+Reject the added delay logits and retain Phase 29's deterministic distance
+0/1/2 assignment. End row-sequential MNIST tuning.
+
+Goal sanity check: the evidence supports fixed heterogeneous temporal routing
+as a causal AMMC mechanism; it does not support the claim that learned delays
+are presently better or that AMMC is competitive with conventional MNIST
+models. The next experiment must test transfer on genuinely event-timed data.
+
+## 2026-08-09 - Phase 31 SHD transfer experiment generated
+
+Decision: move the retained fixed-distance delay mechanism to the Spiking
+Heidelberg Digits (SHD) benchmark. SHD provides 20 spoken-digit classes as
+event times over 700 cochlear channels, with 8,156 official training samples
+and 2,264 test samples. This makes temporal structure intrinsic to the data.
+
+The registered comparison uses identical sparse topology, initial LTWs,
+readout, seeds, and optimizer schedule for `sparse_no_delay_warm_all` and
+`sparse_distance012_warm_all`. Event-count linear and MLP arms deliberately
+discard event order and serve as timing-ablated controls. The sparse arms use
+one sensor edge per input channel, four recurrent edges per hidden neuron, a
+linear readout over accumulated spikes plus final membrane, five readout-only
+warmup epochs, and then conservative LTW training.
+
+Pass gate: fixed heterogeneous delays must improve paired no-delay accuracy by
+at least `+1.0` percentage point on average, improve at least two of three
+seeds, keep event rate within `[0.5x, 2.0x]`, and avoid material LTW
+saturation. A pass establishes cross-domain transfer and motivates stronger
+SHD baselines. A failure localizes the Phase 29 effect to the imposed MNIST row
+encoding and sends us back to temporal representation design rather than more
+delay tuning.

@@ -325,6 +325,28 @@ Optimize delay assignments without changing topology:
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/trainable_delays_mnist_cuda
 ```
 
+Transfer the retained fixed heterogeneous delays to the official Spiking
+Heidelberg Digits dataset:
+
+```python
+!pip -q install h5py
+!python gen5/examples/sprint31_shd_benchmark.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --timesteps 64 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_benchmark_cuda
+```
+
+The first run downloads and MD5-verifies the official `shd_train.h5.gz` and
+`shd_test.h5.gz` files, then caches deterministic 64-bin uint8 event tensors in
+`gen5_data/shd`. Later runs reuse that cache. A quick plumbing screen can use
+`--seeds 42 --train-samples 1000 --test-samples 500 --epochs 2`; it is not the
+registered result. Dataset specifications and licensing are maintained by the
+[Zenke Lab SHD resource](https://zenkelab.org/resources/spiking-heidelberg-datasets-shd/).
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
