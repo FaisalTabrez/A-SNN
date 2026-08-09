@@ -347,6 +347,23 @@ The first run downloads and MD5-verifies the official `shd_train.h5.gz` and
 registered result. Dataset specifications and licensing are maintained by the
 [Zenke Lab SHD resource](https://zenkelab.org/resources/spiking-heidelberg-datasets-shd/).
 
+Diagnose the sparse SHD representation after the fixed-delay transfer run:
+
+```python
+!python gen5/examples/sprint32_shd_representation.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --timesteps 64 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_representation_cuda
+```
+
+This registered diagnostic separates four hypotheses: linear-readout
+underfitting, delay transfer under an MLP readout, insufficient hidden capacity,
+and excessive firing activity. It reuses the cached official SHD tensors.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

@@ -130,6 +130,8 @@ class SHDSparseClassifier(nn.Module):
         delay_pattern: str,
         max_delay_steps: int,
         surrogate_slope: float,
+        readout_kind: str = "linear",
+        readout_hidden_units: int = 128,
         device,
     ) -> None:
         if torch is None:
@@ -168,7 +170,19 @@ class SHDSparseClassifier(nn.Module):
             max_delay_steps=max_delay_steps,
             seed=seed,
         )
-        self.readout = nn.Linear(config.hidden_neurons * 2, config.classes)
+        if readout_kind == "linear":
+            self.readout = nn.Linear(config.hidden_neurons * 2, config.classes)
+        elif readout_kind == "mlp":
+            if readout_hidden_units <= 0:
+                raise ValueError("readout_hidden_units must be positive")
+            self.readout = nn.Sequential(
+                nn.Linear(config.hidden_neurons * 2, readout_hidden_units),
+                nn.ReLU(),
+                nn.Linear(readout_hidden_units, config.classes),
+            )
+        else:
+            raise ValueError(f"unsupported sparse readout: {readout_kind}")
+        self.readout_kind = str(readout_kind)
 
     @property
     def active_edge_count(self) -> int:

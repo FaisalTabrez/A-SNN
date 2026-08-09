@@ -3893,3 +3893,57 @@ screen evidence. Run the registered full matrix on all 8,156/2,264 examples,
 three seeds, 15 epochs, and all four arms. A passing delay arm leads to
 capacity-matched published SHD baselines; a near-chance sparse failure with
 successful count controls leads to a temporal-representation diagnostic.
+
+## 2026-08-09 - Phase 31 full SHD transfer result
+
+Evidence retained at `gen5/outputs/shd_benchmark_cuda_2026-08-09/` from
+archive SHA-256
+`698E42533E42C251ECBD8F38399C0527AA05F17DE7F68A6363B9C0D64985CFAE`.
+This is the registered full run: all 8,156/2,264 official examples, seeds
+42-44, 15 epochs, five warmup epochs, and all four arms. Although the uploaded
+request calls it Phase 32, this result scientifically closes Phase 31.
+
+Core results:
+
+- Event-count linear: `47.350%` test accuracy.
+- Event-count MLP: `51.914%`.
+- Sparse no delay: `36.204%`.
+- Sparse fixed distance 0-2: `36.425%`, only `+0.221` points versus no delay.
+- Per-seed delay gains were `+0.398`, `+0.309`, and `-0.044` points. Two seeds
+  improved, but none reached the registered `+1.0` practical threshold.
+
+Mechanistic finding: preprocessing is learnable because both event-count
+controls perform far above 5% chance. The sparse model underfits, trailing the
+count-linear control by `11.15` points and count-MLP by `15.71` points. Event
+rates remain high but stable near `0.36-0.37`; the delay/no-delay rate ratio is
+`1.002x`. LTW movement is `~0.056`, lower saturation is `~0.1%`, and upper
+saturation is only `3.0-3.4%`. The failure is representational, not a dead
+network, broken optimizer, or data-pipeline failure. Delays also add roughly
+57% training time and reduce inference throughput by about one third.
+
+Decision: Phase 31 fails the fixed-delay cross-domain gate. Preserve Phase 29
+as a valid task-specific causal result, but reject any universal-delay claim.
+Do not tune delay logits or delay patterns next.
+
+Goal sanity check: AMMC remains interesting as a compact continuous-time sparse
+framework, but current evidence does not support SHD competitiveness. The next
+experiment must locate the 11-16 point representation gap before comparison
+with published SHD systems.
+
+## 2026-08-09 - Phase 32 SHD representation diagnostic generated
+
+Decision: decompose the SHD gap with a registered diagnostic rather than a
+leaderboard attempt. Phase 32 retains the event-count controls and tests:
+
+- linear versus MLP decoding of the same 128-neuron no-delay representation;
+- paired no-delay versus fixed-distance delays under the stronger MLP decoder;
+- 128 versus 256 hidden neurons under the same MLP/delay configuration;
+- a higher firing threshold (`1.5`) to test whether the observed `~36%` event
+  rate is washing out temporal selectivity.
+
+The topology remains fixed within each paired comparison and LTWs retain the
+same warmup/training schedule. Diagnostic gates are `+3` points for nonlinear
+decoding, `+1` point for delay transfer under MLP, `+3` points for capacity,
+and `+2` points for activity control with a materially lower event rate. The
+winner, if any, becomes the registered SHD baseline; otherwise the next step is
+a redesigned temporal encoder rather than larger reservoirs.
