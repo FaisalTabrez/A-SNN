@@ -2534,6 +2534,80 @@ Artifacts:
 - `gen5/examples/sprint20_temporal_state_mnist.py`
 - `gen5/docs/TEMPORAL_STATE_MNIST.md`
 
+### 55. Phase 20 validates temporal AMMC state but not broad project claims
+
+Date: 2026-08-09
+
+Finding: preserving all pre-reset temporal states raises frozen AMMC linear
+accuracy to `91.52%`, compared with `79.40%` for the final summary, `88.11%`
+for flattened latency, and `85.94%` for raw pixels. The temporal gain is stable
+across all three seeds.
+
+The parameter-matched raw MLP remains the strongest model at `95.14%`; full
+temporal AMMC reaches `92.43%`. Hidden temporal state alone does not reliably
+beat sensor temporal state, though their combination clearly helps a linear
+readout.
+
+Sanity check:
+
+- Supported: sparse temporal expansion can improve linear separability.
+- Not yet tested: MNIST LTW learning, structural plasticity, continuous
+  learning, retention, and astrocyte modulation.
+- Not demonstrated: parameter/memory efficiency or superiority to dense ML.
+- Unsupported: Transformer replacement or best-SNN claims.
+
+Decision:
+
+- Adopt time-preserving traces as the default sequential AMMC interface.
+- Implement Phase 21 fixed-topology LTW training with surrogate spike
+  gradients.
+- Compare raw, frozen-temporal, and LTW-trained temporal linear/MLP groups.
+- Record end-to-end cost, LTW displacement, event rate, and fixed edge count.
+- Allow structural plasticity in Phase 22 only if LTW training improves the
+  frozen substrate without activity collapse.
+
+Artifacts:
+
+- `gen5/outputs/event_mnist_temporal_cuda_2026-08-09/`
+- `gen5/outputs/event_mnist_temporal_cuda_2026-08-09/analysis.md`
+
+### 56. Phase 21 isolates LTW learning before topology learning
+
+Date: 2026-08-09
+
+Decision: train only the active long-term synaptic weights and task readout
+while holding the sparse source/target topology fixed. STW remains zero and
+inactive capacity slots remain inactive.
+
+Rationale:
+
+- Phase 20 established that time-preserving state is useful, so the next
+  unresolved variable is the quality of the sparse dynamics.
+- Adding sprouting and pruning now would confound weight learning, topology
+  search, and event-rate stability.
+- Hard forward spikes with a surrogate derivative provide a direct test of
+  whether supervised signal reaches the fixed sparse LTWs.
+
+Controls and diagnostics:
+
+- matched raw, frozen-temporal, and LTW-trained temporal linear/MLP groups;
+- active edge count and both physical optimizer versus effective active
+  parameter counts;
+- hidden event rate, mean LTW, and mean absolute LTW change;
+- training time and end-to-end inference throughput.
+
+Gate for Phase 22: introduce structural mutation only when trained LTWs beat
+their paired frozen controls across seeds without hidden activity collapsing.
+Otherwise diagnose learning rate, surrogate slope, recurrence, and gradient
+flow first.
+
+Artifacts:
+
+- `gen5/ammc_gen5/trainable_temporal_mnist.py`
+- `gen5/examples/sprint21_trainable_temporal_mnist.py`
+- `gen5/docs/TRAINABLE_TEMPORAL_MNIST.md`
+- `gen5/tests/test_trainable_temporal_mnist_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

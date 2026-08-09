@@ -76,6 +76,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - preserves frozen topology so pooling and recurrence remain separable
    - determines whether Phase 21 should train dynamics or retain a temporal path
 
+21. Fixed-topology LTW training
+   - keeps the sparse edge list fixed and STW at zero
+   - trains active LTWs through hard spikes with surrogate gradients
+   - compares raw, frozen-temporal, and trained-temporal linear/MLP groups
+   - gates structural-plasticity work on a paired improvement without activity collapse
+
 ## Quick smoke test
 
 From the repo root:

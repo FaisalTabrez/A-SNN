@@ -26,6 +26,7 @@ If you are new to the repo, read these in order:
 9. [Frozen event-coded MNIST](gen5/docs/EVENT_MNIST.md)
 10. [Event representation decomposition](gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md)
 11. [Temporal-state MNIST](gen5/docs/TEMPORAL_STATE_MNIST.md)
+12. [Fixed-topology LTW training](gen5/docs/TRAINABLE_TEMPORAL_MNIST.md)
 
 ## Repository map
 
@@ -52,8 +53,9 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Default raw-survival baseline: `low_ltw_pruning`, `32` neurons.
 - Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
 - Phase 17 activity-matched controls validate frozen-trace action decoding.
-- Current scientific step: Phase 18 frozen event-coded MNIST, compared against
-  raw-pixel linear and MLP controls.
+- Phase 20 established that full temporal AMMC state is informative.
+- Current scientific step: Phase 21 fixed-topology LTW training, compared
+  against raw-pixel and frozen-temporal linear/MLP controls.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -159,6 +161,18 @@ Preserve the full temporal neuron state:
   --test-samples 5000 \
   --epochs 15 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/event_mnist_temporal_cuda
+```
+
+Train active LTWs while keeping the sparse topology fixed:
+
+```python
+!python gen5/examples/sprint21_trainable_temporal_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/trainable_temporal_mnist_cuda
 ```
 
 ## Evidence discipline

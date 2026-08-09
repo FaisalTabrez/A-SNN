@@ -63,3 +63,17 @@ Expected outputs:
 
 The reused 5,000-image subset is an engineering validation set. Do not inspect
 the unused 5,000-image official-test complement until the intervention is fixed.
+
+## First CUDA result
+
+Temporal preservation succeeds decisively. Full temporal state reaches
+`91.52%` with a linear head, compared with `79.40%` for the final summary and
+`85.94%` for raw pixels. The gain is positive for every seed.
+
+The parameter-matched raw MLP remains stronger (`95.14%` versus `92.43%`), and
+hidden temporal state alone does not reliably beat sensor temporal state. The
+next phase therefore trains LTWs within the same fixed 384-edge topology using
+surrogate gradients. Structural mutation remains gated on that result.
+
+Full analysis:
+`gen5/outputs/event_mnist_temporal_cuda_2026-08-09/analysis.md`.
