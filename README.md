@@ -22,6 +22,7 @@ If you are new to the repo, read these in order:
 5. [Phase 11 Colab runbook](gen5/docs/PHASE11_COLAB_RUNBOOK.md)
 6. [Harder bot-world benchmarks](gen5/docs/HARDER_WORLDS.md)
 7. [Frozen embodied readout benchmark](gen5/docs/FROZEN_EMBODIED_ADAPTER.md)
+8. [Embodied action controls](gen5/docs/EMBODIED_ACTION_CONTROLS.md)
 
 ## Repository map
 

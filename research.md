@@ -2241,6 +2241,54 @@ Implementation:
 - `gen5/docs/FROZEN_EMBODIED_ADAPTER.md`
 - `gen5/tests/test_sprint16_embodied_adapter_contract.py`
 
+### 48. Frozen embodied readout succeeds, but action coverage is confounded
+
+Date: 2026-08-09
+
+Finding: the complete Sprint 16 CUDA run evaluated three policies across three
+worlds, three sensor-noise levels, and five held-out seeds (135 runs total).
+
+Overall results:
+
+| Policy | Mean fitness | Positive runs | Survival | Cue-action coverage | Oracle agreement |
+|---|---:|---:|---:|---:|---:|
+| Augmented adapter | 1.857 | 45/45 | 66.52% | 100.00% | 64.78% |
+| Base adapter | 1.764 | 45/45 | 64.80% | 100.00% | 63.55% |
+| Fixed motor decoder | -2.807 | 14/45 | 45.57% | 5.18% | 39.22% |
+
+Interpretation:
+
+- Trained readouts reliably convert the frozen trace into positive-fitness
+  embodied behavior, including all `noise_std=0.15` evaluations.
+- The strongest gains occur in `moving_toxins`: augmented-minus-fixed mean
+  fitness is `+11.50`, `+12.92`, and `+9.57` across the three noise levels.
+- Oracle agreement improves substantially, so the result is not explained only
+  by movement frequency.
+- Nevertheless, action coverage is a severe confound. The adapters issue a
+  full-magnitude action on every cue-bearing step, whereas the fixed spiking
+  decoder is active on only about one step in twenty.
+- Augmentation does not consistently beat clean adapter training. Its overall
+  paired fitness advantage is `+0.094`, with 28/45 wins. The strongest evidence
+  for augmentation is in the gauntlet, not across all worlds.
+
+Decision:
+
+- Do not yet attribute the full fitness gain to AMMC reservoir computation.
+- Implement Sprint 17 activity-matched controls:
+  - fixed spiking decoder,
+  - normalized analog fixed-AMMC decoder,
+  - full-activity random cardinal policy,
+  - direct sensor oracle,
+  - base and augmented adapters.
+- Keep identical seeds, action magnitudes, worlds, and sensor-noise conditions.
+- Use the result to decide whether the next major task should be continuous
+  embodied state or MNIST/event-stream classification.
+
+Artifacts:
+
+- `gen5/outputs/frozen_embodied_adapter_cuda_2026-08-09/`
+- `gen5/outputs/frozen_embodied_adapter_cuda_2026-08-09/analysis.md`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

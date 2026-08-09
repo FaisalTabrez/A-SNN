@@ -236,6 +236,24 @@ an explicit food-attraction/toxin-repulsion oracle, so the experiment evaluates
 readout deployment rather than autonomous policy learning. See
 `gen5/docs/FROZEN_EMBODIED_ADAPTER.md`.
 
+## Sprint 17 activity-matched controls
+
+Resolve the Sprint 16 action-coverage confound with random, analog-AMMC, and
+direct-oracle controls:
+
+```powershell
+python gen5/examples/sprint17_embodied_action_controls.py `
+  --device cuda `
+  --worlds simple moving_toxins gauntlet `
+  --eval-seeds 43 44 45 46 47 `
+  --population-size 10000 `
+  --steps 480 `
+  --sensor-noise-stds 0.0 0.05 0.15 `
+  --output-dir gen5_outputs/embodied_action_controls_cuda
+```
+
+See `gen5/docs/EMBODIED_ACTION_CONTROLS.md` for interpretation rules.
+
 ### Plasticity ablation
 
 Run the static/full/gated plasticity comparison under an inverted food/toxin

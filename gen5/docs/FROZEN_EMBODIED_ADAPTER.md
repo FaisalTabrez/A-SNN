@@ -72,3 +72,21 @@ If both trained adapters fail similarly, the likely bottleneck is the mismatch
 between the synthetic trace distribution and continuously embodied AMMC state.
 If the base adapter fails but the augmented adapter succeeds, the earlier
 robustness result has transferred cleanly into physics.
+
+## First CUDA result
+
+The first full result is archived at
+`gen5/outputs/frozen_embodied_adapter_cuda_2026-08-09/`.
+
+- Both trained adapters were fitness-positive in all 45 held-out evaluations.
+- Mean fitness was `1.857` for the augmented adapter, `1.764` for the base
+  adapter, and `-2.807` for the fixed decoder.
+- The adapters achieved about `64%` oracle agreement versus `39%` for the fixed
+  decoder.
+- Action coverage was `100%` for both adapters but only `5.18%` for the fixed
+  decoder, so movement opportunity remains an important confound.
+- Augmentation was not consistently superior to clean training: it won 28/45
+  paired comparisons.
+
+Decision: run activity-matched random, analog-AMMC, and direct-oracle controls
+before attributing the full embodied gain to frozen-reservoir computation.
