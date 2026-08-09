@@ -33,6 +33,7 @@ If you are new to the repo, read these in order:
 16. [Sequential LTW training](gen5/docs/TRAINABLE_SEQUENTIAL_MNIST.md)
 17. [Targeted sequential synaptogenesis](gen5/docs/STRUCTURAL_SEQUENTIAL_MNIST.md)
 18. [Adaptive-neuron sequential ablation](gen5/docs/ADAPTIVE_SEQUENTIAL_MNIST.md)
+19. [Executable-delay sequential ablation](gen5/docs/DELAYED_SEQUENTIAL_MNIST.md)
 
 ## Repository map
 
@@ -72,9 +73,12 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Phase 27 rejected one-shot absolute-gradient sprouting: every guided arm
   lost to paired random growth on every seed, although peripheral pruning
   recovered part of the deficit without touching the recurrent core.
-- Current scientific step: Phase 28 freezes topology and tests fixed adaptive
-  thresholds at 25%, 50%, and 100% of hidden neurons against paired LIF
-  controls with identical readout and LTW schedules.
+- Phase 28 rejected the tested adaptive-threshold rule: accuracy declined as
+  adaptive coverage increased, with stable LTWs but progressively suppressed
+  event flow.
+- Current scientific step: Phase 29 makes serialized axonal delays executable
+  and compares uniform and heterogeneous recurrent delay buckets against
+  paired no-delay LIF controls.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -288,6 +292,19 @@ Test fixed adaptive thresholds on the proven sequential topology:
   --adaptation-decay 0.95 \
   --adaptation-strength 0.5 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/adaptive_sequential_mnist_cuda
+```
+
+Test executable recurrent delay buckets:
+
+```python
+!python gen5/examples/sprint29_delayed_sequential_mnist.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/delayed_sequential_mnist_cuda
 ```
 
 ## Evidence discipline

@@ -3571,16 +3571,16 @@ Validation:
 
 ## Next recommended steps
 
-1. Run Phase 28 adaptive-neuron ablation on row-sequential MNIST:
-   - freeze the proven 272-edge topology,
-   - compare 25%, 50%, and 100% fixed adaptive-threshold populations,
-   - retain paired LIF frozen and warm-LTW controls,
+1. Run Phase 29 executable-delay ablation on row-sequential MNIST:
+   - retain ordinary LIF after the Phase 28 adaptive-threshold failure,
+   - make stored `delay_steps` causal through fixed history buckets,
+   - compare uniform and heterogeneous recurrent delays with paired no-delay
+     frozen and warm-LTW controls,
    - require a paired `0.5`-point gain and two improved seeds.
-2. Add executable temporal delays after the adaptive-neuron gate:
-   - carry ALIF only if Phase 28 passes; otherwise retain ordinary LIF,
-   - implement static delay buckets with no topology changes,
-   - compare no-delay and fixed-delay arms before learnable delays,
-   - carry the winning mechanism to SHD, then SSC.
+2. Use the Phase 29 gate to end the row-sequential MNIST diagnostic track:
+   - if fixed delays pass, optimize delay assignment before changing topology,
+   - if they fail, do not tune more MNIST-specific mechanisms,
+   - move the winning ordinary-LIF or delayed-LIF baseline to SHD, then SSC.
 3. Run the Phase 11 benchmark suite on Colab TPU/XLA:
    - `--device xla` throughput,
    - `--device xla` multi-seed convergence,
@@ -3685,3 +3685,63 @@ Pass gate: at least `+0.5` accuracy points over the paired LIF control, at
 least two of three seeds improved, event rate within `[0.5x, 2.0x]` paired LIF,
 and no material LTW saturation. A pass carries adaptive neurons into fixed
 delay buckets. A failure carries ordinary LIF into the delay experiment.
+
+## 2026-08-09 - Phase 28 adaptive-neuron result
+
+Evidence retained at
+`gen5/outputs/adaptive_sequential_mnist_cuda_2026-08-09/` from archive SHA-256
+`CA3E12253AD3878C1BCE1637F49ABD7881980A746A3F776703BF2F7E2EF14761`.
+The run used the registered seeds 42-44, 20,000 train and 5,000
+engineering-validation samples, 64 hidden neurons, 272 active edges, 15
+epochs, ten warmup epochs, adaptation decay `0.95`, and strength `0.5`.
+
+Core results:
+
+- Frozen LIF: `43.853%` linear and `55.567%` MLP.
+- Frozen 50% ALIF: `43.533%` linear and `55.400%` MLP, paired deficits of
+  `-0.320` and `-0.167` points.
+- Warm LIF: `45.967%` linear and `56.373%` MLP.
+- Warm 25% ALIF: `45.360%` linear and `56.067%` MLP, deficits of `-0.607`
+  and `-0.307` points.
+- Warm 50% ALIF: `44.587%` linear and `55.980%` MLP, deficits of `-1.380`
+  and `-0.393` points.
+- Warm 100% ALIF: `43.467%` linear and `55.280%` MLP, deficits of `-2.500`
+  and `-1.093` points; all six paired seed/readout deltas were negative.
+
+Mechanistic finding: the tested adaptive rule progressively suppresses useful
+events. Relative to paired LIF, linear event rates fell from `0.943x` at 25%
+coverage to `0.852x` at 50% and `0.729x` at 100%; MLP rates fell from `0.953x`
+to `0.874x` and `0.770x`. Effective thresholds rose only to about `1.04-1.06`,
+LTW changes remained stable, and saturation stayed below `0.7%`. The frozen
+ALIF arm also lost, localizing the harm to dynamics rather than LTW optimizer
+instability.
+
+Decision: reject this fixed ALIF rule on the eight-step row task and do not
+tune adaptation strength or coverage here. This is not evidence against ALIF
+on longer speech or continual-learning sequences. It says only that suppressing
+spikes after recent activity does not improve this short final-state memory
+problem.
+
+Goal sanity check: the project still has positive causal evidence for sparse
+recurrence and durable LTW training, but conventional-task evidence does not
+yet support adaptive thresholds or structural growth. The correct objective is
+not to rescue every biological mechanism on MNIST. It is to identify which
+mechanisms survive controlled tests, then move them to intrinsically temporal
+benchmarks.
+
+## 2026-08-09 - Phase 29 executable-delay experiment generated
+
+Decision: retain ordinary LIF and make `DynamicSparseLinear.delay_steps`
+executable. Each recurrent edge now reads from a fixed source-state history
+bucket; delay zero reproduces the current forward path, while delays one and
+two access older row states. Sensor edges remain at delay zero.
+
+Paired arms compare no-delay frozen/warm controls with uniform recurrent delay
+one, deterministic heterogeneous delays 0-2, and a reproducible hidden-index
+distance proxy. Graph, initial LTWs, readout dimensions, seeds, and optimizer
+budget remain fixed.
+
+Pass gate: at least `+0.5` points over paired no-delay LIF, at least two of
+three seeds improved, event rate within `[0.5x, 2.0x]`, and no material LTW
+saturation. A pass permits delay-assignment optimization. A failure ends this
+MNIST diagnostic track and moves the retained LIF baseline to SHD.

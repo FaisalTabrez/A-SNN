@@ -78,12 +78,6 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
 
 21. Fixed-topology LTW training
    - keeps the sparse edge list fixed and STW at zero
-
-28. Adaptive-neuron sequential ablation
-   - keeps the proven 272-edge row-sequential topology fixed
-   - compares LIF with 25%, 50%, and 100% fixed adaptive-threshold neurons
-   - preserves identical readout dimensions and optimizer parameter counts
-   - gates the next executable-delay experiment on paired multi-seed evidence
    - trains active LTWs through hard spikes with surrogate gradients
    - compares raw, frozen-temporal, and trained-temporal linear/MLP groups
    - gates structural-plasticity work on a paired improvement without activity collapse
@@ -123,6 +117,18 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares top-16/top-48 growth against paired random 48-edge growth
    - permanently protects the original 272-edge recurrent graph
    - allows one conservative arm to prune only weak newly grown edges
+
+28. Adaptive-neuron sequential ablation
+   - keeps the proven 272-edge row-sequential topology fixed
+   - compares LIF with 25%, 50%, and 100% fixed adaptive-threshold neurons
+   - preserves identical readout dimensions and optimizer parameter counts
+   - gates the next executable-delay experiment on paired multi-seed evidence
+
+29. Executable axonal-delay ablation
+   - makes `DynamicSparseLinear.delay_steps` causal through history buckets
+   - preserves sensor timing while delaying only recurrent edges
+   - compares uniform and heterogeneous fixed-delay assignments
+   - decides whether to optimize delays or move the temporal benchmark to SHD
 
 ## Quick smoke test
 
