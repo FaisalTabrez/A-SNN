@@ -4291,3 +4291,47 @@ seeds. The best width must retain at least `+2` points over raw temporal.
 Connected hidden-node count, occupancy, fan-in, throughput, and fixed-budget
 ratios are reported to locate the useful width knee and distinguish capacity
 from topology coverage.
+
+## 2026-08-10 - Phase 41 fixed-budget sparse width result
+
+Evidence retained at `gen5/outputs/shd_sparse_width_cuda_2026-08-10/`
+from archive SHA-256
+`562E5813608B99ADB8EC54BB1C5A9ABDAE66B98F54C4A2DE5CE566B8B6E3A5FF`.
+
+At a fixed effective parameter target, 128, 256, 512, and 1024 sparse nodes
+reach `62.898%`, `74.823%`, `77.856%`, and `78.696%`; raw temporal reaches
+`77.959%`. The 512-versus-128 width gate passes by `+14.959` points across all
+seeds. The 1024-versus-512 gain is only `+0.839` points, so it misses the
+registered `+1` further-scaling gate despite all seeds improving.
+
+The best width gains only `+0.736` points over raw temporal, with just one seed
+gaining a point. The absolute sparse-advantage gate therefore fails. Occupancy
+falls from `99.7%` at width 128 to `50.2%` at 1024 while connected nodes rise
+from `127.7` to `513.7`; mean fan-in falls from `5.48` to `1.36`. Narrow models
+show high analog activity and severe information-collision loss.
+
+The 512-node mean also fails to reproduce Phase 40 (`77.856%` versus
+`81.140%`). The conceptual architecture and budget match, but Phase 41 replaces
+the readout after constructing the original one, changing its RNG position.
+This exposes initialization sensitivity that the original three-seed protocol
+did not separate from topology variance.
+
+Decision: width is genuinely important up to the sensor-coverage knee, but a
+stable advantage over the raw temporal decoder is not established. Do not tune
+width further. Factor topology seeds from readout/optimizer seeds and quantify
+both variance sources before retaining or abandoning the sparse transform.
+
+## 2026-08-10 - Phase 42 SHD initialization robustness generated
+
+Decision: run raw temporal at three readout seeds and sparse 512/1024 models on
+a `3 topology x 3 readout` seed matrix. The final readout is explicitly reseeded
+after graph construction, removing graph allocator and constructor RNG order as
+a confound. Optimizer batch order uses the readout seed.
+
+Robust sparse gate: a sparse width must beat its paired raw readout by `+2`
+mean points across the nine topology/readout pairs, with at least six positive
+pairs. Further-scaling gate: 1024 must beat paired 512 by `+1` point with at
+least six positive pairs. Report between-topology and mean within-topology
+readout standard deviations. If neither sparse width passes, the temporal
+decoder remains the principal SHD contribution and sparse expansion is demoted
+to an initialization-sensitive auxiliary transform.

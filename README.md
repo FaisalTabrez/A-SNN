@@ -534,6 +534,27 @@ Every sparse arm keeps 700 frozen sensor edges and the same total effective
 parameter target. The output reports connected-node occupancy and fan-in so
 width gains cannot be confused with simply allocating more parameters.
 
+Phase 41 found strong width scaling up to 512 nodes but did not reproduce the
+Phase 40 absolute advantage. Separate topology and readout/optimization seeds:
+
+```python
+!python gen5/examples/sprint42_shd_initialization_robustness.py \
+  --device cuda \
+  --topology-seeds 42 43 44 \
+  --readout-seeds 142 143 144 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_initialization_robustness_cuda
+```
+
+This runs three raw readout seeds and a 3x3 topology/readout seed matrix for
+both 512 and 1024 sparse nodes, explicitly reseeding the final readout after
+topology construction.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`
