@@ -513,6 +513,27 @@ a useful architecture or merely an allocation artifact:
 This compares dense LIF, dense analog feedforward/recurrent, and sparse analog
 instant/leaky models under the same effective parameter budget.
 
+Phase 40 identified sparse width plus temporal leak as the surviving mechanism.
+Run the fixed-budget width scaling experiment:
+
+```python
+!python gen5/examples/sprint41_shd_sparse_width.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --widths 128 256 512 1024 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --epochs 15 \
+  --warmup-epochs 5 \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/shd \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/shd_sparse_width_cuda
+```
+
+Every sparse arm keeps 700 frozen sensor edges and the same total effective
+parameter target. The output reports connected-node occupancy and fan-in so
+width gains cannot be confused with simply allocating more parameters.
+
 ## Evidence discipline
 
 Experiment outputs kept in the repository should live under `gen5/outputs/`

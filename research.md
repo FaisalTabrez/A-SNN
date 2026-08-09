@@ -4252,3 +4252,42 @@ seed gains. Leak gate: sparse leaky analog must exceed sparse instant analog by
 `+1` mean point with at least two positive seeds. It must also retain the
 `+2`-point raw-temporal gain. These controls determine whether the remaining
 effect belongs to analog dynamics, low-cost sparse width, or temporal leak.
+
+## 2026-08-10 - Phase 40 SHD analog/topology result
+
+Evidence retained at `gen5/outputs/shd_analog_topology_cuda_2026-08-10/`
+from archive SHA-256
+`EE66EB871400680B16803533061F296BDFF35C82F2B62ED703003DBB6D6AD27F`.
+
+Sparse leaky analog reaches `81.140%`, versus `79.078%` for sparse instant
+analog, `77.959%` for raw temporal, `75.501%` for dense feedforward analog,
+`74.264%` for dense recurrent LIF, and `71.555%` for dense recurrent analog.
+
+The sparse-topology gate passes strongly: sparse leaky exceeds matched dense
+feedforward analog by `+5.639` points and every seed gains at least `4.9`
+points. The leak gate also passes: leaky exceeds instant sparse analog by
+`+2.061` points with all seeds positive. It retains a `+3.180` point gain over
+raw temporal across all seeds.
+
+The broad analog gate fails. Dense recurrent analog is `2.709` points worse
+than dense recurrent LIF, while dense feedforward analog adds only `1.237`
+points. Analog activation alone is not explanatory; recurrence remains harmful.
+
+Decision: the current supported mechanism is a low-cost frozen sparse input
+expansion combined with leaky temporal state and a temporal readout. It is not
+an SNN or plasticity result. Test its fixed-budget width scaling and topology
+occupancy before considering a new spiking formulation.
+
+## 2026-08-10 - Phase 41 fixed-budget sparse width scaling generated
+
+Decision: compare 128, 256, 512, and 1024 hidden-node sparse leaky analog
+expansions plus the raw temporal control. Every sparse arm has exactly 700
+frozen sensor edges, no recurrent edges, and the same `133,631` effective-model
+parameter target; the readout bottleneck absorbs width changes.
+
+Width gate: 512 nodes must beat 128 by `+2` mean points with two one-point seed
+gains. Further-scaling gate: 1024 must beat 512 by `+1` point with two positive
+seeds. The best width must retain at least `+2` points over raw temporal.
+Connected hidden-node count, occupancy, fan-in, throughput, and fixed-budget
+ratios are reported to locate the useful width knee and distinguish capacity
+from topology coverage.
