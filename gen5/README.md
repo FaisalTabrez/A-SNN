@@ -88,6 +88,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - isolates sensor-edge and recurrent-edge update scopes
    - records activity drift, edge-type LTW movement, and saturation before mutation
 
+23. Causal recurrence ablation
+   - preserves identical sensor projections across causal pairs
+   - disables only hidden-to-hidden edges in the feedforward control
+   - compares sensor, hidden, and full temporal state with paired readouts
+   - determines whether static MNIST provides evidence for recurrence at all
+
 ## Quick smoke test
 
 From the repo root:

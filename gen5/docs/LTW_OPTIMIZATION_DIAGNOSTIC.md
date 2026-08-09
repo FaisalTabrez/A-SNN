@@ -56,4 +56,15 @@ LTW intervention only if it:
 
 If no arm passes, stop supervised LTW tuning and reassess the neuron/event
 dynamics before topology mutation. If an arm passes, replicate it with more
-seeds before considering Phase 23 structural plasticity.
+seeds before considering a later structural-plasticity phase.
+
+## First CUDA result
+
+No arm passes. Warmup stabilizes activity and removes LTW saturation, but the
+best linear gain is only `0.087` points and the best MLP result is tied with its
+frozen control. Recurrent-only updates are neutral or negative.
+
+Supervised LTW tuning on static MNIST is now frozen. Phase 23 tests whether
+recurrent edges themselves add causal value beyond sensor-to-hidden feedforward
+expansion. See
+`gen5/outputs/ltw_optimization_diagnostic_cuda_2026-08-09/analysis.md`.

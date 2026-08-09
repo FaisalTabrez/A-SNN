@@ -28,6 +28,7 @@ If you are new to the repo, read these in order:
 11. [Temporal-state MNIST](gen5/docs/TEMPORAL_STATE_MNIST.md)
 12. [Fixed-topology LTW training](gen5/docs/TRAINABLE_TEMPORAL_MNIST.md)
 13. [LTW optimization diagnostic](gen5/docs/LTW_OPTIMIZATION_DIAGNOSTIC.md)
+14. [Causal recurrence ablation](gen5/docs/RECURRENCE_ABLATION.md)
 
 ## Repository map
 
@@ -55,9 +56,9 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
 - Phase 17 activity-matched controls validate frozen-trace action decoding.
 - Phase 20 established that full temporal AMMC state is informative.
-- Phase 21 confirmed LTW gradient flow but found no reliable accuracy gain.
-- Current scientific step: Phase 22 paired LTW optimization diagnostics before
-  any structural mutation is introduced.
+- Phase 22 stabilized LTW training but found no practically meaningful gain.
+- Current scientific step: Phase 23 causal recurrence ablation before moving
+  from static MNIST to a genuinely temporal task.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -188,6 +189,18 @@ Diagnose LTW schedule, rate, slope, and edge scope:
   --epochs 15 \
   --warmup-epochs 10 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/ltw_optimization_diagnostic_cuda
+```
+
+Test recurrence against paired feedforward expansion:
+
+```python
+!python gen5/examples/sprint23_recurrence_ablation.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/recurrence_ablation_cuda
 ```
 
 ## Evidence discipline

@@ -2648,6 +2648,47 @@ Artifacts:
 - `gen5/docs/LTW_OPTIMIZATION_DIAGNOSTIC.md`
 - `gen5/tests/test_ltw_diagnostics_contract.py`
 
+### 58. Phase 22 stabilizes LTW updates but closes static-MNIST tuning
+
+Date: 2026-08-09
+
+Finding: no paired LTW intervention meets the practical-gain gate. The best
+linear arm (`10`-epoch warmup, `3e-4` LTW rate, slope `10`) improves all three
+seeds but averages only `+0.087` points. The best MLP arm is tied with frozen on
+average. Every arm has zero seeds reaching the `0.5`-point practical threshold.
+
+Mechanistic findings:
+
+- Warmup holds hidden-event ratios near `1.0-1.04` and eliminates LTW boundary
+  saturation.
+- Joint `1e-3` training over-activates linear dynamics (`1.714x` event rate),
+  saturates weights, and harms accuracy.
+- Surrogate slopes `5` versus `10` have negligible effect at stable rates.
+- Sensor-only LTW updates give a tiny linear gain; recurrent-only updates are
+  neutral or negative.
+
+Sanity boundary:
+
+- Supported: stable, scoped sparse-LTW optimization is technically possible.
+- Rejected for tested settings: useful LTW improvement on static MNIST.
+- Deferred: topology mutation, because weight usefulness remains unproven.
+- Not tested: continuous temporal adaptation and retention.
+
+Decision: stop supervised LTW hyperparameter tuning on this engineering subset.
+Phase 23 performs a causal recurrence ablation, disabling only hidden-to-hidden
+edges while preserving sensor projections and paired readout initialization.
+If recurrent state fails to add `0.5` points, move to a task with true temporal
+dependence rather than using static MNIST to justify recurrent plasticity.
+
+Artifacts:
+
+- `gen5/outputs/ltw_optimization_diagnostic_cuda_2026-08-09/`
+- `gen5/outputs/ltw_optimization_diagnostic_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/recurrence_ablation.py`
+- `gen5/examples/sprint23_recurrence_ablation.py`
+- `gen5/docs/RECURRENCE_ABLATION.md`
+- `gen5/tests/test_recurrence_ablation_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator
