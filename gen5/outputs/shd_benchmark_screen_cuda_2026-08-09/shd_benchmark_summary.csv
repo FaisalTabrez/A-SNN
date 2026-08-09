@@ -1,0 +1,3 @@
+arm,model_kind,delay_pattern,seeds,mean_test_accuracy,std_test_accuracy,mean_accuracy_gain_vs_no_delay,improved_seed_count,practical_gain_seed_count,active_edges,mean_delayed_edges,mean_recurrent_delay,effective_trainable_parameters,allocated_trainable_parameters,mean_event_rate_ratio,mean_event_rate_vs_no_delay,mean_absolute_ltw_change,mean_lower_ltw_saturation_rate,mean_upper_ltw_saturation_rate,mean_train_seconds
+sparse_no_delay_warm_all,sparse,none,1,0.06,0.0,0.0,0,0,1212,0.0,0.0,6352,7188,1.0003813959458727,1.0,0.0005990489735268056,0.0,0.0,0.7306583589997899
+sparse_distance012_warm_all,sparse,distance_0_2,1,0.06,0.0,0.0,0,0,1212,348.0,1.001953125,6352,7188,1.0005127879402633,1.0145272000322159,0.0005997403641231358,0.0,0.0,0.8924514940008521

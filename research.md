@@ -3862,3 +3862,34 @@ saturation. A pass establishes cross-domain transfer and motivates stronger
 SHD baselines. A failure localizes the Phase 29 effect to the imposed MNIST row
 encoding and sends us back to temporal representation design rather than more
 delay tuning.
+
+## 2026-08-09 - Phase 31 SHD plumbing-screen result
+
+Screen evidence retained at
+`gen5/outputs/shd_benchmark_screen_cuda_2026-08-09/` from archive SHA-256
+`6318E20E86A73F912F9C20FB985EA339AE63CF1A02FC64B2ECE5474594C5DDE2`.
+This was the explicitly non-registered one-seed screen: 1,000 train examples,
+500 test examples, two epochs, one readout-only warmup epoch, and only the two
+sparse arms. Chance accuracy is 5%.
+
+Core observations:
+
+- No delay: `6.0%` train and `6.0%` test accuracy.
+- Fixed distance 0-2: `5.9%` train and `6.0%` test accuracy.
+- The delay arm executed 348 delayed recurrent edges with mean delay `1.002`.
+- Hidden event rates remained stable around `0.36-0.37`; the delayed/no-delay
+  final-rate ratio was `1.015x`.
+- LTW movement was `~0.00060` and both saturation rates were zero.
+- Delay execution reduced measured test throughput from about 7,430 to 5,023
+  examples/s in this screen.
+
+Interpretation: the SHD data, temporal binning, CUDA path, sparse gradients,
+delay routing, and serializers work. Identical near-chance accuracy under this
+tiny training budget is not an ablation result. The screen omitted event-count
+controls and cannot establish whether the current preprocessing is learnable.
+
+Decision: Phase 31 remains open. Do not generate Phase 32 or tune dynamics from
+screen evidence. Run the registered full matrix on all 8,156/2,264 examples,
+three seeds, 15 epochs, and all four arms. A passing delay arm leads to
+capacity-matched published SHD baselines; a near-chance sparse failure with
+successful count controls leads to a temporal-representation diagnostic.
