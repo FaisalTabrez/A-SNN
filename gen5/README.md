@@ -82,6 +82,12 @@ Gen-5 is now TPU/XLA-first for Colab-scale work:
    - compares raw, frozen-temporal, and trained-temporal linear/MLP groups
    - gates structural-plasticity work on a paired improvement without activity collapse
 
+22. LTW optimization diagnostic
+   - pairs identical topology/readout initializations across interventions
+   - tests readout warmup, lower LTW rates, and surrogate slopes
+   - isolates sensor-edge and recurrent-edge update scopes
+   - records activity drift, edge-type LTW movement, and saturation before mutation
+
 ## Quick smoke test
 
 From the repo root:

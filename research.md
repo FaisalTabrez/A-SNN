@@ -2608,6 +2608,46 @@ Artifacts:
 - `gen5/docs/TRAINABLE_TEMPORAL_MNIST.md`
 - `gen5/tests/test_trainable_temporal_mnist_contract.py`
 
+### 57. Phase 21 proves LTW gradient flow, not useful LTW learning
+
+Date: 2026-08-09
+
+Finding: joint LTW/readout training changes the fixed sparse substrate but does
+not reliably improve it. Linear accuracy declines by `0.31` points against its
+paired frozen control; MLP accuracy gains only `0.13` points, with one of three
+seeds declining.
+
+Diagnostics:
+
+- LTW displacement is material (`0.108` linear, `0.063` MLP), rejecting a
+  disconnected-gradient explanation.
+- Hidden event activity rises by `61.2%` for linear and `12.8%` for MLP.
+- Training time rises by more than `70%` for both trained groups.
+- The raw MLP remains `2.90` points more accurate than trained temporal MLP.
+
+Sanity boundary:
+
+- Supported: surrogate gradients reach active sparse LTWs.
+- Not supported: the current LTW optimizer improves the representation.
+- Not eligible: structural plasticity, because the Phase 21 weight-only gate
+  failed.
+- Still unsupported: efficiency or broad model-superiority claims.
+
+Decision: Phase 22 remains fixed-topology and performs paired diagnostics over
+readout warmup, lower LTW rates, surrogate slopes, and sensor/recurrent update
+scope. Structural mutation is deferred until a weight-learning setting gains
+at least `0.5` points on average, improves at least two of three seeds, keeps
+event-rate ratio in `[0.5, 2.0]`, and avoids material boundary saturation.
+
+Artifacts:
+
+- `gen5/outputs/trainable_temporal_mnist_cuda_2026-08-09/`
+- `gen5/outputs/trainable_temporal_mnist_cuda_2026-08-09/analysis.md`
+- `gen5/ammc_gen5/ltw_diagnostics.py`
+- `gen5/examples/sprint22_ltw_optimization_diagnostic.py`
+- `gen5/docs/LTW_OPTIMIZATION_DIAGNOSTIC.md`
+- `gen5/tests/test_ltw_diagnostics_contract.py`
+
 ## Project decisions
 
 ### Decision: Gen-5 is a backend framework, not another visual simulator

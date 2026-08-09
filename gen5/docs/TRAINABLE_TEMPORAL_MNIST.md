@@ -61,3 +61,15 @@ mutation.
 The three-seed run is engineering validation, not a final statistical claim.
 After selecting settings, confirm them with more seeds and an untouched test
 split. The raw MLP remains the external performance reference.
+
+## First CUDA result
+
+The trained linear model loses `0.31` points against its paired frozen control.
+The trained MLP gains only `0.13` points, with one of three seeds declining.
+LTWs move substantially and hidden activity rises, so gradient flow exists but
+the unrestricted joint schedule is not stable or beneficial enough to justify
+structural mutation.
+
+Phase 22 therefore diagnoses warmup, lower LTW learning rates, surrogate slope,
+and sensor-versus-recurrent update scope while retaining the fixed topology.
+See `gen5/outputs/trainable_temporal_mnist_cuda_2026-08-09/analysis.md`.

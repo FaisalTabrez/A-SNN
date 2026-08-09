@@ -27,6 +27,7 @@ If you are new to the repo, read these in order:
 10. [Event representation decomposition](gen5/docs/EVENT_REPRESENTATION_DECOMPOSITION.md)
 11. [Temporal-state MNIST](gen5/docs/TEMPORAL_STATE_MNIST.md)
 12. [Fixed-topology LTW training](gen5/docs/TRAINABLE_TEMPORAL_MNIST.md)
+13. [LTW optimization diagnostic](gen5/docs/LTW_OPTIMIZATION_DIAGNOSTIC.md)
 
 ## Repository map
 
@@ -54,8 +55,9 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Sparse-efficiency baseline: `gentle_ltw_scheduled`, `32` neurons.
 - Phase 17 activity-matched controls validate frozen-trace action decoding.
 - Phase 20 established that full temporal AMMC state is informative.
-- Current scientific step: Phase 21 fixed-topology LTW training, compared
-  against raw-pixel and frozen-temporal linear/MLP controls.
+- Phase 21 confirmed LTW gradient flow but found no reliable accuracy gain.
+- Current scientific step: Phase 22 paired LTW optimization diagnostics before
+  any structural mutation is introduced.
 
 See [research.md](research.md) for the evidence trail.
 
@@ -173,6 +175,19 @@ Train active LTWs while keeping the sparse topology fixed:
   --test-samples 5000 \
   --epochs 15 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/trainable_temporal_mnist_cuda
+```
+
+Diagnose LTW schedule, rate, slope, and edge scope:
+
+```python
+!python gen5/examples/sprint22_ltw_optimization_diagnostic.py \
+  --device cuda \
+  --seeds 42 43 44 \
+  --train-samples 20000 \
+  --test-samples 5000 \
+  --epochs 15 \
+  --warmup-epochs 10 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/ltw_optimization_diagnostic_cuda
 ```
 
 ## Evidence discipline
