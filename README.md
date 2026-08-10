@@ -1446,3 +1446,11 @@ The benchmark resumes after each completed arm or seed and finishes with a
 checksummed single-file result bundle. The practical target is `99.0%`; the
 stretch target is `99.4%`. Both pass and stop return to Gen-20. See the frozen
 [benchmark preregistration](gen5/docs/NMNIST_ACCURACY_BENCHMARK_PREREGISTRATION.md).
+
+The completed track passed: the full-resolution spatial-temporal CNN reached
+**99.4767% mean N-MNIST test accuracy** over three seeds, while the frame CNN
+reached 99.1233%. ConvPLIF screened at 93.07% and was not promoted, so the
+99.4767% result is a conventional event-vision benchmark rather than an SNN
+record. See the [benchmark analysis](gen5/docs/NMNIST_ACCURACY_BENCHMARK_ANALYSIS.md).
+Gen-20 is frozen as one multi-timescale spiking translation package in the
+[Gen-20 preregistration](gen5/docs/GEN20_SPIKING_SPATIOTEMPORAL_TRANSLATION_PREREGISTRATION.md).

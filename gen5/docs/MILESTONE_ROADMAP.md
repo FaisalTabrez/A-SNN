@@ -190,6 +190,17 @@
 > practical gate, a 99.4% stretch target, and mandatory efficiency reporting.
 > After this single screen/confirmation package, work returns to Gen-20.
 
+> Accuracy-track result (2026-08-11): `pass`. The full-resolution
+> spatial-temporal CNN reached 99.4767% mean N-MNIST test accuracy across three
+> seeds (0.0125-point standard deviation; 99.46% minimum), passing both the
+> 99.0% practical and 99.4% stretch gates. The frame CNN reached 99.1233% with
+> 11.31x higher measured throughput and 18.15x fewer dense MACs. ConvPLIF
+> screened at only 93.07% and was not promoted, so this is a strong conventional
+> event-vision result—not an SNN record. Gen-20 is now the separately
+> preregistered spiking spatial-temporal translation question described in
+> `GEN20_SPIKING_SPATIOTEMPORAL_TRANSLATION_PREREGISTRATION.md`; plasticity and hardware claims remain
+> gated.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

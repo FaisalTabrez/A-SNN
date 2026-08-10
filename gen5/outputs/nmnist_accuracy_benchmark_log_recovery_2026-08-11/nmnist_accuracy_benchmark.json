@@ -1,0 +1,67 @@
+{
+  "evidence_status": "log_recovery",
+  "recovered_on": "2026-08-11",
+  "source_log": "pasted-text.txt",
+  "source_log_sha256": "60C999F5086195019FB381A66523C372C1EEF83327973CFBCCBF410BEB8F5657",
+  "provenance_note": "Aggregate, screening, and confirmation values were transcribed exactly from the completed Colab log. The original bundle remains the canonical full-fidelity artifact and should replace this recovery when downloaded.",
+  "dataset": {
+    "name": "N-MNIST",
+    "sensor_size": [34, 34, 2],
+    "timesteps": 10,
+    "duration_us": 300000,
+    "encoding": "binary full-resolution time/polarity occupancy",
+    "training_split": 54001,
+    "validation_split": 5999,
+    "screen_training_split": 20000,
+    "test_split": 10000,
+    "train_density": 0.08133554458618164,
+    "test_density": 0.08149971812963486
+  },
+  "screen_records": [
+    {"arm": "frame_cnn", "best_validation_accuracy": 0.981, "best_epoch": 4},
+    {"arm": "spatiotemporal_cnn", "best_validation_accuracy": 0.987, "best_epoch": 4},
+    {"arm": "conv_plif", "best_validation_accuracy": 0.9307, "best_epoch": 4}
+  ],
+  "promoted_arms": ["spatiotemporal_cnn", "frame_cnn"],
+  "confirmation_records": [
+    {"arm": "spatiotemporal_cnn", "seed": 211, "test_accuracy": 0.9949, "best_validation_accuracy": 0.9952},
+    {"arm": "spatiotemporal_cnn", "seed": 212, "test_accuracy": 0.9946, "best_validation_accuracy": 0.9942},
+    {"arm": "spatiotemporal_cnn", "seed": 213, "test_accuracy": 0.9948, "best_validation_accuracy": 0.9945},
+    {"arm": "frame_cnn", "seed": 211, "test_accuracy": 0.9913, "best_validation_accuracy": 0.9900},
+    {"arm": "frame_cnn", "seed": 212, "test_accuracy": 0.9908, "best_validation_accuracy": 0.9890},
+    {"arm": "frame_cnn", "seed": 213, "test_accuracy": 0.9916, "best_validation_accuracy": 0.9920}
+  ],
+  "summary": [
+    {
+      "arm": "spatiotemporal_cnn",
+      "mean_test_accuracy": 0.9947666666666667,
+      "std_test_accuracy": 0.00012472191289245098,
+      "minimum_test_accuracy": 0.9946,
+      "mean_best_validation_accuracy": 0.9946102128132467,
+      "mean_test_examples_per_second": 984.6981761583374,
+      "parameter_count": 1551402,
+      "dense_macs_per_sample": 966173696,
+      "mean_activity": 0.0
+    },
+    {
+      "arm": "frame_cnn",
+      "mean_test_accuracy": 0.9912333333333333,
+      "std_test_accuracy": 0.000329983164553727,
+      "minimum_test_accuracy": 0.9908,
+      "mean_best_validation_accuracy": 0.9903317219536589,
+      "mean_test_examples_per_second": 11136.334079421504,
+      "parameter_count": 768010,
+      "dense_macs_per_sample": 53244672,
+      "mean_activity": 0.0
+    }
+  ],
+  "decision": {
+    "status": "pass",
+    "best_arm": "spatiotemporal_cnn",
+    "best_mean_test_accuracy": 0.9947666666666667,
+    "practical_gate_99_0": true,
+    "stretch_gate_99_4": true,
+    "spiking_confirmed": false,
+    "next_milestone": "return_to_gen20"
+  }
+}

@@ -5638,3 +5638,28 @@ progress, and emits a checksummed ZIP bundle. It reports accuracy dispersion,
 parameters, dense MACs, spike activity, an explicitly labeled
 activity-scaled operation proxy, throughput, and training time. The frozen
 practical/stretch gates are 99.0%/99.4%. Both outcomes return to Gen-20.
+
+## 2026-08-11 - Full-resolution N-MNIST track passes; spiking gap defines Gen-20
+
+The completed preregistered accuracy run passes both gates. The
+spatial-temporal CNN achieves 99.4767% mean test accuracy over seeds 211–213,
+with 0.0125 percentage-point standard deviation and a 99.46% minimum. The frame
+CNN reaches 99.1233%. The 0.3533-point temporal-model gain costs 2.02x the
+parameters, 18.15x the dense MAC proxy, and 11.31x lower measured throughput,
+so the two confirmed models define a genuine accuracy/efficiency frontier.
+
+The scientific limitation is decisive: ConvPLIF screened at 93.07% validation
+accuracy versus 98.70% for the spatial-temporal CNN and was not promoted. We
+therefore record the 99.4767% result as a competitive conventional event-vision
+benchmark, not as an SNN or energy-efficiency claim. The raw canonical bundle
+remains in Google Drive; the repository recovery is explicitly provenance
+marked and keyed to SHA-256
+`60C999F5086195019FB381A66523C372C1EEF83327973CFBCCBF410BEB8F5657`.
+
+Decision: close the bounded accuracy diversion and define Gen-20 as one
+preregistered spiking spatial-temporal translation package. It will preserve
+the successful native event representation and receptive field, use the dense
+spatial-temporal model only as teacher/upper control, and require accuracy,
+activity, efficiency, state-removal, and time-order evidence. Structural
+plasticity and hardware-energy work remain gated until the spiking
+representation gap is closed.
