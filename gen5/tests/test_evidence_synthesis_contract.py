@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 13)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 14)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -245,6 +245,39 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-11 qualifies for synaptic STW/LTW consolidation"]["status"],
+            "rejected",
+        )
+
+    def test_gen12_terminal_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen12_readout_adaptation_gain"],
+            0.03563601870931865,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen12_full_adaptation_gain"],
+            0.04767278317469659,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen12_spiking_adaptation_gain"],
+            0.0027802309227095514,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen12_spiking_association_specificity"],
+            0.004170346384064365,
+        )
+        self.assertEqual(result.metrics["gen12_qualified_arm_count"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-12 prototype memory provides useful fast adaptation"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-12 spiking memory depends on correct class associations"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-12 qualifies for context-free consolidation"]["status"],
             "rejected",
         )
 

@@ -138,6 +138,25 @@ explicitly context-gated, so a pass opens context-discovery/consolidation work
 rather than immediately proving autonomous continual learning. See
 `docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.
 
+Gen-12 returned `stop`. Dense and spiking prototypes gained only 0.250 and
+0.278 point versus 3.564 for readout adaptation. Spiking activity and storage
+were healthy, but removal and association-shuffle controls remained below the
+registered 0.5-point gate. See
+`docs/GEN12_ASSOCIATIVE_MEMORY_ANALYSIS.md` and
+`outputs/gen12_associative_memory_cuda_2026-08-10/`.
+
+Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
+the robust TCN frozen and compares analog and sparse-spiking local updates
+against the established autograd controls:
+
+```powershell
+python gen5/examples/gen13_local_plasticity.py --list-strategies
+```
+
+The spiking rule must match readout adaptation while passing fast-weight
+removal and output-class-shuffle controls. See
+`docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

@@ -46,6 +46,8 @@ If you are new to the repo, read these in order:
 29. [Gen-11 plastic-adapter preregistration](gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md)
 30. [Gen-11 plastic-adapter analysis](gen5/docs/GEN11_PLASTIC_ADAPTER_ANALYSIS.md)
 31. [Gen-12 associative-memory preregistration](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md)
+32. [Gen-12 associative-memory analysis](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_ANALYSIS.md)
+33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1063,7 +1065,7 @@ and
 [`gen5/outputs/gen11_research_closeout_2026-08-10/`](gen5/outputs/gen11_research_closeout_2026-08-10/).
 Synaptic STW/LTW remains closed.
 
-## Gen-12 frozen-backbone associative memory (preregistered)
+## Gen-12 frozen-backbone associative memory (completed: `stop`)
 
 Gen-12 replaces the failed generic adapter with an explicitly sample-keyed
 fast-memory hypothesis. The robust sensor-dropout TCN stays frozen. Dense and
@@ -1104,3 +1106,50 @@ Colab T4 execution cell:
 The memory is deliberately active only in the known damaged context. A pass
 therefore opens context-discovery and consolidation testing—not an immediate
 continuous-learning or synaptic-memory claim.
+
+Gen-12 did not pass. Readout and full fine-tuning recovered 3.564 and 4.767
+points, while dense and spiking prototypes recovered only 0.250 and 0.278.
+The spiking code remained healthy at 20% activity and zero context-gated
+forgetting, but memory removal and class shuffling cost only 0.278 and 0.417
+point. Results and the 14-source closeout are retained in
+[`gen5/outputs/gen12_associative_memory_cuda_2026-08-10/`](gen5/outputs/gen12_associative_memory_cuda_2026-08-10/)
+and
+[`gen5/outputs/gen12_research_closeout_2026-08-10/`](gen5/outputs/gen12_research_closeout_2026-08-10/).
+
+## Gen-13 local three-factor plasticity (preregistered)
+
+Gen-13 tests whether the successful output-layer credit assignment can be
+implemented with explicit local synaptic updates rather than autograd through
+the frozen sensory backbone. Analog and 20%-dense spiking presynaptic traces
+are compared with static, autograd-readout, and full-fine-tuning controls.
+Fast-weight removal and output-class shuffling are mandatory causal controls.
+The protocol is in
+[gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md).
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen13_local_plasticity.py \
+  --device cuda \
+  --seeds 160 161 162 \
+  --source-epochs 15 \
+  --source-mask-fraction 0.20 \
+  --damage-fraction 0.35 \
+  --damage-seed 909 \
+  --adaptation-budgets 0 64 256 1024 4096 \
+  --adaptation-epochs-per-block 3 \
+  --adaptation-learning-rate 0.001 \
+  --local-learning-rate 0.50 \
+  --local-weight-decay 0.0001 \
+  --spike-fraction 0.20 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen13_local_plasticity_cuda
+```

@@ -85,6 +85,19 @@
 > context-discovery and consolidation testing. The protocol is frozen in
 > `GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.
 
+> Gen-12 result (2026-08-10): dense and spiking class prototypes gained only
+> 0.250 and 0.278 point, far below the conventional adaptation controls.
+> Activity, storage, and context-gated retention were healthy, but removal and
+> association-shuffle costs missed their causal gates. The terminal decision
+> is `stop`; prototype memory and automatic consolidation are closed.
+
+> Gen-13 update (2026-08-10): the next registered mechanism localizes the
+> successful output credit assignment as a manual three-factor rule. Analog
+> and sparse-spiking traces are tested against autograd readout and full
+> fine-tuning with fast-weight removal and class-shuffle controls. A pass opens
+> only a separate STW/LTW consolidation preregistration. See
+> `GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

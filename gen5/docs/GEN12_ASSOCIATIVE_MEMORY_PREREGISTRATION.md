@@ -1,6 +1,7 @@
 # Gen-12 frozen-backbone associative-memory preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-12 results.
+Status (2026-08-10): completed with terminal `stop`; zero qualified arms. See
+`GEN12_ASSOCIATIVE_MEMORY_ANALYSIS.md`.
 
 ## Hypothesis
 

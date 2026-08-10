@@ -5210,3 +5210,52 @@ testing. A stop closes prototype memory without hyperparameter or damage
 sweeps. Synaptic STW/LTW remains closed until a later, separately registered
 gate. The frozen protocol is
 `gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-12 prototype memory fails fast-adaptation gate
+
+The archive `gen12_associative_memory_cuda-20260810T133927Z-1-001.zip` has
+SHA-256 `7121cbd458b4f1a10736d6c8ac3e1b0a2d02f2b97c25d85897c32eda2f109717`.
+Its extracted evidence is retained in
+`gen5/outputs/gen12_associative_memory_cuda_2026-08-10/`.
+
+The fixed damage shift was 5.158 points. Readout adaptation recovered 3.564
+points and full fine-tuning recovered 4.767, with every seed improving. Dense
+and spiking class prototypes recovered only 0.250 and 0.278 point; neither
+passed on any seed.
+
+The spiking memory held exactly 20% event density, used 16,800 active cells,
+and preserved source accuracy through the registered context gate. Removing it
+cost only 0.278 point and shuffling class associations cost 0.417, with 0/3
+seeds crossing either 0.5-point causal threshold. Dense memory behaved
+similarly. The result is therefore not explained by silent codes, missing
+capacity, or catastrophic forgetting. Class-average retrieval loses the
+task-specific structure that output-weight adaptation exploits.
+
+Decision: accept the source, shift, conventional adaptation, context-gating,
+and activity controls. Reject useful associative-prototype adaptation and
+accept the stored `status=stop`. Do not sweep memory mix, temperature, spike
+density, number of prototypes, damage, or budgets. Synaptic STW/LTW, replay,
+neuromodulation, structural plasticity, and hardware claims remain closed.
+
+## 2026-08-10 - Gen-13 local three-factor plasticity approved and implemented
+
+Gen-13 consolidates the next decision into one mechanism-selection experiment
+rather than separate rescue phases. The robust sensor-dropout TCN remains
+frozen. Manual analog and sparse-spiking readout updates are compared with
+static, autograd-readout, and full-fine-tuning controls.
+
+The local rule is an explicit outer product of normalized presynaptic trace
+and postsynaptic multiclass error. It uses no autograd and cannot modify the
+sensory backbone. It remains supervised and is not presented as reward-only
+or fully biologically plausible. Seeds 160–162, source protocol, fixed damage,
+budgets, and three passes over each new block are frozen. Local learning rate
+is 0.50 to compensate for normalized, minibatch-averaged outer products;
+decay is 0.0001 and the spiking trace has 20% density.
+
+Decision: the spiking local rule must gain two points on 2/3 seeds, match
+autograd readout AUC and final accuracy within one point, preserve source
+accuracy, and lose 0.5 point on 2/3 seeds under both fast-weight removal and
+output-class shuffling. A pass opens only a separately preregistered STW/LTW
+consolidation experiment. A stop closes local readout plasticity without
+learning-rate, density, epoch, normalization, damage, or budget sweeps. The
+frozen protocol is `gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md`.
