@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 15)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 16)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -315,6 +315,43 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-13 qualifies for STW/LTW consolidation"]["status"],
+            "rejected",
+        )
+
+    def test_gen14_terminal_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen14_oracle_final_fitness"],
+            8.38111162185669,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen14_spiking_final_fitness"],
+            -0.10888889328473145,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen14_spiking_margin_vs_static"],
+            -0.7500000287675195,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen14_spiking_margin_vs_shuffled"],
+            -0.16111113027566007,
+        )
+        self.assertEqual(result.metrics["gen14_passed"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-14 embodied sensor-to-action mapping is solvable"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-14 baseline-to-evaluation improvement identifies local learning"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-14 spiking eligibility depends on correctly assigned reward"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-14 qualifies for reward-eligibility confirmation"]["status"],
             "rejected",
         )
 

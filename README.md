@@ -51,6 +51,8 @@ If you are new to the repo, read these in order:
 34. [Gen-13 local-plasticity analysis](gen5/docs/GEN13_LOCAL_PLASTICITY_ANALYSIS.md)
 35. [Continual-adaptation program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md)
 36. [Gen-14 reward-eligibility preregistration](gen5/docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md)
+37. [Gen-14 reward-eligibility analysis](gen5/docs/GEN14_REWARD_ELIGIBILITY_ANALYSIS.md)
+38. [Research evidence freeze](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md)
 33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 
 ## Repository map
@@ -1174,7 +1176,7 @@ new program is a separately preregistered reward-modulated embodied-learning
 test, not a Gen-13 hyperparameter rescue. See
 [the program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md).
 
-## Gen-14 reward-modulated embodied eligibility (preregistered)
+## Gen-14 reward-modulated embodied eligibility (completed: `stop`)
 
 Gen-14 starts a genuinely new program after the Gen-13 branch closure. Local
 sensor/action eligibility traces are reinforced by delayed scalar food/toxin
@@ -1212,3 +1214,18 @@ Colab T4 execution cell:
 The progress file is saved after every completed seed. A pass opens only a
 separately preregistered causal confirmation; it does not open STW/LTW or
 structural-plasticity claims automatically.
+
+Gen-14 did not pass. The oracle reached +8.381 net fitness per 1,000 steps,
+validating the world and sensor-action mapping. Spiking eligibility finished
+at -0.109, below static behavior (+0.641) and shuffled reward (+0.052).
+Although its own cold-start-to-evaluation score rose, static behavior rose
+more; that phase comparison is confounded by world evolution and reward-buffer
+warm-up. Healthy 20.04% spiking and zero weight saturation rule out an
+execution collapse. Results are retained in
+[`gen5/outputs/gen14_reward_eligibility_cuda_2026-08-10/`](gen5/outputs/gen14_reward_eligibility_cuda_2026-08-10/).
+The corresponding 16-source ledger is in
+[`gen5/outputs/gen14_research_closeout_2026-08-10/`](gen5/outputs/gen14_research_closeout_2026-08-10/).
+
+The next work package is a 16-source evidence freeze and theory/baseline reset,
+not another automatic local-rule phase. See
+[the evidence-freeze decision](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md).

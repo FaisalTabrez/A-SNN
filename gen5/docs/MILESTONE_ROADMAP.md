@@ -114,6 +114,13 @@
 > causal confirmation under a separate preregistration. See
 > `GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.
 
+> Gen-14 result (2026-08-10): the oracle reached +8.381 net fitness per 1,000
+> steps, validating the world, while spiking eligibility finished at -0.109,
+> below static (+0.641) and shuffled reward (+0.052). Activity and weight range
+> were healthy. The terminal decision is `stop`; reward-specific eligibility
+> is rejected. Empirical mechanism expansion is paused for a 16-source
+> evidence freeze and matched reward-baseline/evaluation-protocol redesign.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

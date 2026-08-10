@@ -5328,3 +5328,41 @@ agents and from 4,800 to 2,400 total steps per seed. This preserves 1,000
 agents per arm and three independent seeds while reducing repeated batched
 distance calculations by roughly eightfold. Food and toxin counts are frozen
 at 64 each. This is a compute-efficiency decision, not a result-driven sweep.
+
+## 2026-08-10 - Gen-14 reward eligibility fails identity-specific control
+
+The archive `gen14_reward_eligibility_cuda-20260810T143809Z-1-001.zip` has
+SHA-256 `AA8C7A1B0110BD68D57CC1F519BE5D180CEB501CEC9A9BCAD4B1EBA9A6D23A2C`.
+Its extracted evidence is retained in
+`gen5/outputs/gen14_reward_eligibility_cuda_2026-08-10/`.
+
+The oracle finished at +8.381 net fitness per 1,000 steps versus +0.641 for
+static behavior, proving that the world, sensors, motors, and reward metric can
+support a much stronger policy. Analog and spiking eligibility finished at
+-0.572 and -0.109. Correctly rewarded spiking was 0.750 below static and 0.161
+below the shuffled-reward control.
+
+Spiking eligibility improved by 2.798 relative to its cold-start phase, but
+static behavior improved by 3.983 without learning. Agent acceleration,
+ongoing world state, and delayed-reward-buffer warm-up make the within-run
+phase comparison non-stationary. It cannot be interpreted as adaptation.
+
+Spiking density was healthy at 20.04%, mean absolute fast weight was 0.0722,
+and no weights saturated. The update changed weights but did not encode useful
+agent-specific reward credit. Decision: accept the environment and execution
+controls, reject reward-specific learning, and accept `status=stop`. Do not
+sweep Gen-14 parameters or worlds.
+
+## 2026-08-10 - Empirical mechanism expansion paused after Gen-14
+
+The goal sanity check now supports causal temporal-state information, robust
+conventional features, conventional readout adaptation, and a solvable
+embodied control. It does not support local continual learning, fast memory,
+STW/LTW, replay, structural plasticity, or neuromorphic efficiency.
+
+Decision: the next work package is a 16-source evidence freeze and theory reset,
+not Gen-15 model training. Before another local rule is implemented, require an
+identical-reset pre/post evaluation, a matched conventional reward-learning
+baseline, explicit agent-identity credit controls, a literature-derived
+mechanism, and a frozen compute budget. This protects the original biological
+ambition from becoming an indefinite hyperparameter and phase sequence.

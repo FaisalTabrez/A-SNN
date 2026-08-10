@@ -1,6 +1,6 @@
 # Gen-14 reward-modulated embodied eligibility preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-14 results.
+Status (2026-08-10): completed with terminal decision `stop`.
 
 ## New hypothesis
 
@@ -54,3 +54,11 @@ biological equivalence.
 The screen size was frozen before results were observed. It retains 1,000
 agents per arm across three seeds while avoiding the unnecessary cost of the
 earlier 10,000-agent draft.
+
+## Observed terminal decision
+
+The oracle reached 8.381 net fitness per 1,000 steps, but correctly rewarded
+spiking eligibility finished at -0.109, below static (+0.641) and shuffled
+reward (+0.052). Activity was healthy and weights did not saturate. The stored
+decision is `stop`; the rule closes without rescue sweeps. See
+`GEN14_REWARD_ELIGIBILITY_ANALYSIS.md`.

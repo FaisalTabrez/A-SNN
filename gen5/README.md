@@ -161,6 +161,13 @@ policies inside one matched tensorized swarm. Run
 frozen arms. The full protocol and terminal gate are in
 `docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.
 
+Gen-14 returned `stop`. The oracle strongly solved the world, but correctly
+rewarded spiking eligibility finished below both static and shuffled-reward
+controls. Healthy spikes and unsaturated weights show that the rule executed
+but failed reward-identity credit. Empirical mechanism expansion is paused;
+see `docs/GEN14_REWARD_ELIGIBILITY_ANALYSIS.md` and
+`docs/RESEARCH_EVIDENCE_FREEZE.md`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:
