@@ -41,6 +41,7 @@ If you are new to the repo, read these in order:
 24. [Gen-6 successor preregistration and result](gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md)
 25. [Gen-7 predictive-state preregistration](gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md)
 26. [Gen-8 time-local binding preregistration](gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md)
+27. [Gen-9 continual-adaptation preregistration](gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -905,3 +906,47 @@ time-reversal cost, but state shuffling cost only `0.118` point with 0/3 seeds
 passing. The result and ten-source closeout are retained in
 [`gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/`](gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/)
 and [`gen5/outputs/gen8_research_closeout_2026-08-10/`](gen5/outputs/gen8_research_closeout_2026-08-10/).
+
+## Gen-9 continual adaptation (preregistered)
+
+Gen-9 begins a new task-level program rather than rescuing the closed static
+classifier branch. A fixed seed removes 35% of SSC sensor channels after source
+training. TCN and predictive-LIF representations then adapt sequentially from
+`0, 64, 256, 1024, 4096` validation-stream examples while the runner measures
+damaged accuracy, source retention, activity, adaptation time, and throughput.
+The frozen protocol is in
+[gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md](gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md).
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen9_continual_adaptation.py \
+  --device cuda \
+  --screen-seed 148 \
+  --confirm-seeds 148 149 150 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 4 \
+  --confirm-epochs 15 \
+  --adaptation-budgets 0 64 256 1024 4096 \
+  --adaptation-epochs-per-block 3 \
+  --adaptation-learning-rate 0.001 \
+  --damage-fraction 0.35 \
+  --damage-seed 909 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --future-horizon 4 \
+  --contrastive-temperature 0.10 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen9_continual_adaptation_cuda
+```
+
+The runner resumes from `gen9_continual_adaptation_progress.json`. A pass opens
+STW/LTW memory; a stop prevents automatic memory, replay, or plasticity work.

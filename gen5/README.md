@@ -67,6 +67,18 @@ architecture branch is closed; see
 `outputs/gen8_temporal_binding_cuda_2026-08-10/` and the final ledger in
 `outputs/gen8_research_closeout_2026-08-10/`.
 
+Gen-9 starts the new continual-learning program. It damages a deterministic
+35% SSC sensor bank after source training and measures sequential readout
+adaptation against static and full-fine-tuning TCN controls:
+
+```powershell
+python gen5/examples/gen9_continual_adaptation.py --list-arms
+```
+
+Only a replicated predictive-LIF adaptation-AUC advantage with bounded
+forgetting opens STW/LTW consolidation. See
+`docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

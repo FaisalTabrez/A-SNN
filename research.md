@@ -5002,3 +5002,38 @@ ordered state. The defensible contribution is a set of causal residual-state,
 predictive-representation, and partial temporal-binding findings with explicit
 negative selection results. A later program must begin from a new task-level
 hypothesis and independent preregistration rather than another decoder rescue.
+
+## 2026-08-10 - Gen-9 continual-adaptation program approved and implemented
+
+The user approved a new program aligned with the original AMMC goal: adaptation
+during an organism's lifetime. This does not reopen Gen-6–Gen-8 or modify their
+terminal conclusions. Gen-9 begins with a representation-level gate before
+adding STW/LTW, neuromodulation, sleep replay, or structural plasticity.
+
+The fixed task shift permanently zeros 35% of SSC's 700 input channels using
+mask seed 909 while preserving labels and timing. Official training examples
+train the undamaged source model; official validation examples form the
+damaged adaptation stream; official test examples are evaluated in undamaged
+and damaged forms only. This separation prevents test-driven checkpoint or
+budget selection.
+
+Registered source models are the matched dilated TCN and Gen-7 pooled
+predictive LIF. Screening uses seed 148 and reduced official splits. The LIF
+source promotes only within one TCN validation point, 95–105% of the parameter
+budget, and 1–30% spikes. Confirmation uses full splits and seeds 148–150.
+
+Registered strategies are static TCN, TCN readout adaptation, full TCN
+fine-tuning, static predictive LIF, and predictive-LIF readout adaptation.
+Adaptation observes new, non-replayed blocks at cumulative budgets 0, 64, 256,
+1,024, and 4,096, using three epochs per new block at learning rate 0.001.
+Readout arms update identically shaped classifiers; the predictive state and
+gate remain frozen, isolating representation adaptability.
+
+The terminal LIF gate requires a non-trivial five-point shift, source parity,
+a replicated two-point self-improvement, a replicated one-point adaptation-AUC
+advantage over TCN readout, final damaged accuracy within one TCN point,
+forgetting no more than 0.5 point worse, and healthy spikes. Passing opens only
+a separately preregistered STW/LTW memory milestone. Failure closes this
+continual-adaptation representation and blocks automatic memory, replay,
+plasticity, or shift-severity rescue experiments. The complete frozen protocol
+is `gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.

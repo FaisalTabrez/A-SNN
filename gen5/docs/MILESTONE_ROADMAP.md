@@ -35,6 +35,13 @@
 > The stored decision is `stop`; hardware and automatic successor work remain
 > closed. The active phase is final evidence closeout.
 
+> Gen-9 update (2026-08-10): after closing the static architecture branch, the
+> user authorized a new continual-learning program aligned with AMMC's original
+> goal. Its first milestone tests predictive-LIF versus TCN adaptation under a
+> deterministic 35% sensor-bank failure. STW/LTW, modulation, replay, and
+> structural plasticity remain gated behind this representation-level result.
+> The protocol is frozen in `GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
