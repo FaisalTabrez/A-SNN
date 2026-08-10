@@ -4839,3 +4839,34 @@ all implementation and evidence as a reproducible negative/qualified result.
 There is no active next empirical phase. A future program begins only after a
 new mechanism-level hypothesis, dataset, baseline, causal test, and terminal
 gate are written and approved before training.
+
+## 2026-08-10 - Gen-7 predictive-state hypothesis approved and implemented
+
+After the Gen-6 terminal closeout, the user explicitly approved a new
+mechanism-level direction. This does not reopen or retune the rejected Gen-6
+shared residual. Gen-7 tests whether state becomes sample-specific when it is
+given an explicit temporal prediction objective and may affect output only
+through a sample-conditioned direct/state interaction.
+
+The direct two-layer dilated TCN and classifier remain intact. Every residual
+arm begins with an exactly zero correction. The state branch uses heterogeneous
+initial leak constants (`0.50`, `0.75`, `0.90`, `0.97`) across channels. Early
+state predicts later encoder activity four bins ahead with a symmetric in-batch
+contrastive objective at temperature `0.10`; the fixed auxiliary loss weight
+is `0.20`. The decisive comparison holds architecture and optimizer constant
+while changing future target identity: paired versus one-step batch-shuffled.
+
+Registered arms are TCN, LIF without prediction, paired predictive analog,
+shuffled-target predictive LIF, and paired-target predictive LIF. If the paired
+candidate reaches confirmation, the no-predictive and shuffled-target controls
+are forced into confirmation even if their screen accuracies trail. This avoids
+declaring a mechanism without its necessary controls.
+
+The terminal candidate must preserve TCN accuracy, pass direct-removal,
+state-shuffling, and time-reversal losses of at least `0.5` point on two of
+three seeds, achieve paired-minus-shuffled future cosine of at least `0.02`,
+beat shuffled-target training by at least `0.01` alignment, maintain `1–30%`
+spikes, and learn at least `0.01` mean absolute sample-conditioned gate
+activity. The complete protocol is frozen in
+`gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md`. A failure closes this
+hypothesis without a loss-weight, horizon, threshold, or architecture sweep.

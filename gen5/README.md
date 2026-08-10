@@ -29,6 +29,20 @@ active backward pass. The XLA path benefits from those static capacities now;
 the CUDA/C++ implementation can later replace the allocator without changing
 the high-level AMMC API.
 
+## Current successor experiment
+
+Gen-7 is a preregistered predictive-state successor. It preserves the matched
+dilated TCN, adds a zero-initialized sample-conditioned state correction, and
+trains early multi-timescale LIF state to predict later encoder features. Its
+paired-future candidate is tested against no-predictive, shuffled-target, and
+analog controls in one resumable SSC runner:
+
+```powershell
+python gen5/examples/gen7_predictive_state.py --list-arms
+```
+
+See `docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md` for the full terminal gate.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

@@ -39,6 +39,7 @@ If you are new to the repo, read these in order:
 22. [SHD temporal-control decomposition](gen5/docs/SHD_TEMPORAL_CONTROLS.md)
 23. [SHD matched baselines](gen5/docs/SHD_MATCHED_BASELINES.md)
 24. [Gen-6 successor preregistration and result](gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md)
+25. [Gen-7 predictive-state preregistration](gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -814,3 +815,39 @@ The runner atomically checkpoints after every arm/seed pair. Repeating the
 identical command resumes from `gen6_successor_progress.json`. It either emits
 a qualified LIF successor and reopens hardware work, or permanently closes
 this successor without a follow-up sweep.
+
+## Gen-7 predictive-state experiment
+
+Gen-6 preserved TCN accuracy but its state correction was not beneficially
+sample-specific. Gen-7 therefore gives state an explicit temporal objective:
+early multi-timescale LIF activity predicts later encoder features, while a
+zero-initialized sample-conditioned gate controls the residual correction.
+Correctly paired targets are tested against identical no-predictive and
+shuffled-target LIF controls. The frozen protocol is documented in
+[gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md](gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md).
+
+Run the consolidated Colab experiment:
+
+```python
+!python gen5/examples/gen7_predictive_state.py \
+  --device cuda \
+  --screen-seed 142 \
+  --confirm-seeds 142 143 144 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 4 \
+  --confirm-epochs 15 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --future-horizon 4 \
+  --contrastive-temperature 0.10 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen7_predictive_state_cuda
+```
+
+The run checkpoints after every arm/seed pair and automatically retains the
+no-predictive and shuffled-target controls whenever the paired LIF candidate
+reaches confirmation.

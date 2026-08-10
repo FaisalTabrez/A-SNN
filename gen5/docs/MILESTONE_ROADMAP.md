@@ -10,6 +10,13 @@
 > arms. Hardware and continual-learning milestones remain closed. The active
 > workstream is evidence/publication closeout, not an automatic Gen-7 rescue.
 
+> Gen-7 update: the user explicitly authorized a new mechanism-level
+> hypothesis after the Gen-6 closeout. Gen-7 is not a rescue sweep: it assigns
+> state a paired future-prediction objective and replaces the static class gate
+> with sample-conditioned direct/state interaction. Its independent terminal
+> protocol is frozen in `GEN7_PREDICTIVE_STATE_PREREGISTRATION.md`; the hardware
+> milestone remains closed until that protocol returns `pass`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
