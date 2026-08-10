@@ -17,6 +17,12 @@
 > protocol is frozen in `GEN7_PREDICTIVE_STATE_PREREGISTRATION.md`; the hardware
 > milestone remains closed until that protocol returns `pass`.
 
+> Gen-7 result (2026-08-10): paired predictive LIF learned strong future
+> alignment and led TCN mean accuracy, but shuffled state improved accuracy and
+> temporal reversal had negligible cost. The terminal gate returned `stop`
+> with zero qualified arms. Hardware work remains closed. A temporal-binding
+> decoder is a possible new hypothesis, not an authorized rescue phase.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

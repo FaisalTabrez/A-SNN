@@ -4870,3 +4870,49 @@ spikes, and learn at least `0.01` mean absolute sample-conditioned gate
 activity. The complete protocol is frozen in
 `gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md`. A failure closes this
 hypothesis without a loss-weight, horizon, threshold, or architecture sweep.
+
+## 2026-08-10 - Gen-7 learns predictive state but fails identity-specific use
+
+Evidence retained at
+`gen5/outputs/gen7_predictive_state_cuda_2026-08-10/` from archive SHA-256
+`5AF3B42A569EADEB5CA56E7E33005334E73D93820B298BA77E4850A62DFB67F0`.
+
+All registered arms passed screening. On complete SSC confirmation over seeds
+142–144, paired predictive LIF reaches `58.807% ± 1.093`, exceeding the matched
+TCN at `58.390% ± 1.848` by `+0.417` point. Removing its state costs `1.009`
+mean points with two seeds clearing the gate. Correctly paired future training
+produces a `0.2928` alignment margin on all seeds versus `-0.0017` for
+shuffled-target training, a decisive `+0.2945` difference. Spike activity
+(`7.204%`) and the sample-conditioned gate (`0.2350`) are healthy.
+
+The terminal causal claim nevertheless fails. Batch-shuffling state improves
+candidate accuracy by `1.022` mean points and no seed passes specificity.
+Time reversal costs only `0.165` point and likewise passes on no seed. This
+separates representation from use: the auxiliary objective encodes paired
+future identity, but the pooled additive correction does not use that identity
+beneficially or depend strongly on temporal order. Dense throughput is
+`16,004` examples/s versus TCN's `53,556` (`0.299x`).
+
+Decision: accept predictive alignment and modest mean accuracy improvement as
+supported; reject beneficial identity-specific and order-specific state use;
+accept the stored `status=stop` with zero qualified arms. Do not tune the
+registered loss weight, horizon, thresholds, or decoder. The gate-selected
+next direction is a final evidence-ledger update and research closeout. Any
+temporal-binding successor is a new generation requiring explicit approval
+and a preregistration before implementation.
+
+## 2026-08-10 - Gen-7 final evidence ledger generated
+
+The reproducible synthesis now requires nine retained evidence files through
+Gen-7 and is stored in `gen5/outputs/gen7_research_closeout_2026-08-10/`.
+Its machine-readable ledger records paired future alignment and TCN-level
+accuracy as supported, identity/order-specific state use as rejected, and
+hardware qualification as rejected.
+
+Sanity decision: the project has evidence that spiking state can be causally
+useful in earlier residual experiments and that an explicit predictive
+objective can align state strongly. It still lacks a competitive architecture
+whose output benefit depends on the correct sample's temporally ordered state.
+This is now the central unresolved research question. No active empirical
+phase follows automatically; a time-local binding/fusion successor requires a
+new preregistration and explicit user approval.

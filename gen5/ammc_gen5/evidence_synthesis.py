@@ -17,6 +17,7 @@ EVIDENCE_FILENAMES = {
     "phase49": "ssc_efficiency_baselines.json",
     "milestone_a": "milestone_a_architecture.json",
     "gen6": "gen6_successor.json",
+    "gen7": "gen7_predictive_state.json",
 }
 
 
@@ -80,6 +81,7 @@ def synthesize_gen5_evidence(
     phase49_tcn = _summary_row(evidence["phase49"], "dilated_tcn")
     milestone_a = evidence["milestone_a"]
     gen6 = evidence["gen6"]
+    gen7 = evidence["gen7"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -108,6 +110,14 @@ def synthesize_gen5_evidence(
         gen6, "shared_residual_lif", key="confirmation_summary"
     )
     gen6_qualified_count = len(gen6["decision"]["qualified_arms"])
+    gen7_tcn = _summary_row(gen7, "dilated_tcn", key="confirmation_summary")
+    gen7_lif = _summary_row(
+        gen7, "lif_paired_predictive", key="confirmation_summary"
+    )
+    gen7_shuffled = _summary_row(
+        gen7, "lif_shuffled_predictive", key="confirmation_summary"
+    )
+    gen7_qualified_count = len(gen7["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -216,6 +226,32 @@ def synthesize_gen5_evidence(
             / float(gen6_tcn["mean_test_examples_per_second"])
         ),
         "gen6_qualified_arm_count": float(gen6_qualified_count),
+        "gen7_tcn_accuracy": float(gen7_tcn["mean_full_accuracy"]),
+        "gen7_lif_accuracy": float(gen7_lif["mean_full_accuracy"]),
+        "gen7_lif_gain_vs_tcn": float(gen7_lif["mean_gain_vs_tcn"]),
+        "gen7_lif_state_contribution_vs_direct_only": float(
+            gen7_lif["mean_state_contribution_vs_direct_only"]
+        ),
+        "gen7_lif_state_specificity_vs_shuffled": float(
+            gen7_lif["mean_state_specificity_vs_shuffled"]
+        ),
+        "gen7_lif_temporal_order_vs_reversed": float(
+            gen7_lif["mean_state_temporal_order_vs_reversed"]
+        ),
+        "gen7_lif_future_alignment_margin": float(
+            gen7_lif["mean_future_alignment_margin"]
+        ),
+        "gen7_alignment_gain_vs_shuffled_training": float(
+            gen7_lif["mean_future_alignment_margin"]
+            - gen7_shuffled["mean_future_alignment_margin"]
+        ),
+        "gen7_lif_spike_rate": float(gen7_lif["mean_activity"]),
+        "gen7_lif_mean_absolute_gate": float(gen7_lif["mean_absolute_gate"]),
+        "gen7_lif_throughput_ratio_vs_tcn": (
+            float(gen7_lif["mean_test_examples_per_second"])
+            / float(gen7_tcn["mean_test_examples_per_second"])
+        ),
+        "gen7_qualified_arm_count": float(gen7_qualified_count),
     }
     claims = [
         _claim(
@@ -339,30 +375,78 @@ def synthesize_gen5_evidence(
             f"{gen6_qualified_count} qualified arms.",
             "supported" if gen6["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-7 paired future prediction improves state alignment",
+            (
+                float(gen7_lif["mean_future_alignment_margin"]) >= 0.02
+                and int(gen7_lif["alignment_seed_count"]) >= 2
+                and float(gen7_lif["mean_future_alignment_margin"])
+                - float(gen7_shuffled["mean_future_alignment_margin"])
+                >= 0.01
+            ),
+            "Paired LIF future alignment is "
+            f"{float(gen7_lif['mean_future_alignment_margin']):.4f} versus "
+            f"{float(gen7_shuffled['mean_future_alignment_margin']):.4f} "
+            "under shuffled-target training.",
+            "supported",
+        ),
+        _claim(
+            "Gen-7 paired predictive LIF matches TCN accuracy",
+            float(gen7_lif["mean_gain_vs_tcn"]) >= -0.01,
+            "Paired predictive LIF changes accuracy by "
+            f"{100.0 * float(gen7_lif['mean_gain_vs_tcn']):+.3f} points "
+            "versus TCN.",
+            (
+                "supported"
+                if float(gen7_lif["mean_gain_vs_tcn"]) >= -0.01
+                else "rejected"
+            ),
+        ),
+        _claim(
+            "Gen-7 uses predictive state beneficially by sample identity and temporal order",
+            (
+                float(gen7_lif["mean_state_specificity_vs_shuffled"]) >= 0.005
+                and int(gen7_lif["half_point_seed_count_state_specificity"]) >= 2
+                and float(gen7_lif["mean_state_temporal_order_vs_reversed"]) >= 0.005
+                and int(gen7_lif["half_point_seed_count_temporal_order"]) >= 2
+            ),
+            "Shuffling state changes accuracy by "
+            f"{-100.0 * float(gen7_lif['mean_state_specificity_vs_shuffled']):+.3f} "
+            "points in the shuffled model's favor; reversing state costs only "
+            f"{100.0 * float(gen7_lif['mean_state_temporal_order_vs_reversed']):.3f} points.",
+            "rejected",
+        ),
+        _claim(
+            "The Gen-7 successor qualifies for hardware optimization",
+            gen7["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen7['decision']['status']} with "
+            f"{gen7_qualified_count} qualified arms.",
+            "supported" if gen7["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen6_terminal_closeout",
-            "objective": "Package predictive parity together with the failed state-specificity gate.",
-            "success_measure": "A reproducible final ledger whose claims match the Gen-6 stop decision.",
+            "workstream": "gen7_terminal_closeout",
+            "objective": "Package successful predictive alignment together with failed identity/order-specific use.",
+            "success_measure": "A reproducible final ledger whose claims match the Gen-7 stop decision.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported cross-dataset Gen-5 mechanism and negative Gen-6 successor result without architecture-superiority claims.",
+            "objective": "Report the supported Gen-5 mechanism, Gen-6 parity, and Gen-7 representation/use separation without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
             "workstream": "hardware_work_deferred",
-            "objective": "Keep event-driven kernel optimization closed after the Gen-6 terminal failure.",
+            "objective": "Keep event-driven kernel optimization closed after the Gen-7 terminal failure.",
             "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
         },
         {
             "priority": 4,
             "workstream": "new_program_requires_new_hypothesis",
-            "objective": "Prevent an automatic Gen-7 rescue sweep on the rejected shared-residual design.",
+            "objective": "Prevent an automatic decoder or temporal-binding rescue sweep on Gen-7.",
             "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration.",
         },
     ]
@@ -392,7 +476,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(4, 1, figsize=(13, 18), constrained_layout=True)
+    figure, axes = plt.subplots(5, 1, figsize=(13, 22), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -427,6 +511,16 @@ def plot_gen5_evidence_synthesis(
     )
     axes[3].set_ylabel("Gen-6 SSC test accuracy (%)")
     axes[3].set_title("Gen-6 parity without beneficial state specificity")
+    axes[4].bar(
+        ("TCN", "Gen-7 paired LIF"),
+        [
+            100.0 * metrics["gen7_tcn_accuracy"],
+            100.0 * metrics["gen7_lif_accuracy"],
+        ],
+        color=("#8b6fd6", "#35b4f2"),
+    )
+    axes[4].set_ylabel("Gen-7 SSC test accuracy (%)")
+    axes[4].set_title("Gen-7 alignment succeeds; causal identity gate fails")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -454,7 +548,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5/Gen-6 evidence report",
+        "# AMMC Gen-5/Gen-6/Gen-7 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -472,6 +566,12 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         "",
         "The accuracy-preservation hypothesis is supported; the beneficial sample-specific-correction hypothesis is rejected. Hardware optimization remains closed under the preregistered rule.",
         "",
+        "Gen-7 then assigned state a paired future-prediction objective and a sample-conditioned gate. Paired LIF leads TCN by "
+        f"{100.0 * metrics['gen7_lif_gain_vs_tcn']:+.3f} points and its future-alignment margin reaches "
+        f"{metrics['gen7_lif_future_alignment_margin']:.4f}, but shuffled state improves accuracy by "
+        f"{-100.0 * metrics['gen7_lif_state_specificity_vs_shuffled']:.3f} points and time reversal costs only "
+        f"{100.0 * metrics['gen7_lif_temporal_order_vs_reversed']:.3f} points. Representation learning succeeded; beneficial identity/order-specific use did not. Gen-7 returned `stop`.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -486,7 +586,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Milestone A does not support retaining that implementation as a competitive architecture. Gen-6 demonstrates that a zero-initialized shared correction can preserve the conventional predictor, but its learned state is not beneficially sample-specific under shuffling. This is a causal mechanism result accompanied by two negative architecture-selection results, not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Gen-6 shows that zero-initialized shared correction preserves the conventional predictor. Gen-7 shows that paired prediction learns a strong future-aligned state and modestly improves mean accuracy, while its output remains non-specific under state shuffling and weakly dependent on temporal order. These are qualified mechanism and representation results accompanied by negative architecture-selection decisions, not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

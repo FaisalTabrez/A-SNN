@@ -816,7 +816,7 @@ identical command resumes from `gen6_successor_progress.json`. It either emits
 a qualified LIF successor and reopens hardware work, or permanently closes
 this successor without a follow-up sweep.
 
-## Gen-7 predictive-state experiment
+## Gen-7 predictive-state experiment (completed: `stop`)
 
 Gen-6 preserved TCN accuracy but its state correction was not beneficially
 sample-specific. Gen-7 therefore gives state an explicit temporal objective:
@@ -851,3 +851,10 @@ Run the consolidated Colab experiment:
 The run checkpoints after every arm/seed pair and automatically retains the
 no-predictive and shuffled-target controls whenever the paired LIF candidate
 reaches confirmation.
+
+Gen-7 completed with paired predictive LIF `+0.417` mean point over TCN and a
+strong `0.2928` future-alignment margin. It nevertheless failed the terminal
+identity/order gate: shuffled state improved accuracy by `1.022` points and
+time reversal cost only `0.165` point. The result and final ledger are retained
+in [`gen5/outputs/gen7_predictive_state_cuda_2026-08-10/`](gen5/outputs/gen7_predictive_state_cuda_2026-08-10/)
+and [`gen5/outputs/gen7_research_closeout_2026-08-10/`](gen5/outputs/gen7_research_closeout_2026-08-10/).

@@ -1,6 +1,12 @@
 # Gen-7 predictive-state preregistration
 
-Status: protocol frozen before training.
+Status (2026-08-10): completed; terminal gate returned `stop`.
+
+Paired predictive LIF led mean test accuracy by 0.417 point and achieved a
+0.2928 future-alignment margin, but batch-shuffled state improved accuracy by
+1.022 points and time reversal cost only 0.165 point. Neither specificity gate
+replicated on any seed. The branch is closed without a rescue sweep. See the
+retained [`analysis.md`](../outputs/gen7_predictive_state_cuda_2026-08-10/analysis.md).
 
 ## Motivation
 
