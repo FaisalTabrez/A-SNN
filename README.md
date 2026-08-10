@@ -62,6 +62,8 @@ If you are new to the repo, read these in order:
 45. [Gen-18 held-out local-credit preregistration](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md)
 46. [Gen-18 held-out local-credit analysis](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md)
 47. [Gen-19 N-MNIST state-replication preregistration](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md)
+48. [Gen-19 N-MNIST state-replication analysis](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_ANALYSIS.md)
+49. [Full-resolution N-MNIST accuracy benchmark](gen5/docs/NMNIST_ACCURACY_BENCHMARK_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1418,3 +1420,29 @@ The runner now writes a checksummed manifest and
 `gen19_nmnist_state_replication_bundle.zip` beside the individual artifacts,
 so a complete result can be downloaded as one file after future verification
 runs.
+
+## Full-resolution N-MNIST accuracy benchmark (preregistered)
+
+This bounded side track measures standard classification performance before
+returning to Gen-20. It preserves Gen-19 unchanged and compares a full-frame
+CNN, a spatial-temporal CNN, and a convolutional SNN with learnable membrane
+dynamics. Screening uses validation accuracy only; at most two arms receive
+three-seed full-data confirmation.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q tonic
+!python gen5/examples/nmnist_accuracy_benchmark.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/nmnist \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/nmnist_accuracy_benchmark_cuda
+```
+
+The first run builds an approximately 1.39 GB full-resolution cache in Drive.
+The benchmark resumes after each completed arm or seed and finishes with a
+checksummed single-file result bundle. The practical target is `99.0%`; the
+stretch target is `99.4%`. Both pass and stop return to Gen-20. See the frozen
+[benchmark preregistration](gen5/docs/NMNIST_ACCURACY_BENCHMARK_PREREGISTRATION.md).

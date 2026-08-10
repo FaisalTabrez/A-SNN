@@ -5618,3 +5618,23 @@ accuracy; 99.4% is the stretch target suggested by published N-MNIST systems.
 The track stops after the bounded screen/confirmation run even if the stretch
 target is missed. Accuracy alone will not be used as evidence for memory,
 continuous learning, temporal credit, or neuromorphic energy efficiency.
+
+## 2026-08-10 - Full-resolution N-MNIST accuracy benchmark implemented
+
+The bounded accuracy track is implemented as one screen/confirmation runner,
+not a sequence of new generations. It encodes the native 34x34x2 event sensor
+into ten binary temporal bins and compares a frame-CNN ceiling, a 3-D
+spatial-temporal CNN, and a convolutional parametric-LIF model with learnable
+channel-wise decay and thresholds.
+
+The screen uses seed 210, 20,000 stratified training examples, four epochs,
+and validation accuracy only. At most two arms within one point of the best
+screen result are promoted. Confirmation retrains from scratch on the full
+training split for ten epochs with seeds 211-213, selects checkpoints by
+validation, and touches the official test split only for terminal evaluation.
+
+The runner is resumable after every arm and seed, logs encoding and completion
+progress, and emits a checksummed ZIP bundle. It reports accuracy dispersion,
+parameters, dense MACs, spike activity, an explicitly labeled
+activity-scaled operation proxy, throughput, and training time. The frozen
+practical/stretch gates are 99.0%/99.4%. Both outcomes return to Gen-20.
