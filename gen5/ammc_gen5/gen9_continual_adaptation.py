@@ -18,7 +18,7 @@ from .gen7_predictive_state import (
     _measure_sample_gate,
     _train_predictive_validation_selected,
 )
-from .milestone_a_architecture import _load_progress, _sample_split, _save_progress
+from .milestone_a_architecture import _load_progress, _sample_split
 from .runtime import device_kind, mark_step, resolve_device, seed_everything, sync
 from .shd_benchmark import SHDConfig, _measure
 from .shd_temporal_pyramid import DEFAULT_TEMPORAL_LEVELS
@@ -1141,6 +1141,35 @@ def _run_signature(config, **values):
     for key, value in values.items():
         signature[key] = list(value) if isinstance(value, tuple) else value
     return signature
+
+
+def _save_progress(
+    path,
+    signature,
+    *,
+    stage,
+    screen_records,
+    promoted_source_arms,
+    adaptation_records,
+    decision=None,
+):
+    """Atomically persist the Gen-9-specific checkpoint schema."""
+
+    if path is None:
+        return
+    progress_path = pathlib.Path(path)
+    progress_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "signature": signature,
+        "stage": stage,
+        "screen_records": list(screen_records),
+        "promoted_source_arms": list(promoted_source_arms),
+        "adaptation_records": list(adaptation_records),
+        "decision": decision,
+    }
+    temporary = progress_path.with_suffix(progress_path.suffix + ".part")
+    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(progress_path)
 
 
 def _write_csv(path, rows):

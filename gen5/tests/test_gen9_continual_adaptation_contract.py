@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import sys
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -18,7 +19,9 @@ from ammc_gen5.gen9_continual_adaptation import (
     select_gen9_promoted_source_arms,
     sensor_damage_indices,
     summarize_gen9_adaptation,
+    _save_progress,
 )
+from ammc_gen5.milestone_a_architecture import _load_progress
 
 
 class Gen9ContinualAdaptationContractTest(unittest.TestCase):
@@ -149,6 +152,25 @@ class Gen9ContinualAdaptationContractTest(unittest.TestCase):
         summary = summarize_gen9_adaptation(rows, budgets=(0, 50, 100))
         lookup = {row["strategy"]: row for row in summary}
         self.assertAlmostEqual(lookup["tcn_readout"]["mean_adaptation_auc"], 0.50)
+
+    def test_progress_round_trip_uses_gen9_schema(self) -> None:
+        signature = {"version": 1, "experiment": "gen9"}
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "progress.json"
+            _save_progress(
+                path,
+                signature,
+                stage="adaptation",
+                screen_records=[{"arm": "dilated_tcn"}],
+                promoted_source_arms=("dilated_tcn", "predictive_lif"),
+                adaptation_records=[{"strategy": "tcn_static"}],
+            )
+            payload = _load_progress(path, signature)
+        self.assertEqual(payload["stage"], "adaptation")
+        self.assertEqual(
+            payload["promoted_source_arms"], ["dilated_tcn", "predictive_lif"]
+        )
+        self.assertEqual(payload["adaptation_records"][0]["strategy"], "tcn_static")
 
     @unittest.skipIf(torch is None, "PyTorch is not installed")
     def test_sensor_damage_is_deterministic_and_non_mutating(self) -> None:

@@ -5037,3 +5037,18 @@ a separately preregistered STW/LTW memory milestone. Failure closes this
 continual-adaptation representation and blocks automatic memory, replay,
 plasticity, or shift-severity rescue experiments. The complete frozen protocol
 is `gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-9 checkpoint schema hotfix
+
+The first Colab execution completed its initial screen arm but failed before
+writing the checkpoint because Gen-9 passed `promoted_source_arms` and
+`adaptation_records` into the older Milestone-A writer, whose fixed schema
+accepts only `promoted_arms` and `confirmation_records`. This is an
+orchestration defect, not an experimental result; no terminal metric or gate
+was observed.
+
+Decision: Gen-9 now owns an atomic progress writer with its explicit source and
+adaptation fields while retaining the shared signature-validated loader. A
+round-trip regression test verifies the exact schema. The scientific protocol,
+seeds, masks, budgets, models, and gates are unchanged, so rerunning the same
+Colab command is valid.
