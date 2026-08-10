@@ -773,3 +773,37 @@ gate. The retained contribution is the narrower causal residual-state finding
 on SHD and SSC. See the committed
 [`analysis.md`](gen5/outputs/milestone_a_architecture_cuda_2026-08-10/analysis.md)
 and final architecture-closeout evidence report.
+
+## Gen-6 successor experiment
+
+Gen-6 is a separately preregistered successor, not another Gen-5 rescue sweep.
+It keeps the complete dilated-TCN direct predictor and adds a zero-initialized,
+weight-shared residual state correction. The LIF arm adds only 99 trainable
+values at the default width and cannot perturb TCN logits at initialization.
+The full hypothesis and terminal gates are frozen in
+[gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md](gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md).
+
+Run the consolidated screen and automatic confirmation in Colab:
+
+```python
+!python gen5/examples/gen6_successor.py \
+  --device cuda \
+  --screen-seed 142 \
+  --confirm-seeds 142 143 144 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 4 \
+  --confirm-epochs 15 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen6_successor_cuda
+```
+
+The runner atomically checkpoints after every arm/seed pair. Repeating the
+identical command resumes from `gen6_successor_progress.json`. It either emits
+a qualified LIF successor and reopens hardware work, or permanently closes
+this successor without a follow-up sweep.

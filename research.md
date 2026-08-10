@@ -4761,3 +4761,31 @@ yet the tested implementations are neither the strongest matched predictors
 nor efficient in dense T4 execution. This closeout is the gate-selected next
 action; generating another numbered rescue phase would contradict the
 preregistered stop rule.
+
+## 2026-08-10 - Gen-6 weight-shared residual successor preregistered
+
+Decision: begin a separately named Gen-6 successor rather than reopen Gen-5.
+The new hypothesis directly addresses the identified failure mode. The Gen-5
+hierarchical models replaced or rebalanced the strong TCN representation and
+lost validation accuracy. Gen-6 preserves the complete TCN direct computation
+and adds state only as a zero-initialized residual correction to class logits.
+
+The state branch pools the same hidden current, projects it through the
+existing classifier weight matrix, and learns only leak, optional threshold,
+and 35 per-class gate values. At the default 32-channel width, the LIF
+successor adds 99 parameters while retaining the exact TCN width and beginning
+with identical logits. An analog arm controls for whether any benefit requires
+spiking dynamics.
+
+The protocol is frozen in
+`gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md`. One-seed reduced-split screening
+promotes a residual arm only within `1` validation point of TCN, within the
+parameter budget, and with healthy LIF activity. Full confirmation uses all
+official SSC splits and seeds 142–144. The LIF successor passes only within `1`
+mean test point of TCN, with at least `0.5`-point direct-removal and
+state-shuffling losses replicated on two seeds, `1–30%` spike activity, and a
+mean absolute correction gate of at least `0.01`.
+
+This is a single terminal experiment with automatic promotion, causal
+ablations, and per-arm checkpoint/resume. Failure closes Gen-6 without a rescue
+sweep; passing is the only condition that can reopen hardware-efficiency work.

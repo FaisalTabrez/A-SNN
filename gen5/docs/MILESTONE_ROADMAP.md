@@ -42,6 +42,10 @@ branch is closed and no rescue threshold sweep is authorized. A future
 successor must begin with a separate preregistration and a genuinely new causal
 hypothesis.
 
+That successor is now preregistered separately in
+[`GEN6_SUCCESSOR_PREREGISTRATION.md`](GEN6_SUCCESSOR_PREREGISTRATION.md). It
+does not change the terminal interpretation of Gen-5 evidence.
+
 ## Milestone B — runtime and hardware
 
 Question: does compiled event-driven execution convert the existing operation
