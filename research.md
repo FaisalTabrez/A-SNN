@@ -4716,3 +4716,48 @@ matched TCN retains a `3.253`-point accuracy advantage and `3.182x` throughput
 advantage on the dense T4 implementation. The next valid experiment is the
 already preregistered Milestone A architecture run, whose output schema begins
 with `milestone_a_architecture.json` and `milestone_a_progress.json`.
+
+## 2026-08-10 - Milestone A stops the current Gen-5 architecture branch
+
+Evidence retained at
+`gen5/outputs/milestone_a_architecture_cuda_2026-08-10/` from archive SHA-256
+`FDF13E7CC2CF3A600389041D0B044E9564BD26E7C4DC736A777A779D304591C3`.
+
+In the preregistered one-seed SSC screen, dilated TCN validation accuracy was
+`50.533%`. Residual LIF reached `44.333%` (`-6.200` points), hierarchical
+residual analog reached `41.967%` (`-8.567`), and hierarchical residual LIF
+reached `37.067%` (`-13.467`). Both LIF arms were within the parameter gate and
+had non-degenerate spike rates (`10.547%` and `8.812%`), so their rejection is
+an accuracy result rather than dead activity or budget mismatch. Only TCN was
+promoted.
+
+Full official SSC confirmation reproduces TCN at `59.170% +/- 0.230` points
+over seeds 142–144 and `56,392` examples/s mean T4 throughput. This is close to
+the independent Phase 49 result (`59.225% +/- 0.541`) and supports pipeline
+consistency. Because no causal arm passed screening, Milestone A correctly
+contains no new causal ablation records and returns `status=stop`, no qualified
+arms, and `next_milestone=close_architecture_branch`.
+
+Sanity decision: preserve the narrower cross-dataset causal-state mechanism
+finding, but reject the current residual and hierarchical variants as a
+competitive Gen-5 architecture under the registered protocol. Do not open the
+hardware milestone, run a rescue sweep, or claim that this screen disproves
+all possible SNNs. The next action is an architecture-branch closeout and an
+updated final claim ledger; any successor must be a separately preregistered
+generation with a genuinely new hypothesis.
+
+## 2026-08-10 - Final evidence ledger updated with Milestone A
+
+The reproducible synthesis now requires Milestone A alongside Phase 44–49 and
+is retained at `gen5/outputs/gen5_architecture_closeout_2026-08-10/`. Two final
+claims were added: hierarchical residual scaling closes the SSC gap
+(`rejected`) and the current Gen-5 architecture qualifies for hardware
+optimization (`rejected`).
+
+Decision: Milestone B and continual-plasticity reintegration are deferred for
+this architecture. The completed project claim is narrower but defensible:
+sample-specific residual LIF state contributes on two event-audio datasets,
+yet the tested implementations are neither the strongest matched predictors
+nor efficient in dense T4 execution. This closeout is the gate-selected next
+action; generating another numbered rescue phase would contradict the
+preregistered stop rule.

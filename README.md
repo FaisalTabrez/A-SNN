@@ -762,3 +762,14 @@ control and qualifying causal candidates. Upload the resulting output folder
 or ZIP; there is no separate screen-result round trip. Progress is atomically
 checkpointed after every arm/seed run in `milestone_a_progress.json`. Repeating
 the identical command resumes completed work after a Colab interruption.
+
+### Milestone A result
+
+Milestone A returned `stop`: only the dilated TCN passed screening and no
+causal LIF arm qualified for confirmation. The current Gen-5 architecture
+branch is closed, and the hardware and continual-learning milestones are
+deferred rather than run against an architecture that failed its predictive
+gate. The retained contribution is the narrower causal residual-state finding
+on SHD and SSC. See the committed
+[`analysis.md`](gen5/outputs/milestone_a_architecture_cuda_2026-08-10/analysis.md)
+and final architecture-closeout evidence report.

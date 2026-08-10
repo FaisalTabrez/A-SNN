@@ -1,4 +1,4 @@
-"""Sprint 50 CLI: synthesize the final Gen-5 SHD/SSC evidence ledger."""
+"""Generate the final Gen-5 evidence ledger, including Milestone A."""
 
 from __future__ import annotations
 
@@ -14,7 +14,9 @@ from ammc_gen5 import synthesize_gen5_evidence  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate the Phase 50 Gen-5 evidence report")
+    parser = argparse.ArgumentParser(
+        description="Generate the final Gen-5 evidence and architecture-closeout report"
+    )
     parser.add_argument("--evidence-root", default="gen5/outputs")
     parser.add_argument("--output-dir", default="gen5/outputs/gen5_evidence_synthesis")
     parser.add_argument("--no-plot", action="store_true")

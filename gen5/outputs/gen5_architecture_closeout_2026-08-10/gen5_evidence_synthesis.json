@@ -1,0 +1,129 @@
+{
+  "sources": {
+    "phase44": "gen5\\outputs\\shd_calibrated_baselines_cuda_2026-08-10\\shd_calibrated_baselines.json",
+    "phase45": "gen5\\outputs\\shd_spiking_temporal_conv_cuda_2026-08-10\\shd_spiking_temporal_conv.json",
+    "phase46": "gen5\\outputs\\shd_state_placement_diagnostic_cuda_2026-08-10\\shd_state_placement_diagnostic.json",
+    "phase47": "gen5\\outputs\\shd_residual_state_contribution_cuda_2026-08-10\\shd_residual_state_contribution.json",
+    "phase48": "gen5\\outputs\\ssc_residual_lif_replication_cuda_2026-08-10\\ssc_residual_lif_replication.json",
+    "phase49": "gen5\\outputs\\ssc_efficiency_baselines_cuda_2026-08-10\\ssc_efficiency_baselines.json",
+    "milestone_a": "gen5\\outputs\\milestone_a_architecture_cuda_2026-08-10\\milestone_a_architecture.json"
+  },
+  "metrics": {
+    "phase44_shd_conv1d_accuracy": 0.8284746760895171,
+    "shd_state_only_lif_accuracy": 0.7430800942285041,
+    "shd_state_only_lif_gap_vs_conv": -0.08613074204947002,
+    "shd_residual_lif_accuracy": 0.8380447585394583,
+    "shd_residual_lif_gain_vs_conv": 0.009422850412249772,
+    "shd_state_contribution_vs_direct_only": 0.06419316843345113,
+    "shd_state_specificity_vs_shuffled": 0.041666666666666664,
+    "ssc_residual_lif_accuracy": 0.5649756320936774,
+    "ssc_residual_lif_gain_vs_conv": 0.07249860988453861,
+    "ssc_state_contribution_vs_direct_only": 0.11271383246655543,
+    "ssc_state_specificity_vs_shuffled": 0.029797533771628564,
+    "ssc_tcn_accuracy": 0.592254603735322,
+    "ssc_conv1d_final_accuracy": 0.4894841853923397,
+    "ssc_residual_lif_final_accuracy": 0.5597259019396199,
+    "ssc_tcn_gain_vs_residual_lif": 0.03252870179570211,
+    "ssc_residual_lif_throughput_ratio_vs_tcn": 0.31429163008665245,
+    "ssc_tcn_test_examples_per_second": 53079.5751720352,
+    "ssc_residual_lif_test_examples_per_second": 16682.466205125947,
+    "ssc_residual_lif_dense_mac_reduction_vs_tcn": 0.11568836189518317,
+    "ssc_residual_lif_spike_rate": 0.05146637230249323,
+    "ssc_residual_lif_accuracy_std": 0.00018063914266163364,
+    "milestone_a_tcn_screen_validation_accuracy": 0.5053333333333333,
+    "milestone_a_residual_lif_screen_validation_accuracy": 0.44333333333333336,
+    "milestone_a_hierarchical_analog_screen_validation_accuracy": 0.4196666666666667,
+    "milestone_a_hierarchical_lif_screen_validation_accuracy": 0.37066666666666664,
+    "milestone_a_tcn_confirmation_accuracy": 0.5916985575507802,
+    "milestone_a_tcn_confirmation_accuracy_std": 0.002302299716740247,
+    "milestone_a_qualified_arm_count": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Standalone state-only LIF is competitive on SHD",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "State-only LIF trails Conv1D by 8.613 points."
+    },
+    {
+      "claim": "Residual LIF is viable on SHD",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Residual LIF changes accuracy by +0.942 points versus Conv1D."
+    },
+    {
+      "claim": "Sample-specific LIF state contributes on SHD",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Removing state costs 6.419 points; shuffling state costs 4.167 points."
+    },
+    {
+      "claim": "The residual-state contribution replicates on SSC",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Removing state costs 11.271 points; shuffling state costs 2.980 points."
+    },
+    {
+      "claim": "Residual LIF matches the stronger SSC temporal baseline",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Matched dilated TCN leads by 3.253 points."
+    },
+    {
+      "claim": "Residual LIF is faster in the current T4 implementation",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Residual LIF delivers 0.314x TCN throughput."
+    },
+    {
+      "claim": "Residual LIF has a lower dense-operation proxy",
+      "status": "proxy_only",
+      "gate_passed": true,
+      "evidence": "Dense MAC proxy is 11.569% lower than TCN."
+    },
+    {
+      "claim": "The current results establish hardware energy efficiency",
+      "status": "not_tested",
+      "gate_passed": false,
+      "evidence": "No direct power or energy measurement was performed; dense PyTorch is not event-driven."
+    },
+    {
+      "claim": "Hierarchical residual scaling closes the SSC accuracy gap",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Hierarchical analog and LIF trail TCN validation by 8.567 and 13.467 points."
+    },
+    {
+      "claim": "The current Gen-5 architecture qualifies for hardware optimization",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Milestone A promoted dilated_tcn and returned status=stop with 0 qualified causal arms."
+    }
+  ],
+  "roadmap": [
+    {
+      "priority": 1,
+      "workstream": "architecture_branch_closeout",
+      "objective": "Package the replicated causal-state finding together with the negative competitiveness result.",
+      "success_measure": "A reproducible report whose claims match the final gate decisions."
+    },
+    {
+      "priority": 2,
+      "workstream": "successor_preregistration",
+      "objective": "Define a genuinely new generation rather than tuning the rejected residual variants.",
+      "success_measure": "A new causal hypothesis, matched baseline, validation promotion gate, and stop rule before training."
+    },
+    {
+      "priority": 3,
+      "workstream": "hardware_work_deferred",
+      "objective": "Defer event-driven kernel optimization until a successor passes predictive gates.",
+      "success_measure": "No hardware-efficiency claim is pursued for an architecture that failed Milestone A."
+    },
+    {
+      "priority": 4,
+      "workstream": "plasticity_work_deferred",
+      "objective": "Retain LTW/STW and plasticity code as exploratory infrastructure, not validated architecture evidence.",
+      "success_measure": "Reintegration occurs only after a successor architecture passes its accuracy milestone."
+    }
+  ]
+}

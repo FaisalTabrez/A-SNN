@@ -1,4 +1,4 @@
-"""Phase 50 reproducible synthesis of the Gen-5 SHD/SSC evidence chain."""
+"""Reproducible synthesis and architecture closeout of Gen-5 evidence."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ EVIDENCE_FILENAMES = {
     "phase47": "shd_residual_state_contribution.json",
     "phase48": "ssc_residual_lif_replication.json",
     "phase49": "ssc_efficiency_baselines.json",
+    "milestone_a": "milestone_a_architecture.json",
 }
 
 
@@ -76,6 +77,30 @@ def synthesize_gen5_evidence(
     phase49_conv = _summary_row(evidence["phase49"], "temporal_conv1d")
     phase49_lif = _summary_row(evidence["phase49"], "residual_lif")
     phase49_tcn = _summary_row(evidence["phase49"], "dilated_tcn")
+    milestone_a = evidence["milestone_a"]
+    milestone_screen = {
+        row["arm"]: row for row in milestone_a["screen_records"]
+    }
+    milestone_tcn = _summary_row(milestone_a, "dilated_tcn", key="confirmation_summary")
+    milestone_tcn_validation = float(
+        milestone_screen["dilated_tcn"]["best_validation_accuracy"]
+    )
+    milestone_hierarchical_gaps = (
+        milestone_tcn_validation
+        - float(
+            milestone_screen["hierarchical_residual_analog"][
+                "best_validation_accuracy"
+            ]
+        ),
+        milestone_tcn_validation
+        - float(
+            milestone_screen["hierarchical_residual_lif"][
+                "best_validation_accuracy"
+            ]
+        ),
+    )
+    milestone_scaling_passed = min(milestone_hierarchical_gaps) <= 0.02
+    milestone_qualified_count = len(milestone_a["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -137,6 +162,29 @@ def synthesize_gen5_evidence(
         "ssc_residual_lif_dense_mac_reduction_vs_tcn": mac_reduction,
         "ssc_residual_lif_spike_rate": float(phase49_lif["mean_activity"]),
         "ssc_residual_lif_accuracy_std": float(phase49_lif["std_test_accuracy"]),
+        "milestone_a_tcn_screen_validation_accuracy": milestone_tcn_validation,
+        "milestone_a_residual_lif_screen_validation_accuracy": float(
+            milestone_screen["residual_lif"]["best_validation_accuracy"]
+        ),
+        "milestone_a_hierarchical_analog_screen_validation_accuracy": float(
+            milestone_screen["hierarchical_residual_analog"][
+                "best_validation_accuracy"
+            ]
+        ),
+        "milestone_a_hierarchical_lif_screen_validation_accuracy": float(
+            milestone_screen["hierarchical_residual_lif"][
+                "best_validation_accuracy"
+            ]
+        ),
+        "milestone_a_tcn_confirmation_accuracy": float(
+            milestone_tcn["mean_full_accuracy"]
+        ),
+        "milestone_a_tcn_confirmation_accuracy_std": float(
+            milestone_tcn["std_full_accuracy"]
+        ),
+        "milestone_a_qualified_arm_count": float(
+            milestone_qualified_count
+        ),
     }
     claims = [
         _claim(
@@ -199,31 +247,53 @@ def synthesize_gen5_evidence(
             "No direct power or energy measurement was performed; dense PyTorch is not event-driven.",
             "not_tested",
         ),
+        _claim(
+            "Hierarchical residual scaling closes the SSC accuracy gap",
+            milestone_scaling_passed,
+            "Hierarchical analog and LIF trail TCN validation by "
+            f"{100.0 * milestone_hierarchical_gaps[0]:.3f} "
+            "and "
+            f"{100.0 * milestone_hierarchical_gaps[1]:.3f} points.",
+            "supported" if milestone_scaling_passed else "rejected",
+        ),
+        _claim(
+            "The current Gen-5 architecture qualifies for hardware optimization",
+            milestone_a["decision"]["status"] == "pass",
+            "Milestone A promoted "
+            f"{', '.join(milestone_a['promoted_arms'])} and returned "
+            f"status={milestone_a['decision']['status']} with "
+            f"{milestone_qualified_count} qualified causal arms.",
+            (
+                "supported"
+                if milestone_a["decision"]["status"] == "pass"
+                else "rejected"
+            ),
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "compiled_event_driven_kernel",
-            "objective": "Replace the Python LIF loop and dense state execution with compiled event-driven kernels.",
-            "success_measure": "Measured accelerator or neuromorphic energy and latency, not MAC estimates.",
+            "workstream": "architecture_branch_closeout",
+            "objective": "Package the replicated causal-state finding together with the negative competitiveness result.",
+            "success_measure": "A reproducible report whose claims match the final gate decisions.",
         },
         {
             "priority": 2,
-            "workstream": "accuracy_scaling",
-            "objective": "Combine residual state with a stronger hierarchical temporal front end.",
-            "success_measure": "Close the matched TCN gap without losing causal state contribution.",
+            "workstream": "successor_preregistration",
+            "objective": "Define a genuinely new generation rather than tuning the rejected residual variants.",
+            "success_measure": "A new causal hypothesis, matched baseline, validation promotion gate, and stop rule before training.",
         },
         {
             "priority": 3,
-            "workstream": "non_audio_replication",
-            "objective": "Test the mechanism on an independent event-vision or control dataset.",
-            "success_measure": "Replicate removal and shuffled-state gates outside event audio.",
+            "workstream": "hardware_work_deferred",
+            "objective": "Defer event-driven kernel optimization until a successor passes predictive gates.",
+            "success_measure": "No hardware-efficiency claim is pursued for an architecture that failed Milestone A.",
         },
         {
             "priority": 4,
-            "workstream": "continual_plasticity_reintegration",
-            "objective": "Reintroduce LTW/STW and structural plasticity into the validated residual architecture.",
-            "success_measure": "Adaptation with retention under preregistered continual-learning baselines.",
+            "workstream": "plasticity_work_deferred",
+            "objective": "Retain LTW/STW and plasticity code as exploratory infrastructure, not validated architecture evidence.",
+            "success_measure": "Reintegration occurs only after a successor architecture passes its accuracy milestone.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -252,12 +322,31 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(2, 1, figsize=(13, 10), constrained_layout=True)
+    figure, axes = plt.subplots(3, 1, figsize=(13, 14), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
-    axes[0].set_title("AMMC Gen-5 Phase 50 evidence synthesis")
+    axes[0].set_title("AMMC Gen-5 final evidence synthesis")
     axes[1].bar(ssc_labels, [100.0 * value for value in ssc_values], color=("#167d55", "#35b4f2", "#8b6fd6"))
     axes[1].set_ylabel("SSC test accuracy (%)")
+    milestone_labels = (
+        "TCN",
+        "Residual LIF",
+        "Hierarchical analog",
+        "Hierarchical LIF",
+    )
+    milestone_values = (
+        metrics["milestone_a_tcn_screen_validation_accuracy"],
+        metrics["milestone_a_residual_lif_screen_validation_accuracy"],
+        metrics["milestone_a_hierarchical_analog_screen_validation_accuracy"],
+        metrics["milestone_a_hierarchical_lif_screen_validation_accuracy"],
+    )
+    axes[2].bar(
+        milestone_labels,
+        [100.0 * value for value in milestone_values],
+        color=("#8b6fd6", "#35b4f2", "#d88935", "#bd3d3a"),
+    )
+    axes[2].set_ylabel("Milestone A validation accuracy (%)")
+    axes[2].set_title("Terminal architecture screen")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -266,8 +355,8 @@ def plot_gen5_evidence_synthesis(
     plt.close(figure)
 
 
-def _summary_row(payload: dict, arm: str) -> dict:
-    for row in payload["summary"]:
+def _summary_row(payload: dict, arm: str, *, key: str = "summary") -> dict:
+    for row in payload[key]:
         if row["arm"] == arm:
             return row
     raise KeyError(f"missing summary arm: {arm}")
@@ -296,6 +385,8 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{1.0 / metrics['ssc_residual_lif_throughput_ratio_vs_tcn']:.2f}x its throughput. "
         "The residual model uses a lower dense-MAC proxy, but no hardware-energy claim is justified.",
         "",
+        "Milestone A then tested whether residual and hierarchical state models could clear a preregistered validation screen. Only the dilated TCN was promoted. The milestone returned `stop` with no qualified causal arms, so the current architecture branch is closed and hardware optimization is deferred.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -310,7 +401,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal architecture in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. This is an architectural mechanism result, not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Milestone A does not support retaining that implementation as a competitive architecture. This is a causal mechanism result accompanied by a negative architecture-selection result—not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

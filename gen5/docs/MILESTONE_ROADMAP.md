@@ -1,5 +1,9 @@
 # Gen-5 milestone roadmap
 
+> Status (2026-08-10): Milestone A returned `stop` with no qualified causal
+> arms. The current architecture branch is closed. Milestones B and C are
+> deferred; they must not be run against this rejected architecture.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
@@ -33,8 +37,10 @@ Pass requires a causal LIF arm to:
 - reproduce both causal losses on at least two of three seeds;
 - maintain a 1–30% mean spike rate when the arm is spiking.
 
-If no arm passes, close the architecture branch. Do not add another threshold
-sweep. If one passes, freeze its architecture and proceed to Milestone B.
+No arm passed. The dilated TCN was the sole promoted model, so the architecture
+branch is closed and no rescue threshold sweep is authorized. A future
+successor must begin with a separate preregistration and a genuinely new causal
+hypothesis.
 
 ## Milestone B — runtime and hardware
 
