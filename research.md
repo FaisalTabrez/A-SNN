@@ -5083,3 +5083,32 @@ neuromodulation, sleep replay, structural plasticity, and an automatic damage-
 severity sweep remain closed. The next phase is the eleven-source evidence
 closeout; any later continual-learning program requires a separately
 preregistered representation that first passes source competence.
+
+## 2026-08-10 - Gen-10 masked-sensor representation reset approved
+
+The user authorized the next step after the Gen-9 closeout. The new hypothesis
+is not a pooled-predictive-LIF rescue: residual state receives a parameter-free
+objective that aligns its masked-sensor representation to the detached clean
+direct representation. This directly targets the failure mode exposed by
+Gen-9 while preserving a conventional direct path for source competence.
+
+The frozen matrix contains ordinary TCN, sensor-dropout TCN, masked residual
+analog, and masked residual LIF. Training masks 20% of sensors independently;
+evaluation reuses Gen-9's unseen fixed 35% mask at seed 909. The dropout TCN
+separates augmentation benefit from spiking-state benefit, and the analog arm
+separates temporal state from spiking dynamics.
+
+Screening requires clean validation within one point and damaged validation
+within two points of the best conventional arm, matched parameter budget, and
+healthy LIF activity. Confirmation uses seeds 151–153 and complete SSC splits.
+The LIF terminal gate requires clean and damaged parity, no more than 0.5
+point damage loss, replicated 0.5-point state-removal and state-shuffling
+costs, a damage drop no more than 0.5 point worse than the best conventional
+control, and 1–30% spikes.
+
+Decision: Gen-10 can open only a separately preregistered Gen-11 adaptation
+comparison. STW/LTW, replay, neuromodulation, and structural plasticity remain
+closed even if Gen-10 passes. A stop forbids automatic mask-rate, alignment-
+weight, threshold, leak, or gate sweeps. The protocol is
+`gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md` and the runner is
+`gen5/examples/gen10_robust_representation.py`.

@@ -86,6 +86,19 @@ below TCN and was not promoted. STW/LTW and later biological mechanisms remain
 closed; see `outputs/gen9_continual_adaptation_cuda_2026-08-10/` and
 `outputs/gen9_research_closeout_2026-08-10/`.
 
+Gen-10 is the separately preregistered representation reset. It trains
+residual analog/LIF state under random sensor masking to align with the clean
+direct representation and compares both against ordinary and sensor-dropout
+TCNs:
+
+```powershell
+python gen5/examples/gen10_robust_representation.py --list-arms
+```
+
+Only clean/damaged conventional parity plus replicated causal state use opens
+a Gen-11 adaptation experiment. STW/LTW remains closed. See
+`docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

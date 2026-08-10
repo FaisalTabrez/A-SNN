@@ -42,6 +42,7 @@ If you are new to the repo, read these in order:
 25. [Gen-7 predictive-state preregistration](gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md)
 26. [Gen-8 time-local binding preregistration](gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md)
 27. [Gen-9 continual-adaptation preregistration](gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md)
+28. [Gen-10 robust-representation preregistration](gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -963,3 +964,44 @@ retained in
 [`gen5/outputs/gen9_continual_adaptation_cuda_2026-08-10/`](gen5/outputs/gen9_continual_adaptation_cuda_2026-08-10/)
 and
 [`gen5/outputs/gen9_research_closeout_2026-08-10/`](gen5/outputs/gen9_research_closeout_2026-08-10/).
+
+## Gen-10 masked-sensor representation reset (preregistered)
+
+Gen-10 tests a new representation rather than tuning the failed Gen-9 pooled
+predictive LIF. Random sensor masking trains a residual analog or LIF state to
+align with the clean direct representation. Ordinary and sensor-dropout TCNs
+control for architecture and augmentation effects. The frozen protocol is in
+[gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md](gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md).
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen10_robust_representation.py \
+  --device cuda \
+  --screen-seed 151 \
+  --confirm-seeds 151 152 153 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 5 \
+  --confirm-epochs 15 \
+  --training-mask-fraction 0.20 \
+  --damage-fraction 0.35 \
+  --damage-seed 909 \
+  --alignment-weight 0.10 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen10_robust_representation_cuda
+```
+
+The runner resumes from `gen10_robust_representation_progress.json`. A pass
+opens only a separately preregistered Gen-11 continual-adaptation test. A stop
+closes the representation without automatic mask, loss, leak, threshold, or
+gate sweeps. Memory and structural-plasticity mechanisms remain gated.

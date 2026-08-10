@@ -50,6 +50,14 @@
 > continual-learning program requires a separately preregistered,
 > source-competent representation hypothesis.
 
+> Gen-10 update (2026-08-10): the user authorized that representation reset.
+> Gen-10 compares ordinary and sensor-dropout TCN controls against masked-
+> sensor residual analog and LIF state. The state candidates receive a
+> parameter-free clean-target alignment objective. Clean/damaged parity and
+> replicated state-removal and state-shuffling costs are required before a new
+> adaptation experiment can open. Memory mechanisms remain closed. The frozen
+> protocol is `GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
