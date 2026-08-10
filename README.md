@@ -60,6 +60,8 @@ If you are new to the repo, read these in order:
 43. [Gen-17 sparse-spiking credit preregistration](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md)
 44. [Gen-17 sparse-spiking credit analysis](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_ANALYSIS.md)
 45. [Gen-18 held-out local-credit preregistration](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md)
+46. [Gen-18 held-out local-credit analysis](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md)
+47. [Gen-19 N-MNIST state-replication preregistration](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1374,3 +1376,32 @@ and reward-identity thresholds and positive lower 95% confidence bounds.
 
 See the frozen
 [Gen-18 preregistration](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md).
+
+Gen-18 returned `stop`. Mean correct-reward gain was `+0.796`, but only `5/10`
+seeds qualified and its lower 95% bound was `-0.016`. Correct reward finished
+`+0.510` above shuffled reward on average, but only `6/10` seeds qualified and
+the lower bound was `-0.013`. The local reward-credit program is closed under
+its preregistered rule. See
+[the Gen-18 analysis](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md).
+
+## Gen-19 real event-vision state replication (preregistered)
+
+Gen-19 starts a separate external-generalization program. It tests the
+established residual LIF state mechanism on N-MNIST using a matched temporal
+Conv1D and full/direct-only/state-only/shuffled-state causal evaluations. It
+does not reopen local reward credit.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q tonic
+!python gen5/examples/gen19_nmnist_state_replication.py \
+  --device cuda \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen19_nmnist_state_replication_cuda
+```
+
+N-MNIST downloads automatically on the first run; no input file must be
+uploaded. See the frozen
+[Gen-19 preregistration](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md).

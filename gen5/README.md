@@ -208,6 +208,18 @@ local rule, not another encoder search. Run
 `docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md` for its confidence
 and replication gates.
 
+Gen-18 returned `stop`: the positive mean gain and reward-identity margin had
+slightly negative lower 95% bounds and only 5/10 and 6/10 seeds qualified.
+The tested local reward-credit program is closed. See
+`docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md`.
+
+Gen-19 starts a distinct external event-vision program. After installing the
+optional `tonic` package, run
+`python examples/gen19_nmnist_state_replication.py --list-arms`. The runner
+downloads N-MNIST, builds parameter-keyed event caches, and evaluates matched
+Conv1D and residual-LIF models with causal state ablations. See
+`docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:

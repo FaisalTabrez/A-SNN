@@ -1,0 +1,59 @@
+claim,status,gate_passed,evidence
+Standalone state-only LIF is competitive on SHD,rejected,False,State-only LIF trails Conv1D by 8.613 points.
+Residual LIF is viable on SHD,supported,True,Residual LIF changes accuracy by +0.942 points versus Conv1D.
+Sample-specific LIF state contributes on SHD,supported,True,Removing state costs 6.419 points; shuffling state costs 4.167 points.
+The residual-state contribution replicates on SSC,supported,True,Removing state costs 11.271 points; shuffling state costs 2.980 points.
+Residual LIF matches the stronger SSC temporal baseline,rejected,False,Matched dilated TCN leads by 3.253 points.
+Residual LIF is faster in the current T4 implementation,rejected,False,Residual LIF delivers 0.314x TCN throughput.
+Residual LIF has a lower dense-operation proxy,proxy_only,True,Dense MAC proxy is 11.569% lower than TCN.
+The current results establish hardware energy efficiency,not_tested,False,No direct power or energy measurement was performed; dense PyTorch is not event-driven.
+Hierarchical residual scaling closes the SSC accuracy gap,rejected,False,Hierarchical analog and LIF trail TCN validation by 8.567 and 13.467 points.
+The current Gen-5 architecture qualifies for hardware optimization,rejected,False,Milestone A promoted dilated_tcn and returned status=stop with 0 qualified causal arms.
+The Gen-6 shared residual LIF preserves TCN predictive accuracy,supported,True,Shared residual LIF changes SSC accuracy by -0.065 points versus the matched TCN.
+The Gen-6 LIF correction is beneficially sample-specific,rejected,False,"Removing state costs 0.386 points (1/3 seeds pass), while shuffling state changes accuracy by +0.657 points in the shuffled model's favor (0/3 seeds pass)."
+The Gen-6 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-7 paired future prediction improves state alignment,supported,True,Paired LIF future alignment is 0.2928 versus -0.0017 under shuffled-target training.
+Gen-7 paired predictive LIF matches TCN accuracy,supported,True,Paired predictive LIF changes accuracy by +0.417 points versus TCN.
+Gen-7 uses predictive state beneficially by sample identity and temporal order,rejected,False,Shuffling state changes accuracy by +1.022 points in the shuffled model's favor; reversing state costs only 0.165 points.
+The Gen-7 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-8 time-local analog binding introduces temporal-order sensitivity,supported,True,Reversing analog state costs 0.561 points with 2/3 seeds passing.
+Gen-8 time-local analog binding uses the correct sample identity,rejected,False,Shuffling analog state costs only 0.118 points with 0/3 seeds passing.
+The Gen-8 paired time-local LIF candidate is stable enough for confirmation,rejected,False,The candidate screened at 7.267% validation accuracy with a 50.656% spike rate.
+The Gen-8 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-9 sensor damage creates a non-trivial distribution shift,supported,True,Static TCN accuracy falls by 9.364 points across confirmation seeds.
+The Gen-9 predictive LIF representation is source-competent,rejected,False,Predictive LIF trails TCN screening validation by 6.467 points with 8.964% spike activity.
+A frozen TCN representation adapts through a trainable readout,supported,True,"Readout adaptation gains 5.601 points with 3/3 seeds passing, at 2.831 points forgetting."
+Gen-9 qualifies for STW/LTW memory experiments,rejected,False,The terminal decision is status=stop with 0 qualified arms; only dilated_tcn passed source screening.
+Sensor dropout improves conventional robustness in Gen-10,supported,True,Dropout TCN changes clean accuracy by +2.684 points and damaged accuracy by +8.763 points.
+The Gen-10 masked residual analog representation is source-competent,rejected,False,Residual analog trails dropout TCN screening by 5.500 clean and 3.200 damaged points.
+The Gen-10 masked residual LIF representation is source-competent,rejected,False,Residual LIF trails dropout TCN screening by 9.200 clean and 6.733 damaged points with 11.538% spikes.
+Gen-10 qualifies a spiking representation for adaptation,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-11 state adapters improve damaged-task accuracy by the preregistered margin,rejected,False,"The analog and LIF adapters gain 1.353 and 0.783 points, versus 2.330 for readout adaptation."
+Gen-11 LIF adaptation depends on sample-specific spiking state,rejected,False,"Removing LIF state costs 0.783 points, but shuffling sample identity costs only 0.011 points."
+Gen-11 qualifies for synaptic STW/LTW consolidation,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-12 prototype memory provides useful fast adaptation,rejected,False,"Dense and spiking prototypes gain 0.250 and 0.278 points, versus 3.564 for readout adaptation."
+Gen-12 spiking memory depends on correct class associations,rejected,False,"Removing memory costs 0.278 points and shuffling class associations costs 0.417 points, with 20.000% event density."
+Gen-12 qualifies for context-free consolidation,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-13 local output plasticity provides useful adaptation,rejected,False,"Analog and spiking local rules gain 0.420 and 0.410 points, versus 2.049 for autograd readout adaptation."
+Gen-13 spiking fast weights are causally class-specific,rejected,False,"Removing spiking fast weights costs 0.410 points and shuffling output classes costs 0.468 points, with 20.000% trace density."
+Gen-13 qualifies for STW/LTW consolidation,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-14 embodied sensor-to-action mapping is solvable,supported,True,"The oracle reaches 8.381 versus 0.641 static net fitness per 1,000 steps."
+Gen-14 baseline-to-evaluation improvement identifies local learning,rejected,False,"Spiking eligibility rises by 2.798, but the unchanged static arm rises by 3.983; the phase comparison is non-stationary."
+Gen-14 spiking eligibility depends on correctly assigned reward,rejected,False,Correctly rewarded spiking eligibility finishes -0.750 versus static and -0.161 versus shuffled reward.
+Gen-14 qualifies for reward-eligibility confirmation,rejected,False,The terminal decision is status=stop; next_milestone=close_reward_eligibility_screen.
+Gen-15 identical-reset evaluation removes phase non-stationarity,supported,True,The unchanged static policy has exactly +0.000 fitness gain under replayed seeded evaluation.
+Gen-15 delayed scalar reward supports conventional learning,supported,True,"Correct-reward REINFORCE gains +0.992 fitness per 1,000 steps on 2/3 positive-gain seeds."
+Gen-15 conventional learning depends on agent-specific reward,supported,True,Correct reward finishes +0.992 versus static and +1.267 versus shuffled reward.
+Gen-15 validates an AMMC local-learning mechanism,not tested,False,Gen-15 tests only a conventional autograd REINFORCE baseline; final mean fitness remains -0.271 and no local AMMC rule is present.
+Gen-16 manual score-function gradient matches autograd,supported,True,Maximum analytic gradient error is 2.794e-09.
+Gen-16 local reward credit is behaviorally equivalent to autograd,supported,True,"Manual and autograd policies finish with a fitness gap of 0.000 per 1,000 steps."
+Gen-16 local learning depends on agent-specific reward,supported,True,The local rule finishes +0.183 versus static and +0.249 versus shuffled reward on 3/3 identity-qualified seeds.
+Gen-16 establishes sparse-spiking or structural continuous learning,not tested,False,"Gen-16 uses a dense linear analog policy; spikes, STW/LTW, replay, and topology changes are absent."
+Gen-17 sparse event generation and local gradient are operational,supported,True,Training/evaluation spike density is 6.369%/12.078% and maximum gradient error is 3.725e-09.
+Gen-16 analog local-credit gain replicates on Gen-17 seeds,rejected,False,The analog reference gains +0.004 with 1/3 qualified seeds.
+Gen-17 Bernoulli sparse translation preserves local learning,rejected,False,"The correct-reward spiking policy gains -0.391 and trails the analog gain by 0.396 fitness per 1,000 steps."
+Gen-17 sparse local learning depends on correctly assigned reward,rejected,False,Correct reward finishes -0.391 versus static and -1.052 versus shuffled reward.
+Gen-18 stationary controls and manual-gradient implementation remain valid,supported,True,"Static reset is exact, oracle fitness is +9.358, and maximum gradient error is 3.725e-09."
+Gen-16 analog local-credit behavior replicates across ten held-out seeds,rejected,False,Mean gain is +0.796 with lower 95% bound -0.016 and 5/10 qualified seeds.
+Gen-18 local behavior depends reliably on correctly assigned reward,rejected,False,Correct minus shuffled reward is +0.510 with lower 95% bound -0.013 and 6/10 qualified seeds.
+The tested local reward-credit program qualifies for further mechanism expansion,rejected,False,Gen-18 returned status=stop and next_milestone=close_local_reward_credit_program.

@@ -1,6 +1,6 @@
 # AMMC research evidence freeze after Gen-14
 
-Status (2026-08-10): analog local-credit gate passed; sparse translation is open.
+Status (2026-08-10): local reward-credit program closed; external event-vision state replication is open.
 
 ## Sanity check
 
@@ -79,3 +79,15 @@ the unchanged analog local-credit rule. A pass requires at least 7/10 seeds
 and positive lower 95% confidence bounds for both learning gain and reward
 identity. A stop closes the local reward-credit program; no parameter sweep,
 new spike encoder, STW/LTW, replay, or structural plasticity is authorized.
+
+Gen-18 result update (2026-08-10): `stop`. Correct reward gained +0.796 on
+average and finished +0.510 above shuffled reward, but the lower 95% bounds
+were -0.016 and -0.013 and only 5/10 and 6/10 seeds qualified. The exact
+gradient remains supported; reliable behavioral local credit does not. The
+local reward-credit program is closed without further seeds or tuning.
+
+Gen-19 starts a separate external-generalization program. It freezes the
+supported residual-LIF state mechanism and tests it on real N-MNIST event
+vision against a matched Conv1D and direct-only/state-only/shuffled-state
+ablations. This does not reopen local learning, STW/LTW, replay, or structural
+plasticity.

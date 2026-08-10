@@ -5499,3 +5499,48 @@ oracle, and gradient-parity gates remain mandatory. A pass permits one
 theory-derived temporal spike encoder. A stop closes the local reward-credit
 program instead of opening another sweep. The protocol is
 `gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-18 closes the local reward-credit program
+
+The archive `gen18_local_credit_replication_cuda-20260810T170938Z-1-001.zip`
+has SHA-256
+`F96182405A2D051AA91D6569789F8D00C0A08480A89C1ACA367C39F265761834`.
+Its extracted evidence is retained in
+`gen5/outputs/gen18_local_credit_replication_cuda_2026-08-10/`.
+
+Static reset reproduced exactly at -1.276 fitness per 1,000 steps and the
+oracle reached +9.358. The manual local rule improved mean final fitness by
++0.796 and correct reward finished +0.510 above shuffled reward. These means
+are encouraging, but variance is decisive: standard deviation of gain was
+1.310, the lower 95% gain bound was -0.016, and only 5/10 seeds met the +0.10
+gain threshold. The lower correct-versus-shuffled bound was -0.013 and only
+6/10 seeds met reward identity. Five seeds lost fitness after correct-reward
+learning and four showed negative identity margins.
+
+The gradient remained exact at 3.73e-9 maximum error, so the stopped result is
+not an implementation failure. Decision: accept `status=stop` and close this
+local reward-credit program. Do not add seeds, tune the update, revisit the
+Bernoulli encoder, or build STW/LTW, replay, or structural plasticity on this
+unstable foundation.
+
+## 2026-08-10 - Gen-19 external event-vision replication approved
+
+The broader brain-inspired goal remains active, but its strongest supported
+mechanism is now clearly representation rather than learning: residual LIF
+state has causal sample-specific effects on SHD and SSC. Gen-19 begins a
+distinct program testing whether that frozen mechanism transfers from event
+audio to real event vision.
+
+N-MNIST events are reduced from the documented 34×34×2 sensor to binary
+occupancy in 30 time bins and an 8×8×2 polarity/spatial grid. A matched
+133,631-parameter temporal Conv1D and residual LIF are trained on the official
+splits for seeds 190-192. The residual model is then evaluated full,
+direct-only, state-only, and with state shuffled between samples. Passing
+requires at least 90% Conv1D accuracy, residual accuracy within one point,
+state-removal and shuffled-identity losses of at least 0.5 point on two seeds,
+and 1-30% spike activity.
+
+This tests cross-modal event representation, not local learning or rich
+temporal reasoning. N-MNIST acquisition motion can limit temporal
+discriminativeness, so accuracy alone cannot pass. The frozen protocol is
+`gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md`.

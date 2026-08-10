@@ -166,6 +166,17 @@
 > spike encoding, memory, or topology mechanism is authorized before this
 > replication. See `GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md`.
 
+> Gen-18 result (2026-08-10): `stop`. Mean gain was +0.796 and mean
+> correct-minus-shuffled margin was +0.510, but their lower 95% bounds were
+> -0.016 and -0.013; only 5/10 and 6/10 seeds qualified. The tested local
+> reward-credit program is closed without a rescue sweep.
+
+> Gen-19 update (2026-08-10): a distinct external-generalization program now
+> tests the supported residual-LIF state mechanism on real N-MNIST event
+> vision. Accuracy cannot pass alone; state removal, sample-identity shuffling,
+> and activity gates remain mandatory. See
+> `GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

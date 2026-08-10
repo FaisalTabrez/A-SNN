@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16", "gen17",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16", "gen17", "gen18",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 19)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 20)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -432,6 +432,36 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-17 sparse local learning depends on correctly assigned reward"]["status"],
+            "rejected",
+        )
+
+    def test_gen18_local_credit_program_is_closed_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(result.metrics["gen18_local_gain"], 0.7956667011603713)
+        self.assertAlmostEqual(
+            result.metrics["gen18_local_gain_ci95_lower"],
+            -0.01628414509997178,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen18_local_margin_vs_shuffled"],
+            0.5100000280266006,
+        )
+        self.assertEqual(result.metrics["gen18_passed"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-18 stationary controls and manual-gradient implementation remain valid"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-16 analog local-credit behavior replicates across ten held-out seeds"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-18 local behavior depends reliably on correctly assigned reward"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["The tested local reward-credit program qualifies for further mechanism expansion"]["status"],
             "rejected",
         )
 

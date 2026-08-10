@@ -28,6 +28,7 @@ EVIDENCE_FILENAMES = {
     "gen15": "gen15_reward_baseline.json",
     "gen16": "gen16_local_score_credit.json",
     "gen17": "gen17_sparse_spiking_credit.json",
+    "gen18": "gen18_local_credit_replication.json",
 }
 
 
@@ -102,6 +103,7 @@ def synthesize_gen5_evidence(
     gen15 = evidence["gen15"]
     gen16 = evidence["gen16"]
     gen17 = evidence["gen17"]
+    gen18 = evidence["gen18"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -193,6 +195,10 @@ def synthesize_gen5_evidence(
     gen17_analog = _strategy_row(gen17, "manual_analog_score_policy", key="summary")
     gen17_spiking = _strategy_row(gen17, "manual_spiking_score_policy", key="summary")
     gen17_shuffled = _strategy_row(gen17, "manual_spiking_shuffled_reward", key="summary")
+    gen18_static = _strategy_row(gen18, "static_linear_policy", key="summary")
+    gen18_oracle = _strategy_row(gen18, "oracle_food_reflex", key="summary")
+    gen18_local = _strategy_row(gen18, "manual_local_score_policy", key="summary")
+    gen18_shuffled = _strategy_row(gen18, "manual_local_shuffled_reward", key="summary")
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -513,6 +519,20 @@ def synthesize_gen5_evidence(
         "gen17_spiking_margin_vs_shuffled": float(gen17["decision"]["spiking_margin_vs_shuffled_per_1000_steps"]),
         "gen17_reward_identity_seed_count": float(gen17["decision"]["reward_identity_seed_count"]),
         "gen17_passed": 1.0 if gen17["decision"]["status"] == "pass" else 0.0,
+        "gen18_static_final_fitness": float(gen18_static["mean_final_fitness_per_1000_steps"]),
+        "gen18_oracle_final_fitness": float(gen18_oracle["mean_final_fitness_per_1000_steps"]),
+        "gen18_local_final_fitness": float(gen18_local["mean_final_fitness_per_1000_steps"]),
+        "gen18_local_gain": float(gen18["decision"]["local_gain_mean_per_1000_steps"]),
+        "gen18_local_gain_ci95_lower": float(gen18["decision"]["local_gain_ci95_lower_per_1000_steps"]),
+        "gen18_shuffled_final_fitness": float(gen18_shuffled["mean_final_fitness_per_1000_steps"]),
+        "gen18_local_margin_vs_static": float(gen18["decision"]["local_margin_vs_static_mean_per_1000_steps"]),
+        "gen18_local_margin_vs_static_ci95_lower": float(gen18["decision"]["local_margin_vs_static_ci95_lower_per_1000_steps"]),
+        "gen18_local_margin_vs_shuffled": float(gen18["decision"]["local_margin_vs_shuffled_mean_per_1000_steps"]),
+        "gen18_local_margin_vs_shuffled_ci95_lower": float(gen18["decision"]["local_margin_vs_shuffled_ci95_lower_per_1000_steps"]),
+        "gen18_qualified_gain_seed_count": float(gen18["decision"]["qualified_gain_seed_count"]),
+        "gen18_reward_identity_seed_count": float(gen18["decision"]["qualified_reward_identity_seed_count"]),
+        "gen18_maximum_gradient_error": float(gen18["decision"]["maximum_manual_gradient_error"]),
+        "gen18_passed": 1.0 if gen18["decision"]["status"] == "pass" else 0.0,
     }
     claims = [
         _claim(
@@ -1020,31 +1040,70 @@ def synthesize_gen5_evidence(
             f"{float(gen17['decision']['spiking_margin_vs_shuffled_per_1000_steps']):+.3f} versus shuffled reward.",
             "supported" if bool(gen17["decision"]["reward_identity_gate"]) else "rejected",
         ),
+        _claim(
+            "Gen-18 stationary controls and manual-gradient implementation remain valid",
+            bool(gen18["decision"]["identical_reset_gate"])
+            and bool(gen18["decision"]["oracle_positive_control"])
+            and bool(gen18["decision"]["manual_gradient_parity_gate"]),
+            "Static reset is exact, oracle fitness is "
+            f"{float(gen18_oracle['mean_final_fitness_per_1000_steps']):+.3f}, and maximum gradient error is "
+            f"{float(gen18['decision']['maximum_manual_gradient_error']):.3e}.",
+            "supported" if (
+                bool(gen18["decision"]["identical_reset_gate"])
+                and bool(gen18["decision"]["oracle_positive_control"])
+                and bool(gen18["decision"]["manual_gradient_parity_gate"])
+            ) else "rejected",
+        ),
+        _claim(
+            "Gen-16 analog local-credit behavior replicates across ten held-out seeds",
+            bool(gen18["decision"]["replicated_local_gain_gate"]),
+            "Mean gain is "
+            f"{float(gen18['decision']['local_gain_mean_per_1000_steps']):+.3f} with lower 95% bound "
+            f"{float(gen18['decision']['local_gain_ci95_lower_per_1000_steps']):+.3f} and "
+            f"{int(gen18['decision']['qualified_gain_seed_count'])}/10 qualified seeds.",
+            "supported" if bool(gen18["decision"]["replicated_local_gain_gate"]) else "rejected",
+        ),
+        _claim(
+            "Gen-18 local behavior depends reliably on correctly assigned reward",
+            bool(gen18["decision"]["replicated_reward_identity_gate"]),
+            "Correct minus shuffled reward is "
+            f"{float(gen18['decision']['local_margin_vs_shuffled_mean_per_1000_steps']):+.3f} with lower 95% bound "
+            f"{float(gen18['decision']['local_margin_vs_shuffled_ci95_lower_per_1000_steps']):+.3f} and "
+            f"{int(gen18['decision']['qualified_reward_identity_seed_count'])}/10 qualified seeds.",
+            "supported" if bool(gen18["decision"]["replicated_reward_identity_gate"]) else "rejected",
+        ),
+        _claim(
+            "The tested local reward-credit program qualifies for further mechanism expansion",
+            gen18["decision"]["status"] == "pass",
+            f"Gen-18 returned status={gen18['decision']['status']} and next_milestone="
+            f"{gen18['decision']['next_milestone']}.",
+            "supported" if gen18["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen17_sparse_translation_closeout",
-            "objective": "Package the failed Bernoulli translation and the non-replicating analog reference.",
-            "success_measure": "A reproducible 19-source ledger separates operational spikes and gradients from failed behavioral credit.",
+            "workstream": "gen18_local_credit_program_closeout",
+            "objective": "Package the exact gradient, positive mean, failed confidence bounds, and terminal stop.",
+            "success_measure": "A reproducible 20-source ledger closes local reward credit without post-hoc rescue.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported mechanism chain through Gen-17 without architecture-superiority claims.",
+            "objective": "Report the supported mechanism chain through Gen-18 without reliable local-learning claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
-            "workstream": "gen18_held_out_local_credit_replication",
-            "objective": "Replicate the analog local-credit gain and reward identity on ten untouched seeds.",
-            "success_measure": "At least 7/10 seeds qualify and lower 95% confidence bounds for gain and reward identity are positive.",
+            "workstream": "gen19_nmnist_external_state_replication",
+            "objective": "Test causal residual LIF state on real event-vision data under matched accuracy and identity ablations.",
+            "success_measure": "N-MNIST reference, matched accuracy, state removal, shuffled identity, and activity gates all pass.",
         },
         {
             "priority": 4,
             "workstream": "complex_plasticity_remains_gated",
-            "objective": "Keep new spike encoders, STW/LTW, replay, and structural plasticity closed until analog credit replicates.",
-            "success_measure": "No new mechanism is added before the Gen-18 held-out gate passes.",
+            "objective": "Keep local reward credit, STW/LTW, replay, and structural plasticity closed while external state evidence is tested.",
+            "success_measure": "Gen-19 changes dataset modality only; it does not reopen the failed learning rule.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -1073,7 +1132,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(15, 1, figsize=(13, 63), constrained_layout=True)
+    figure, axes = plt.subplots(16, 1, figsize=(13, 67), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -1257,6 +1316,18 @@ def plot_gen5_evidence_synthesis(
     )
     axes[14].set_ylabel("Net fitness / 1,000 steps")
     axes[14].set_title("Gen-17 active Bernoulli spikes fail gain and reward identity")
+    axes[15].bar(
+        ("Static", "Oracle", "Correct local", "Shuffled local"),
+        [
+            metrics["gen18_static_final_fitness"],
+            metrics["gen18_oracle_final_fitness"],
+            metrics["gen18_local_final_fitness"],
+            metrics["gen18_shuffled_final_fitness"],
+        ],
+        color=("#8b6fd6", "#167d55", "#d88935", "#35b4f2"),
+    )
+    axes[15].set_ylabel("Net fitness / 1,000 steps")
+    axes[15].set_title("Gen-18 positive mean local credit fails held-out confidence gates")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -1291,7 +1362,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-17 evidence report",
+        "# AMMC Gen-5 through Gen-18 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -1396,6 +1467,14 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{metrics['gen17_spiking_margin_vs_shuffled']:+.3f} relative to shuffled reward. The analog reference itself gained only "
         f"{metrics['gen17_analog_gain']:+.3f} on the fresh seeds. Gen-17 therefore rejects this sparse translation and reopens analog-credit replication.",
         "",
+        "Gen-18 then held the analog rule fixed across ten untouched seeds. Correct reward improved mean fitness by "
+        f"{metrics['gen18_local_gain']:+.3f} and finished "
+        f"{metrics['gen18_local_margin_vs_shuffled']:+.3f} above shuffled reward. However, only "
+        f"{int(metrics['gen18_qualified_gain_seed_count'])}/10 seeds met the gain gate and "
+        f"{int(metrics['gen18_reward_identity_seed_count'])}/10 met reward identity; the lower 95% bounds were "
+        f"{metrics['gen18_local_gain_ci95_lower']:+.3f} and "
+        f"{metrics['gen18_local_margin_vs_shuffled_ci95_lower']:+.3f}. The local reward-credit program is therefore closed despite its positive mean.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -1410,7 +1489,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and exact local score-function credit on one three-seed linear analog test. Frozen causal gates reject end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Analog local-credit robustness, sparse-spiking credit, and memory remain unproven. These are qualified mechanism, protocol, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and an exact manual score-function gradient. Frozen causal gates reject reliable behavioral replication of that local-credit rule, end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Local continual learning, sparse-spiking credit, and memory remain unproven. These are qualified mechanism, protocol, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",
