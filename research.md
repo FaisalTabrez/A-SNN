@@ -5597,3 +5597,24 @@ controlled mechanism result and negative cross-modal boundary, not leaderboard
 performance. Any future accuracy claim must use a separately frozen,
 full-resolution protocol and report parameters, synaptic operations, latency,
 throughput, and energy alongside accuracy.
+
+## 2026-08-10 - Time-boxed N-MNIST accuracy track approved before Gen-20
+
+Decision: temporarily pivot from mechanism discovery to a separately labeled
+N-MNIST accuracy track, then return to Gen-20. Gen-19 remains frozen as a
+negative cross-modal identity replication and will not be reinterpreted or
+tuned after the fact.
+
+The accuracy track will use the full 34x34x2 event resolution and compare a
+frame-CNN ceiling, a spatial-temporal convolutional model, and a convolutional
+spiking model with learnable membrane dynamics. Model selection occurs only on
+a validation split; the official test set is reserved for confirmation. A
+one-seed screen promotes at most two candidates to three-seed confirmation.
+
+Required reporting includes mean and standard deviation of test accuracy,
+parameter count, event/spike activity, examples per second, and a dense or
+synaptic-operation proxy. The practical gate is at least 99.0% confirmed mean
+accuracy; 99.4% is the stretch target suggested by published N-MNIST systems.
+The track stops after the bounded screen/confirmation run even if the stretch
+target is missed. Accuracy alone will not be used as evidence for memory,
+continuous learning, temporal credit, or neuromorphic energy efficiency.

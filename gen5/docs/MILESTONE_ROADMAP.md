@@ -183,6 +183,13 @@
 > next milestone is evidence/publication closeout; a new architecture requires
 > a separate theory and preregistration rather than a rescue sweep.
 
+> Accuracy-track update (2026-08-10): before Gen-20, one bounded N-MNIST
+> leaderboard experiment will test full-resolution frame, spatial-temporal,
+> and convolutional-spiking candidates. This is explicitly separate from
+> Gen-19. It uses validation-only promotion, three-seed confirmation, a 99.0%
+> practical gate, a 99.4% stretch target, and mandatory efficiency reporting.
+> After this single screen/confirmation package, work returns to Gen-20.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
