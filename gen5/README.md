@@ -79,6 +79,13 @@ Only a replicated predictive-LIF adaptation-AUC advantage with bounded
 forgetting opens STW/LTW consolidation. See
 `docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.
 
+Gen-9 returned `stop`. The 35% sensor failure reduced confirmed static-TCN
+accuracy by 9.364 points. Readout and full fine-tuning recovered 5.601 and
+8.462 points respectively, but predictive LIF screened 6.467 validation points
+below TCN and was not promoted. STW/LTW and later biological mechanisms remain
+closed; see `outputs/gen9_continual_adaptation_cuda_2026-08-10/` and
+`outputs/gen9_research_closeout_2026-08-10/`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

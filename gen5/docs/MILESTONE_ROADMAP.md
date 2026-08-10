@@ -42,6 +42,14 @@
 > structural plasticity remain gated behind this representation-level result.
 > The protocol is frozen in `GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md`.
 
+> Gen-9 result (2026-08-10): the shift was valid and both TCN adaptation
+> controls improved damaged-task accuracy. Predictive LIF nevertheless trailed
+> TCN screening validation by 6.467 points and was not promoted. The terminal
+> decision is `stop` with zero qualified arms. STW/LTW, replay, modulation,
+> structural plasticity, and automatic damage sweeps remain closed. Any new
+> continual-learning program requires a separately preregistered,
+> source-competent representation hypothesis.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

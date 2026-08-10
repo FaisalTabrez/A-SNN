@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 10)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 11)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -142,6 +142,43 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
             claims["The Gen-8 successor qualifies for hardware optimization"][
                 "status"
             ],
+            "rejected",
+        )
+
+    def test_gen9_terminal_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen9_predictive_lif_screen_gap_vs_tcn"],
+            -0.06466666666666665,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen9_tcn_static_shift_drop"],
+            0.09364471919667683,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen9_tcn_readout_adaptation_gain"],
+            0.05601347594282539,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen9_tcn_full_adaptation_gain"],
+            0.08461714584764339,
+        )
+        self.assertEqual(result.metrics["gen9_qualified_arm_count"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-9 sensor damage creates a non-trivial distribution shift"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["The Gen-9 predictive LIF representation is source-competent"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["A frozen TCN representation adapts through a trainable readout"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-9 qualifies for STW/LTW memory experiments"]["status"],
             "rejected",
         )
 

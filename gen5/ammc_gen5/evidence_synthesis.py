@@ -19,6 +19,7 @@ EVIDENCE_FILENAMES = {
     "gen6": "gen6_successor.json",
     "gen7": "gen7_predictive_state.json",
     "gen8": "gen8_temporal_binding.json",
+    "gen9": "gen9_continual_adaptation.json",
 }
 
 
@@ -84,6 +85,7 @@ def synthesize_gen5_evidence(
     gen6 = evidence["gen6"]
     gen7 = evidence["gen7"]
     gen8 = evidence["gen8"]
+    gen9 = evidence["gen9"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -129,6 +131,11 @@ def synthesize_gen5_evidence(
         gen8, "analog_time_local_binding", key="confirmation_summary"
     )
     gen8_qualified_count = len(gen8["decision"]["qualified_arms"])
+    gen9_screen = {row["arm"]: row for row in gen9["screen_records"]}
+    gen9_static = _strategy_row(gen9, "tcn_static")
+    gen9_readout = _strategy_row(gen9, "tcn_readout")
+    gen9_full = _strategy_row(gen9, "tcn_full_finetune")
+    gen9_qualified_count = len(gen9["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -299,6 +306,40 @@ def synthesize_gen5_evidence(
             gen8_screen["lif_shuffled_time_local"]["checkpoint_activity"]
         ),
         "gen8_qualified_arm_count": float(gen8_qualified_count),
+        "gen9_tcn_screen_validation_accuracy": float(
+            gen9_screen["dilated_tcn"]["best_validation_accuracy"]
+        ),
+        "gen9_predictive_lif_screen_validation_accuracy": float(
+            gen9_screen["predictive_lif"]["best_validation_accuracy"]
+        ),
+        "gen9_predictive_lif_screen_gap_vs_tcn": float(
+            gen9_screen["predictive_lif"]["best_validation_accuracy"]
+            - gen9_screen["dilated_tcn"]["best_validation_accuracy"]
+        ),
+        "gen9_predictive_lif_screen_spike_rate": float(
+            gen9_screen["predictive_lif"]["checkpoint_activity"]
+        ),
+        "gen9_tcn_static_shift_drop": float(gen9_static["mean_shift_drop"]),
+        "gen9_tcn_static_shifted_accuracy": float(
+            gen9_static["mean_shifted_final_accuracy"]
+        ),
+        "gen9_tcn_readout_final_shifted_accuracy": float(
+            gen9_readout["mean_shifted_final_accuracy"]
+        ),
+        "gen9_tcn_readout_adaptation_gain": float(
+            gen9_readout["mean_adaptation_gain"]
+        ),
+        "gen9_tcn_readout_adaptation_auc": float(
+            gen9_readout["mean_adaptation_auc"]
+        ),
+        "gen9_tcn_readout_forgetting": float(gen9_readout["mean_forgetting"]),
+        "gen9_tcn_full_final_shifted_accuracy": float(
+            gen9_full["mean_shifted_final_accuracy"]
+        ),
+        "gen9_tcn_full_adaptation_gain": float(gen9_full["mean_adaptation_gain"]),
+        "gen9_tcn_full_adaptation_auc": float(gen9_full["mean_adaptation_auc"]),
+        "gen9_tcn_full_forgetting": float(gen9_full["mean_forgetting"]),
+        "gen9_qualified_arm_count": float(gen9_qualified_count),
     }
     claims = [
         _claim(
@@ -511,30 +552,64 @@ def synthesize_gen5_evidence(
             f"{gen8_qualified_count} qualified arms.",
             "supported" if gen8["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-9 sensor damage creates a non-trivial distribution shift",
+            float(gen9_static["mean_shift_drop"]) >= 0.05,
+            "Static TCN accuracy falls by "
+            f"{100.0 * float(gen9_static['mean_shift_drop']):.3f} points across confirmation seeds.",
+            "supported" if float(gen9_static["mean_shift_drop"]) >= 0.05 else "rejected",
+        ),
+        _claim(
+            "The Gen-9 predictive LIF representation is source-competent",
+            "predictive_lif" in gen9["promoted_source_arms"],
+            "Predictive LIF trails TCN screening validation by "
+            f"{-100.0 * metrics['gen9_predictive_lif_screen_gap_vs_tcn']:.3f} points "
+            f"with {100.0 * metrics['gen9_predictive_lif_screen_spike_rate']:.3f}% spike activity.",
+            "supported" if "predictive_lif" in gen9["promoted_source_arms"] else "rejected",
+        ),
+        _claim(
+            "A frozen TCN representation adapts through a trainable readout",
+            (
+                float(gen9_readout["mean_adaptation_gain"]) >= 0.02
+                and int(gen9_readout["two_point_gain_seed_count"]) >= 2
+            ),
+            "Readout adaptation gains "
+            f"{100.0 * float(gen9_readout['mean_adaptation_gain']):.3f} points "
+            f"with {int(gen9_readout['two_point_gain_seed_count'])}/3 seeds passing, "
+            f"at {100.0 * float(gen9_readout['mean_forgetting']):.3f} points forgetting.",
+            "supported",
+        ),
+        _claim(
+            "Gen-9 qualifies for STW/LTW memory experiments",
+            gen9["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen9['decision']['status']} with "
+            f"{gen9_qualified_count} qualified arms; only {', '.join(gen9['promoted_source_arms'])} passed source screening.",
+            "supported" if gen9["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen8_terminal_closeout",
-            "objective": "Package predictive alignment and analog order sensitivity together with the failed LIF screen and identity gate.",
-            "success_measure": "A reproducible final ledger whose claims match the Gen-8 stop decision.",
+            "workstream": "gen9_terminal_closeout",
+            "objective": "Package the valid sensor shift, conventional adaptation controls, and failed predictive-LIF source gate.",
+            "success_measure": "A reproducible final ledger whose claims match the Gen-9 stop decision.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported Gen-5 mechanism, Gen-6 parity, Gen-7 predictive representation, and Gen-8 partial analog order result without architecture-superiority claims.",
+            "objective": "Report the supported Gen-5 mechanism through the Gen-9 continual-adaptation stop without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
             "workstream": "hardware_work_deferred",
-            "objective": "Keep event-driven kernel optimization closed after the Gen-8 terminal failure.",
+            "objective": "Keep STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-9 terminal failure.",
             "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
         },
         {
             "priority": 4,
             "workstream": "new_program_requires_new_hypothesis",
-            "objective": "Prevent an automatic LIF stabilization or temporal-binding rescue sweep on Gen-8.",
+            "objective": "Require a new source-competent representation hypothesis before any further continual-learning mechanism is tested.",
             "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration.",
         },
     ]
@@ -564,7 +639,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(6, 1, figsize=(13, 27), constrained_layout=True)
+    figure, axes = plt.subplots(7, 1, figsize=(13, 31), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -621,6 +696,18 @@ def plot_gen5_evidence_synthesis(
     )
     axes[5].set_ylabel("Accuracy (confirmation; candidate screen)")
     axes[5].set_title("Gen-8 local LIF fails screening; analog order effect is partial")
+    axes[6].bar(
+        ("Static", "Readout", "Full fine-tune", "Predictive LIF screen"),
+        [
+            100.0 * metrics["gen9_tcn_static_shifted_accuracy"],
+            100.0 * metrics["gen9_tcn_readout_final_shifted_accuracy"],
+            100.0 * metrics["gen9_tcn_full_final_shifted_accuracy"],
+            100.0 * metrics["gen9_predictive_lif_screen_validation_accuracy"],
+        ],
+        color=("#8b6fd6", "#35b4f2", "#167d55", "#bd3d3a"),
+    )
+    axes[6].set_ylabel("Accuracy (%)")
+    axes[6].set_title("Gen-9 controls adapt; predictive LIF fails source screening")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -636,6 +723,13 @@ def _summary_row(payload: dict, arm: str, *, key: str = "summary") -> dict:
     raise KeyError(f"missing summary arm: {arm}")
 
 
+def _strategy_row(payload: dict, strategy: str) -> dict:
+    for row in payload["adaptation_summary"]:
+        if row["strategy"] == strategy:
+            return row
+    raise KeyError(f"missing adaptation strategy: {strategy}")
+
+
 def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
     return {
         "claim": name,
@@ -648,7 +742,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5/Gen-6/Gen-7/Gen-8 evidence report",
+        "# AMMC Gen-5 through Gen-9 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -680,6 +774,14 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{100.0 * metrics['gen8_analog_temporal_order_vs_reversed']:.3f} points, but state shuffling cost only "
         f"{100.0 * metrics['gen8_analog_state_specificity_vs_shuffled']:.3f} points. Local fusion introduces partial order sensitivity without beneficial identity-specific spiking use. Gen-8 returned `stop`.",
         "",
+        "Gen-9 then tested adaptation after a fixed 35% sensor-bank failure. The confirmed TCN shift was "
+        f"{100.0 * metrics['gen9_tcn_static_shift_drop']:.3f} points. A frozen TCN readout recovered "
+        f"{100.0 * metrics['gen9_tcn_readout_adaptation_gain']:.3f} points, while full fine-tuning recovered "
+        f"{100.0 * metrics['gen9_tcn_full_adaptation_gain']:.3f} points and retained the source task better. "
+        "However, predictive LIF trailed the TCN screen by "
+        f"{-100.0 * metrics['gen9_predictive_lif_screen_gap_vs_tcn']:.3f} points and was not promoted. "
+        "Gen-9 therefore returned `stop`; STW/LTW, replay, modulation, and structural plasticity remain closed.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -694,7 +796,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Gen-6 shows that zero-initialized shared correction preserves the conventional predictor. Gen-7 shows strong future-aligned predictive state without beneficial identity-specific output use. Gen-8 adds evidence that pre-pooling local fusion can create temporal-order sensitivity in an analog state path, while its paired LIF candidate is unstable and sample identity remains non-causal. These are qualified mechanism and representation results accompanied by negative architecture-selection decisions, not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Gen-6 shows that zero-initialized shared correction preserves the conventional predictor. Gen-7 shows strong future-aligned predictive state without beneficial identity-specific output use. Gen-8 adds partial analog temporal-order sensitivity but no stable local LIF candidate. Gen-9 establishes a valid continual-learning shift and conventional adaptation baselines, while rejecting this predictive-LIF representation before memory mechanisms were added. These are qualified mechanism, representation, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

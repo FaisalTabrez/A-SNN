@@ -1,0 +1,3 @@
+seed,arm,model_kind,channels,best_epoch,best_validation_accuracy,source_test_accuracy,shifted_test_accuracy,shift_drop,checkpoint_activity,activity_kind,mean_absolute_gate,effective_trainable_parameters,parameter_ratio_vs_target,test_examples_per_second,train_seconds
+148,dilated_tcn,tcn,32,4,0.31566666666666665,0.3016666666666667,0.25633333333333336,0.04533333333333334,0.27612441809972127,relu_activation,0.0,131971,0.9875777327117211,50238.23389157013,5.997767877999877
+148,predictive_lif,predictive_lif,32,4,0.251,0.24733333333333332,0.18433333333333332,0.063,0.08963639481862386,spike_rate,0.20172034752368928,134214,1.0043627601379919,18656.269270780638,14.037928762999854

@@ -98,10 +98,12 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
 - Gen-7 learned strongly future-aligned state but failed identity/order
   specificity. Gen-8's analog binder gained replicated order sensitivity,
   while the paired local LIF collapsed during screening and identity remained
-  non-causal. Gen-8 returned `stop`; hardware optimization remains closed.
+  non-causal. Gen-9 validated a sensor-damage adaptation task, but predictive
+  LIF missed the source-competence gate by `6.467` points. Gen-9 returned
+  `stop`; memory mechanisms and hardware optimization remain closed.
 
 The final machine-readable claim ledger and report are retained in
-[`gen5/outputs/gen8_research_closeout_2026-08-10/`](gen5/outputs/gen8_research_closeout_2026-08-10/).
+[`gen5/outputs/gen9_research_closeout_2026-08-10/`](gen5/outputs/gen9_research_closeout_2026-08-10/).
 
 See [research.md](research.md) for the evidence trail.
 
@@ -907,7 +909,7 @@ passing. The result and ten-source closeout are retained in
 [`gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/`](gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/)
 and [`gen5/outputs/gen8_research_closeout_2026-08-10/`](gen5/outputs/gen8_research_closeout_2026-08-10/).
 
-## Gen-9 continual adaptation (preregistered)
+## Gen-9 continual adaptation (completed: `stop`)
 
 Gen-9 begins a new task-level program rather than rescuing the closed static
 classifier branch. A fixed seed removes 35% of SSC sensor channels after source
@@ -950,3 +952,14 @@ Colab T4 execution cell:
 
 The runner resumes from `gen9_continual_adaptation_progress.json`. A pass opens
 STW/LTW memory; a stop prevents automatic memory, replay, or plasticity work.
+
+Gen-9 completed with a valid 9.364-point sensor-damage shift. Frozen-readout
+adaptation recovered 5.601 points and full fine-tuning recovered 8.462 points,
+but predictive LIF screened at 25.100% validation accuracy versus 31.567% for
+TCN. Its healthy 8.964% spike rate shows that the failure was source competence,
+not silent activity. Only TCN was promoted; the terminal decision is `stop`
+with zero qualified arms. Results and the eleven-source evidence closeout are
+retained in
+[`gen5/outputs/gen9_continual_adaptation_cuda_2026-08-10/`](gen5/outputs/gen9_continual_adaptation_cuda_2026-08-10/)
+and
+[`gen5/outputs/gen9_research_closeout_2026-08-10/`](gen5/outputs/gen9_research_closeout_2026-08-10/).

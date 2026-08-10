@@ -1,6 +1,21 @@
 # Gen-9 continual-adaptation preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-9 results.
+Status (2026-08-10): completed with terminal decision `stop`.
+
+## Result
+
+The 35% sensor-bank failure was a valid shift: confirmed static-TCN accuracy
+fell by 9.364 points. TCN readout adaptation recovered 5.601 points with 2.831
+points of source forgetting; full TCN fine-tuning recovered 8.462 points with
+only 1.138 points of forgetting.
+
+The predictive-LIF source model did not pass the frozen representation gate.
+It screened at 25.100% validation accuracy versus 31.567% for TCN, a 6.467
+point deficit despite a healthy 8.964% spike rate and matched parameter budget.
+Only TCN was promoted, so no predictive-LIF adaptation strategy was confirmed.
+The stored decision is `stop` with zero qualified arms. Under the registered
+rule, STW/LTW, replay, modulation, structural plasticity, and a damage-severity
+sweep remain closed.
 
 ## Program boundary
 

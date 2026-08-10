@@ -5052,3 +5052,34 @@ adaptation fields while retaining the shared signature-validated loader. A
 round-trip regression test verifies the exact schema. The scientific protocol,
 seeds, masks, budgets, models, and gates are unchanged, so rerunning the same
 Colab command is valid.
+
+## 2026-08-10 - Gen-9 continual adaptation stops at source competence
+
+The retained archive
+`gen9_continual_adaptation_cuda-20260810T110831Z-1-001.zip` has SHA-256
+`920e697a70885fd91a04ac18c73ec1348d57f504b17e9080a2e7d034de5e4caf`.
+Its extracted evidence is stored in
+`gen5/outputs/gen9_continual_adaptation_cuda_2026-08-10/`.
+
+The source screen promoted only `dilated_tcn`. Predictive LIF reached 25.100%
+validation accuracy versus 31.567% for TCN, missing the one-point parity gate
+by 6.467 points. Its 8.964% spike rate and 100.436% parameter-budget ratio were
+healthy, so this is a source-representation failure rather than silent neurons
+or a parameter mismatch. Predictive-LIF adaptation was correctly not run.
+
+The confirmed TCN controls validate the task. Across seeds 148–150, sensor
+damage reduced static accuracy by 9.364 points. Frozen-readout adaptation
+recovered 5.601 points on all three seeds, finishing at 53.927% damaged
+accuracy with 2.831 points of source forgetting. Full fine-tuning recovered
+8.462 points, finished at 56.787%, and forgot only 1.138 points. It exceeded
+readout adaptation by 2.860 final points and 2.270 AUC points while forgetting
+1.693 fewer points.
+
+Decision: accept the sensor-damage benchmark and conventional continual-
+adaptation baselines. Reject the claim that this predictive-LIF representation
+is source-competent or that AMMC continual adaptation has been demonstrated.
+Accept the stored `status=stop` with zero qualified arms. STW/LTW,
+neuromodulation, sleep replay, structural plasticity, and an automatic damage-
+severity sweep remain closed. The next phase is the eleven-source evidence
+closeout; any later continual-learning program requires a separately
+preregistered representation that first passes source competence.
