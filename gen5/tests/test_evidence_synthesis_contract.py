@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 12)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 13)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -212,6 +212,39 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-10 qualifies a spiking representation for adaptation"]["status"],
+            "rejected",
+        )
+
+    def test_gen11_terminal_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen11_readout_adaptation_gain"],
+            0.02330487685212442,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen11_full_adaptation_gain"],
+            0.03295391358388119,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen11_lif_adaptation_gain"],
+            0.00783370948222284,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen11_lif_state_specificity"],
+            0.00011448009681743383,
+        )
+        self.assertEqual(result.metrics["gen11_qualified_arm_count"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-11 state adapters improve damaged-task accuracy by the preregistered margin"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-11 LIF adaptation depends on sample-specific spiking state"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-11 qualifies for synaptic STW/LTW consolidation"]["status"],
             "rejected",
         )
 

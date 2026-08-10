@@ -5161,3 +5161,52 @@ state-removal and state-shuffling costs, and healthy spikes. Only that result
 can open a separately preregistered STW/LTW milestone. Failure closes the
 adapter without width, gate, leak, threshold, learning-rate, or mask sweeps.
 The frozen protocol is `gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-11 adapters fail adaptation and sample-specificity gates
+
+The archive `gen11_plastic_adapter_cuda-20260810T122441Z-1-001.zip` has
+SHA-256 `150d6d350ed14c55a3eed44e4980264e5d3f460b6404ad35653017870a488a24`.
+Its extracted evidence is retained in
+`gen5/outputs/gen11_plastic_adapter_cuda_2026-08-10/`.
+
+The frozen sensor-dropout TCN lost 3.910 points under the fixed sensor failure.
+Full fine-tuning recovered 3.295 points and readout adaptation recovered 2.330.
+Analog and LIF adapters recovered only 1.353 and 0.783 points. Neither reached
+the registered two-point gate or matched readout adaptation.
+
+The LIF adapter remained healthy at 16.782% spikes and had effectively no
+source forgetting. Removing its state erased the complete 0.783-point gain on
+all seeds, but shuffling sample identity cost only 0.011 point with 0/3 seeds
+passing. Analog state likewise showed a 1.353-point removal cost but only a
+0.018-point shuffle cost. The correction is causal in aggregate but not
+sample-specific; it behaves like a learned class bias.
+
+Decision: accept the conventional adaptation and source-retention controls.
+Reject beneficial sample-specific analog/LIF adapter state and accept the
+stored `status=stop`. Do not sweep the Gen-11 adapter. Synaptic STW/LTW,
+replay, neuromodulation, structural plasticity, and hardware claims remain
+closed. The next experiment must introduce an explicitly sample-indexed
+mechanism under a separate preregistration.
+
+## 2026-08-10 - Gen-12 associative fast-memory hypothesis approved and implemented
+
+Gen-12 tests stable-sensory/fast-memory functional separation rather than a
+parametric adapter rescue. The source-competent sensor-dropout TCN remains
+frozen. A dense prototype control and a sparse rank-order spiking prototype
+memory accumulate labeled damaged-stream associations by sums and counts,
+without backpropagating into the backbone.
+
+The registered controls are static TCN, readout adaptation, full fine-tuning,
+dense prototype memory, and spiking prototype memory. Seeds 157–159, source
+training, fixed mask, splits, and cumulative budgets match Gen-11. Memory is
+explicitly gated by the known damaged context; this prevents source forgetting
+but does not demonstrate autonomous context inference.
+
+Decision: the spiking memory must match readout AUC/final accuracy, gain two
+points on 2/3 seeds, preserve source performance, maintain 5–35% code density,
+and lose at least 0.5 point under both memory removal and class-association
+shuffling on 2/3 seeds. A pass opens only context-free memory and consolidation
+testing. A stop closes prototype memory without hyperparameter or damage
+sweeps. Synaptic STW/LTW remains closed until a later, separately registered
+gate. The frozen protocol is
+`gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.

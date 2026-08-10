@@ -44,6 +44,8 @@ If you are new to the repo, read these in order:
 27. [Gen-9 continual-adaptation preregistration](gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md)
 28. [Gen-10 robust-representation preregistration](gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md)
 29. [Gen-11 plastic-adapter preregistration](gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md)
+30. [Gen-11 plastic-adapter analysis](gen5/docs/GEN11_PLASTIC_ADAPTER_ANALYSIS.md)
+31. [Gen-12 associative-memory preregistration](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1015,7 +1017,7 @@ healthy spikes. The retained result and twelve-source closeout are in
 and
 [`gen5/outputs/gen10_research_closeout_2026-08-10/`](gen5/outputs/gen10_research_closeout_2026-08-10/).
 
-## Gen-11 frozen sensory backbone plus plastic state adapter (preregistered)
+## Gen-11 frozen sensory backbone plus plastic state adapter (completed: `stop`)
 
 Gen-11 preserves the proven sensor-dropout TCN as a frozen sensory backbone.
 Matched analog and LIF adapters learn only bounded correction signals during
@@ -1050,3 +1052,55 @@ Colab T4 execution cell:
 
 The runner checkpoints after each seed/strategy curve. Only a causally useful
 LIF adapter that matches readout adaptation and retention can open STW/LTW.
+
+Gen-11 did not pass. Full fine-tuning and readout adaptation recovered 3.295
+and 2.330 points, while analog and LIF adapters recovered 1.353 and 0.783.
+Removing LIF state erased its gain, but shuffling sample identity cost only
+0.011 point, so the correction was not sample-specific. Results and the
+13-source closeout are retained in
+[`gen5/outputs/gen11_plastic_adapter_cuda_2026-08-10/`](gen5/outputs/gen11_plastic_adapter_cuda_2026-08-10/)
+and
+[`gen5/outputs/gen11_research_closeout_2026-08-10/`](gen5/outputs/gen11_research_closeout_2026-08-10/).
+Synaptic STW/LTW remains closed.
+
+## Gen-12 frozen-backbone associative memory (preregistered)
+
+Gen-12 replaces the failed generic adapter with an explicitly sample-keyed
+fast-memory hypothesis. The robust sensor-dropout TCN stays frozen. Dense and
+sparse rank-order prototype memories accumulate damaged-stream class
+associations without gradient updates and are compared with static, readout,
+and full-fine-tuning controls. Memory removal and class-association shuffling
+must both destroy any claimed gain. The protocol is in
+[gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md).
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen12_associative_memory.py \
+  --device cuda \
+  --seeds 157 158 159 \
+  --source-epochs 15 \
+  --source-mask-fraction 0.20 \
+  --damage-fraction 0.35 \
+  --damage-seed 909 \
+  --adaptation-budgets 0 64 256 1024 4096 \
+  --adaptation-epochs-per-block 3 \
+  --adaptation-learning-rate 0.001 \
+  --memory-mix 0.50 \
+  --memory-temperature 0.10 \
+  --spike-fraction 0.20 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen12_associative_memory_cuda
+```
+
+The memory is deliberately active only in the known damaged context. A pass
+therefore opens context-discovery and consolidation testing—not an immediate
+continuous-learning or synaptic-memory claim.

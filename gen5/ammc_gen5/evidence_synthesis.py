@@ -21,6 +21,7 @@ EVIDENCE_FILENAMES = {
     "gen8": "gen8_temporal_binding.json",
     "gen9": "gen9_continual_adaptation.json",
     "gen10": "gen10_robust_representation.json",
+    "gen11": "gen11_plastic_adapter.json",
 }
 
 
@@ -88,6 +89,7 @@ def synthesize_gen5_evidence(
     gen8 = evidence["gen8"]
     gen9 = evidence["gen9"]
     gen10 = evidence["gen10"]
+    gen11 = evidence["gen11"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -142,6 +144,12 @@ def synthesize_gen5_evidence(
     gen10_tcn = _summary_row(gen10, "dilated_tcn", key="confirmation_summary")
     gen10_dropout = _summary_row(gen10, "dropout_tcn", key="confirmation_summary")
     gen10_qualified_count = len(gen10["decision"]["qualified_arms"])
+    gen11_static = _strategy_row(gen11, "dropout_tcn_static", key="summary")
+    gen11_readout = _strategy_row(gen11, "dropout_tcn_readout", key="summary")
+    gen11_full = _strategy_row(gen11, "dropout_tcn_full_finetune", key="summary")
+    gen11_analog = _strategy_row(gen11, "analog_state_adapter", key="summary")
+    gen11_lif = _strategy_row(gen11, "lif_state_adapter", key="summary")
+    gen11_qualified_count = len(gen11["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -360,6 +368,22 @@ def synthesize_gen5_evidence(
         "gen10_lif_screen_damaged_accuracy": float(gen10_screen["masked_residual_lif"]["damaged_validation_accuracy"]),
         "gen10_lif_screen_spike_rate": float(gen10_screen["masked_residual_lif"]["checkpoint_activity"]),
         "gen10_qualified_arm_count": float(gen10_qualified_count),
+        "gen11_static_shift_drop": float(gen11_static["mean_shift_drop"]),
+        "gen11_readout_adaptation_gain": float(gen11_readout["mean_adaptation_gain"]),
+        "gen11_readout_final_shifted_accuracy": float(gen11_readout["mean_shifted_final_accuracy"]),
+        "gen11_readout_forgetting": float(gen11_readout["mean_forgetting"]),
+        "gen11_full_adaptation_gain": float(gen11_full["mean_adaptation_gain"]),
+        "gen11_full_final_shifted_accuracy": float(gen11_full["mean_shifted_final_accuracy"]),
+        "gen11_analog_adaptation_gain": float(gen11_analog["mean_adaptation_gain"]),
+        "gen11_analog_state_contribution": float(gen11_analog["mean_state_contribution"]),
+        "gen11_analog_state_specificity": float(gen11_analog["mean_state_specificity"]),
+        "gen11_lif_adaptation_gain": float(gen11_lif["mean_adaptation_gain"]),
+        "gen11_lif_final_shifted_accuracy": float(gen11_lif["mean_shifted_final_accuracy"]),
+        "gen11_lif_forgetting": float(gen11_lif["mean_forgetting"]),
+        "gen11_lif_state_contribution": float(gen11_lif["mean_state_contribution"]),
+        "gen11_lif_state_specificity": float(gen11_lif["mean_state_specificity"]),
+        "gen11_lif_spike_rate": float(gen11_lif["mean_activity"]),
+        "gen11_qualified_arm_count": float(gen11_qualified_count),
     }
     claims = [
         _claim(
@@ -638,31 +662,63 @@ def synthesize_gen5_evidence(
             f"{gen10_qualified_count} qualified arms.",
             "supported" if gen10["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-11 state adapters improve damaged-task accuracy by the preregistered margin",
+            (
+                float(gen11_lif["mean_adaptation_gain"]) >= 0.02
+                and int(gen11_lif["two_point_gain_seed_count"]) >= 2
+            ),
+            "The analog and LIF adapters gain "
+            f"{100.0 * float(gen11_analog['mean_adaptation_gain']):.3f} and "
+            f"{100.0 * float(gen11_lif['mean_adaptation_gain']):.3f} points, versus "
+            f"{100.0 * float(gen11_readout['mean_adaptation_gain']):.3f} for readout adaptation.",
+            "supported" if float(gen11_lif["mean_adaptation_gain"]) >= 0.02 else "rejected",
+        ),
+        _claim(
+            "Gen-11 LIF adaptation depends on sample-specific spiking state",
+            (
+                float(gen11_lif["mean_state_contribution"]) >= 0.005
+                and int(gen11_lif["state_contribution_seed_count"]) >= 2
+                and float(gen11_lif["mean_state_specificity"]) >= 0.005
+                and int(gen11_lif["state_specificity_seed_count"]) >= 2
+            ),
+            "Removing LIF state costs "
+            f"{100.0 * float(gen11_lif['mean_state_contribution']):.3f} points, but shuffling sample identity costs only "
+            f"{100.0 * float(gen11_lif['mean_state_specificity']):.3f} points.",
+            "supported" if float(gen11_lif["mean_state_specificity"]) >= 0.005 else "rejected",
+        ),
+        _claim(
+            "Gen-11 qualifies for synaptic STW/LTW consolidation",
+            gen11["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen11['decision']['status']} with "
+            f"{gen11_qualified_count} qualified arms.",
+            "supported" if gen11["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen10_terminal_closeout",
-            "objective": "Package sensor-dropout robustness and both failed residual-state source gates.",
-            "success_measure": "A reproducible final ledger whose claims match the Gen-10 stop decision.",
+            "workstream": "gen11_terminal_closeout",
+            "objective": "Package conventional adaptation gains and the failed sample-specific adapter gate.",
+            "success_measure": "A reproducible 13-source ledger whose claims match the Gen-11 stop decision.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported mechanism chain through Gen-10 without architecture-superiority claims.",
+            "objective": "Report the supported mechanism chain through Gen-11 without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
             "workstream": "hardware_work_deferred",
-            "objective": "Keep STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-10 terminal failure.",
+            "objective": "Keep synaptic STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-11 terminal failure.",
             "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
         },
         {
             "priority": 4,
-            "workstream": "new_program_requires_new_hypothesis",
-            "objective": "Test the separately authorized functional-separation hypothesis: a frozen robust sensory backbone plus bounded plastic spiking adapter.",
-            "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration.",
+            "workstream": "associative_memory_hypothesis",
+            "objective": "Test a separately preregistered frozen-backbone associative memory rather than tune the failed parametric adapter.",
+            "success_measure": "Fast adaptation is causal under memory removal and association shuffling, with zero source forgetting.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -691,7 +747,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(8, 1, figsize=(13, 35), constrained_layout=True)
+    figure, axes = plt.subplots(9, 1, figsize=(13, 39), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -773,6 +829,23 @@ def plot_gen5_evidence_synthesis(
     )
     axes[7].set_ylabel("Accuracy (%)")
     axes[7].set_title("Gen-10 dropout helps; residual LIF fails screening")
+    axes[8].bar(
+        ("Static", "Readout", "Full", "Analog adapter", "LIF adapter"),
+        [
+            100.0 * (metrics["gen11_readout_final_shifted_accuracy"] - metrics["gen11_readout_adaptation_gain"]),
+            100.0 * metrics["gen11_readout_final_shifted_accuracy"],
+            100.0 * metrics["gen11_full_final_shifted_accuracy"],
+            100.0 * (
+                metrics["gen11_readout_final_shifted_accuracy"]
+                - metrics["gen11_readout_adaptation_gain"]
+                + metrics["gen11_analog_adaptation_gain"]
+            ),
+            100.0 * metrics["gen11_lif_final_shifted_accuracy"],
+        ],
+        color=("#8b6fd6", "#35b4f2", "#167d55", "#d88935", "#bd3d3a"),
+    )
+    axes[8].set_ylabel("Damaged accuracy (%)")
+    axes[8].set_title("Gen-11 conventional adaptation wins; state identity gate fails")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -788,8 +861,8 @@ def _summary_row(payload: dict, arm: str, *, key: str = "summary") -> dict:
     raise KeyError(f"missing summary arm: {arm}")
 
 
-def _strategy_row(payload: dict, strategy: str) -> dict:
-    for row in payload["adaptation_summary"]:
+def _strategy_row(payload: dict, strategy: str, *, key: str = "adaptation_summary") -> dict:
+    for row in payload[key]:
         if row["strategy"] == strategy:
             return row
     raise KeyError(f"missing adaptation strategy: {strategy}")
@@ -807,7 +880,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-10 evidence report",
+        "# AMMC Gen-5 through Gen-11 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -855,6 +928,14 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         "residual LIF missed by "
         f"{-100.0 * metrics['gen10_lif_screen_clean_gap']:.3f}/{-100.0 * metrics['gen10_lif_screen_damaged_gap']:.3f} points despite healthy spiking. Gen-10 returned `stop`.",
         "",
+        "Gen-11 froze that robust dropout-TCN backbone and adapted bounded downstream state. Full fine-tuning, readout adaptation, analog state, and LIF state recovered "
+        f"{100.0 * metrics['gen11_full_adaptation_gain']:.3f}, "
+        f"{100.0 * metrics['gen11_readout_adaptation_gain']:.3f}, "
+        f"{100.0 * metrics['gen11_analog_adaptation_gain']:.3f}, and "
+        f"{100.0 * metrics['gen11_lif_adaptation_gain']:.3f} points. Removing LIF state erased "
+        f"{100.0 * metrics['gen11_lif_state_contribution']:.3f} points, but shuffling sample identity cost only "
+        f"{100.0 * metrics['gen11_lif_state_specificity']:.3f} points. Gen-11 returned `stop`; synaptic STW/LTW remains closed.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -869,7 +950,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, and strong sensor-dropout robustness, while repeatedly rejecting end-to-end spiking representations at frozen causal or source-competence gates. Gen-10 motivates functional separation between a proven sensory backbone and a bounded plastic spiking subsystem. These are qualified mechanism and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, and conventional few-shot adaptation, while repeatedly rejecting end-to-end or adapter-level spiking state at frozen causal gates. Gen-11 shows that a bounded parametric adapter uses a generic correction rather than sample-specific state. These are qualified mechanism and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

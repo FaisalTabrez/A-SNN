@@ -117,6 +117,27 @@ The LIF adapter must match readout adaptation and retention while passing
 state-removal and state-shuffling causal gates. See
 `docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.
 
+Gen-11 returned `stop`. Full and readout adaptation gained 3.295 and 2.330
+points, while the analog and LIF adapters gained only 1.353 and 0.783. LIF
+state removal erased its gain, but sample-identity shuffling cost only 0.011
+point. The adapter therefore learned a generic correction rather than useful
+sample-specific state. See `docs/GEN11_PLASTIC_ADAPTER_ANALYSIS.md` and
+`outputs/gen11_plastic_adapter_cuda_2026-08-10/`.
+
+Gen-12 starts a separate fast-associative-memory hypothesis. The robust TCN is
+frozen; dense and rank-order spiking class prototypes accumulate labeled
+damaged-stream associations without gradient updates:
+
+```powershell
+python gen5/examples/gen12_associative_memory.py --list-strategies
+```
+
+The spiking memory must match readout adaptation and pass both memory-removal
+and class-association-shuffle controls while preserving the source task. It is
+explicitly context-gated, so a pass opens context-discovery/consolidation work
+rather than immediately proving autonomous continual learning. See
+`docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

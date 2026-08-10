@@ -1,6 +1,7 @@
 # Gen-11 frozen sensory backbone plus plastic state adapter preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-11 results.
+Status (2026-08-10): completed with terminal `stop`; zero qualified arms. See
+`GEN11_PLASTIC_ADAPTER_ANALYSIS.md`.
 
 ## New hypothesis
 

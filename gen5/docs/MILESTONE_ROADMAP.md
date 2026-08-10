@@ -73,6 +73,18 @@
 > can open STW/LTW. The frozen protocol is
 > `GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.
 
+> Gen-11 result (2026-08-10): conventional readout and full fine-tuning adapted,
+> but analog/LIF adapters missed the two-point gain gate. LIF state removal
+> erased its small gain while identity shuffling cost only 0.011 point. The
+> terminal decision is `stop`; synaptic STW/LTW remains closed.
+
+> Gen-12 update (2026-08-10): the user authorized a distinct fast-memory
+> hypothesis rather than an adapter sweep. A frozen robust TCN is paired with
+> dense and rank-order spiking associative prototypes. Memory removal and
+> class-association shuffling are mandatory causal controls. A pass opens only
+> context-discovery and consolidation testing. The protocol is frozen in
+> `GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
