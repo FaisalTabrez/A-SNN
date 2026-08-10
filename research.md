@@ -5579,3 +5579,21 @@ Operational finding: the printed Drive paths show that computation and saving
 completed, so the incident was retrieval rather than a failed training run.
 Gen-19 now emits an atomic checksummed manifest and a single ZIP bundle in its
 output directory to make future Colab recovery unambiguous.
+
+## 2026-08-10 - Gen-19 accuracy is not N-MNIST state of the art
+
+Decision after reviewing published N-MNIST results: do not describe the
+96.860% Conv1D or 96.317% residual-LIF result as best in field. Published SNN
+and event-vision systems report approximately 98.88-99.48%, while a frame-based
+ANN has reported 99.23%. The latter study also found that precise event timing
+was not important on N-MNIST, making the dataset a poor standalone test of the
+project's temporal-computation thesis.
+
+The comparison is not perfectly matched. Gen-19 compresses the 34x34x2 sensor
+to an 8x8x2 occupancy grid over 30 bins, uses about 133k parameters, and was
+designed around causal state-removal and identity controls rather than maximum
+classification accuracy. Its defensible contribution is therefore the
+controlled mechanism result and negative cross-modal boundary, not leaderboard
+performance. Any future accuracy claim must use a separately frozen,
+full-resolution protocol and report parameters, synaptic operations, latency,
+throughput, and energy alongside accuracy.
