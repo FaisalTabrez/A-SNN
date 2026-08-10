@@ -197,6 +197,17 @@ static, oracle, activity, and shuffled-reward controls. Run
 `python examples/gen17_sparse_spiking_credit.py --list-strategies`; see
 `docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md` for the frozen gate.
 
+Gen-17 returned `stop`. Spike density and manual-gradient parity passed, but
+correct-reward spiking credit lost 0.391 fitness per 1,000 steps and finished
+1.052 below shuffled reward. The analog reference also failed on the fresh
+seeds. See `docs/GEN17_SPARSE_SPIKING_CREDIT_ANALYSIS.md`.
+
+Gen-18 is therefore a held-out ten-seed replication of the unchanged analog
+local rule, not another encoder search. Run
+`python examples/gen18_local_credit_replication.py --list-strategies`; see
+`docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md` for its confidence
+and replication gates.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:

@@ -155,6 +155,17 @@
 > sparse-spiking replication before memory. See
 > `GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md`.
 
+> Gen-17 result (2026-08-10): `stop`. Sparse activity and analytic-gradient
+> parity passed, but correct-reward spiking learning lost 0.391 fitness per
+> 1,000 steps and finished 1.052 below shuffled reward. The analog reference
+> gained only 0.004 on its fresh seeds, so analog robustness is again the
+> blocking question.
+
+> Gen-18 update (2026-08-10): ten untouched seeds replicate the unchanged
+> analog local-credit rule with confidence-bound and 7/10-seed gates. No new
+> spike encoding, memory, or topology mechanism is authorized before this
+> replication. See `GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

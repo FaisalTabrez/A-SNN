@@ -58,6 +58,8 @@ If you are new to the repo, read these in order:
 41. [Gen-16 local score-credit preregistration](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md)
 42. [Gen-16 local score-credit analysis](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_ANALYSIS.md)
 43. [Gen-17 sparse-spiking credit preregistration](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md)
+44. [Gen-17 sparse-spiking credit analysis](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_ANALYSIS.md)
+45. [Gen-18 held-out local-credit preregistration](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1317,7 +1319,7 @@ was only +0.183, so this validates exact analog linear credit assignment—not
 a capable standalone SNN. See
 [the Gen-16 analysis](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_ANALYSIS.md).
 
-## Gen-17 sparse-spiking local credit (preregistered)
+## Gen-17 sparse-spiking local credit (completed: `stop`)
 
 Gen-17 replaces each analog sensor value with a parameter-matched Bernoulli
 event while preserving the validated local update. Analog, static, oracle, and
@@ -1345,3 +1347,30 @@ agent-shuffled controls are included in the same frozen run.
   --gradient-clip 1.0 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen17_sparse_spiking_credit_cuda
 ```
+
+Gen-17 generated healthy events (`6.369%` training, `12.078%` evaluation)
+and preserved the exact manual gradient (`3.73e-9` maximum error), but the
+correct-reward spiking learner lost `-0.391` fitness per 1,000 steps and
+finished `-1.052` below shuffled reward. The analog reference also gained only
+`+0.004` on the fresh seeds. The Bernoulli translation is rejected and analog
+local-credit robustness is reopened. See
+[the Gen-17 analysis](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_ANALYSIS.md).
+
+## Gen-18 held-out local-credit replication (preregistered)
+
+Gen-18 reruns the unchanged Gen-16 analog local rule on ten untouched seeds.
+It adds no mechanism. A pass requires at least `7/10` seeds to clear the gain
+and reward-identity thresholds and positive lower 95% confidence bounds.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen18_local_credit_replication.py \
+  --device cuda \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen18_local_credit_replication_cuda
+```
+
+See the frozen
+[Gen-18 preregistration](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md).

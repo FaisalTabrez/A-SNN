@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16", "gen17",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 18)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 19)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -406,6 +406,33 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         self.assertEqual(
             claims["Gen-16 establishes sparse-spiking or structural continuous learning"]["status"],
             "not tested",
+        )
+
+    def test_gen17_sparse_translation_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(result.metrics["gen17_analog_gain"], 0.004444449312157095)
+        self.assertAlmostEqual(result.metrics["gen17_spiking_gain"], -0.39111114210552644)
+        self.assertAlmostEqual(
+            result.metrics["gen17_spiking_margin_vs_shuffled"],
+            -1.0522222932842042,
+        )
+        self.assertEqual(result.metrics["gen17_passed"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-17 sparse event generation and local gradient are operational"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-16 analog local-credit gain replicates on Gen-17 seeds"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-17 Bernoulli sparse translation preserves local learning"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-17 sparse local learning depends on correctly assigned reward"]["status"],
+            "rejected",
         )
 
 

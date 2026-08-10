@@ -67,3 +67,15 @@ Gen-17 is the sole open translation. It substitutes parameter-matched binary
 sensory events and requires preserved learning, reward identity, and healthy
 event density. STW/LTW, replay, structural plasticity, and hardware claims
 remain closed until sparse credit passes and replicates.
+
+Gen-17 result update (2026-08-10): the translation returned `stop`. Event
+activity and gradient parity were healthy, but correct-reward spiking credit
+lost 0.391 fitness per 1,000 steps and finished 1.052 below shuffled reward.
+The analog reference gained only 0.004 on the fresh seeds, so the Gen-16 gain
+is no longer treated as replicated.
+
+Gen-18 is the sole open experiment. It is a ten-seed held-out replication of
+the unchanged analog local-credit rule. A pass requires at least 7/10 seeds
+and positive lower 95% confidence bounds for both learning gain and reward
+identity. A stop closes the local reward-credit program; no parameter sweep,
+new spike encoder, STW/LTW, replay, or structural plasticity is authorized.

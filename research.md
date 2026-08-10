@@ -5462,3 +5462,40 @@ density, exact gradient implementation, and replicated reward identity. A pass
 opens only larger-seed sparse replication before memory; a stop closes or
 redesigns the translation without a parameter sweep. The protocol is
 `gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-17 rejects one-sample Bernoulli sparse credit
+
+The archive `gen17_sparse_spiking_credit_cuda-20260810T164522Z-1-001.zip`
+has SHA-256
+`6FDA07EE4FAF5B99FB90E2C68029E38A5C49AE19D4D4951DD87D680F5E95E8D3`.
+Its extracted evidence is retained in
+`gen5/outputs/gen17_sparse_spiking_credit_cuda_2026-08-10/`.
+
+The experimental machinery worked: training/evaluation event density was
+6.369%/12.078%, maximum manual-gradient error was 3.73e-9, static reset was
+exact, and the oracle reached +8.320 fitness per 1,000 steps. The behavioral
+claim failed. Correct-reward spiking credit changed fitness by -0.391 and
+finished -1.052 below shuffled reward. Only one of three seeds met the gain
+threshold. The analog reference gained just +0.004 and also qualified on only
+one seed.
+
+Decision: reject this one-event Bernoulli translation. Do not tune its event
+rate or add memory to rescue it. Because the fresh analog reference also
+failed, treat the Gen-16 result as an exact local-gradient proof with an
+unreplicated behavioral effect.
+
+## 2026-08-10 - Gen-18 held-out analog-credit replication approved
+
+Before adding any new biological mechanism, Gen-18 will rerun the unchanged
+Gen-16 analog local rule on ten untouched seeds 180-189. Static, oracle,
+correct-reward manual, and agent-shuffled-reward manual arms retain the same
+1,000-agent world, 300/1,800 evaluation/training budget, 30-step rollouts,
+12-step reward delay, and SGD parameters.
+
+The pass is stronger than Gen-16: mean gain, static margin, and shuffled-reward
+margin must each exceed +0.10; at least 7/10 seeds must qualify; and the lower
+normal-approximation 95% confidence bounds must be positive. Exact reset,
+oracle, and gradient-parity gates remain mandatory. A pass permits one
+theory-derived temporal spike encoder. A stop closes the local reward-credit
+program instead of opening another sweep. The protocol is
+`gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_PREREGISTRATION.md`.
