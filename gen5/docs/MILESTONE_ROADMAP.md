@@ -23,6 +23,12 @@
 > with zero qualified arms. Hardware work remains closed. A temporal-binding
 > decoder is a possible new hypothesis, not an authorized rescue phase.
 
+> Gen-8 update (2026-08-10): the user explicitly authorized that independent
+> hypothesis. Gen-8 binds direct and state traces at matched timesteps before
+> aggregation and trains prediction at matched future timesteps. The frozen
+> arms and terminal gate are in `GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.
+> Runtime/hardware work remains closed unless this new gate passes.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

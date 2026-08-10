@@ -40,6 +40,7 @@ If you are new to the repo, read these in order:
 23. [SHD matched baselines](gen5/docs/SHD_MATCHED_BASELINES.md)
 24. [Gen-6 successor preregistration and result](gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md)
 25. [Gen-7 predictive-state preregistration](gen5/docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md)
+26. [Gen-8 time-local binding preregistration](gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -93,11 +94,10 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   `+19.287` points and fixed-shuffled timing by `+6.257` points.
 - Phase 37 finds only `+0.648` points from recurrence over feedforward AMMC;
   the tested recurrent topology fails its causal gate.
-- Gen-5 Milestone A and the separately preregistered Gen-6 successor both
-  returned terminal `stop` decisions. Gen-6 preserved TCN accuracy within
-  `0.065` point, but shuffled state improved accuracy by `0.657` point; no
-  causal arm qualified. The current step is final evidence/publication
-  closeout. Hardware optimization and an automatic Gen-7 rescue remain closed.
+- Gen-7 learned strongly future-aligned state and led the matched TCN by
+  `0.417` point, but failed identity and temporal-order specificity. Gen-8 is
+  now preregistered to test time-local direct×state binding before pooling;
+  hardware optimization remains closed unless its frozen causal gate passes.
 
 The final machine-readable claim ledger and report are retained in
 [`gen5/outputs/gen6_research_closeout_2026-08-10/`](gen5/outputs/gen6_research_closeout_2026-08-10/).
@@ -858,3 +858,42 @@ identity/order gate: shuffled state improved accuracy by `1.022` points and
 time reversal cost only `0.165` point. The result and final ledger are retained
 in [`gen5/outputs/gen7_predictive_state_cuda_2026-08-10/`](gen5/outputs/gen7_predictive_state_cuda_2026-08-10/)
 and [`gen5/outputs/gen7_research_closeout_2026-08-10/`](gen5/outputs/gen7_research_closeout_2026-08-10/).
+
+## Gen-8 time-local predictive binding (preregistered)
+
+Gen-8 tests whether Gen-7's failure came from pooling away sample/time identity
+before state affected the output. Its candidate predicts each aligned future
+timestep and computes a zero-initialized class correction from
+`direct[t] * state[t]` before temporal aggregation. A pooled Gen-7 reference,
+an analog control, shuffled-target LIF, and the matched TCN run in the same
+resumable screen/confirmation protocol. The complete frozen contract is in
+[gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md](gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md).
+
+Colab execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen8_temporal_binding.py \
+  --device cuda \
+  --screen-seed 145 \
+  --confirm-seeds 145 146 147 \
+  --screen-train-samples 15000 \
+  --screen-validation-samples 3000 \
+  --screen-test-samples 3000 \
+  --screen-epochs 4 \
+  --confirm-epochs 15 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --future-horizon 4 \
+  --contrastive-temperature 0.10 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen8_temporal_binding_cuda
+```
+
+The runner checkpoints after every arm/seed pair. Re-running the same command
+resumes from `gen8_temporal_binding_progress.json`.

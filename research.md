@@ -4916,3 +4916,38 @@ whose output benefit depends on the correct sample's temporally ordered state.
 This is now the central unresolved research question. No active empirical
 phase follows automatically; a time-local binding/fusion successor requires a
 new preregistration and explicit user approval.
+
+## 2026-08-10 - Gen-8 time-local predictive binding approved and implemented
+
+The user explicitly approved the next experiment after the Gen-7 terminal
+closeout. This authorizes one new mechanism-level test, not a retuning sweep of
+Gen-7. The decision addresses the exact unresolved observation: Gen-7 state
+contains paired future information, but pooling direct and state traces before
+their interaction allows the output correction to ignore sample identity and
+temporal order.
+
+Gen-8 moves both operations to aligned time. Its candidate contrasts
+`state[t]` with the same sample's encoder activity at `t + 4` independently at
+each timestep using the adjacent samples in both batch directions as fixed
+negative identities. This keeps the objective linear in batch size rather than
+materializing a quadratic time×batch×batch similarity tensor. It produces the residual class trace from
+`direct[t] * state[t]` before temporal averaging. The binding projection is
+zero-initialized, preserving the matched TCN logits exactly at initialization.
+Its trainable parameter count is deliberately identical to the corresponding
+Gen-7 residual arm.
+
+Registered controls are the matched dilated TCN, the pooled Gen-7 predictive
+LIF, an analog time-local binder, a time-local LIF trained on batch-shuffled
+future targets, and the paired time-local LIF candidate. Screening uses seed
+145 and reduced official SSC splits; confirmation uses complete splits and
+seeds 145–147. Candidate promotion automatically forces all mechanistic
+controls into confirmation.
+
+The frozen terminal gate requires accuracy within one TCN point; replicated
+0.5-point losses under state removal, sample shuffling, and time reversal;
+local future alignment and paired-over-shuffled alignment; healthy spikes and
+binding activity; and at least 0.5-point identity and order improvements over
+the pooled Gen-7 reference. Passing opens only a separate runtime/external
+replication preregistration. Failure closes temporal binding without a horizon,
+temperature, loss-weight, threshold, or gate sweep. The complete protocol is
+recorded in `gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.

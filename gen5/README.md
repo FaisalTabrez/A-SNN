@@ -29,7 +29,7 @@ active backward pass. The XLA path benefits from those static capacities now;
 the CUDA/C++ implementation can later replace the allocator without changing
 the high-level AMMC API.
 
-## Latest successor result
+## Latest successor experiment
 
 Gen-7 is a preregistered predictive-state successor. It preserves the matched
 dilated TCN, adds a zero-initialized sample-conditioned state correction, and
@@ -46,6 +46,19 @@ slightly exceeded TCN mean accuracy, but state shuffling improved accuracy and
 time reversal had little effect. See
 `docs/GEN7_PREDICTIVE_STATE_PREREGISTRATION.md` and the retained analysis in
 `outputs/gen7_predictive_state_cuda_2026-08-10/`.
+
+Gen-8 is the separately preregistered successor. It moves both future
+prediction and direct×state fusion to aligned timesteps before aggregation,
+with pooled Gen-7, analog, shuffled-target, and TCN controls:
+
+```powershell
+python gen5/examples/gen8_temporal_binding.py --list-arms
+```
+
+Its terminal gate requires TCN-level accuracy, replicated state-removal,
+identity-shuffling, and time-reversal costs, strong paired future alignment,
+and at least a 0.5-point identity/order gain over Gen-7 pooling. See
+`docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.
 
 ## Accelerator runtime stance
 
