@@ -1192,12 +1192,12 @@ Colab T4 execution cell:
 !python gen5/examples/gen14_reward_eligibility.py \
   --device cuda \
   --seeds 163 164 165 \
-  --agent-count 10000 \
-  --food-count 128 \
-  --toxin-count 128 \
-  --baseline-steps 600 \
-  --training-steps 3600 \
-  --evaluation-steps 600 \
+  --agent-count 5000 \
+  --food-count 64 \
+  --toxin-count 64 \
+  --baseline-steps 300 \
+  --training-steps 1800 \
+  --evaluation-steps 300 \
   --reward-delay-steps 12 \
   --eligibility-decay 0.95 \
   --trace-decay 0.90 \

@@ -21,7 +21,7 @@ environmental signal.
 
 ## Frozen screen
 
-Seeds are 163–165. Ten thousand agents are split equally between:
+Seeds are 163–165. Five thousand agents are split equally between:
 
 1. static random policy;
 2. oracle food-direction reflex, as an environment positive control;
@@ -29,7 +29,7 @@ Seeds are 163–165. Ten thousand agents are split equally between:
 4. spiking reward eligibility;
 5. spiking eligibility with reward shuffled between agents.
 
-The run uses 600 baseline steps, 3,600 learning steps, 600 frozen evaluation
+The run uses 300 baseline steps, 1,800 learning steps, 300 frozen evaluation
 steps, 12-step collision-reward delay, eligibility decay 0.95, trace decay
 0.90, learning rate 0.02, and 20 ms-scale fast-weight decay 0.0001 per step.
 
@@ -50,3 +50,7 @@ execution, and source-skill retention. A stop closes this eligibility rule
 without learning-rate, shaping, trace-decay, temperature, or world sweeps.
 Neither outcome directly establishes STW/LTW, structural plasticity, or
 biological equivalence.
+
+The screen size was frozen before results were observed. It retains 1,000
+agents per arm across three seeds while avoiding the unnecessary cost of the
+earlier 10,000-agent draft.

@@ -5305,7 +5305,7 @@ mechanism.
 ## 2026-08-10 - Gen-14 reward-modulated embodiment approved and implemented
 
 Following the Gen-13 terminal stop, Gen-14 starts a distinct program rather
-than tuning supervised local class-error updates. Ten thousand agents share a
+than tuning supervised local class-error updates. Five thousand agents share a
 tensorized food/toxin world and are divided equally among static random,
 oracle food-reflex, analog eligibility, spiking eligibility, and
 spiking-with-shuffled-reward strategies.
@@ -5316,9 +5316,15 @@ term. The update is a local eligibility trace multiplied by reward prediction
 error; no label, target action, or autograd gradient reaches fast weights.
 Reward shuffling between agents is the identity-specific negative control.
 
-Decision: freeze seeds 163–165, 600/3,600/600 baseline-learning-evaluation
+Decision: freeze seeds 163–165, 300/1,800/300 baseline-learning-evaluation
 steps, 12-step reward delay, eligibility decay 0.95, trace decay 0.90, learning
 rate 0.02, and the registered activity/saturation gates before observing the
 result. A pass opens only replicated causal confirmation. A stop closes the
 rule without learning-rate, shaping, trace, temperature, or world sweeps. The
 protocol is `gen5/docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.
+
+Before observing results, the draft screen was reduced from 10,000 to 5,000
+agents and from 4,800 to 2,400 total steps per seed. This preserves 1,000
+agents per arm and three independent seeds while reducing repeated batched
+distance calculations by roughly eightfold. Food and toxin counts are frozen
+at 64 each. This is a compute-efficiency decision, not a result-driven sweep.
