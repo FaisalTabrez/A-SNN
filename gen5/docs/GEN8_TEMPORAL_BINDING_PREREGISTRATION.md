@@ -1,6 +1,12 @@
 # Gen-8 time-local predictive-binding preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-8 results.
+Status (2026-08-10): completed; terminal gate returned `stop`.
+
+The paired time-local LIF candidate failed screening at 7.267% validation
+accuracy with a 50.656% spike rate and therefore was not confirmed. The analog
+binder showed replicated order sensitivity but no sample-identity specificity.
+The branch is closed without a rescue sweep. See the retained
+[`analysis.md`](../outputs/gen8_temporal_binding_cuda_2026-08-10/analysis.md).
 
 ## Motivation
 

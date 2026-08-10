@@ -94,13 +94,13 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   `+19.287` points and fixed-shuffled timing by `+6.257` points.
 - Phase 37 finds only `+0.648` points from recurrence over feedforward AMMC;
   the tested recurrent topology fails its causal gate.
-- Gen-7 learned strongly future-aligned state and led the matched TCN by
-  `0.417` point, but failed identity and temporal-order specificity. Gen-8 is
-  now preregistered to test time-local direct×state binding before pooling;
-  hardware optimization remains closed unless its frozen causal gate passes.
+- Gen-7 learned strongly future-aligned state but failed identity/order
+  specificity. Gen-8's analog binder gained replicated order sensitivity,
+  while the paired local LIF collapsed during screening and identity remained
+  non-causal. Gen-8 returned `stop`; hardware optimization remains closed.
 
 The final machine-readable claim ledger and report are retained in
-[`gen5/outputs/gen6_research_closeout_2026-08-10/`](gen5/outputs/gen6_research_closeout_2026-08-10/).
+[`gen5/outputs/gen8_research_closeout_2026-08-10/`](gen5/outputs/gen8_research_closeout_2026-08-10/).
 
 See [research.md](research.md) for the evidence trail.
 
@@ -859,7 +859,7 @@ time reversal cost only `0.165` point. The result and final ledger are retained
 in [`gen5/outputs/gen7_predictive_state_cuda_2026-08-10/`](gen5/outputs/gen7_predictive_state_cuda_2026-08-10/)
 and [`gen5/outputs/gen7_research_closeout_2026-08-10/`](gen5/outputs/gen7_research_closeout_2026-08-10/).
 
-## Gen-8 time-local predictive binding (preregistered)
+## Gen-8 time-local predictive binding (completed: `stop`)
 
 Gen-8 tests whether Gen-7's failure came from pooling away sample/time identity
 before state affected the output. Its candidate predicts each aligned future
@@ -897,3 +897,11 @@ Colab execution cell:
 
 The runner checkpoints after every arm/seed pair. Re-running the same command
 resumes from `gen8_temporal_binding_progress.json`.
+
+Gen-8 completed with the paired local LIF candidate failing screening at
+`7.267%` validation accuracy and `50.656%` spike activity. The analog local
+binder remained within `0.456` TCN point and showed a replicated `0.561`-point
+time-reversal cost, but state shuffling cost only `0.118` point with 0/3 seeds
+passing. The result and ten-source closeout are retained in
+[`gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/`](gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/)
+and [`gen5/outputs/gen8_research_closeout_2026-08-10/`](gen5/outputs/gen8_research_closeout_2026-08-10/).

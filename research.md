@@ -4951,3 +4951,54 @@ the pooled Gen-7 reference. Passing opens only a separate runtime/external
 replication preregistration. Failure closes temporal binding without a horizon,
 temperature, loss-weight, threshold, or gate sweep. The complete protocol is
 recorded in `gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-8 local LIF fails screening; analog binding adds order but not identity
+
+Evidence is retained at
+`gen5/outputs/gen8_temporal_binding_cuda_2026-08-10/` from archive SHA-256
+`5D3087148BF735FE921E6895B06318B979F3371454095B57170F2B6286493E79`.
+
+The paired time-local LIF candidate screened at `7.267%` validation accuracy,
+`30.833` points below the matched TCN, with a `50.656%` spike rate. Its
+shuffled-target control screened at `10.133%` with `41.091%` spikes. Both fail
+the registered accuracy and maximum-activity gates by wide margins, so neither
+was promoted. Their parameter ratios were matched and their binding
+corrections were active, making this a destructive-dynamics result rather than
+an inactive-path or capacity artifact.
+
+Three arms entered full confirmation. Pooled predictive LIF reaches
+`60.684% ± 0.283`, `+1.536` points over TCN, but state removal costs only
+`0.221` point, shuffling improves accuracy by `2.069` points, and reversal
+costs `0.203` point. This independently repeats the Gen-7 separation between
+predictive alignment (`0.3094`) and beneficial causal use.
+
+The analog time-local binder reaches `58.692% ± 2.176`, only `0.456` point
+below TCN. Reversal costs `0.561` point and passes on 2/3 seeds, supporting a
+limited conclusion that pre-pooling fusion introduces temporal-order
+sensitivity. Shuffling state costs only `0.118` point and passes on no seed;
+the correct sample identity still is not causally useful. Its state-removal
+cost (`0.502` point) replicates on only one seed. TCN throughput is `53,167`
+examples/s versus `21,207` for analog binding and `14,071` for pooled LIF.
+
+Decision: accept partial analog temporal-order sensitivity; reject stable
+time-local LIF, identity-specific binding, architecture qualification, and
+hardware-efficiency claims. Accept the stored `status=stop` with zero
+qualified arms. Do not retune the horizon, temperature, loss weight, spike
+threshold, or gate. The evidence-selected next phase is the final ten-source
+claim ledger and publication closeout, not Gen-9.
+
+## 2026-08-10 - Gen-8 final evidence ledger generated
+
+The reproducible synthesis now requires ten retained evidence files through
+Gen-8 and is stored in `gen5/outputs/gen8_research_closeout_2026-08-10/`. It
+records predictive representation and partial analog order sensitivity as
+supported; stable identity-specific spiking binding and hardware qualification
+as rejected.
+
+Sanity decision: the architecture-development branch has exhausted three
+separately preregistered successors without producing a parameter-matched,
+stable spiking model whose output benefit requires the correct sample's
+ordered state. The defensible contribution is a set of causal residual-state,
+predictive-representation, and partial temporal-binding findings with explicit
+negative selection results. A later program must begin from a new task-level
+hypothesis and independent preregistration rather than another decoder rescue.

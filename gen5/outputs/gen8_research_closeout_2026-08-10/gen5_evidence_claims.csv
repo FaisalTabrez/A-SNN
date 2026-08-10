@@ -1,0 +1,22 @@
+claim,status,gate_passed,evidence
+Standalone state-only LIF is competitive on SHD,rejected,False,State-only LIF trails Conv1D by 8.613 points.
+Residual LIF is viable on SHD,supported,True,Residual LIF changes accuracy by +0.942 points versus Conv1D.
+Sample-specific LIF state contributes on SHD,supported,True,Removing state costs 6.419 points; shuffling state costs 4.167 points.
+The residual-state contribution replicates on SSC,supported,True,Removing state costs 11.271 points; shuffling state costs 2.980 points.
+Residual LIF matches the stronger SSC temporal baseline,rejected,False,Matched dilated TCN leads by 3.253 points.
+Residual LIF is faster in the current T4 implementation,rejected,False,Residual LIF delivers 0.314x TCN throughput.
+Residual LIF has a lower dense-operation proxy,proxy_only,True,Dense MAC proxy is 11.569% lower than TCN.
+The current results establish hardware energy efficiency,not_tested,False,No direct power or energy measurement was performed; dense PyTorch is not event-driven.
+Hierarchical residual scaling closes the SSC accuracy gap,rejected,False,Hierarchical analog and LIF trail TCN validation by 8.567 and 13.467 points.
+The current Gen-5 architecture qualifies for hardware optimization,rejected,False,Milestone A promoted dilated_tcn and returned status=stop with 0 qualified causal arms.
+The Gen-6 shared residual LIF preserves TCN predictive accuracy,supported,True,Shared residual LIF changes SSC accuracy by -0.065 points versus the matched TCN.
+The Gen-6 LIF correction is beneficially sample-specific,rejected,False,"Removing state costs 0.386 points (1/3 seeds pass), while shuffling state changes accuracy by +0.657 points in the shuffled model's favor (0/3 seeds pass)."
+The Gen-6 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-7 paired future prediction improves state alignment,supported,True,Paired LIF future alignment is 0.2928 versus -0.0017 under shuffled-target training.
+Gen-7 paired predictive LIF matches TCN accuracy,supported,True,Paired predictive LIF changes accuracy by +0.417 points versus TCN.
+Gen-7 uses predictive state beneficially by sample identity and temporal order,rejected,False,Shuffling state changes accuracy by +1.022 points in the shuffled model's favor; reversing state costs only 0.165 points.
+The Gen-7 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.
+Gen-8 time-local analog binding introduces temporal-order sensitivity,supported,True,Reversing analog state costs 0.561 points with 2/3 seeds passing.
+Gen-8 time-local analog binding uses the correct sample identity,rejected,False,Shuffling analog state costs only 0.118 points with 0/3 seeds passing.
+The Gen-8 paired time-local LIF candidate is stable enough for confirmation,rejected,False,The candidate screened at 7.267% validation accuracy with a 50.656% spike rate.
+The Gen-8 successor qualifies for hardware optimization,rejected,False,The terminal decision is status=stop with 0 qualified arms.

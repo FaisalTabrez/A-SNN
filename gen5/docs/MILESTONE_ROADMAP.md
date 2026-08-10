@@ -29,6 +29,12 @@
 > arms and terminal gate are in `GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.
 > Runtime/hardware work remains closed unless this new gate passes.
 
+> Gen-8 result (2026-08-10): the paired time-local LIF candidate failed its
+> screen with 7.267% validation accuracy and a 50.656% spike rate. The analog
+> binder gained replicated order sensitivity but not identity specificity.
+> The stored decision is `stop`; hardware and automatic successor work remain
+> closed. The active phase is final evidence closeout.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

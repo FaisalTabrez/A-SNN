@@ -60,6 +60,13 @@ identity-shuffling, and time-reversal costs, strong paired future alignment,
 and at least a 0.5-point identity/order gain over Gen-7 pooling. See
 `docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md`.
 
+Gen-8 returned `stop`. The paired local LIF candidate failed screening at
+7.267% validation accuracy with 50.656% spikes. The analog binder showed a
+replicated temporal-order effect but failed sample-identity specificity. The
+architecture branch is closed; see
+`outputs/gen8_temporal_binding_cuda_2026-08-10/` and the final ledger in
+`outputs/gen8_research_closeout_2026-08-10/`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:
