@@ -4789,3 +4789,53 @@ mean absolute correction gate of at least `0.01`.
 This is a single terminal experiment with automatic promotion, causal
 ablations, and per-arm checkpoint/resume. Failure closes Gen-6 without a rescue
 sweep; passing is the only condition that can reopen hardware-efficiency work.
+
+## 2026-08-10 - Gen-6 preserves accuracy but fails causal specificity
+
+Evidence retained at
+`gen5/outputs/gen6_successor_cuda_2026-08-10/` from archive SHA-256
+`F644395B407CCA4A33B820EE34C62C729CFE1B4EBF24949E5524C6FA74AF83CD`.
+
+The reduced-data screen promoted TCN, shared residual analog, and shared
+residual LIF. On complete SSC confirmation over seeds 142–144, TCN reaches
+`59.082% ± 0.208` and shared residual LIF reaches `59.016% ± 0.159`, a gap of
+only `-0.065` point. The LIF model learns a `0.1898` mean absolute gate and
+maintains a healthy `6.020%` spike rate. The zero-initialized, weight-shared
+design therefore succeeds at preserving the conventional predictor.
+
+The causal hypothesis fails. Removing LIF state costs `0.386` mean point,
+below the registered `0.5` threshold, and only one of three seeds passes.
+Shuffling state identity improves accuracy by `0.657` mean point, with zero of
+three seeds passing the specificity threshold. The analog arm has an even
+larger removal effect (`21.651` points) but an adverse `-4.345`-point
+specificity result, supporting the interpretation that the correction is
+non-specific rather than inactive. Dense LIF throughput is `15,162` examples/s
+versus TCN's `54,966`, or `0.276x`.
+
+Decision: accept predictive parity as supported, reject beneficial
+sample-specific correction, and accept the stored `status=stop` decision with
+zero qualified arms. Do not run a rescue sweep, reopen hardware optimization,
+or present Gen-6 as a competitive SNN result. The gate-selected next direction
+is a final reproducible claim ledger and publication-oriented closeout. Any
+future generation requires a genuinely new hypothesis and a separate
+preregistration approved before training.
+
+## 2026-08-10 - Final Gen-5/Gen-6 evidence closeout generated
+
+The machine-readable claim ledger, claims CSV, and human-readable report were
+regenerated from eight retained evidence files and stored in
+`gen5/outputs/gen6_research_closeout_2026-08-10/`. The final ledger separates
+three conclusions that must not be conflated:
+
+1. sample-specific residual LIF state contributed causally in the earlier SHD
+   and SSC experiments;
+2. the tested Gen-5 architectures did not match the stronger SSC TCN and did
+   not qualify for hardware work;
+3. Gen-6 recovered TCN-level accuracy but its correction failed the new
+   sample-specific causal gate and likewise did not qualify.
+
+Decision: this completes the registered research branch. The repository keeps
+all implementation and evidence as a reproducible negative/qualified result.
+There is no active next empirical phase. A future program begins only after a
+new mechanism-level hypothesis, dataset, baseline, causal test, and terminal
+gate are written and approved before training.

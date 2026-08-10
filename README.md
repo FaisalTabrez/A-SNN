@@ -38,6 +38,7 @@ If you are new to the repo, read these in order:
 21. [SHD temporal-pyramid readout](gen5/docs/SHD_TEMPORAL_PYRAMID.md)
 22. [SHD temporal-control decomposition](gen5/docs/SHD_TEMPORAL_CONTROLS.md)
 23. [SHD matched baselines](gen5/docs/SHD_MATCHED_BASELINES.md)
+24. [Gen-6 successor preregistration and result](gen5/docs/GEN6_SUCCESSOR_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -91,8 +92,14 @@ For the first 2D bot-world cycle, sparse-efficiency tuning is now frozen:
   `+19.287` points and fixed-shuffled timing by `+6.257` points.
 - Phase 37 finds only `+0.648` points from recurrence over feedforward AMMC;
   the tested recurrent topology fails its causal gate.
-- Current scientific step: Phase 38 compares AMMC with parameter-matched dense
-  recurrent LIF and GRU baselines before any recurrent redesign.
+- Gen-5 Milestone A and the separately preregistered Gen-6 successor both
+  returned terminal `stop` decisions. Gen-6 preserved TCN accuracy within
+  `0.065` point, but shuffled state improved accuracy by `0.657` point; no
+  causal arm qualified. The current step is final evidence/publication
+  closeout. Hardware optimization and an automatic Gen-7 rescue remain closed.
+
+The final machine-readable claim ledger and report are retained in
+[`gen5/outputs/gen6_research_closeout_2026-08-10/`](gen5/outputs/gen6_research_closeout_2026-08-10/).
 
 See [research.md](research.md) for the evidence trail.
 

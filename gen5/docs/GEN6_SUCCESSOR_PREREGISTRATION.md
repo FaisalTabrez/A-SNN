@@ -1,6 +1,14 @@
 # Gen-6 successor preregistration
 
-Status: protocol frozen before training.
+Status (2026-08-10): completed; terminal gate returned `stop`.
+
+The LIF successor matched TCN within 0.065 mean test point and passed its spike
+and gate checks. Removing state cost only 0.386 mean point with one of three
+seeds clearing the 0.5-point threshold. Shuffling state identity improved
+accuracy by 0.657 mean point and no seed cleared the specificity threshold.
+The successor therefore has no qualified causal arm, hardware work remains
+closed, and no rescue sweep is authorized. See the retained
+[`analysis.md`](../outputs/gen6_successor_cuda_2026-08-10/analysis.md).
 
 ## Why this is a new generation
 

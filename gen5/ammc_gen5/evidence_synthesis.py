@@ -16,6 +16,7 @@ EVIDENCE_FILENAMES = {
     "phase48": "ssc_residual_lif_replication.json",
     "phase49": "ssc_efficiency_baselines.json",
     "milestone_a": "milestone_a_architecture.json",
+    "gen6": "gen6_successor.json",
 }
 
 
@@ -78,6 +79,7 @@ def synthesize_gen5_evidence(
     phase49_lif = _summary_row(evidence["phase49"], "residual_lif")
     phase49_tcn = _summary_row(evidence["phase49"], "dilated_tcn")
     milestone_a = evidence["milestone_a"]
+    gen6 = evidence["gen6"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -101,6 +103,11 @@ def synthesize_gen5_evidence(
     )
     milestone_scaling_passed = min(milestone_hierarchical_gaps) <= 0.02
     milestone_qualified_count = len(milestone_a["decision"]["qualified_arms"])
+    gen6_tcn = _summary_row(gen6, "dilated_tcn", key="confirmation_summary")
+    gen6_lif = _summary_row(
+        gen6, "shared_residual_lif", key="confirmation_summary"
+    )
+    gen6_qualified_count = len(gen6["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -185,6 +192,30 @@ def synthesize_gen5_evidence(
         "milestone_a_qualified_arm_count": float(
             milestone_qualified_count
         ),
+        "gen6_tcn_accuracy": float(gen6_tcn["mean_full_accuracy"]),
+        "gen6_lif_accuracy": float(gen6_lif["mean_full_accuracy"]),
+        "gen6_lif_gap_vs_tcn": float(gen6_lif["mean_gain_vs_tcn"]),
+        "gen6_lif_state_contribution_vs_direct_only": float(
+            gen6_lif["mean_state_contribution_vs_direct_only"]
+        ),
+        "gen6_lif_state_contribution_replication_count": float(
+            gen6_lif["half_point_seed_count_state_contribution"]
+        ),
+        "gen6_lif_state_specificity_vs_shuffled": float(
+            gen6_lif["mean_state_specificity_vs_shuffled"]
+        ),
+        "gen6_lif_state_specificity_replication_count": float(
+            gen6_lif["half_point_seed_count_state_specificity"]
+        ),
+        "gen6_lif_spike_rate": float(gen6_lif["mean_activity"]),
+        "gen6_lif_mean_absolute_gate": float(
+            gen6_lif["mean_absolute_gate"]
+        ),
+        "gen6_lif_throughput_ratio_vs_tcn": (
+            float(gen6_lif["mean_test_examples_per_second"])
+            / float(gen6_tcn["mean_test_examples_per_second"])
+        ),
+        "gen6_qualified_arm_count": float(gen6_qualified_count),
     }
     claims = [
         _claim(
@@ -269,31 +300,70 @@ def synthesize_gen5_evidence(
                 else "rejected"
             ),
         ),
+        _claim(
+            "The Gen-6 shared residual LIF preserves TCN predictive accuracy",
+            float(gen6_lif["mean_gain_vs_tcn"]) >= -0.01,
+            "Shared residual LIF changes SSC accuracy by "
+            f"{100.0 * float(gen6_lif['mean_gain_vs_tcn']):+.3f} points "
+            "versus the matched TCN.",
+            (
+                "supported"
+                if float(gen6_lif["mean_gain_vs_tcn"]) >= -0.01
+                else "rejected"
+            ),
+        ),
+        _claim(
+            "The Gen-6 LIF correction is beneficially sample-specific",
+            (
+                float(gen6_lif["mean_state_contribution_vs_direct_only"])
+                >= 0.005
+                and float(gen6_lif["mean_state_specificity_vs_shuffled"])
+                >= 0.005
+                and int(gen6_lif["half_point_seed_count_state_contribution"])
+                >= 2
+                and int(gen6_lif["half_point_seed_count_state_specificity"])
+                >= 2
+            ),
+            "Removing state costs "
+            f"{100.0 * float(gen6_lif['mean_state_contribution_vs_direct_only']):.3f} points "
+            f"({int(gen6_lif['half_point_seed_count_state_contribution'])}/3 seeds pass), "
+            "while shuffling state changes accuracy by "
+            f"{-100.0 * float(gen6_lif['mean_state_specificity_vs_shuffled']):+.3f} points "
+            f"in the shuffled model's favor ({int(gen6_lif['half_point_seed_count_state_specificity'])}/3 seeds pass).",
+            "rejected",
+        ),
+        _claim(
+            "The Gen-6 successor qualifies for hardware optimization",
+            gen6["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen6['decision']['status']} with "
+            f"{gen6_qualified_count} qualified arms.",
+            "supported" if gen6["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "architecture_branch_closeout",
-            "objective": "Package the replicated causal-state finding together with the negative competitiveness result.",
-            "success_measure": "A reproducible report whose claims match the final gate decisions.",
+            "workstream": "gen6_terminal_closeout",
+            "objective": "Package predictive parity together with the failed state-specificity gate.",
+            "success_measure": "A reproducible final ledger whose claims match the Gen-6 stop decision.",
         },
         {
             "priority": 2,
-            "workstream": "successor_preregistration",
-            "objective": "Define a genuinely new generation rather than tuning the rejected residual variants.",
-            "success_measure": "A new causal hypothesis, matched baseline, validation promotion gate, and stop rule before training.",
+            "workstream": "publication_package",
+            "objective": "Report the supported cross-dataset Gen-5 mechanism and negative Gen-6 successor result without architecture-superiority claims.",
+            "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
             "workstream": "hardware_work_deferred",
-            "objective": "Defer event-driven kernel optimization until a successor passes predictive gates.",
-            "success_measure": "No hardware-efficiency claim is pursued for an architecture that failed Milestone A.",
+            "objective": "Keep event-driven kernel optimization closed after the Gen-6 terminal failure.",
+            "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
         },
         {
             "priority": 4,
-            "workstream": "plasticity_work_deferred",
-            "objective": "Retain LTW/STW and plasticity code as exploratory infrastructure, not validated architecture evidence.",
-            "success_measure": "Reintegration occurs only after a successor architecture passes its accuracy milestone.",
+            "workstream": "new_program_requires_new_hypothesis",
+            "objective": "Prevent an automatic Gen-7 rescue sweep on the rejected shared-residual design.",
+            "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -322,7 +392,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(3, 1, figsize=(13, 14), constrained_layout=True)
+    figure, axes = plt.subplots(4, 1, figsize=(13, 18), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -347,6 +417,16 @@ def plot_gen5_evidence_synthesis(
     )
     axes[2].set_ylabel("Milestone A validation accuracy (%)")
     axes[2].set_title("Terminal architecture screen")
+    axes[3].bar(
+        ("TCN", "Shared residual LIF"),
+        [
+            100.0 * metrics["gen6_tcn_accuracy"],
+            100.0 * metrics["gen6_lif_accuracy"],
+        ],
+        color=("#8b6fd6", "#35b4f2"),
+    )
+    axes[3].set_ylabel("Gen-6 SSC test accuracy (%)")
+    axes[3].set_title("Gen-6 parity without beneficial state specificity")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -374,7 +454,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 evidence report",
+        "# AMMC Gen-5/Gen-6 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -385,7 +465,12 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{1.0 / metrics['ssc_residual_lif_throughput_ratio_vs_tcn']:.2f}x its throughput. "
         "The residual model uses a lower dense-MAC proxy, but no hardware-energy claim is justified.",
         "",
-        "Milestone A then tested whether residual and hierarchical state models could clear a preregistered validation screen. Only the dilated TCN was promoted. The milestone returned `stop` with no qualified causal arms, so the current architecture branch is closed and hardware optimization is deferred.",
+        "Milestone A then tested whether residual and hierarchical state models could clear a preregistered validation screen. Only the dilated TCN was promoted. Gen-6 subsequently preserved that predictor and added a zero-initialized, weight-shared LIF correction. It matched TCN accuracy within "
+        f"{abs(100.0 * metrics['gen6_lif_gap_vs_tcn']):.3f} points and learned a non-zero gate with healthy spiking, but removing state cost only "
+        f"{100.0 * metrics['gen6_lif_state_contribution_vs_direct_only']:.3f} points and shuffled state improved accuracy by "
+        f"{-100.0 * metrics['gen6_lif_state_specificity_vs_shuffled']:.3f} points. Gen-6 therefore returned `stop` with no qualified causal arms.",
+        "",
+        "The accuracy-preservation hypothesis is supported; the beneficial sample-specific-correction hypothesis is rejected. Hardware optimization remains closed under the preregistered rule.",
         "",
         "## Claim ledger",
         "",
@@ -401,7 +486,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Milestone A does not support retaining that implementation as a competitive architecture. This is a causal mechanism result accompanied by a negative architecture-selection result—not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Milestone A does not support retaining that implementation as a competitive architecture. Gen-6 demonstrates that a zero-initialized shared correction can preserve the conventional predictor, but its learned state is not beneficially sample-specific under shuffling. This is a causal mechanism result accompanied by two negative architecture-selection results, not a best-SNN, Transformer-replacement, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

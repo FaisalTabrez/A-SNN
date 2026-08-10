@@ -4,6 +4,12 @@
 > arms. The current architecture branch is closed. Milestones B and C are
 > deferred; they must not be run against this rejected architecture.
 
+> Gen-6 update (2026-08-10): the separately preregistered shared-residual
+> successor preserved TCN accuracy but failed its state-removal and
+> shuffled-state causal gates. It also returned `stop` with zero qualified
+> arms. Hardware and continual-learning milestones remain closed. The active
+> workstream is evidence/publication closeout, not an automatic Gen-7 rescue.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
