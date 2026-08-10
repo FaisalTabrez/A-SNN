@@ -1,6 +1,6 @@
 # Gen-13 three-factor local-plasticity preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-13 results.
+Status (2026-08-10): completed with terminal decision `stop`.
 
 ## Hypothesis
 
@@ -68,3 +68,12 @@ the qualified local fast weights. A stop closes this local-rule branch without
 learning-rate, density, epoch, normalization, damage, or budget sweeps. No
 best-SNN, autonomous continual-learning, or biological-plausibility claim is
 authorized by a pass alone.
+
+## Observed terminal decision
+
+The spiking rule gained 0.410 point, with 0/3 seeds reaching the registered
+two-point threshold. Fast-weight removal cost 0.410 point and class shuffling
+cost 0.468 point, also below their replicated 0.5-point gates. Trace density
+was healthy at exactly 20%, source forgetting was zero, and the fast matrix
+was broadly occupied. The stored decision is `stop`; the branch is closed
+without rescue sweeps. See `GEN13_LOCAL_PLASTICITY_ANALYSIS.md`.

@@ -5259,3 +5259,45 @@ output-class shuffling. A pass opens only a separately preregistered STW/LTW
 consolidation experiment. A stop closes local readout plasticity without
 learning-rate, density, epoch, normalization, damage, or budget sweeps. The
 frozen protocol is `gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-13 local plasticity fails the adaptation and causal gates
+
+The archive `gen13_local_plasticity_cuda-20260810T141425Z-1-001.zip` has
+SHA-256 `6A6C9CA20EED003C07FCA64688794A6BCE678D81FE346575C49BF0A75E9C9393`.
+Its extracted evidence is retained in
+`gen5/outputs/gen13_local_plasticity_cuda_2026-08-10/`.
+
+The fixed shift reduced accuracy by 3.488 points. Full fine-tuning recovered
+3.269 points on 3/3 seeds and autograd readout adaptation recovered 2.049
+points on 2/3 seeds, confirming that the shifted task remained learnable.
+Analog and spiking three-factor rules recovered only 0.420 and 0.410 point,
+with 0/3 seeds reaching the two-point adaptation threshold.
+
+The spiking trace held exactly 20% activity, about 16,768 of 16,800 fast
+synapses were active, mean absolute fast weight was 0.00317, and source
+forgetting was zero. Removing fast weights cost 0.410 point and shuffling
+class rows cost 0.468 point; neither causal effect repeated above the
+registered 0.5-point threshold. The negative result is therefore not due to
+silent spikes, missing capacity, or catastrophic forgetting. The tested local
+update does not reproduce the useful output credit assignment.
+
+Decision: accept the shift, conventional adaptation, activity, capacity, and
+retention controls. Accept the stored `status=stop`; do not tune Gen-13.
+STW/LTW, replay, neuromodulation, and structural plasticity remain closed.
+
+## 2026-08-10 - Continual-adaptation branch closed; new program required
+
+Gen-9–13 established a valid damaged-sensor adaptation protocol, robust
+sensor-dropout features, and reliable conventional readout adaptation. It
+rejected predictive LIF replacement, bounded state adapters, associative
+prototype memory, and supervised three-factor output plasticity at frozen
+causal gates.
+
+Decision: close this supervised continual-adaptation branch and create a
+15-source terminal evidence ledger. The preferred next major program is
+reward-modulated embodiment using eligibility traces and delayed scalar
+reward, because it changes the credit signal and returns to the biological
+closed-loop objective. It must be separately preregistered before execution;
+external benchmark replication and publication closeout remain valid
+alternatives. No new empirical phase starts automatically from a stopped
+mechanism.

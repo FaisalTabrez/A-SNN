@@ -145,6 +145,15 @@ registered 0.5-point gate. See
 `docs/GEN12_ASSOCIATIVE_MEMORY_ANALYSIS.md` and
 `outputs/gen12_associative_memory_cuda_2026-08-10/`.
 
+Gen-13 then tested manual three-factor output-synapse plasticity. Conventional
+readout/full adaptation recovered 2.049/3.269 points, while analog and spiking
+local rules recovered only 0.420/0.410 point. Healthy 20% spiking activity,
+broad fast-synapse occupancy, and zero forgetting exclude a dead-state or
+capacity explanation. Gen-13 returned `stop`, closes the supervised
+continual-adaptation branch, and does not open STW/LTW consolidation. See
+`docs/GEN13_LOCAL_PLASTICITY_ANALYSIS.md` and
+`docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:

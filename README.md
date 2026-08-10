@@ -48,6 +48,9 @@ If you are new to the repo, read these in order:
 31. [Gen-12 associative-memory preregistration](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_PREREGISTRATION.md)
 32. [Gen-12 associative-memory analysis](gen5/docs/GEN12_ASSOCIATIVE_MEMORY_ANALYSIS.md)
 33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
+34. [Gen-13 local-plasticity analysis](gen5/docs/GEN13_LOCAL_PLASTICITY_ANALYSIS.md)
+35. [Continual-adaptation program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md)
+33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1116,7 +1119,7 @@ point. Results and the 14-source closeout are retained in
 and
 [`gen5/outputs/gen12_research_closeout_2026-08-10/`](gen5/outputs/gen12_research_closeout_2026-08-10/).
 
-## Gen-13 local three-factor plasticity (preregistered)
+## Gen-13 local three-factor plasticity (completed: `stop`)
 
 Gen-13 tests whether the successful output-layer credit assignment can be
 implemented with explicit local synaptic updates rather than autograd through
@@ -1153,3 +1156,19 @@ Colab T4 execution cell:
   --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen13_local_plasticity_cuda
 ```
+
+Gen-13 did not pass. Full fine-tuning and autograd readout adaptation recovered
+3.269 and 2.049 points, while analog and spiking local rules recovered only
+0.420 and 0.410 point. Spiking activity was healthy at 20%, source forgetting
+was zero, and about 16,768 fast synapses were active, but removal and
+class-shuffle controls cost only 0.410 and 0.468 point. The failure is not an
+activity or capacity collapse; the tested rule did not reproduce useful
+output credit assignment. Results and the 15-source closeout are retained in
+[`gen5/outputs/gen13_local_plasticity_cuda_2026-08-10/`](gen5/outputs/gen13_local_plasticity_cuda_2026-08-10/)
+and
+[`gen5/outputs/gen13_research_closeout_2026-08-10/`](gen5/outputs/gen13_research_closeout_2026-08-10/).
+
+The Gen-9–13 supervised continual-adaptation branch is closed. The recommended
+new program is a separately preregistered reward-modulated embodied-learning
+test, not a Gen-13 hyperparameter rescue. See
+[the program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md).

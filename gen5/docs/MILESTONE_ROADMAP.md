@@ -98,6 +98,14 @@
 > only a separate STW/LTW consolidation preregistration. See
 > `GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md`.
 
+> Gen-13 result (2026-08-10): conventional readout and full fine-tuning
+> adapted, but analog and spiking local rules gained only 0.420 and 0.410
+> point. Healthy activity, broad fast-weight occupancy, and zero forgetting
+> rule out an execution collapse. Weight-removal and class-shuffle effects
+> missed their replicated gates. The terminal decision is `stop`; Gen-9–13
+> continual adaptation is closed. The next program must use a genuinely new
+> hypothesis, with reward-modulated embodiment recommended.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

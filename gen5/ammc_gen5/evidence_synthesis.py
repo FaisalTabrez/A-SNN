@@ -23,6 +23,7 @@ EVIDENCE_FILENAMES = {
     "gen10": "gen10_robust_representation.json",
     "gen11": "gen11_plastic_adapter.json",
     "gen12": "gen12_associative_memory.json",
+    "gen13": "gen13_local_plasticity.json",
 }
 
 
@@ -92,6 +93,7 @@ def synthesize_gen5_evidence(
     gen10 = evidence["gen10"]
     gen11 = evidence["gen11"]
     gen12 = evidence["gen12"]
+    gen13 = evidence["gen13"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -158,6 +160,12 @@ def synthesize_gen5_evidence(
     gen12_dense = _strategy_row(gen12, "dense_prototype_memory", key="summary")
     gen12_spiking = _strategy_row(gen12, "spiking_prototype_memory", key="summary")
     gen12_qualified_count = len(gen12["decision"]["qualified_arms"])
+    gen13_static = _strategy_row(gen13, "dropout_tcn_static", key="summary")
+    gen13_readout = _strategy_row(gen13, "dropout_tcn_readout", key="summary")
+    gen13_full = _strategy_row(gen13, "dropout_tcn_full_finetune", key="summary")
+    gen13_analog = _strategy_row(gen13, "analog_three_factor_readout", key="summary")
+    gen13_spiking = _strategy_row(gen13, "spiking_three_factor_readout", key="summary")
+    gen13_qualified_count = len(gen13["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -407,6 +415,24 @@ def synthesize_gen5_evidence(
         "gen12_spiking_activity": float(gen12_spiking["mean_activity"]),
         "gen12_spiking_active_memory_cells": float(gen12_spiking["mean_active_memory_cells"]),
         "gen12_qualified_arm_count": float(gen12_qualified_count),
+        "gen13_static_shift_drop": float(gen13_static["mean_shift_drop"]),
+        "gen13_readout_adaptation_gain": float(gen13_readout["mean_adaptation_gain"]),
+        "gen13_readout_final_shifted_accuracy": float(gen13_readout["mean_shifted_final_accuracy"]),
+        "gen13_readout_forgetting": float(gen13_readout["mean_forgetting"]),
+        "gen13_full_adaptation_gain": float(gen13_full["mean_adaptation_gain"]),
+        "gen13_full_final_shifted_accuracy": float(gen13_full["mean_shifted_final_accuracy"]),
+        "gen13_analog_adaptation_gain": float(gen13_analog["mean_adaptation_gain"]),
+        "gen13_analog_fast_weight_contribution": float(gen13_analog["mean_fast_weight_contribution"]),
+        "gen13_analog_class_specificity": float(gen13_analog["mean_class_specificity"]),
+        "gen13_spiking_adaptation_gain": float(gen13_spiking["mean_adaptation_gain"]),
+        "gen13_spiking_final_shifted_accuracy": float(gen13_spiking["mean_shifted_final_accuracy"]),
+        "gen13_spiking_forgetting": float(gen13_spiking["mean_forgetting"]),
+        "gen13_spiking_fast_weight_contribution": float(gen13_spiking["mean_fast_weight_contribution"]),
+        "gen13_spiking_class_specificity": float(gen13_spiking["mean_class_specificity"]),
+        "gen13_spiking_activity": float(gen13_spiking["mean_activity"]),
+        "gen13_spiking_active_fast_synapses": float(gen13_spiking["mean_active_fast_synapses"]),
+        "gen13_spiking_mean_absolute_fast_weight": float(gen13_spiking["mean_absolute_fast_weight"]),
+        "gen13_qualified_arm_count": float(gen13_qualified_count),
     }
     claims = [
         _claim(
@@ -750,31 +776,67 @@ def synthesize_gen5_evidence(
             f"{gen12_qualified_count} qualified arms.",
             "supported" if gen12["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-13 local output plasticity provides useful adaptation",
+            (
+                float(gen13_spiking["mean_adaptation_gain"]) >= 0.02
+                and int(gen13_spiking["two_point_gain_seed_count"]) >= 2
+            ),
+            "Analog and spiking local rules gain "
+            f"{100.0 * float(gen13_analog['mean_adaptation_gain']):.3f} and "
+            f"{100.0 * float(gen13_spiking['mean_adaptation_gain']):.3f} points, versus "
+            f"{100.0 * float(gen13_readout['mean_adaptation_gain']):.3f} for autograd readout adaptation.",
+            "supported" if float(gen13_spiking["mean_adaptation_gain"]) >= 0.02 else "rejected",
+        ),
+        _claim(
+            "Gen-13 spiking fast weights are causally class-specific",
+            (
+                float(gen13_spiking["mean_fast_weight_contribution"]) >= 0.005
+                and int(gen13_spiking["fast_weight_contribution_seed_count"]) >= 2
+                and float(gen13_spiking["mean_class_specificity"]) >= 0.005
+                and int(gen13_spiking["class_specificity_seed_count"]) >= 2
+            ),
+            "Removing spiking fast weights costs "
+            f"{100.0 * float(gen13_spiking['mean_fast_weight_contribution']):.3f} points and shuffling output classes costs "
+            f"{100.0 * float(gen13_spiking['mean_class_specificity']):.3f} points, with "
+            f"{100.0 * float(gen13_spiking['mean_activity']):.3f}% trace density.",
+            "supported" if (
+                float(gen13_spiking["mean_fast_weight_contribution"]) >= 0.005
+                and float(gen13_spiking["mean_class_specificity"]) >= 0.005
+            ) else "rejected",
+        ),
+        _claim(
+            "Gen-13 qualifies for STW/LTW consolidation",
+            gen13["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen13['decision']['status']} with "
+            f"{gen13_qualified_count} qualified arms.",
+            "supported" if gen13["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen12_terminal_closeout",
-            "objective": "Package conventional adaptation gains and the failed associative-prototype gate.",
-            "success_measure": "A reproducible 14-source ledger whose claims match the Gen-12 stop decision.",
+            "workstream": "gen13_terminal_closeout",
+            "objective": "Package conventional adaptation gains and the failed local-plasticity gate.",
+            "success_measure": "A reproducible 15-source ledger whose claims match the Gen-13 stop decision.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported mechanism chain through Gen-12 without architecture-superiority claims.",
+            "objective": "Report the supported mechanism chain through Gen-13 without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
-            "workstream": "hardware_work_deferred",
-            "objective": "Keep synaptic STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-12 terminal failure.",
-            "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
+            "workstream": "continual_adaptation_branch_closed",
+            "objective": "Keep STW/LTW, replay, structural plasticity, and local-rule tuning closed after the Gen-13 terminal failure.",
+            "success_measure": "No consolidation or autonomous-learning claim is made from a rule that missed adaptation and causal gates.",
         },
         {
             "priority": 4,
-            "workstream": "local_credit_assignment_hypothesis",
-            "objective": "Test explicit three-factor local output-synapse updates rather than tune failed prototype retrieval.",
-            "success_measure": "Sparse local plasticity matches autograd readout adaptation and passes weight-removal and class-shuffle controls.",
+            "workstream": "new_program_selection",
+            "objective": "Choose a genuinely new program: reward-modulated embodiment, external event-benchmark generalization, or publication closeout.",
+            "success_measure": "A separately preregistered question with a distinct mechanism and explicit stop rule is approved before more compute is spent.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -803,7 +865,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(10, 1, figsize=(13, 43), constrained_layout=True)
+    figure, axes = plt.subplots(11, 1, figsize=(13, 47), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -919,6 +981,23 @@ def plot_gen5_evidence_synthesis(
     )
     axes[9].set_ylabel("Damaged accuracy (%)")
     axes[9].set_title("Gen-12 conventional adaptation wins; prototype memory fails")
+    axes[10].bar(
+        ("Static", "Readout", "Full", "Analog local", "Spiking local"),
+        [
+            100.0 * (metrics["gen13_readout_final_shifted_accuracy"] - metrics["gen13_readout_adaptation_gain"]),
+            100.0 * metrics["gen13_readout_final_shifted_accuracy"],
+            100.0 * metrics["gen13_full_final_shifted_accuracy"],
+            100.0 * (
+                metrics["gen13_readout_final_shifted_accuracy"]
+                - metrics["gen13_readout_adaptation_gain"]
+                + metrics["gen13_analog_adaptation_gain"]
+            ),
+            100.0 * metrics["gen13_spiking_final_shifted_accuracy"],
+        ],
+        color=("#8b6fd6", "#35b4f2", "#167d55", "#d88935", "#bd3d3a"),
+    )
+    axes[10].set_ylabel("Damaged accuracy (%)")
+    axes[10].set_title("Gen-13 conventional adaptation wins; local plasticity fails")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -953,7 +1032,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-12 evidence report",
+        "# AMMC Gen-5 through Gen-13 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -1018,6 +1097,15 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{100.0 * metrics['gen12_spiking_association_specificity']:.3f}, despite the registered "
         f"{100.0 * metrics['gen12_spiking_activity']:.1f}% event density. Gen-12 returned `stop`.",
         "",
+        "Gen-13 then localized supervised class-error credit to manual analog and spiking output-synapse updates. Full fine-tuning and autograd readout adaptation recovered "
+        f"{100.0 * metrics['gen13_full_adaptation_gain']:.3f} and "
+        f"{100.0 * metrics['gen13_readout_adaptation_gain']:.3f} points. Analog and spiking local rules recovered only "
+        f"{100.0 * metrics['gen13_analog_adaptation_gain']:.3f} and "
+        f"{100.0 * metrics['gen13_spiking_adaptation_gain']:.3f}. Removing spiking fast weights cost "
+        f"{100.0 * metrics['gen13_spiking_fast_weight_contribution']:.3f} points and class shuffling cost "
+        f"{100.0 * metrics['gen13_spiking_class_specificity']:.3f}, despite exactly "
+        f"{100.0 * metrics['gen13_spiking_activity']:.1f}% trace density and zero source forgetting. Gen-13 returned `stop`.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -1032,7 +1120,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, and conventional few-shot adaptation, while rejecting end-to-end spiking state, bounded state adapters, and associative class prototypes at frozen causal gates. Gen-12 localizes the remaining positive signal to task-specific output-synapse credit assignment. These are qualified mechanism and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, and conventional few-shot adaptation, while rejecting end-to-end spiking state, bounded state adapters, associative class prototypes, and manual three-factor output plasticity at frozen causal gates. Gen-13 shows that the remaining useful credit assignment is not reproduced by the tested local rule. These are qualified mechanism and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

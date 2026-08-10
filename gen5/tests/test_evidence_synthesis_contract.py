@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 14)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 15)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -278,6 +278,43 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-12 qualifies for context-free consolidation"]["status"],
+            "rejected",
+        )
+
+    def test_gen13_terminal_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen13_readout_adaptation_gain"],
+            0.020491937330324134,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen13_full_adaptation_gain"],
+            0.03269224479115559,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen13_spiking_adaptation_gain"],
+            0.004104929185882937,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen13_spiking_class_specificity"],
+            0.0046773296699702165,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen13_spiking_activity"],
+            0.20000001776588058,
+        )
+        self.assertEqual(result.metrics["gen13_qualified_arm_count"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-13 local output plasticity provides useful adaptation"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-13 spiking fast weights are causally class-specific"]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims["Gen-13 qualifies for STW/LTW consolidation"]["status"],
             "rejected",
         )
 
