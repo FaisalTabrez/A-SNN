@@ -1384,7 +1384,7 @@ the lower bound was `-0.013`. The local reward-credit program is closed under
 its preregistered rule. See
 [the Gen-18 analysis](gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md).
 
-## Gen-19 real event-vision state replication (preregistered)
+## Gen-19 real event-vision state replication (completed: `stop`)
 
 Gen-19 starts a separate external-generalization program. It tests the
 established residual LIF state mechanism on N-MNIST using a matched temporal
@@ -1405,3 +1405,16 @@ does not reopen local reward credit.
 N-MNIST downloads automatically on the first run; no input file must be
 uploaded. See the frozen
 [Gen-19 preregistration](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md).
+
+Gen-19 learned N-MNIST strongly: Conv1D reached `96.860%` and the matched
+residual LIF reached `96.317%`. Removing LIF state cost `15.210` points and
+activity was healthy at `17.052%`. The decisive identity control failed,
+however: shuffling state between samples improved accuracy by `2.300` points,
+with `0/3` qualifying seeds. The residual-state claim is therefore limited to
+SHD/SSC event audio and is not extended to N-MNIST event vision. See the
+[Gen-19 analysis](gen5/docs/GEN19_NMNIST_STATE_REPLICATION_ANALYSIS.md).
+
+The runner now writes a checksummed manifest and
+`gen19_nmnist_state_replication_bundle.zip` beside the individual artifacts,
+so a complete result can be downloaded as one file after future verification
+runs.

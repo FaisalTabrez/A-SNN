@@ -4,6 +4,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -12,6 +13,7 @@ from ammc_gen5.gen19_nmnist_state_replication import (
     GEN19_ARMS,
     Gen19Config,
     available_gen19_arms,
+    bundle_gen19_artifacts,
     decide_gen19,
     encode_nmnist_events,
     np,
@@ -56,6 +58,27 @@ class Gen19NMNISTStateReplicationContractTest(unittest.TestCase):
         )
         self.assertEqual(decision["status"], "stop")
         self.assertFalse(decision["state_identity_gate"])
+
+    def test_artifact_bundle_contains_manifest_and_available_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = pathlib.Path(directory)
+            result_path = output / "gen19_nmnist_state_replication.json"
+            progress_path = output / "gen19_nmnist_state_replication_progress.json"
+            result_path.write_text('{"decision": "stop"}\n', encoding="utf-8")
+            progress_path.write_text('{"records": []}\n', encoding="utf-8")
+            paths = bundle_gen19_artifacts(
+                {"json": str(result_path), "progress": str(progress_path)}, output
+            )
+            self.assertTrue(pathlib.Path(paths["manifest"]).is_file())
+            with zipfile.ZipFile(paths["bundle"]) as archive:
+                self.assertEqual(
+                    set(archive.namelist()),
+                    {
+                        result_path.name,
+                        progress_path.name,
+                        "gen19_nmnist_state_replication_manifest.json",
+                    },
+                )
 
     @unittest.skipIf(torch is None, "PyTorch unavailable")
     def test_cached_tiny_run_completes_without_tonic(self) -> None:

@@ -177,6 +177,12 @@
 > and activity gates remain mandatory. See
 > `GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md`.
 
+> Gen-19 result (2026-08-10): `stop`. The residual model matched N-MNIST
+> accuracy and state removal cost 15.210 points, but shuffled state improved
+> accuracy by 2.300 points. The cross-modal identity claim is rejected. The
+> next milestone is evidence/publication closeout; a new architecture requires
+> a separate theory and preregistration rather than a rescue sweep.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

@@ -5544,3 +5544,38 @@ This tests cross-modal event representation, not local learning or rich
 temporal reasoning. N-MNIST acquisition motion can limit temporal
 discriminativeness, so accuracy alone cannot pass. The frozen protocol is
 `gen5/docs/GEN19_NMNIST_STATE_REPLICATION_PREREGISTRATION.md`.
+## 2026-08-10 - Gen-19 result: event-vision identity replication stops
+
+The supplied Colab terminal log shows that Gen-19 completed all three frozen
+seeds on the official N-MNIST split. The runner reported writing its JSON,
+records CSV, summary CSV, plot, and progress file to Google Drive, but those
+files were not retrieved. We preserved the exact terminal aggregate with the
+source-log SHA-256 in a provenance-marked recovery artifact. Missing per-seed
+records were not reconstructed.
+
+The benchmark itself is healthy. Temporal Conv1D reached 96.860% mean test
+accuracy and the parameter-matched residual LIF reached 96.317%, only 0.543
+point lower. Mean LIF activity was 17.052%, inside the frozen 1-30% range.
+Removing state reduced accuracy to 81.107%, a 15.210-point loss, and all three
+seeds cleared the state-contribution threshold. State-only accuracy was
+76.810%, so both direct and state paths are causally used.
+
+The sample-identity control is decisive and negative. Shuffling state between
+samples increased accuracy to 98.617%; full-minus-shuffled specificity was
+-2.300 points and 0/3 seeds qualified. Thus state contributes as a feature
+block, but its sample-specific content is not beneficial on this task. It may
+behave as generic calibration or regularization, but Gen-19 does not establish
+that interpretation.
+
+Decision: accept preregistered `status=stop`. The positive causal,
+sample-specific residual-state claim remains scoped to SHD and SSC event
+audio. It does not generalize to N-MNIST event vision. Do not tune this run or
+present its high aggregate accuracy as a mechanism pass. Local reward credit,
+STW/LTW, replay, and structural plasticity remain closed. The next project
+decision is publication/evidence closeout; a future event-vision mechanism
+must start from a new hypothesis and frozen protocol.
+
+Operational finding: the printed Drive paths show that computation and saving
+completed, so the incident was retrieval rather than a failed training run.
+Gen-19 now emits an atomic checksummed manifest and a single ZIP bundle in its
+output directory to make future Colab recovery unambiguous.

@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import csv
 from dataclasses import asdict, dataclass
+import hashlib
 import json
 import pathlib
 import statistics
 from typing import Iterable
+import zipfile
 
 try:  # pragma: no cover
     import numpy as np
@@ -98,6 +100,49 @@ class Gen19NMNISTStateReplicationResult:
 
 def available_gen19_arms() -> tuple[str, ...]:
     return GEN19_ARMS
+
+
+def bundle_gen19_artifacts(
+    paths: dict[str, str], output_dir: str | pathlib.Path
+) -> dict[str, str]:
+    """Write a checksummed manifest and single-file archive for Colab retrieval."""
+    output = pathlib.Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+    artifacts = []
+    existing_paths: list[pathlib.Path] = []
+    for label, raw_path in paths.items():
+        source = pathlib.Path(raw_path)
+        if not source.exists() or not source.is_file():
+            continue
+        existing_paths.append(source)
+        artifacts.append({
+            "label": label,
+            "filename": source.name,
+            "bytes": source.stat().st_size,
+            "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        })
+    if not existing_paths:
+        raise FileNotFoundError("no Gen-19 artifacts exist to bundle")
+
+    manifest_path = output / "gen19_nmnist_state_replication_manifest.json"
+    manifest_payload = {
+        "schema": "ammc-gen19-artifact-manifest-v1",
+        "artifacts": artifacts,
+    }
+    manifest_temp = manifest_path.with_suffix(".json.tmp")
+    manifest_temp.write_text(
+        json.dumps(manifest_payload, indent=2) + "\n", encoding="utf-8"
+    )
+    manifest_temp.replace(manifest_path)
+
+    bundle_path = output / "gen19_nmnist_state_replication_bundle.zip"
+    bundle_temp = bundle_path.with_suffix(".zip.tmp")
+    with zipfile.ZipFile(bundle_temp, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for source in existing_paths:
+            archive.write(source, arcname=source.name)
+        archive.write(manifest_path, arcname=manifest_path.name)
+    bundle_temp.replace(bundle_path)
+    return {"manifest": str(manifest_path), "bundle": str(bundle_path)}
 
 
 def run_gen19_nmnist_state_replication(

@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT))
 from ammc_gen5 import (  # noqa: E402
     Gen19Config,
     available_gen19_arms,
+    bundle_gen19_artifacts,
     run_gen19_nmnist_state_replication,
 )
 
@@ -92,6 +93,7 @@ def main() -> None:
     )
     paths = result.save(args.output_dir, plot=not args.no_plot)
     paths["progress"] = progress_path
+    paths.update(bundle_gen19_artifacts(paths, args.output_dir))
     print(json.dumps({
         "paths": paths,
         "device": result.device,

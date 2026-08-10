@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "status": "recovered_from_terminal_summary",
+    "source": "Colab terminal log supplied after the artifact files could not be retrieved",
+    "source_sha256": "d06f2fdc4276caf02d01c2e0809caa0c414e819e029cd432eea75377b160ee83",
+    "recovered_on": "2026-08-10",
+    "limitations": [
+      "The original per-seed records CSV, progress JSON, and plot were not available locally.",
+      "No per-seed values have been reconstructed or inferred.",
+      "Aggregate dataset, decision, and summary values are transcribed exactly from the terminal JSON."
+    ],
+    "reported_output_directory": "/content/drive/MyDrive/A-SNN/gen5_outputs/gen19_nmnist_state_replication_cuda"
+  },
+  "device": "cuda",
+  "dataset": {
+    "name": "N-MNIST",
+    "sensor_size": [34, 34, 2],
+    "timesteps": 30,
+    "spatial_bins": 8,
+    "duration_us": 300000,
+    "train_event_density": 0.1948076519097222,
+    "test_event_density": 0.19265872395833333,
+    "training_split_samples": 54001,
+    "validation_samples": 5999,
+    "test_samples": 10000,
+    "input_neurons": 128,
+    "direct_parameters": 132967,
+    "residual_parameters": 133234
+  },
+  "decision": {
+    "status": "stop",
+    "dataset_learnability_gate": true,
+    "matched_accuracy_gate": true,
+    "state_contribution_gate": true,
+    "state_identity_gate": false,
+    "spike_activity_gate": true,
+    "next_milestone": "limit_residual_state_claim_to_event_audio"
+  },
+  "summary": {
+    "runs": 3,
+    "mean_conv_accuracy": 0.9686,
+    "std_conv_accuracy": 0.0016990193249833098,
+    "mean_full_accuracy": 0.9631666666666666,
+    "std_full_accuracy": 0.0006944222218666303,
+    "mean_direct_only_accuracy": 0.8110666666666666,
+    "mean_state_only_accuracy": 0.7681,
+    "mean_shuffled_state_accuracy": 0.9861666666666666,
+    "mean_gain_vs_conv": -0.00543333333333329,
+    "mean_state_contribution_vs_direct_only": 0.15210000000000004,
+    "state_contribution_seed_count": 3,
+    "mean_state_specificity_vs_shuffled": -0.022999999999999982,
+    "state_specificity_seed_count": 0,
+    "mean_direct_contribution_vs_state_only": 0.1950666666666667,
+    "mean_spike_activity": 0.1705244640827179,
+    "mean_conv_test_examples_per_second": 147508.59472768343,
+    "mean_residual_test_examples_per_second": 41045.71488045243
+  }
+}

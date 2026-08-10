@@ -29,6 +29,7 @@ EVIDENCE_FILENAMES = {
     "gen16": "gen16_local_score_credit.json",
     "gen17": "gen17_sparse_spiking_credit.json",
     "gen18": "gen18_local_credit_replication.json",
+    "gen19": "gen19_nmnist_state_replication.json",
 }
 
 
@@ -104,6 +105,7 @@ def synthesize_gen5_evidence(
     gen16 = evidence["gen16"]
     gen17 = evidence["gen17"]
     gen18 = evidence["gen18"]
+    gen19 = evidence["gen19"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -533,6 +535,27 @@ def synthesize_gen5_evidence(
         "gen18_reward_identity_seed_count": float(gen18["decision"]["qualified_reward_identity_seed_count"]),
         "gen18_maximum_gradient_error": float(gen18["decision"]["maximum_manual_gradient_error"]),
         "gen18_passed": 1.0 if gen18["decision"]["status"] == "pass" else 0.0,
+        "gen19_conv_accuracy": float(gen19["summary"]["mean_conv_accuracy"]),
+        "gen19_residual_lif_accuracy": float(gen19["summary"]["mean_full_accuracy"]),
+        "gen19_residual_lif_gain_vs_conv": float(gen19["summary"]["mean_gain_vs_conv"]),
+        "gen19_state_contribution_vs_direct_only": float(
+            gen19["summary"]["mean_state_contribution_vs_direct_only"]
+        ),
+        "gen19_state_contribution_seed_count": float(
+            gen19["summary"]["state_contribution_seed_count"]
+        ),
+        "gen19_state_specificity_vs_shuffled": float(
+            gen19["summary"]["mean_state_specificity_vs_shuffled"]
+        ),
+        "gen19_state_specificity_seed_count": float(
+            gen19["summary"]["state_specificity_seed_count"]
+        ),
+        "gen19_spike_activity": float(gen19["summary"]["mean_spike_activity"]),
+        "gen19_residual_throughput_ratio_vs_conv": float(
+            gen19["summary"]["mean_residual_test_examples_per_second"]
+            / gen19["summary"]["mean_conv_test_examples_per_second"]
+        ),
+        "gen19_passed": 1.0 if gen19["decision"]["status"] == "pass" else 0.0,
     }
     claims = [
         _claim(
@@ -1079,31 +1102,66 @@ def synthesize_gen5_evidence(
             f"{gen18['decision']['next_milestone']}.",
             "supported" if gen18["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-19 establishes a learnable parameter-matched N-MNIST benchmark",
+            bool(gen19["decision"]["dataset_learnability_gate"])
+            and bool(gen19["decision"]["matched_accuracy_gate"]),
+            "Conv1D reaches "
+            f"{100.0 * float(gen19['summary']['mean_conv_accuracy']):.3f}% and residual LIF reaches "
+            f"{100.0 * float(gen19['summary']['mean_full_accuracy']):.3f}%.",
+            "supported" if (
+                bool(gen19["decision"]["dataset_learnability_gate"])
+                and bool(gen19["decision"]["matched_accuracy_gate"])
+            ) else "rejected",
+        ),
+        _claim(
+            "Residual LIF state is causally used on N-MNIST",
+            bool(gen19["decision"]["state_contribution_gate"]),
+            "Removing state costs "
+            f"{100.0 * float(gen19['summary']['mean_state_contribution_vs_direct_only']):.3f} points on average with "
+            f"{int(gen19['summary']['state_contribution_seed_count'])}/3 qualifying seeds.",
+            "supported" if bool(gen19["decision"]["state_contribution_gate"]) else "rejected",
+        ),
+        _claim(
+            "Residual LIF state is beneficially sample-specific on N-MNIST",
+            bool(gen19["decision"]["state_identity_gate"]),
+            "Full minus shuffled-state accuracy is "
+            f"{100.0 * float(gen19['summary']['mean_state_specificity_vs_shuffled']):+.3f} points with "
+            f"{int(gen19['summary']['state_specificity_seed_count'])}/3 qualifying seeds.",
+            "supported" if bool(gen19["decision"]["state_identity_gate"]) else "rejected",
+        ),
+        _claim(
+            "The event-audio residual-state result generalizes to event vision",
+            gen19["decision"]["status"] == "pass",
+            f"Gen-19 returned status={gen19['decision']['status']} and next_milestone="
+            f"{gen19['decision']['next_milestone']}.",
+            "supported" if gen19["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen18_local_credit_program_closeout",
-            "objective": "Package the exact gradient, positive mean, failed confidence bounds, and terminal stop.",
-            "success_measure": "A reproducible 20-source ledger closes local reward credit without post-hoc rescue.",
+            "workstream": "publication_evidence_closeout",
+            "objective": "Package the supported event-audio mechanism and the Gen-19 event-vision boundary condition.",
+            "success_measure": "A reproducible 21-source ledger reports positive and negative gates without post-hoc rescue.",
         },
         {
             "priority": 2,
-            "workstream": "publication_package",
-            "objective": "Report the supported mechanism chain through Gen-18 without reliable local-learning claims.",
-            "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
+            "workstream": "event_audio_mechanism_scope",
+            "objective": "Limit the causal sample-specific residual-state claim to SHD and SSC.",
+            "success_measure": "N-MNIST is presented as a failed external replication, not hidden by aggregate accuracy.",
         },
         {
             "priority": 3,
-            "workstream": "gen19_nmnist_external_state_replication",
-            "objective": "Test causal residual LIF state on real event-vision data under matched accuracy and identity ablations.",
-            "success_measure": "N-MNIST reference, matched accuracy, state removal, shuffled identity, and activity gates all pass.",
+            "workstream": "new_architecture_hypothesis",
+            "objective": "Require a separately theorized and preregistered mechanism before reopening event-vision state identity.",
+            "success_measure": "No parameter sweep or post-hoc Gen-19 rescue is labeled confirmatory evidence.",
         },
         {
             "priority": 4,
             "workstream": "complex_plasticity_remains_gated",
-            "objective": "Keep local reward credit, STW/LTW, replay, and structural plasticity closed while external state evidence is tested.",
-            "success_measure": "Gen-19 changes dataset modality only; it does not reopen the failed learning rule.",
+            "objective": "Keep local reward credit, STW/LTW, replay, and structural plasticity closed.",
+            "success_measure": "A future program must establish stable credit assignment before adding complex plasticity.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -1132,7 +1190,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(16, 1, figsize=(13, 67), constrained_layout=True)
+    figure, axes = plt.subplots(17, 1, figsize=(13, 71), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -1328,6 +1386,24 @@ def plot_gen5_evidence_synthesis(
     )
     axes[15].set_ylabel("Net fitness / 1,000 steps")
     axes[15].set_title("Gen-18 positive mean local credit fails held-out confidence gates")
+    axes[16].bar(
+        ("Conv1D", "Residual full", "Direct only", "Shuffled state"),
+        [
+            100.0 * metrics["gen19_conv_accuracy"],
+            100.0 * metrics["gen19_residual_lif_accuracy"],
+            100.0 * (
+                metrics["gen19_residual_lif_accuracy"]
+                - metrics["gen19_state_contribution_vs_direct_only"]
+            ),
+            100.0 * (
+                metrics["gen19_residual_lif_accuracy"]
+                - metrics["gen19_state_specificity_vs_shuffled"]
+            ),
+        ],
+        color=("#167d55", "#35b4f2", "#d88935", "#bd3d3a"),
+    )
+    axes[16].set_ylabel("N-MNIST accuracy (%)")
+    axes[16].set_title("Gen-19 state removal hurts, but state shuffling improves event vision")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -1362,7 +1438,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-18 evidence report",
+        "# AMMC Gen-5 through Gen-19 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -1475,6 +1551,13 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{metrics['gen18_local_gain_ci95_lower']:+.3f} and "
         f"{metrics['gen18_local_margin_vs_shuffled_ci95_lower']:+.3f}. The local reward-credit program is therefore closed despite its positive mean.",
         "",
+        "Gen-19 transferred the frozen residual-state test to N-MNIST event vision. Conv1D reached "
+        f"{100.0 * metrics['gen19_conv_accuracy']:.3f}% and residual LIF reached "
+        f"{100.0 * metrics['gen19_residual_lif_accuracy']:.3f}%, while removing state cost "
+        f"{100.0 * metrics['gen19_state_contribution_vs_direct_only']:.3f} points. However, shuffling state between samples improved accuracy by "
+        f"{-100.0 * metrics['gen19_state_specificity_vs_shuffled']:.3f} points and zero of three seeds passed identity. "
+        "The external replication therefore stopped: sample-specific residual-state benefit is supported on SHD/SSC event audio, not N-MNIST event vision.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -1489,7 +1572,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and an exact manual score-function gradient. Frozen causal gates reject reliable behavioral replication of that local-credit rule, end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Local continual learning, sparse-spiking credit, and memory remain unproven. These are qualified mechanism, protocol, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary and beneficially sample-specific on two event-audio datasets. Gen-19 shows the boundary: state removal also hurts N-MNIST, but shuffled state improves it, so cross-modal sample-specific benefit is rejected. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and an exact manual score-function gradient. Frozen causal gates reject reliable behavioral replication of that local-credit rule, end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Local continual learning, sparse-spiking credit, and memory remain unproven. These are qualified mechanism, protocol, boundary-condition, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

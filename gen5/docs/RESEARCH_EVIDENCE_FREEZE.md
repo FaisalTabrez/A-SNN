@@ -91,3 +91,10 @@ supported residual-LIF state mechanism and tests it on real N-MNIST event
 vision against a matched Conv1D and direct-only/state-only/shuffled-state
 ablations. This does not reopen local learning, STW/LTW, replay, or structural
 plasticity.
+
+Gen-19 result update (2026-08-10): `stop`. Conv1D reached 96.860% and the
+matched residual LIF reached 96.317%. Removing state cost 15.210 points on all
+three seeds, but shuffling state between samples improved accuracy by 2.300
+points and zero seeds passed the identity gate. Beneficial sample-specific
+residual state is frozen as an event-audio result on SHD/SSC, not a cross-modal
+event-vision result. No Gen-19 rescue sweep is authorized.
