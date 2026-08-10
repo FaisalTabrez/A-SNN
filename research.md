@@ -4695,3 +4695,24 @@ closes this architecture branch rather than triggering another tuning phase.
 The combined run writes an atomic progress checkpoint after every arm/seed
 pair; an identical restart skips completed records, while a configuration
 mismatch fails explicitly instead of mixing evidence from different protocols.
+
+## 2026-08-10 - Submitted "Phase 51" archive is duplicate Phase 49 evidence
+
+The uploaded archive
+`ssc_efficiency_baselines_cuda-20260810T034930Z-1-001.zip` has outer SHA-256
+`98441EBF84DCCEC6DD9D5D3B125C2280331040033B446FCDA5E1E1ACBA97770B`.
+Its four enclosed result files are byte-for-byte identical to the committed
+Phase 49 archive despite the different outer ZIP hash:
+
+- JSON: `0161CE07EA722E01012257D607C89AD89CDEAB64197A1A78064C2812DEB5EFCD`
+- records CSV: `F2D20F099DF0FA25D4A7CB2323F7EF8EE5CEF18E9DFA5E526EE404316648AFAE`
+- summary CSV: `927DE7F88AEBC9AA0D368267428777A203FD48DE824E39B9D0476680F85A97C8`
+- plot: `A9806422FB57142131D6367A0F1BE3CE17DD0C15B4AB86080F3BCD31CC8589E4`
+
+Decision: do not relabel or count this as Phase 51 and do not generate another
+experiment from duplicate evidence. The sanity conclusion remains unchanged:
+the residual-LIF state contribution is supported across SHD and SSC, while the
+matched TCN retains a `3.253`-point accuracy advantage and `3.182x` throughput
+advantage on the dense T4 implementation. The next valid experiment is the
+already preregistered Milestone A architecture run, whose output schema begins
+with `milestone_a_architecture.json` and `milestone_a_progress.json`.
