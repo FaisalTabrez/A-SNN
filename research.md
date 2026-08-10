@@ -5301,3 +5301,24 @@ closed-loop objective. It must be separately preregistered before execution;
 external benchmark replication and publication closeout remain valid
 alternatives. No new empirical phase starts automatically from a stopped
 mechanism.
+
+## 2026-08-10 - Gen-14 reward-modulated embodiment approved and implemented
+
+Following the Gen-13 terminal stop, Gen-14 starts a distinct program rather
+than tuning supervised local class-error updates. Ten thousand agents share a
+tensorized food/toxin world and are divided equally among static random,
+oracle food-reflex, analog eligibility, spiking eligibility, and
+spiking-with-shuffled-reward strategies.
+
+The plastic arms receive only sensor traces, sampled motor activity, and a
+scalar reward composed of delayed collisions plus a small frozen progress
+term. The update is a local eligibility trace multiplied by reward prediction
+error; no label, target action, or autograd gradient reaches fast weights.
+Reward shuffling between agents is the identity-specific negative control.
+
+Decision: freeze seeds 163–165, 600/3,600/600 baseline-learning-evaluation
+steps, 12-step reward delay, eligibility decay 0.95, trace decay 0.90, learning
+rate 0.02, and the registered activity/saturation gates before observing the
+result. A pass opens only replicated causal confirmation. A stop closes the
+rule without learning-rate, shaping, trace, temperature, or world sweeps. The
+protocol is `gen5/docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.

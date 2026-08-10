@@ -46,3 +46,7 @@ competitive continual adaptation.
 No option starts automatically. The selected program requires its own
 preregistration, baseline, causal controls, resource budget, and terminal stop
 rule. The failed Gen-13 rule is not eligible for a rescue sweep.
+
+Selection update (2026-08-10): the user authorized option 1. Gen-14 now starts
+the separately preregistered reward-modulated embodied-eligibility screen; it
+does not reopen or tune the stopped Gen-13 mechanism.

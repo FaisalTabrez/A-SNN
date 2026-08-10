@@ -106,6 +106,14 @@
 > continual adaptation is closed. The next program must use a genuinely new
 > hypothesis, with reward-modulated embodiment recommended.
 
+> Gen-14 update (2026-08-10): the recommended new program is implemented as a
+> terminal reward-eligibility screen. Delayed scalar food/toxin reward
+> modulates local sensor/action traces; no label, target action, or autograd
+> gradient reaches fast weights. Static, oracle, analog, spiking, and
+> shuffled-reward arms share a matched tensorized swarm. A pass opens only a
+> causal confirmation under a separate preregistration. See
+> `GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

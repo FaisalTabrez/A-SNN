@@ -50,6 +50,7 @@ If you are new to the repo, read these in order:
 33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 34. [Gen-13 local-plasticity analysis](gen5/docs/GEN13_LOCAL_PLASTICITY_ANALYSIS.md)
 35. [Continual-adaptation program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md)
+36. [Gen-14 reward-eligibility preregistration](gen5/docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md)
 33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 
 ## Repository map
@@ -1172,3 +1173,42 @@ The Gen-9–13 supervised continual-adaptation branch is closed. The recommended
 new program is a separately preregistered reward-modulated embodied-learning
 test, not a Gen-13 hyperparameter rescue. See
 [the program closeout](gen5/docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md).
+
+## Gen-14 reward-modulated embodied eligibility (preregistered)
+
+Gen-14 starts a genuinely new program after the Gen-13 branch closure. Local
+sensor/action eligibility traces are reinforced by delayed scalar food/toxin
+reward in the tensorized 2D world. No class label, target action, or autograd
+gradient reaches the plastic fast weights. A shuffled-reward arm tests whether
+any gain depends on assigning reward to the correct agent.
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen14_reward_eligibility.py \
+  --device cuda \
+  --seeds 163 164 165 \
+  --agent-count 10000 \
+  --food-count 128 \
+  --toxin-count 128 \
+  --baseline-steps 600 \
+  --training-steps 3600 \
+  --evaluation-steps 600 \
+  --reward-delay-steps 12 \
+  --eligibility-decay 0.95 \
+  --trace-decay 0.90 \
+  --reward-baseline-decay 0.99 \
+  --local-learning-rate 0.02 \
+  --fast-weight-decay 0.0001 \
+  --progress-reward-scale 0.05 \
+  --temperature 0.50 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen14_reward_eligibility_cuda
+```
+
+The progress file is saved after every completed seed. A pass opens only a
+separately preregistered causal confirmation; it does not open STW/LTW or
+structural-plasticity claims automatically.

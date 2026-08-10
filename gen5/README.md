@@ -154,6 +154,13 @@ continual-adaptation branch, and does not open STW/LTW consolidation. See
 `docs/GEN13_LOCAL_PLASTICITY_ANALYSIS.md` and
 `docs/CONTINUAL_ADAPTATION_PROGRAM_CLOSEOUT.md`.
 
+Gen-14 begins the recommended reward-modulated embodiment program. It compares
+static, oracle, analog eligibility, spiking eligibility, and shuffled-reward
+policies inside one matched tensorized swarm. Run
+`python examples/gen14_reward_eligibility.py --list-strategies` to inspect the
+frozen arms. The full protocol and terminal gate are in
+`docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:
