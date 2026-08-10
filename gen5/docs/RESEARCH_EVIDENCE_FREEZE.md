@@ -1,6 +1,6 @@
 # AMMC research evidence freeze after Gen-14
 
-Status (2026-08-10): empirical mechanism expansion paused.
+Status (2026-08-10): diagnostic gate passed; one derived local-credit test is open.
 
 ## Sanity check
 
@@ -44,3 +44,15 @@ Selection update (2026-08-10): the user authorized the diagnostic portion of
 this work package as Gen-15. It implements identical-reset evaluation and a
 matched conventional REINFORCE baseline. It is not a new local mechanism and
 does not reopen Gen-14.
+
+Result update (2026-08-10): Gen-15 passed. Correct-reward REINFORCE improved
+by +0.992 fitness per 1,000 steps and beat agent-shuffled reward by +1.267;
+the static reset was exact. Because final fitness remained -0.271 and the
+gain was dominated by seed 168, this is protocol validation rather than a
+strong-learning claim.
+
+Gen-16 is the single authorized theory-derived mechanism test. It implements
+the exact local score-function factor from REINFORCE on a matched linear
+policy and requires analytic-gradient equivalence, behavioral equivalence,
+and replicated reward-identity effects. Spiking, STW/LTW, replay, and
+structural plasticity remain closed pending that result.

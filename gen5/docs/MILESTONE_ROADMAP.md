@@ -128,6 +128,20 @@
 > learning. No new local-plasticity mechanism is included. See
 > `GEN15_REWARD_BASELINE_PREREGISTRATION.md`.
 
+> Gen-15 result (2026-08-10): all registered diagnostic gates passed. Static
+> reset was exact, the oracle reached +10.661, and correct REINFORCE improved
+> by +0.992 fitness per 1,000 steps while finishing +1.267 above shuffled
+> reward. The learner remained slightly negative and its gain was dominated by
+> one seed. The result validates the delayed reward and identity protocol, not
+> Gen-14 or a local mechanism.
+
+> Gen-16 update (2026-08-10): the next frozen experiment isolates credit
+> assignment using one matched 8-to-4 policy. Autograd REINFORCE is compared
+> with the exact manual score-function rule `return × sensor × (chosen -
+> probability)`, plus static, oracle, and shuffled-reward controls. Gradient
+> parity and replicated behavioral identity are required before sparse-spiking
+> translation can open. See `GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

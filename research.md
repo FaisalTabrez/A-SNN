@@ -5386,3 +5386,42 @@ weight 0.01. Correct reward must improve on 2/3 seeds and beat both static and
 shuffled reward by 0.10 fitness per 1,000 steps. A pass permits theory work on
 a new local credit rule; a stop requires reward-protocol redesign. The frozen
 protocol is `gen5/docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-15 validates the reward protocol, narrowly
+
+The archive `gen15_reward_baseline_cuda-20260810T153912Z-1-001.zip` has
+SHA-256 `2311348DF5C2B87CACD3D75F2EDC3F267A74BC7FB53D86A6194A6FB30F8748F3`.
+Its extracted evidence is retained in
+`gen5/outputs/gen15_reward_baseline_cuda_2026-08-10/`.
+
+The identical-reset static arm reproduced exactly at -1.263 net fitness per
+1,000 steps. The oracle reached +10.661. Correct-reward REINFORCE improved by
++0.992 and finished at -0.271, versus -1.538 for agent-shuffled reward. Its
+aggregate margins were +0.992 versus static and +1.267 versus shuffled, so all
+registered gates passed.
+
+The pass is narrow. Seed gains were -0.087, +0.007, and +3.057: one seed
+dominated the mean and only the last showed a substantial improvement. Correct
+reward nevertheless beat shuffled reward on all three seeds. Decision: accept
+that the stationary delayed-reward and identity protocol is learnable; do not
+interpret this as a strong policy or evidence for Gen-14, local plasticity,
+STW/LTW, replay, structural plasticity, or hardware efficiency.
+
+## 2026-08-10 - Gen-16 local score-credit equivalence approved and implemented
+
+Gen-16 opens the one mechanism test allowed by the Gen-15 pass. It removes the
+MLP and compares autograd with an explicit manual update on the same 8-to-4
+linear policy. The synaptic ascent factor is normalized discounted return
+times presynaptic sensory value times `(chosen action - action probability)`.
+This is the exact score-function derivative and uses no target action, label,
+or autograd signal in the manual arm.
+
+Static, oracle, autograd, manual, and manual-with-agent-shuffled-reward arms
+run in independent identically seeded worlds. Seeds 169-171, 300/1,800/300
+evaluation-training-evaluation steps, 30-step return windows, SGD 0.02,
+discount 0.99, and the 12-step delay are frozen. A pass requires exact reset,
+positive autograd and manual gain on at least two seeds, manual/autograd final
+fitness within 0.25, analytic gradient error below 1e-5, and replicated reward
+identity. A pass opens only sparse-spiking translation; a stop closes or
+redesigns this rule without a parameter sweep. The protocol is
+`gen5/docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.

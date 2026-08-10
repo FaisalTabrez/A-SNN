@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 16)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 17)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -353,6 +353,32 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         self.assertEqual(
             claims["Gen-14 qualifies for reward-eligibility confirmation"]["status"],
             "rejected",
+        )
+
+    def test_gen15_reward_protocol_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(result.metrics["gen15_reinforce_gain"], 0.9922222627533807)
+        self.assertAlmostEqual(
+            result.metrics["gen15_reinforce_margin_vs_shuffled"],
+            1.2666667252779005,
+        )
+        self.assertEqual(result.metrics["gen15_passed"], 1.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-15 identical-reset evaluation removes phase non-stationarity"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-15 delayed scalar reward supports conventional learning"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-15 conventional learning depends on agent-specific reward"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-15 validates an AMMC local-learning mechanism"]["status"],
+            "not tested",
         )
 
 

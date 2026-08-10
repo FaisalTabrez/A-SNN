@@ -174,6 +174,18 @@ receive independent worlds; baseline and final evaluation replay identical
 seeded initial conditions. See `docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md`
 and run `python examples/gen15_reward_baseline.py --list-strategies`.
 
+Gen-15 returned `pass`: identical resets were exact, the oracle was strongly
+positive, and correct-reward REINFORCE improved by 0.992 fitness per 1,000
+steps while beating shuffled reward by 1.267. The final policy remained weak
+and the gain was seed-sensitive, so this validates the reward protocol only.
+See `docs/GEN15_REWARD_BASELINE_ANALYSIS.md`.
+
+Gen-16 derives an exact local score-function update from that conventional
+baseline. It compares an autograd linear policy with the manual three-factor
+rule `return × sensor × (chosen - probability)` under matched SGD and seeded
+worlds. Run `python examples/gen16_local_score_credit.py --list-strategies`;
+the frozen gates are in `docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:

@@ -54,7 +54,8 @@ If you are new to the repo, read these in order:
 37. [Gen-14 reward-eligibility analysis](gen5/docs/GEN14_REWARD_ELIGIBILITY_ANALYSIS.md)
 38. [Research evidence freeze](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md)
 39. [Gen-15 matched reward-baseline preregistration](gen5/docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md)
-33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
+40. [Gen-15 matched reward-baseline analysis](gen5/docs/GEN15_REWARD_BASELINE_ANALYSIS.md)
+41. [Gen-16 local score-credit preregistration](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1227,11 +1228,12 @@ execution collapse. Results are retained in
 The corresponding 16-source ledger is in
 [`gen5/outputs/gen14_research_closeout_2026-08-10/`](gen5/outputs/gen14_research_closeout_2026-08-10/).
 
-The next work package is a 16-source evidence freeze and theory/baseline reset,
-not another automatic local-rule phase. See
+Gen-14 triggered a 16-source evidence freeze and theory/baseline reset rather
+than another automatic local-rule phase. Gen-15 has now completed the required
+stationary reward diagnostic. See
 [the evidence-freeze decision](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md).
 
-## Gen-15 matched reward-learning baseline (preregistered)
+## Gen-15 matched reward-learning baseline (completed: `pass`)
 
 Gen-15 executes the diagnostic required by the evidence freeze. It replaces
 Gen-14's non-stationary phase comparison with identical seeded baseline/final
@@ -1266,6 +1268,42 @@ Colab T4 execution cell:
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen15_reward_baseline_cuda
 ```
 
-A pass establishes only that the delayed reward protocol supports
-identity-specific conventional learning. A stop sends the project back to
-reward/evaluation design rather than triggering a local-rule rescue.
+Gen-15 passed all registered gates. Correct-reward REINFORCE improved by
++0.992 fitness per 1,000 steps, finished +1.267 above shuffled reward, and the
+static reset reproduced exactly. The effect remains weak and seed-sensitive:
+the final mean was -0.271 and most of the gain came from one seed. This proves
+that the reward protocol carries usable identity-specific credit; it does not
+validate Gen-14 or any AMMC local mechanism. See
+[the Gen-15 analysis](gen5/docs/GEN15_REWARD_BASELINE_ANALYSIS.md).
+
+## Gen-16 local score-function credit (preregistered)
+
+Gen-16 now isolates credit assignment on the smallest matched system. An
+8-to-4 linear policy is trained either by autograd REINFORCE or by the explicit
+local rule `return × sensor × (chosen - probability)`. Static, oracle, and
+agent-shuffled-reward controls use identical seeded resets. A pass requires
+gradient equivalence, matched behavioral learning, and replicated reward
+identity before the rule can be translated into sparse spikes.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen16_local_score_credit.py \
+  --device cuda \
+  --seeds 169 170 171 \
+  --agent-count 1000 \
+  --food-count 64 \
+  --toxin-count 64 \
+  --evaluation-steps 300 \
+  --training-steps 1800 \
+  --rollout-steps 30 \
+  --reward-delay-steps 12 \
+  --progress-reward-scale 0.05 \
+  --learning-rate 0.02 \
+  --weight-decay 0.0001 \
+  --discount 0.99 \
+  --gradient-clip 1.0 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen16_local_score_credit_cuda
+```
