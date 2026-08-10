@@ -20,6 +20,7 @@ EVIDENCE_FILENAMES = {
     "gen7": "gen7_predictive_state.json",
     "gen8": "gen8_temporal_binding.json",
     "gen9": "gen9_continual_adaptation.json",
+    "gen10": "gen10_robust_representation.json",
 }
 
 
@@ -86,6 +87,7 @@ def synthesize_gen5_evidence(
     gen7 = evidence["gen7"]
     gen8 = evidence["gen8"]
     gen9 = evidence["gen9"]
+    gen10 = evidence["gen10"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -136,6 +138,10 @@ def synthesize_gen5_evidence(
     gen9_readout = _strategy_row(gen9, "tcn_readout")
     gen9_full = _strategy_row(gen9, "tcn_full_finetune")
     gen9_qualified_count = len(gen9["decision"]["qualified_arms"])
+    gen10_screen = {row["arm"]: row for row in gen10["screen_records"]}
+    gen10_tcn = _summary_row(gen10, "dilated_tcn", key="confirmation_summary")
+    gen10_dropout = _summary_row(gen10, "dropout_tcn", key="confirmation_summary")
+    gen10_qualified_count = len(gen10["decision"]["qualified_arms"])
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -340,6 +346,20 @@ def synthesize_gen5_evidence(
         "gen9_tcn_full_adaptation_auc": float(gen9_full["mean_adaptation_auc"]),
         "gen9_tcn_full_forgetting": float(gen9_full["mean_forgetting"]),
         "gen9_qualified_arm_count": float(gen9_qualified_count),
+        "gen10_tcn_clean_accuracy": float(gen10_tcn["mean_clean_accuracy"]),
+        "gen10_tcn_damaged_accuracy": float(gen10_tcn["mean_damaged_accuracy"]),
+        "gen10_dropout_clean_accuracy": float(gen10_dropout["mean_clean_accuracy"]),
+        "gen10_dropout_damaged_accuracy": float(gen10_dropout["mean_damaged_accuracy"]),
+        "gen10_dropout_clean_gain_vs_tcn": float(gen10_dropout["mean_clean_accuracy"] - gen10_tcn["mean_clean_accuracy"]),
+        "gen10_dropout_damaged_gain_vs_tcn": float(gen10_dropout["mean_damaged_accuracy"] - gen10_tcn["mean_damaged_accuracy"]),
+        "gen10_dropout_damage_drop_improvement": float(gen10_tcn["mean_damage_drop"] - gen10_dropout["mean_damage_drop"]),
+        "gen10_analog_screen_clean_gap": float(gen10_screen["masked_residual_analog"]["best_validation_accuracy"] - gen10_screen["dropout_tcn"]["best_validation_accuracy"]),
+        "gen10_analog_screen_damaged_gap": float(gen10_screen["masked_residual_analog"]["damaged_validation_accuracy"] - gen10_screen["dropout_tcn"]["damaged_validation_accuracy"]),
+        "gen10_lif_screen_clean_gap": float(gen10_screen["masked_residual_lif"]["best_validation_accuracy"] - gen10_screen["dropout_tcn"]["best_validation_accuracy"]),
+        "gen10_lif_screen_damaged_gap": float(gen10_screen["masked_residual_lif"]["damaged_validation_accuracy"] - gen10_screen["dropout_tcn"]["damaged_validation_accuracy"]),
+        "gen10_lif_screen_damaged_accuracy": float(gen10_screen["masked_residual_lif"]["damaged_validation_accuracy"]),
+        "gen10_lif_screen_spike_rate": float(gen10_screen["masked_residual_lif"]["checkpoint_activity"]),
+        "gen10_qualified_arm_count": float(gen10_qualified_count),
     }
     claims = [
         _claim(
@@ -586,30 +606,62 @@ def synthesize_gen5_evidence(
             f"{gen9_qualified_count} qualified arms; only {', '.join(gen9['promoted_source_arms'])} passed source screening.",
             "supported" if gen9["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Sensor dropout improves conventional robustness in Gen-10",
+            metrics["gen10_dropout_damaged_gain_vs_tcn"] >= 0.02,
+            "Dropout TCN changes clean accuracy by "
+            f"{100.0 * metrics['gen10_dropout_clean_gain_vs_tcn']:+.3f} points and damaged accuracy by "
+            f"{100.0 * metrics['gen10_dropout_damaged_gain_vs_tcn']:+.3f} points.",
+            "supported",
+        ),
+        _claim(
+            "The Gen-10 masked residual analog representation is source-competent",
+            "masked_residual_analog" in gen10["promoted_arms"],
+            "Residual analog trails dropout TCN screening by "
+            f"{-100.0 * metrics['gen10_analog_screen_clean_gap']:.3f} clean and "
+            f"{-100.0 * metrics['gen10_analog_screen_damaged_gap']:.3f} damaged points.",
+            "supported" if "masked_residual_analog" in gen10["promoted_arms"] else "rejected",
+        ),
+        _claim(
+            "The Gen-10 masked residual LIF representation is source-competent",
+            "masked_residual_lif" in gen10["promoted_arms"],
+            "Residual LIF trails dropout TCN screening by "
+            f"{-100.0 * metrics['gen10_lif_screen_clean_gap']:.3f} clean and "
+            f"{-100.0 * metrics['gen10_lif_screen_damaged_gap']:.3f} damaged points with "
+            f"{100.0 * metrics['gen10_lif_screen_spike_rate']:.3f}% spikes.",
+            "supported" if "masked_residual_lif" in gen10["promoted_arms"] else "rejected",
+        ),
+        _claim(
+            "Gen-10 qualifies a spiking representation for adaptation",
+            gen10["decision"]["status"] == "pass",
+            f"The terminal decision is status={gen10['decision']['status']} with "
+            f"{gen10_qualified_count} qualified arms.",
+            "supported" if gen10["decision"]["status"] == "pass" else "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen9_terminal_closeout",
-            "objective": "Package the valid sensor shift, conventional adaptation controls, and failed predictive-LIF source gate.",
-            "success_measure": "A reproducible final ledger whose claims match the Gen-9 stop decision.",
+            "workstream": "gen10_terminal_closeout",
+            "objective": "Package sensor-dropout robustness and both failed residual-state source gates.",
+            "success_measure": "A reproducible final ledger whose claims match the Gen-10 stop decision.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported Gen-5 mechanism through the Gen-9 continual-adaptation stop without architecture-superiority claims.",
+            "objective": "Report the supported mechanism chain through Gen-10 without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
             "workstream": "hardware_work_deferred",
-            "objective": "Keep STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-9 terminal failure.",
+            "objective": "Keep STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-10 terminal failure.",
             "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm.",
         },
         {
             "priority": 4,
             "workstream": "new_program_requires_new_hypothesis",
-            "objective": "Require a new source-competent representation hypothesis before any further continual-learning mechanism is tested.",
+            "objective": "Test the separately authorized functional-separation hypothesis: a frozen robust sensory backbone plus bounded plastic spiking adapter.",
             "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration.",
         },
     ]
@@ -639,7 +691,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(7, 1, figsize=(13, 31), constrained_layout=True)
+    figure, axes = plt.subplots(8, 1, figsize=(13, 35), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -708,6 +760,19 @@ def plot_gen5_evidence_synthesis(
     )
     axes[6].set_ylabel("Accuracy (%)")
     axes[6].set_title("Gen-9 controls adapt; predictive LIF fails source screening")
+    axes[7].bar(
+        ("TCN clean", "TCN damaged", "Dropout clean", "Dropout damaged", "LIF screen damaged"),
+        [
+            100.0 * metrics["gen10_tcn_clean_accuracy"],
+            100.0 * metrics["gen10_tcn_damaged_accuracy"],
+            100.0 * metrics["gen10_dropout_clean_accuracy"],
+            100.0 * metrics["gen10_dropout_damaged_accuracy"],
+            100.0 * metrics["gen10_lif_screen_damaged_accuracy"],
+        ],
+        color=("#8b6fd6", "#bd3d3a", "#167d55", "#35b4f2", "#d88935"),
+    )
+    axes[7].set_ylabel("Accuracy (%)")
+    axes[7].set_title("Gen-10 dropout helps; residual LIF fails screening")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -742,7 +807,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-9 evidence report",
+        "# AMMC Gen-5 through Gen-10 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -782,6 +847,14 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{-100.0 * metrics['gen9_predictive_lif_screen_gap_vs_tcn']:.3f} points and was not promoted. "
         "Gen-9 therefore returned `stop`; STW/LTW, replay, modulation, and structural plasticity remain closed.",
         "",
+        "Gen-10 tested masked-sensor residual state. Sensor dropout improved conventional clean and damaged accuracy by "
+        f"{100.0 * metrics['gen10_dropout_clean_gain_vs_tcn']:.3f} and "
+        f"{100.0 * metrics['gen10_dropout_damaged_gain_vs_tcn']:.3f} points. "
+        "Residual analog missed the dropout-TCN clean/damaged screen by "
+        f"{-100.0 * metrics['gen10_analog_screen_clean_gap']:.3f}/{-100.0 * metrics['gen10_analog_screen_damaged_gap']:.3f} points; "
+        "residual LIF missed by "
+        f"{-100.0 * metrics['gen10_lif_screen_clean_gap']:.3f}/{-100.0 * metrics['gen10_lif_screen_damaged_gap']:.3f} points despite healthy spiking. Gen-10 returned `stop`.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -796,7 +869,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Gen-6 shows that zero-initialized shared correction preserves the conventional predictor. Gen-7 shows strong future-aligned predictive state without beneficial identity-specific output use. Gen-8 adds partial analog temporal-order sensitivity but no stable local LIF candidate. Gen-9 establishes a valid continual-learning shift and conventional adaptation baselines, while rejecting this predictive-LIF representation before memory mechanisms were added. These are qualified mechanism, representation, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, and strong sensor-dropout robustness, while repeatedly rejecting end-to-end spiking representations at frozen causal or source-competence gates. Gen-10 motivates functional separation between a proven sensory backbone and a bounded plastic spiking subsystem. These are qualified mechanism and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

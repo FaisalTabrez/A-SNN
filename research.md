@@ -5112,3 +5112,52 @@ closed even if Gen-10 passes. A stop forbids automatic mask-rate, alignment-
 weight, threshold, leak, or gate sweeps. The protocol is
 `gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md` and the runner is
 `gen5/examples/gen10_robust_representation.py`.
+
+## 2026-08-10 - Gen-10 residual-state representation fails; sensor dropout succeeds
+
+The archive `gen10_robust_representation_cuda-20260810T114444Z-1-001.zip`
+has SHA-256
+`174da16e3dc9d685dc49c560a28ef197fa91cfc718bad376e76e33183b5d099a`.
+Its extracted evidence is retained in
+`gen5/outputs/gen10_robust_representation_cuda_2026-08-10/`.
+
+Only ordinary and sensor-dropout TCN promoted. On the screen, dropout TCN
+reached 47.400% clean and 41.033% damaged validation. Residual analog trailed
+by 5.500 and 3.200 points; residual LIF trailed by 9.200 and 6.733 points.
+Residual LIF was parameter-matched at 98.832% of target and spiked at 11.538%,
+so the result rejects source competence rather than activity or capacity.
+
+Confirmation establishes sensor dropout as a strong control: it improved
+clean TCN accuracy by 2.684 points and damaged accuracy by 8.763 points, while
+reducing the fixed-mask damage drop from 9.930 to 3.851 points. No state arm
+confirmed, so state-removal and identity-shuffling claims are not available.
+
+Decision: accept sensor dropout robustness; reject Gen-10 residual analog/LIF
+source competence and accept the stored `status=stop`. Do not sweep masking,
+alignment weight, leak, threshold, or gate. The user authorized a genuinely
+new functional-separation hypothesis: freeze the proven dropout-TCN sensory
+backbone and test a bounded downstream spiking adapter during damage
+adaptation. This preserves source competence by construction while asking
+whether a plastic spiking subsystem adds causal adaptation value.
+
+## 2026-08-10 - Gen-11 functional-separation adapter approved and implemented
+
+Gen-11 freezes the evidence-supported 20%-sensor-dropout TCN backbone and adds
+a downstream classifier-sized state adapter. The adapter receives the
+backbone's time-resolved hidden trace and produces bounded correction logits.
+Its zero-initialized correction gate guarantees identical source behavior at
+zero adaptation samples. Analog and LIF dynamics share the same interface and
+parameter scale.
+
+Controls are static dropout TCN, classifier-only readout adaptation, and full
+backbone fine-tuning. Adaptation uses the same official validation stream,
+fixed 35% damage mask, cumulative non-replayed budgets, and official-test-only
+measurement as Gen-9. Seeds 154–156 are new. Final adapter evaluation removes
+the correction and batch-shuffles state identity without retraining.
+
+Decision: a pass requires a valid shift, replicated two-point LIF adaptation,
+readout-level AUC/final accuracy, bounded forgetting, replicated 0.5-point
+state-removal and state-shuffling costs, and healthy spikes. Only that result
+can open a separately preregistered STW/LTW milestone. Failure closes the
+adapter without width, gate, leak, threshold, learning-rate, or mask sweeps.
+The frozen protocol is `gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.

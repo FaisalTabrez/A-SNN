@@ -43,6 +43,7 @@ If you are new to the repo, read these in order:
 26. [Gen-8 time-local binding preregistration](gen5/docs/GEN8_TEMPORAL_BINDING_PREREGISTRATION.md)
 27. [Gen-9 continual-adaptation preregistration](gen5/docs/GEN9_CONTINUAL_ADAPTATION_PREREGISTRATION.md)
 28. [Gen-10 robust-representation preregistration](gen5/docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md)
+29. [Gen-11 plastic-adapter preregistration](gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -965,7 +966,7 @@ retained in
 and
 [`gen5/outputs/gen9_research_closeout_2026-08-10/`](gen5/outputs/gen9_research_closeout_2026-08-10/).
 
-## Gen-10 masked-sensor representation reset (preregistered)
+## Gen-10 masked-sensor representation reset (completed: `stop`)
 
 Gen-10 tests a new representation rather than tuning the failed Gen-9 pooled
 predictive LIF. Random sensor masking trains a residual analog or LIF state to
@@ -1005,3 +1006,47 @@ The runner resumes from `gen10_robust_representation_progress.json`. A pass
 opens only a separately preregistered Gen-11 continual-adaptation test. A stop
 closes the representation without automatic mask, loss, leak, threshold, or
 gate sweeps. Memory and structural-plasticity mechanisms remain gated.
+
+Gen-10 promoted only the conventional controls. Sensor dropout improved
+confirmed clean and damaged TCN accuracy by 2.684 and 8.763 points, but the
+residual LIF arm missed clean/damaged screening by 9.200/6.733 points despite
+healthy spikes. The retained result and twelve-source closeout are in
+[`gen5/outputs/gen10_robust_representation_cuda_2026-08-10/`](gen5/outputs/gen10_robust_representation_cuda_2026-08-10/)
+and
+[`gen5/outputs/gen10_research_closeout_2026-08-10/`](gen5/outputs/gen10_research_closeout_2026-08-10/).
+
+## Gen-11 frozen sensory backbone plus plastic state adapter (preregistered)
+
+Gen-11 preserves the proven sensor-dropout TCN as a frozen sensory backbone.
+Matched analog and LIF adapters learn only bounded correction signals during
+fixed sensor-damage adaptation. This tests functional separation rather than
+forcing the spiking subsystem to relearn the full classifier. The protocol is
+in [gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md](gen5/docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md).
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen11_plastic_adapter.py \
+  --device cuda \
+  --seeds 154 155 156 \
+  --source-epochs 15 \
+  --source-mask-fraction 0.20 \
+  --damage-fraction 0.35 \
+  --damage-seed 909 \
+  --adaptation-budgets 0 64 256 1024 4096 \
+  --adaptation-epochs-per-block 3 \
+  --adaptation-learning-rate 0.001 \
+  --target-parameters 133631 \
+  --timesteps 64 \
+  --temporal-levels 1 2 4 8 \
+  --no-download \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen11_plastic_adapter_cuda
+```
+
+The runner checkpoints after each seed/strategy curve. Only a causally useful
+LIF adapter that matches readout adaptation and retention can open STW/LTW.

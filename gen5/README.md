@@ -99,6 +99,24 @@ Only clean/damaged conventional parity plus replicated causal state use opens
 a Gen-11 adaptation experiment. STW/LTW remains closed. See
 `docs/GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md`.
 
+Gen-10 returned `stop`. Sensor dropout improved confirmed clean and damaged
+TCN accuracy by 2.684 and 8.763 points, but masked residual analog/LIF did not
+promote. The LIF arm remained active and parameter-matched, isolating the
+failure to representation accuracy. See
+`outputs/gen10_robust_representation_cuda_2026-08-10/`.
+
+Gen-11 tests functional separation. A frozen sensor-dropout TCN supplies the
+source-competent sensory trace; classifier-sized analog and LIF adapters learn
+only bounded correction signals during damage adaptation:
+
+```powershell
+python gen5/examples/gen11_plastic_adapter.py --list-strategies
+```
+
+The LIF adapter must match readout adaptation and retention while passing
+state-removal and state-shuffling causal gates. See
+`docs/GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.
+
 ## Accelerator runtime stance
 
 Gen-5 is now TPU/XLA-first for Colab-scale work:

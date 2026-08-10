@@ -58,6 +58,21 @@
 > adaptation experiment can open. Memory mechanisms remain closed. The frozen
 > protocol is `GEN10_ROBUST_REPRESENTATION_PREREGISTRATION.md`.
 
+> Gen-10 result (2026-08-10): sensor dropout strongly improved conventional
+> clean and damaged TCN accuracy, but residual analog and LIF missed the frozen
+> promotion margins. LIF activity and parameter matching were healthy. The
+> stored decision is `stop`; no causal state confirmation was run. The user
+> authorized a new functional-separation hypothesis rather than a Gen-10
+> hyperparameter sweep.
+
+> Gen-11 update (2026-08-10): the newly authorized hypothesis freezes the
+> proven sensor-dropout TCN as a sensory backbone and compares conventional
+> readout/full adaptation with matched analog and LIF correction adapters. A
+> zero correction gate preserves identical source behavior. Only matched
+> adaptation/retention plus replicated state-removal and state-shuffling costs
+> can open STW/LTW. The frozen protocol is
+> `GEN11_PLASTIC_ADAPTER_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

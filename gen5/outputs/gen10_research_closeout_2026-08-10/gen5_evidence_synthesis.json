@@ -1,0 +1,316 @@
+{
+  "sources": {
+    "phase44": "gen5\\outputs\\shd_calibrated_baselines_cuda_2026-08-10\\shd_calibrated_baselines.json",
+    "phase45": "gen5\\outputs\\shd_spiking_temporal_conv_cuda_2026-08-10\\shd_spiking_temporal_conv.json",
+    "phase46": "gen5\\outputs\\shd_state_placement_diagnostic_cuda_2026-08-10\\shd_state_placement_diagnostic.json",
+    "phase47": "gen5\\outputs\\shd_residual_state_contribution_cuda_2026-08-10\\shd_residual_state_contribution.json",
+    "phase48": "gen5\\outputs\\ssc_residual_lif_replication_cuda_2026-08-10\\ssc_residual_lif_replication.json",
+    "phase49": "gen5\\outputs\\ssc_efficiency_baselines_cuda_2026-08-10\\ssc_efficiency_baselines.json",
+    "milestone_a": "gen5\\outputs\\milestone_a_architecture_cuda_2026-08-10\\milestone_a_architecture.json",
+    "gen6": "gen5\\outputs\\gen6_successor_cuda_2026-08-10\\gen6_successor.json",
+    "gen7": "gen5\\outputs\\gen7_predictive_state_cuda_2026-08-10\\gen7_predictive_state.json",
+    "gen8": "gen5\\outputs\\gen8_temporal_binding_cuda_2026-08-10\\gen8_temporal_binding.json",
+    "gen9": "gen5\\outputs\\gen9_continual_adaptation_cuda_2026-08-10\\gen9_continual_adaptation.json",
+    "gen10": "gen5\\outputs\\gen10_robust_representation_cuda_2026-08-10\\gen10_robust_representation.json"
+  },
+  "metrics": {
+    "phase44_shd_conv1d_accuracy": 0.8284746760895171,
+    "shd_state_only_lif_accuracy": 0.7430800942285041,
+    "shd_state_only_lif_gap_vs_conv": -0.08613074204947002,
+    "shd_residual_lif_accuracy": 0.8380447585394583,
+    "shd_residual_lif_gain_vs_conv": 0.009422850412249772,
+    "shd_state_contribution_vs_direct_only": 0.06419316843345113,
+    "shd_state_specificity_vs_shuffled": 0.041666666666666664,
+    "ssc_residual_lif_accuracy": 0.5649756320936774,
+    "ssc_residual_lif_gain_vs_conv": 0.07249860988453861,
+    "ssc_state_contribution_vs_direct_only": 0.11271383246655543,
+    "ssc_state_specificity_vs_shuffled": 0.029797533771628564,
+    "ssc_tcn_accuracy": 0.592254603735322,
+    "ssc_conv1d_final_accuracy": 0.4894841853923397,
+    "ssc_residual_lif_final_accuracy": 0.5597259019396199,
+    "ssc_tcn_gain_vs_residual_lif": 0.03252870179570211,
+    "ssc_residual_lif_throughput_ratio_vs_tcn": 0.31429163008665245,
+    "ssc_tcn_test_examples_per_second": 53079.5751720352,
+    "ssc_residual_lif_test_examples_per_second": 16682.466205125947,
+    "ssc_residual_lif_dense_mac_reduction_vs_tcn": 0.11568836189518317,
+    "ssc_residual_lif_spike_rate": 0.05146637230249323,
+    "ssc_residual_lif_accuracy_std": 0.00018063914266163364,
+    "milestone_a_tcn_screen_validation_accuracy": 0.5053333333333333,
+    "milestone_a_residual_lif_screen_validation_accuracy": 0.44333333333333336,
+    "milestone_a_hierarchical_analog_screen_validation_accuracy": 0.4196666666666667,
+    "milestone_a_hierarchical_lif_screen_validation_accuracy": 0.37066666666666664,
+    "milestone_a_tcn_confirmation_accuracy": 0.5916985575507802,
+    "milestone_a_tcn_confirmation_accuracy_std": 0.002302299716740247,
+    "milestone_a_qualified_arm_count": 0.0,
+    "gen6_tcn_accuracy": 0.5908154253753312,
+    "gen6_lif_accuracy": 0.5901612533935171,
+    "gen6_lif_gap_vs_tcn": -0.0006541719818140557,
+    "gen6_lif_state_contribution_vs_direct_only": 0.0038596146927027584,
+    "gen6_lif_state_contribution_replication_count": 1.0,
+    "gen6_lif_state_specificity_vs_shuffled": -0.006574428417230882,
+    "gen6_lif_state_specificity_replication_count": 0.0,
+    "gen6_lif_spike_rate": 0.060196319697271544,
+    "gen6_lif_mean_absolute_gate": 0.18978291749954224,
+    "gen6_lif_throughput_ratio_vs_tcn": 0.2758478045181142,
+    "gen6_qualified_arm_count": 0.0,
+    "gen7_tcn_accuracy": 0.5838975566676479,
+    "gen7_lif_accuracy": 0.5880679030517123,
+    "gen7_lif_gain_vs_tcn": 0.004170346384064438,
+    "gen7_lif_state_contribution_vs_direct_only": 0.010090602819481265,
+    "gen7_lif_state_specificity_vs_shuffled": -0.01022143721584401,
+    "gen7_lif_temporal_order_vs_reversed": 0.0016517842540804129,
+    "gen7_lif_future_alignment_margin": 0.2927859868889986,
+    "gen7_alignment_gain_vs_shuffled_training": 0.29448502200133486,
+    "gen7_lif_spike_rate": 0.07203788662774248,
+    "gen7_lif_mean_absolute_gate": 0.23501275862204532,
+    "gen7_lif_throughput_ratio_vs_tcn": 0.29882906779395485,
+    "gen7_qualified_arm_count": 0.0,
+    "gen8_tcn_accuracy": 0.5914859516566905,
+    "gen8_pooled_lif_accuracy": 0.6068426389297746,
+    "gen8_pooled_lif_gain_vs_tcn": 0.015356687273084146,
+    "gen8_pooled_lif_state_specificity_vs_shuffled": -0.020688188924868383,
+    "gen8_analog_accuracy": 0.5869231020835377,
+    "gen8_analog_gain_vs_tcn": -0.004562849573152783,
+    "gen8_analog_state_contribution_vs_direct_only": 0.005020769960422593,
+    "gen8_analog_state_specificity_vs_shuffled": 0.0011775095672652187,
+    "gen8_analog_temporal_order_vs_reversed": 0.0056095247440552205,
+    "gen8_analog_temporal_order_replication_count": 2.0,
+    "gen8_analog_identity_replication_count": 0.0,
+    "gen8_candidate_screen_validation_accuracy": 0.07266666666666667,
+    "gen8_candidate_screen_spike_rate": 0.5065631499290466,
+    "gen8_shuffled_screen_validation_accuracy": 0.10133333333333333,
+    "gen8_shuffled_screen_spike_rate": 0.41090673836072283,
+    "gen8_qualified_arm_count": 0.0,
+    "gen9_tcn_screen_validation_accuracy": 0.31566666666666665,
+    "gen9_predictive_lif_screen_validation_accuracy": 0.251,
+    "gen9_predictive_lif_screen_gap_vs_tcn": -0.06466666666666665,
+    "gen9_predictive_lif_screen_spike_rate": 0.08963639481862386,
+    "gen9_tcn_static_shift_drop": 0.09364471919667683,
+    "gen9_tcn_static_shifted_accuracy": 0.48325319726556115,
+    "gen9_tcn_readout_final_shifted_accuracy": 0.5392666732083865,
+    "gen9_tcn_readout_adaptation_gain": 0.05601347594282539,
+    "gen9_tcn_readout_adaptation_auc": 0.5257414119484513,
+    "gen9_tcn_readout_forgetting": 0.0283092925130017,
+    "gen9_tcn_full_final_shifted_accuracy": 0.5678703431132045,
+    "gen9_tcn_full_adaptation_gain": 0.08461714584764339,
+    "gen9_tcn_full_adaptation_auc": 0.5484402853416414,
+    "gen9_tcn_full_forgetting": 0.011382592483563955,
+    "gen9_qualified_arm_count": 0.0,
+    "gen10_tcn_clean_accuracy": 0.5691786870768325,
+    "gen10_tcn_damaged_accuracy": 0.46987538023746445,
+    "gen10_dropout_clean_accuracy": 0.5960160926307526,
+    "gen10_dropout_damaged_accuracy": 0.5575017172014523,
+    "gen10_dropout_clean_gain_vs_tcn": 0.026837405553920113,
+    "gen10_dropout_damaged_gain_vs_tcn": 0.0876263369639878,
+    "gen10_dropout_damage_drop_improvement": 0.06078893141006769,
+    "gen10_analog_screen_clean_gap": -0.05499999999999999,
+    "gen10_analog_screen_damaged_gap": -0.03199999999999997,
+    "gen10_lif_screen_clean_gap": -0.09199999999999997,
+    "gen10_lif_screen_damaged_gap": -0.0673333333333333,
+    "gen10_lif_screen_damaged_accuracy": 0.343,
+    "gen10_lif_screen_spike_rate": 0.11538150972127914,
+    "gen10_qualified_arm_count": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Standalone state-only LIF is competitive on SHD",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "State-only LIF trails Conv1D by 8.613 points."
+    },
+    {
+      "claim": "Residual LIF is viable on SHD",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Residual LIF changes accuracy by +0.942 points versus Conv1D."
+    },
+    {
+      "claim": "Sample-specific LIF state contributes on SHD",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Removing state costs 6.419 points; shuffling state costs 4.167 points."
+    },
+    {
+      "claim": "The residual-state contribution replicates on SSC",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Removing state costs 11.271 points; shuffling state costs 2.980 points."
+    },
+    {
+      "claim": "Residual LIF matches the stronger SSC temporal baseline",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Matched dilated TCN leads by 3.253 points."
+    },
+    {
+      "claim": "Residual LIF is faster in the current T4 implementation",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Residual LIF delivers 0.314x TCN throughput."
+    },
+    {
+      "claim": "Residual LIF has a lower dense-operation proxy",
+      "status": "proxy_only",
+      "gate_passed": true,
+      "evidence": "Dense MAC proxy is 11.569% lower than TCN."
+    },
+    {
+      "claim": "The current results establish hardware energy efficiency",
+      "status": "not_tested",
+      "gate_passed": false,
+      "evidence": "No direct power or energy measurement was performed; dense PyTorch is not event-driven."
+    },
+    {
+      "claim": "Hierarchical residual scaling closes the SSC accuracy gap",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Hierarchical analog and LIF trail TCN validation by 8.567 and 13.467 points."
+    },
+    {
+      "claim": "The current Gen-5 architecture qualifies for hardware optimization",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Milestone A promoted dilated_tcn and returned status=stop with 0 qualified causal arms."
+    },
+    {
+      "claim": "The Gen-6 shared residual LIF preserves TCN predictive accuracy",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Shared residual LIF changes SSC accuracy by -0.065 points versus the matched TCN."
+    },
+    {
+      "claim": "The Gen-6 LIF correction is beneficially sample-specific",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Removing state costs 0.386 points (1/3 seeds pass), while shuffling state changes accuracy by +0.657 points in the shuffled model's favor (0/3 seeds pass)."
+    },
+    {
+      "claim": "The Gen-6 successor qualifies for hardware optimization",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The terminal decision is status=stop with 0 qualified arms."
+    },
+    {
+      "claim": "Gen-7 paired future prediction improves state alignment",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Paired LIF future alignment is 0.2928 versus -0.0017 under shuffled-target training."
+    },
+    {
+      "claim": "Gen-7 paired predictive LIF matches TCN accuracy",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Paired predictive LIF changes accuracy by +0.417 points versus TCN."
+    },
+    {
+      "claim": "Gen-7 uses predictive state beneficially by sample identity and temporal order",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Shuffling state changes accuracy by +1.022 points in the shuffled model's favor; reversing state costs only 0.165 points."
+    },
+    {
+      "claim": "The Gen-7 successor qualifies for hardware optimization",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The terminal decision is status=stop with 0 qualified arms."
+    },
+    {
+      "claim": "Gen-8 time-local analog binding introduces temporal-order sensitivity",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Reversing analog state costs 0.561 points with 2/3 seeds passing."
+    },
+    {
+      "claim": "Gen-8 time-local analog binding uses the correct sample identity",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Shuffling analog state costs only 0.118 points with 0/3 seeds passing."
+    },
+    {
+      "claim": "The Gen-8 paired time-local LIF candidate is stable enough for confirmation",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The candidate screened at 7.267% validation accuracy with a 50.656% spike rate."
+    },
+    {
+      "claim": "The Gen-8 successor qualifies for hardware optimization",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The terminal decision is status=stop with 0 qualified arms."
+    },
+    {
+      "claim": "Gen-9 sensor damage creates a non-trivial distribution shift",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Static TCN accuracy falls by 9.364 points across confirmation seeds."
+    },
+    {
+      "claim": "The Gen-9 predictive LIF representation is source-competent",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Predictive LIF trails TCN screening validation by 6.467 points with 8.964% spike activity."
+    },
+    {
+      "claim": "A frozen TCN representation adapts through a trainable readout",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Readout adaptation gains 5.601 points with 3/3 seeds passing, at 2.831 points forgetting."
+    },
+    {
+      "claim": "Gen-9 qualifies for STW/LTW memory experiments",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The terminal decision is status=stop with 0 qualified arms; only dilated_tcn passed source screening."
+    },
+    {
+      "claim": "Sensor dropout improves conventional robustness in Gen-10",
+      "status": "supported",
+      "gate_passed": true,
+      "evidence": "Dropout TCN changes clean accuracy by +2.684 points and damaged accuracy by +8.763 points."
+    },
+    {
+      "claim": "The Gen-10 masked residual analog representation is source-competent",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Residual analog trails dropout TCN screening by 5.500 clean and 3.200 damaged points."
+    },
+    {
+      "claim": "The Gen-10 masked residual LIF representation is source-competent",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "Residual LIF trails dropout TCN screening by 9.200 clean and 6.733 damaged points with 11.538% spikes."
+    },
+    {
+      "claim": "Gen-10 qualifies a spiking representation for adaptation",
+      "status": "rejected",
+      "gate_passed": false,
+      "evidence": "The terminal decision is status=stop with 0 qualified arms."
+    }
+  ],
+  "roadmap": [
+    {
+      "priority": 1,
+      "workstream": "gen10_terminal_closeout",
+      "objective": "Package sensor-dropout robustness and both failed residual-state source gates.",
+      "success_measure": "A reproducible final ledger whose claims match the Gen-10 stop decision."
+    },
+    {
+      "priority": 2,
+      "workstream": "publication_package",
+      "objective": "Report the supported mechanism chain through Gen-10 without architecture-superiority claims.",
+      "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready."
+    },
+    {
+      "priority": 3,
+      "workstream": "hardware_work_deferred",
+      "objective": "Keep STW/LTW, replay, structural plasticity, and event-driven kernel optimization closed after the Gen-10 terminal failure.",
+      "success_measure": "No hardware-efficiency claim is pursued for an architecture with no qualified causal arm."
+    },
+    {
+      "priority": 4,
+      "workstream": "new_program_requires_new_hypothesis",
+      "objective": "Test the separately authorized functional-separation hypothesis: a frozen robust sensory backbone plus bounded plastic spiking adapter.",
+      "success_measure": "Any future generation starts from a separately approved hypothesis and preregistration."
+    }
+  ]
+}

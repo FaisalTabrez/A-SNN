@@ -1,6 +1,19 @@
 # Gen-10 masked-sensor representation reset preregistration
 
-Status (2026-08-10): implemented and frozen before observing Gen-10 results.
+Status (2026-08-10): completed with terminal decision `stop`.
+
+## Result
+
+Only the two conventional controls promoted. Sensor-dropout TCN reached
+47.400% clean and 41.033% damaged validation accuracy. Residual analog trailed
+those values by 5.500 and 3.200 points; residual LIF trailed by 9.200 and 6.733
+points. LIF had a healthy 11.538% spike rate and all arms were parameter-
+matched, so the failure was representation accuracy.
+
+Across confirmation seeds, sensor dropout improved clean and damaged TCN test
+accuracy by 2.684 and 8.763 points and reduced the damage drop by 6.079 points.
+The stored decision is `stop` with zero qualified arms. No residual-state
+causal confirmation or automatic hyperparameter sweep is authorized.
 
 ## Hypothesis and boundary
 
