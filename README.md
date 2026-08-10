@@ -56,6 +56,8 @@ If you are new to the repo, read these in order:
 39. [Gen-15 matched reward-baseline preregistration](gen5/docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md)
 40. [Gen-15 matched reward-baseline analysis](gen5/docs/GEN15_REWARD_BASELINE_ANALYSIS.md)
 41. [Gen-16 local score-credit preregistration](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md)
+42. [Gen-16 local score-credit analysis](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_ANALYSIS.md)
+43. [Gen-17 sparse-spiking credit preregistration](gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md)
 
 ## Repository map
 
@@ -1276,7 +1278,7 @@ that the reward protocol carries usable identity-specific credit; it does not
 validate Gen-14 or any AMMC local mechanism. See
 [the Gen-15 analysis](gen5/docs/GEN15_REWARD_BASELINE_ANALYSIS.md).
 
-## Gen-16 local score-function credit (preregistered)
+## Gen-16 local score-function credit (completed: `pass`)
 
 Gen-16 now isolates credit assignment on the smallest matched system. An
 8-to-4 linear policy is trained either by autograd REINFORCE or by the explicit
@@ -1306,4 +1308,40 @@ identity before the rule can be translated into sparse spikes.
   --discount 0.99 \
   --gradient-clip 1.0 \
   --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen16_local_score_credit_cuda
+```
+
+Gen-16 passed every frozen gate. The manual gradient matched autograd within
+`2.79e-9`, both policies produced identical final fitness, and correctly
+assigned reward beat the shuffled control on all three seeds. The mean gain
+was only +0.183, so this validates exact analog linear credit assignment—not
+a capable standalone SNN. See
+[the Gen-16 analysis](gen5/docs/GEN16_LOCAL_SCORE_CREDIT_ANALYSIS.md).
+
+## Gen-17 sparse-spiking local credit (preregistered)
+
+Gen-17 replaces each analog sensor value with a parameter-matched Bernoulli
+event while preserving the validated local update. Analog, static, oracle, and
+agent-shuffled controls are included in the same frozen run.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen17_sparse_spiking_credit.py \
+  --device cuda \
+  --seeds 172 173 174 \
+  --agent-count 1000 \
+  --food-count 64 \
+  --toxin-count 64 \
+  --evaluation-steps 300 \
+  --training-steps 1800 \
+  --rollout-steps 30 \
+  --reward-delay-steps 12 \
+  --progress-reward-scale 0.05 \
+  --learning-rate 0.02 \
+  --weight-decay 0.0001 \
+  --discount 0.99 \
+  --gradient-clip 1.0 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen17_sparse_spiking_credit_cuda
 ```

@@ -1,6 +1,6 @@
 # AMMC research evidence freeze after Gen-14
 
-Status (2026-08-10): diagnostic gate passed; one derived local-credit test is open.
+Status (2026-08-10): analog local-credit gate passed; sparse translation is open.
 
 ## Sanity check
 
@@ -56,3 +56,14 @@ the exact local score-function factor from REINFORCE on a matched linear
 policy and requires analytic-gradient equivalence, behavioral equivalence,
 and replicated reward-identity effects. Spiking, STW/LTW, replay, and
 structural plasticity remain closed pending that result.
+
+Gen-16 result update (2026-08-10): the exact manual score-function gradient
+matched autograd within 2.79e-9, their final behavior was identical, and the
+manual rule passed reward identity on all three seeds. Its mean fitness gain
+was only +0.183, so this establishes a linear analog proof of mechanism rather
+than strong learning.
+
+Gen-17 is the sole open translation. It substitutes parameter-matched binary
+sensory events and requires preserved learning, reward identity, and healthy
+event density. STW/LTW, replay, structural plasticity, and hardware claims
+remain closed until sparse credit passes and replicates.

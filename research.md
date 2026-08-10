@@ -5425,3 +5425,40 @@ fitness within 0.25, analytic gradient error below 1e-5, and replicated reward
 identity. A pass opens only sparse-spiking translation; a stop closes or
 redesigns this rule without a parameter sweep. The protocol is
 `gen5/docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.
+
+## 2026-08-10 - Gen-16 establishes exact local score credit
+
+The archive `gen16_local_score_credit_cuda-20260810T160150Z-1-001.zip` has
+SHA-256 `9962AFCAD961DF889281B4CA8D1D4607BD7356B6D2E729F78BE7B56C0E8979F4`.
+Its extracted evidence is retained in
+`gen5/outputs/gen16_local_score_credit_cuda_2026-08-10/`.
+
+Static reset was exact and the oracle reached +10.176 fitness per 1,000 steps.
+Autograd and manual score policies both gained +0.183 and finished at +0.300,
+with exactly zero behavioral gap. Maximum manual-versus-autograd gradient error
+was 2.79e-9. Manual seed gains were +0.030, +0.170, and +0.350; two cleared the
+registered +0.10 threshold. Correct reward finished +0.183 above static and
++0.249 above shuffled reward, with identity passing on all three seeds.
+
+Decision: accept `status=pass` and the exact local score-function rule. The
+result is a linear analog proof of credit assignment with a small effect; it
+does not establish sparse spiking, standalone inference, STW/LTW, replay,
+structural plasticity, or hardware efficiency.
+
+## 2026-08-10 - Gen-17 sparse-spiking translation approved and implemented
+
+Gen-17 keeps the Gen-16 8-to-4 parameter count and replaces every bounded
+analog sensory drive with one seeded Bernoulli event per tick. The validated
+local factor becomes normalized return times presynaptic event times `(chosen
+action - action probability)`. No target, label, surrogate gradient, or
+autograd update reaches the policy.
+
+Static spiking, oracle, manual analog, manual spiking, and spiking with
+agent-shuffled reward run in independent matched worlds. Seeds 172-174,
+300/1,800/300 steps, 30-step returns, the 12-step delay, learning rate 0.02,
+and all thresholds are frozen. A pass requires analog and spiking learning on
+two seeds, no more than a 0.15 mean-gain loss under event coding, 5-40% event
+density, exact gradient implementation, and replicated reward identity. A pass
+opens only larger-seed sparse replication before memory; a stop closes or
+redesigns the translation without a parameter sweep. The protocol is
+`gen5/docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md`.

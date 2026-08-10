@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 17)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 18)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -378,6 +378,33 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         )
         self.assertEqual(
             claims["Gen-15 validates an AMMC local-learning mechanism"]["status"],
+            "not tested",
+        )
+
+    def test_gen16_local_credit_decision_is_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(result.metrics["gen16_local_gain"], 0.18333334527495837)
+        self.assertAlmostEqual(result.metrics["gen16_local_autograd_gap"], 0.0)
+        self.assertAlmostEqual(
+            result.metrics["gen16_maximum_gradient_error"],
+            2.7939677238464355e-09,
+        )
+        self.assertEqual(result.metrics["gen16_passed"], 1.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims["Gen-16 manual score-function gradient matches autograd"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-16 local reward credit is behaviorally equivalent to autograd"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-16 local learning depends on agent-specific reward"]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-16 establishes sparse-spiking or structural continuous learning"]["status"],
             "not tested",
         )
 

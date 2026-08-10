@@ -186,6 +186,17 @@ rule `return × sensor × (chosen - probability)` under matched SGD and seeded
 worlds. Run `python examples/gen16_local_score_credit.py --list-strategies`;
 the frozen gates are in `docs/GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.
 
+Gen-16 returned `pass`. The manual score gradient matched autograd within
+2.79e-9, their final behavior was identical, and correct reward beat shuffled
+reward on all three seeds. The gain was small (+0.183), so only the sparse
+translation is open. See `docs/GEN16_LOCAL_SCORE_CREDIT_ANALYSIS.md`.
+
+Gen-17 retains the same 8-to-4 parameter count but samples one binary sensory
+event per analog channel. It compares analog and sparse local rules with
+static, oracle, activity, and shuffled-reward controls. Run
+`python examples/gen17_sparse_spiking_credit.py --list-strategies`; see
+`docs/GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md` for the frozen gate.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:

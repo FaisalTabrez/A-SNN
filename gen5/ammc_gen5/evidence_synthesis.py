@@ -26,6 +26,7 @@ EVIDENCE_FILENAMES = {
     "gen13": "gen13_local_plasticity.json",
     "gen14": "gen14_reward_eligibility.json",
     "gen15": "gen15_reward_baseline.json",
+    "gen16": "gen16_local_score_credit.json",
 }
 
 
@@ -98,6 +99,7 @@ def synthesize_gen5_evidence(
     gen13 = evidence["gen13"]
     gen14 = evidence["gen14"]
     gen15 = evidence["gen15"]
+    gen16 = evidence["gen16"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -179,6 +181,11 @@ def synthesize_gen5_evidence(
     gen15_oracle = _strategy_row(gen15, "oracle_food_reflex", key="summary")
     gen15_reinforce = _strategy_row(gen15, "reinforce_shared_policy", key="summary")
     gen15_shuffled = _strategy_row(gen15, "reinforce_shuffled_reward", key="summary")
+    gen16_static = _strategy_row(gen16, "static_linear_policy", key="summary")
+    gen16_oracle = _strategy_row(gen16, "oracle_food_reflex", key="summary")
+    gen16_autograd = _strategy_row(gen16, "autograd_score_policy", key="summary")
+    gen16_local = _strategy_row(gen16, "manual_local_score_policy", key="summary")
+    gen16_shuffled = _strategy_row(gen16, "manual_local_shuffled_reward", key="summary")
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -471,6 +478,19 @@ def synthesize_gen5_evidence(
         "gen15_reinforce_margin_vs_static": float(gen15["decision"]["reinforce_margin_vs_static_per_1000_steps"]),
         "gen15_reinforce_margin_vs_shuffled": float(gen15["decision"]["reinforce_margin_vs_shuffled_per_1000_steps"]),
         "gen15_passed": 1.0 if gen15["decision"]["status"] == "pass" else 0.0,
+        "gen16_static_final_fitness": float(gen16_static["mean_final_fitness_per_1000_steps"]),
+        "gen16_oracle_final_fitness": float(gen16_oracle["mean_final_fitness_per_1000_steps"]),
+        "gen16_autograd_final_fitness": float(gen16_autograd["mean_final_fitness_per_1000_steps"]),
+        "gen16_local_final_fitness": float(gen16_local["mean_final_fitness_per_1000_steps"]),
+        "gen16_local_gain": float(gen16_local["mean_fitness_gain_per_1000_steps"]),
+        "gen16_local_positive_gain_seed_count": float(gen16_local["positive_gain_seed_count"]),
+        "gen16_shuffled_final_fitness": float(gen16_shuffled["mean_final_fitness_per_1000_steps"]),
+        "gen16_local_autograd_gap": float(gen16["decision"]["local_autograd_final_gap_per_1000_steps"]),
+        "gen16_maximum_gradient_error": float(gen16["decision"]["maximum_manual_gradient_error"]),
+        "gen16_local_margin_vs_static": float(gen16["decision"]["local_margin_vs_static_per_1000_steps"]),
+        "gen16_local_margin_vs_shuffled": float(gen16["decision"]["local_margin_vs_shuffled_per_1000_steps"]),
+        "gen16_reward_identity_seed_count": float(gen16["decision"]["reward_identity_seed_count"]),
+        "gen16_passed": 1.0 if gen16["decision"]["status"] == "pass" else 0.0,
     }
     claims = [
         _claim(
@@ -912,31 +932,60 @@ def synthesize_gen5_evidence(
             f"{float(gen15_reinforce['mean_final_fitness_per_1000_steps']):+.3f} and no local AMMC rule is present.",
             "not tested",
         ),
+        _claim(
+            "Gen-16 manual score-function gradient matches autograd",
+            bool(gen16["decision"]["manual_gradient_parity_gate"]),
+            "Maximum analytic gradient error is "
+            f"{float(gen16['decision']['maximum_manual_gradient_error']):.3e}.",
+            "supported" if bool(gen16["decision"]["manual_gradient_parity_gate"]) else "rejected",
+        ),
+        _claim(
+            "Gen-16 local reward credit is behaviorally equivalent to autograd",
+            bool(gen16["decision"]["autograd_equivalence_gate"]),
+            "Manual and autograd policies finish with a fitness gap of "
+            f"{float(gen16['decision']['local_autograd_final_gap_per_1000_steps']):.3f} per 1,000 steps.",
+            "supported" if bool(gen16["decision"]["autograd_equivalence_gate"]) else "rejected",
+        ),
+        _claim(
+            "Gen-16 local learning depends on agent-specific reward",
+            bool(gen16["decision"]["reward_identity_gate"]),
+            "The local rule finishes "
+            f"{float(gen16['decision']['local_margin_vs_static_per_1000_steps']):+.3f} versus static and "
+            f"{float(gen16['decision']['local_margin_vs_shuffled_per_1000_steps']):+.3f} versus shuffled reward on "
+            f"{int(gen16['decision']['reward_identity_seed_count'])}/3 identity-qualified seeds.",
+            "supported" if bool(gen16["decision"]["reward_identity_gate"]) else "rejected",
+        ),
+        _claim(
+            "Gen-16 establishes sparse-spiking or structural continuous learning",
+            False,
+            "Gen-16 uses a dense linear analog policy; spikes, STW/LTW, replay, and topology changes are absent.",
+            "not tested",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
-            "workstream": "gen15_reward_protocol_closeout",
-            "objective": "Package the stationary embodied reward diagnostic and its seed-level limitations.",
-            "success_measure": "A reproducible 17-source ledger whose claims distinguish protocol learning from local learning.",
+            "workstream": "gen16_local_credit_closeout",
+            "objective": "Package exact local/autograd credit equivalence and its small behavioral effect.",
+            "success_measure": "A reproducible 18-source ledger that separates analog local credit from spiking and memory claims.",
         },
         {
             "priority": 2,
             "workstream": "publication_package",
-            "objective": "Report the supported mechanism chain through Gen-15 without architecture-superiority claims.",
+            "objective": "Report the supported mechanism chain through Gen-16 without architecture-superiority claims.",
             "success_measure": "Exact protocols, seeds, checkpoints, causal controls, and negative gates are publication-ready.",
         },
         {
             "priority": 3,
-            "workstream": "gen16_local_score_equivalence",
-            "objective": "Test the exact local score-function rule against a matched autograd policy before adding spikes.",
-            "success_measure": "Gradient parity, behavioral equivalence, and reward identity all pass under the frozen Gen-16 gate.",
+            "workstream": "gen17_sparse_spiking_translation",
+            "objective": "Translate the validated local rule to parameter-matched Bernoulli sensory events.",
+            "success_measure": "Sparse events preserve gain and reward identity with healthy activity under the frozen Gen-17 gate.",
         },
         {
             "priority": 4,
             "workstream": "complex_plasticity_remains_gated",
-            "objective": "Keep spiking translation, STW/LTW, replay, and structural plasticity closed until Gen-16 passes.",
-            "success_measure": "No complex biological mechanism is added before local credit is mathematically and behaviorally validated.",
+            "objective": "Keep STW/LTW, replay, and structural plasticity closed until sparse-spiking credit replicates.",
+            "success_measure": "No memory or topology mechanism is added before the sparse translation and replication gates pass.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -965,7 +1014,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(13, 1, figsize=(13, 55), constrained_layout=True)
+    figure, axes = plt.subplots(14, 1, figsize=(13, 59), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -1123,6 +1172,19 @@ def plot_gen5_evidence_synthesis(
     )
     axes[12].set_ylabel("Net fitness / 1,000 steps")
     axes[12].set_title("Gen-15 stationary reward protocol supports conventional learning")
+    axes[13].bar(
+        ("Static", "Oracle", "Autograd", "Manual local", "Shuffled reward"),
+        [
+            metrics["gen16_static_final_fitness"],
+            metrics["gen16_oracle_final_fitness"],
+            metrics["gen16_autograd_final_fitness"],
+            metrics["gen16_local_final_fitness"],
+            metrics["gen16_shuffled_final_fitness"],
+        ],
+        color=("#8b6fd6", "#167d55", "#35b4f2", "#d88935", "#bd3d3a"),
+    )
+    axes[13].set_ylabel("Net fitness / 1,000 steps")
+    axes[13].set_title("Gen-16 exact local score credit matches autograd")
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -1157,7 +1219,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-15 evidence report",
+        "# AMMC Gen-5 through Gen-16 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -1247,6 +1309,13 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"The final mean remained {metrics['gen15_reinforce_final_fitness']:+.3f} and the improvement was seed-sensitive. "
         "Gen-15 validates the delayed reward and identity protocol, not Gen-14 or an AMMC local-learning mechanism.",
         "",
+        "Gen-16 derived the exact score-function update on a matched linear policy. The manual gradient matched autograd within "
+        f"{metrics['gen16_maximum_gradient_error']:.3e}, and both policies finished at "
+        f"{metrics['gen16_local_final_fitness']:+.3f} with zero behavioral gap. The local rule gained "
+        f"{metrics['gen16_local_gain']:+.3f}, finished "
+        f"{metrics['gen16_local_margin_vs_shuffled']:+.3f} above shuffled reward, and passed identity on "
+        f"{int(metrics['gen16_reward_identity_seed_count'])}/3 seeds. This validates analog linear local credit, not sparse spiking or memory.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -1261,7 +1330,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, and a stationary delayed-reward protocol that supports weak identity-specific conventional learning. Frozen causal gates reject end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, and reward-modulated eligibility as currently implemented. These are qualified mechanism, protocol, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary on two event-audio datasets. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and exact local score-function credit on a linear analog policy. Frozen causal gates reject end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, and the earlier reward-modulated eligibility rule. Sparse-spiking translation and memory remain untested. These are qualified mechanism, protocol, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

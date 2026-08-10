@@ -142,6 +142,19 @@
 > parity and replicated behavioral identity are required before sparse-spiking
 > translation can open. See `GEN16_LOCAL_SCORE_CREDIT_PREREGISTRATION.md`.
 
+> Gen-16 result (2026-08-10): every registered gate passed. The manual
+> score-function gradient matched autograd within 2.79e-9, both policies
+> finished at +0.300 with zero behavioral gap, and correct reward beat
+> shuffled reward on all three seeds. Mean learning gain was only +0.183, so
+> the result validates exact analog linear credit assignment rather than a
+> capable SNN or continuous-learning system.
+
+> Gen-17 update (2026-08-10): the validated rule is translated to eight
+> parameter-matched Bernoulli sensory events. Analog, static, oracle, activity,
+> and shuffled-reward controls are frozen in one run. A pass opens only larger
+> sparse-spiking replication before memory. See
+> `GEN17_SPARSE_SPIKING_CREDIT_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal
