@@ -1,6 +1,6 @@
 # Gen-20 spiking spatial-temporal translation preregistration
 
-Date frozen: 2026-08-11  
+Date frozen: 2026-08-11
 Status: preregistered; implementation and results pending
 
 ## Motivation

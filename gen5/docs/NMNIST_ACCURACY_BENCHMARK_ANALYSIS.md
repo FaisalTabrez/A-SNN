@@ -1,7 +1,7 @@
 # N-MNIST accuracy benchmark analysis
 
-Date: 2026-08-11  
-Status: completed / both frozen accuracy gates passed  
+Date: 2026-08-11
+Status: completed / both frozen accuracy gates passed
 Evidence: `gen5/outputs/nmnist_accuracy_benchmark_log_recovery_2026-08-11/`
 
 ## Result
