@@ -39,3 +39,8 @@ The next phase is an evidence and theory reset, not Gen-15 model training:
 
 This keeps the original ambition intact while preventing negative results from
 being hidden by additional phases or hyperparameter rescue attempts.
+
+Selection update (2026-08-10): the user authorized the diagnostic portion of
+this work package as Gen-15. It implements identical-reset evaluation and a
+matched conventional REINFORCE baseline. It is not a new local mechanism and
+does not reopen Gen-14.

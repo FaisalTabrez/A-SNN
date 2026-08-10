@@ -121,6 +121,13 @@
 > is rejected. Empirical mechanism expansion is paused for a 16-source
 > evidence freeze and matched reward-baseline/evaluation-protocol redesign.
 
+> Gen-15 update (2026-08-10): the authorized diagnostic uses independent
+> matched worlds, identical seeded pre/post resets, and shared-policy
+> REINFORCE with correct versus agent-shuffled reward. It asks whether the
+> delayed scalar reward itself supports identity-specific conventional
+> learning. No new local-plasticity mechanism is included. See
+> `GEN15_REWARD_BASELINE_PREREGISTRATION.md`.
+
 Gen-5 no longer advances through one experiment per numbered phase. Work is
 grouped into three decision milestones. Each milestone owns a cheap screen, an
 automatic promotion rule, a confirmatory run, causal controls, and a terminal

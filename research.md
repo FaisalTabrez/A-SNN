@@ -5366,3 +5366,23 @@ identical-reset pre/post evaluation, a matched conventional reward-learning
 baseline, explicit agent-identity credit controls, a literature-derived
 mechanism, and a frozen compute budget. This protects the original biological
 ambition from becoming an indefinite hyperparameter and phase sequence.
+
+## 2026-08-10 - Gen-15 matched reward baseline approved and implemented
+
+The user authorized the diagnostic required by the post-Gen-14 evidence
+freeze. Gen-15 does not add a new biological mechanism. It tests whether a
+conventional shared 8→32→4 REINFORCE policy can learn from the exact delayed
+scalar-reward protocol.
+
+Static, oracle, correct-reward REINFORCE, and agent-shuffled-reward REINFORCE
+run in independent 1,000-agent tensor worlds. Baseline and final evaluation
+reconstruct identical seeded agent, object, and action randomness. The static
+arm must therefore match within 1e-6, eliminating Gen-14's phase
+non-stationarity. Thirty-step returns span the frozen 12-step reward delay.
+
+Decision: freeze seeds 166–168, 300 evaluation steps, 1,800 training steps,
+30-step rollouts, the 8→32→4 policy, AdamW 0.003, discount 0.99, and entropy
+weight 0.01. Correct reward must improve on 2/3 seeds and beat both static and
+shuffled reward by 0.10 fitness per 1,000 steps. A pass permits theory work on
+a new local credit rule; a stop requires reward-protocol redesign. The frozen
+protocol is `gen5/docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md`.

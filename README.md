@@ -53,6 +53,7 @@ If you are new to the repo, read these in order:
 36. [Gen-14 reward-eligibility preregistration](gen5/docs/GEN14_REWARD_ELIGIBILITY_PREREGISTRATION.md)
 37. [Gen-14 reward-eligibility analysis](gen5/docs/GEN14_REWARD_ELIGIBILITY_ANALYSIS.md)
 38. [Research evidence freeze](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md)
+39. [Gen-15 matched reward-baseline preregistration](gen5/docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md)
 33. [Gen-13 local-plasticity preregistration](gen5/docs/GEN13_LOCAL_PLASTICITY_PREREGISTRATION.md)
 
 ## Repository map
@@ -1229,3 +1230,42 @@ The corresponding 16-source ledger is in
 The next work package is a 16-source evidence freeze and theory/baseline reset,
 not another automatic local-rule phase. See
 [the evidence-freeze decision](gen5/docs/RESEARCH_EVIDENCE_FREEZE.md).
+
+## Gen-15 matched reward-learning baseline (preregistered)
+
+Gen-15 executes the diagnostic required by the evidence freeze. It replaces
+Gen-14's non-stationary phase comparison with identical seeded baseline/final
+world resets and tests a conventional shared-policy REINFORCE learner against
+static, oracle, and shuffled-reward controls. It does not introduce another
+local-plasticity rule.
+
+Colab T4 execution cell:
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!python gen5/examples/gen15_reward_baseline.py \
+  --device cuda \
+  --seeds 166 167 168 \
+  --agent-count 1000 \
+  --food-count 64 \
+  --toxin-count 64 \
+  --evaluation-steps 300 \
+  --training-steps 1800 \
+  --rollout-steps 30 \
+  --reward-delay-steps 12 \
+  --progress-reward-scale 0.05 \
+  --hidden-units 32 \
+  --learning-rate 0.003 \
+  --weight-decay 0.0001 \
+  --discount 0.99 \
+  --entropy-weight 0.01 \
+  --gradient-clip 1.0 \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen15_reward_baseline_cuda
+```
+
+A pass establishes only that the delayed reward protocol supports
+identity-specific conventional learning. A stop sends the project back to
+reward/evaluation design rather than triggering a local-rule rescue.

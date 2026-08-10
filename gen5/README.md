@@ -168,6 +168,12 @@ but failed reward-identity credit. Empirical mechanism expansion is paused;
 see `docs/GEN14_REWARD_ELIGIBILITY_ANALYSIS.md` and
 `docs/RESEARCH_EVIDENCE_FREEZE.md`.
 
+Gen-15 implements the required matched conventional reward-learning baseline.
+Static, oracle, correctly rewarded REINFORCE, and shuffled-reward REINFORCE
+receive independent worlds; baseline and final evaluation replay identical
+seeded initial conditions. See `docs/GEN15_REWARD_BASELINE_PREREGISTRATION.md`
+and run `python examples/gen15_reward_baseline.py --list-strategies`.
+
 Gen-13 tests explicit three-factor local output-synapse adaptation. It keeps
 the robust TCN frozen and compares analog and sparse-spiking local updates
 against the established autograd controls:
