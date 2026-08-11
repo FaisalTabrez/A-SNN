@@ -1454,3 +1454,27 @@ reached 99.1233%. ConvPLIF screened at 93.07% and was not promoted, so the
 record. See the [benchmark analysis](gen5/docs/NMNIST_ACCURACY_BENCHMARK_ANALYSIS.md).
 Gen-20 is frozen as one multi-timescale spiking translation package in the
 [Gen-20 preregistration](gen5/docs/GEN20_SPIKING_SPATIOTEMPORAL_TRANSLATION_PREREGISTRATION.md).
+
+## Gen-20 spiking spatial-temporal translation
+
+Gen-20 is implemented as one bounded screen/confirmation run. It compares the
+dense spatial-temporal teacher and frozen ConvPLIF baseline against direct and
+teacher-distilled multi-timescale residual PLIF models. Only new spiking arms
+above 97.5% screening validation accuracy with 1–30% activity can advance.
+Confirmed arms must also pass state-removal, per-sample temporal-shuffle, and
+activity-scaled operation-proxy gates.
+
+```python
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q tonic
+!python gen5/examples/gen20_spiking_spatiotemporal.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/nmnist \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda
+```
+
+The runner resumes from its progress JSON and companion checkpoint directory.
+Download `gen20_spiking_spatiotemporal_bundle.zip` when it finishes.

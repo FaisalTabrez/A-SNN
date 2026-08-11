@@ -5663,3 +5663,25 @@ spatial-temporal model only as teacher/upper control, and require accuracy,
 activity, efficiency, state-removal, and time-order evidence. Structural
 plasticity and hardware-energy work remain gated until the spiking
 representation gap is closed.
+
+## 2026-08-11 - Gen-20 spiking spatial-temporal translation implemented
+
+The frozen Gen-20 hypothesis is now executable as one resumable
+screen/confirmation package. The new architecture uses a compact shared 2-D
+spatial stem, parallel fast/medium/slow learnable LIF banks, membrane-and-spike
+fusion, a final LIF state, and a population readout. A second arm uses the same
+inference-time spiking architecture with dense-teacher logit and feature
+distillation during training only; no analog bypass reaches the classifier.
+
+The dense spatial-temporal teacher and original ConvPLIF are always reported in
+the screen, but only the two new spiking arms can be promoted. Promotion keeps
+the preregistered 97.5% validation and 1–30% activity gates. Confirmation uses
+three untouched seeds and adds temporal-state removal and independently
+shuffled input-bin controls. The operation proxy now separates always-dense
+spatial-stem MACs from activity-scaled downstream work rather than multiplying
+the entire network by spike rate.
+
+Decision: Gen-20 remains a bounded representation test. Passing requires all
+accuracy, seed-floor, activity, state-causality, temporal-order, and 5x
+operation-proxy gates. Direct energy claims remain unauthorized, and
+plasticity work stays gated until the result is known.

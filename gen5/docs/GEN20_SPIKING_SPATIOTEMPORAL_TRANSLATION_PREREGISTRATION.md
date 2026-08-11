@@ -1,7 +1,7 @@
 # Gen-20 spiking spatial-temporal translation preregistration
 
 Date frozen: 2026-08-11
-Status: preregistered; implementation and results pending
+Status: preregistered and implemented; results pending
 
 ## Motivation
 
@@ -92,3 +92,12 @@ neuromorphic energy efficiency without direct hardware measurement.
   the official test results.
 
 Either outcome is one Gen-20 package. No Gen-21 is implied automatically.
+
+## Implementation
+
+The frozen runner is implemented in
+`gen5/ammc_gen5/gen20_spiking_spatiotemporal.py`, with the Colab entry point at
+`gen5/examples/gen20_spiking_spatiotemporal.py`. It reuses the existing
+full-resolution N-MNIST cache, saves validation-selected teacher and student
+checkpoints beside the progress file, resumes completed arms and seeds, and
+emits JSON/CSV/plot artifacts plus a checksummed ZIP bundle.
