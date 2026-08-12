@@ -5685,3 +5685,26 @@ Decision: Gen-20 remains a bounded representation test. Passing requires all
 accuracy, seed-floor, activity, state-causality, temporal-order, and 5x
 operation-proxy gates. Direct energy claims remain unauthorized, and
 plasticity work stays gated until the result is known.
+
+## 2026-08-13 - Program-level causal research question adopted
+
+The program's central empirical question is: do adaptive mechanisms—dynamic
+topology, dual short/long-term memory timescales, learned synaptic delays, and
+local reward credit—make an independent causal contribution to spiking-network
+performance on real event-based tasks, or do apparent gains disappear after
+controlling parameter count, compute, seed selection, optimization budget, and
+architectural confounds?
+
+This question is intentionally stricter than “can we build a brain-like SNN?”
+It defines the necessary evidence standard: matched baselines, component
+ablations, randomized causal controls, preregistered seed/split/model-selection
+rules, and multi-axis reporting. “Performance” must include task quality,
+sample/online adaptation, retention after task switches, sparse activity,
+operation/latency/memory cost, and robustness—not accuracy alone. Hardware
+energy remains a separate claim requiring direct measurement.
+
+The wider long-term vision remains a continuously adapting, structurally sparse
+event-driven organism. It becomes justified only if each proposed mechanism
+first clears this causal standard on controlled real-task benchmarks. Gen-20
+currently tests the prerequisite representation/state mechanism; it does not
+yet test topology, dual-memory consolidation, or local reward credit.
