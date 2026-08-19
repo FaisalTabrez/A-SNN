@@ -176,6 +176,7 @@ def sparse_temporal_currents(events, temporal):
             values[valid],
             size=(batch * timesteps, input_neurons),
             device=events.device,
+            check_invariants=False,
         ).coalesce()
         currents.add_(torch.sparse.mm(sparse_input, weight[:, :, kernel_index].transpose(0, 1)))
     return currents.reshape(batch, timesteps, channels)
@@ -236,7 +237,7 @@ def run_gen25(
             compiled_head, head_compile_seconds, head_error = _compile_module(
                 ResidualLIFStateHead(source).to(resolved).eval(), real_currents, resolved, config.compile_mode
             )
-            sparse_pipeline = SparseHybridPipeline(source.temporal, compiled_head) if compiled_head else None
+            sparse_pipeline = _optional_sparse_pipeline(source.temporal, compiled_head)
             workloads = [("real_ssc", real_batch, float((real_batch != 0).to(torch.float32).mean().item()))]
             if batch_size == config.density_batch_size:
                 for density in config.synthetic_densities:
@@ -289,6 +290,16 @@ def _compile_module(module, example, device, mode):
         return compiled, float(time.perf_counter() - started), None
     except Exception as error:
         return None, 0.0, f"{type(error).__name__}: {error}"
+
+
+def _optional_sparse_pipeline(temporal, compiled_head):
+    """Construct the hybrid without truth-testing torch compiled modules."""
+
+    return (
+        SparseHybridPipeline(temporal, compiled_head)
+        if compiled_head is not None
+        else None
+    )
 
 
 def _measure_workload(

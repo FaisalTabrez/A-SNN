@@ -12,11 +12,24 @@ from ammc_gen5 import (
 from ammc_gen5.event_mnist import nn, torch
 from ammc_gen5.shd_benchmark import SHDConfig
 from ammc_gen5.shd_state_placement_diagnostic import ResidualTemporalConvStateClassifier
-from ammc_gen5.gen25_event_driven_sparse_audit import ResidualLIFStateHead
+from ammc_gen5.gen25_event_driven_sparse_audit import (
+    ResidualLIFStateHead,
+    _optional_sparse_pipeline,
+)
 
 
 @unittest.skipIf(torch is None, "PyTorch unavailable")
 class Gen25ContractTest(unittest.TestCase):
+    def test_compiled_module_is_not_truth_tested(self):
+        class CompiledLike:
+            def __len__(self):
+                raise TypeError("compiled modules must not be truth-tested")
+
+        compiled = CompiledLike()
+        pipeline = _optional_sparse_pipeline(object(), compiled)
+        self.assertIs(pipeline.compiled_head, compiled)
+        self.assertIsNone(_optional_sparse_pipeline(object(), None))
+
     def test_sparse_operator_matches_dense_conv1d(self):
         torch.manual_seed(1)
         temporal = nn.Conv1d(4, 3, 3, padding=1)

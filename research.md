@@ -5951,3 +5951,13 @@ batch-256 throughput at least equal to compiled dense execution. If numerical
 equivalence holds but generic sparse primitives are slow, the next authorized
 step is a custom Triton/CUDA event kernel rather than a biological-mechanism
 redesign.
+
+## 2026-08-20 - Gen-25 Colab runtime correction
+
+The first Colab invocation reached construction of the compiled sparse hybrid
+and then stopped because Python truth-tested PyTorch's optimized module wrapper;
+that wrapper implements `__len__` by raising `TypeError`. The constructor now
+uses an explicit `is not None` check, protected by a compiled-like regression
+test. Sparse COO invariant checking is also explicitly disabled because row and
+column bounds are constructed internally and the check adds benchmark overhead.
+No model equation, workload, threshold, timing gate, or research claim changed.
