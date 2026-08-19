@@ -5820,8 +5820,9 @@ post-lesion information in the frozen residual readout. It does not yet prove
 that two timescales outperform a single adaptive memory, because dual memory
 and the global-gradient control produced identical final accuracy. The result
 also does not support whole-network consolidation, replay, combined mechanisms,
-or hardware energy. The canonical bundle is still required to archive and
-verify all screen records omitted from the terminal summary.
+or hardware energy. The subsequently supplied complete artifacts confirmed the
+screen exclusions: topology violated retention, learned delay had essentially
+zero delay-identity margin, and local credit produced essentially no adaptation.
 
 Decision: implement Gen-22 as a five-seed direct replication with two
 sequential, disjoint SSC lesions. Compare dual memory with a matched
@@ -5843,3 +5844,36 @@ versus single memory, remain within 0.5 point on B, lose at least 0.5 point unde
 LTW removal, and exceed shuffled consolidation by 0.5 point on the joint A/B
 score. Aggregate means and at least three of five seeds must pass. Gen-22 is
 implementation-complete; results are pending.
+
+## 2026-08-20 - Gen-22 stop and algebraic falsification
+
+Complete Gen-22 artifacts passed their SHA-256 manifest checks. Across five
+seeds, single and dual memory were identical on every primary endpoint:
+34.9225% A retention after B, 45.1025% B accuracy, 11.1975 points of A
+forgetting, 3.7900 points of clean loss, and a 40.0125% joint score. Dual memory
+gained exactly zero over single memory for every seed. Its mean LTW-removal
+margin was 0.34 point and no seed qualified.
+
+The failure has an exact explanation. Each continuous update transferred
+`c·STW` to LTW and retained `(1-c)·STW`, so the effective sum remained
+`LTW + STW`. The mechanism changed storage labels without changing function.
+Gen-21's positive LTW-removal result is accordingly narrowed to useful weight
+partitioning; it is not evidence of superior dual timescales.
+
+Decision: close the continuous-transfer rule. Gen-23 is one final, non-sweep
+redesign using boundary-only consolidation, magnitude-selected protected LTW,
+bounded residual STW, a bounded-STW no-consolidation control, and shuffled
+pathway selection. Failure will close the readout dual-memory program.
+
+## 2026-08-20 - Gen-23 boundary-gated consolidation implemented
+
+Gen-23 preserves the immediate function at the A/B boundary while transferring
+the highest-magnitude half of active STW slots into protected LTW. Bounded STW
+cannot update protected slots during B learning. Five paired seeds compare
+static, single memory, bounded STW alone, selective consolidation, and shuffled
+consolidation under the established SSC sequential-lesion protocol.
+
+The frozen gates require +1.0 point A retention versus single memory, no more
+than 1.0 point B cost, a +0.5-point LTW-removal effect, a +0.5-point advantage
+over shuffled selection, and boundary invariance within 0.1 point. Aggregate
+means and at least three seeds must pass. Results are pending.

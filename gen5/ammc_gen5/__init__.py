@@ -581,6 +581,17 @@ from .gen22_dual_memory_replication import (
     run_gen22,
     summarize_gen22,
 )
+from .gen23_boundary_consolidation import (
+    GEN23_ARMS,
+    Gen23Config,
+    Gen23Result,
+    available_gen23_arms,
+    bundle_gen23_artifacts,
+    decide_gen23,
+    plot_gen23,
+    run_gen23,
+    summarize_gen23,
+)
 from .evidence_synthesis import (
     EVIDENCE_FILENAMES,
     Gen5EvidenceSynthesisResult,
@@ -1216,6 +1227,15 @@ __all__ = [
     "plot_gen22",
     "run_gen22",
     "summarize_gen22",
+    "GEN23_ARMS",
+    "Gen23Config",
+    "Gen23Result",
+    "available_gen23_arms",
+    "bundle_gen23_artifacts",
+    "decide_gen23",
+    "plot_gen23",
+    "run_gen23",
+    "summarize_gen23",
     "try_xla_device",
     "world_preset_config",
     "world_preset_names",

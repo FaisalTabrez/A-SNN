@@ -2,9 +2,8 @@
 
 Date: 2026-08-20
 
-Status: `pass` for one bounded mechanism; analysis reconstructed from the
-terminal Colab log. The result bundle remains required for canonical archival
-and verification of all screen records.
+Status: `pass` for one bounded mechanism; complete JSON/CSV/plot/bundle
+artifacts inspected locally.
 
 ## Result
 
@@ -25,6 +24,12 @@ Across three confirmation seeds:
 The backbone remained active at 8.09%. Every readout allocated 6,090 slots,
 activated 2,132, and reported the same 136,448 active-slot operations per
 sample and 73,080 adapter bytes. No direct energy claim is authorized.
+
+The complete screen resolves the other arms. Topology gained 7.8125 points but
+lost 1.9125 clean points, exceeding the retention limit. Learned delay gained
+7.9375 points but its shuffled-delay margin was only 0.0125 point. Local credit
+gained 0.0500 point with a 0.0375-point reward-identity margin. These arms were
+correctly stopped rather than hidden by the confirmation-only summary.
 
 ## Interpretation
 

@@ -1551,3 +1551,33 @@ drive.mount('/content/drive')
 The existing SSC cache is reused. Download
 `gen22_dual_memory_replication_bundle.zip` at completion. The frozen protocol
 is in the [Gen-22 preregistration](gen5/docs/GEN22_DUAL_MEMORY_REPLICATION_PREREGISTRATION.md).
+
+Gen-22 stopped with zero qualifying seeds. Dual and single memory were exactly
+identical because continuous `c·STW` transfer plus `(1-c)·STW` decay conserved
+the effective sum. See the
+[Gen-22 analysis](gen5/docs/GEN22_DUAL_MEMORY_REPLICATION_ANALYSIS.md).
+
+## Gen-23 boundary-gated consolidation
+
+Gen-23 is the single authorized redesign. It consolidates utility-selected STW
+only at the A/B boundary, protects those LTW slots from subsequent updates,
+and includes bounded-STW and shuffled-selection controls.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen23_boundary_consolidation.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen23_boundary_consolidation_cuda
+```
+
+Download `gen23_boundary_consolidation_bundle.zip` when complete. Failure closes
+the readout dual-memory branch. See the
+[Gen-23 preregistration](gen5/docs/GEN23_BOUNDARY_CONSOLIDATION_PREREGISTRATION.md).
