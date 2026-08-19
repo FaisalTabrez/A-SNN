@@ -5779,3 +5779,29 @@ budgets, training updates, and model-selection rules. A combined arm is allowed
 only after individual mechanisms pass. This replaces serial mechanism phases
 and prevents parameter inflation or architecture drift from masquerading as
 biological benefit.
+
+## 2026-08-20 - Gen-21 matched causal mechanism protocol frozen and implemented
+
+Gen-21 implements the post-synthesis decision as one bounded factorial SSC
+adaptation package. The Phase 48 residual Conv1D plus LIF-state backbone is
+trained once per seed on source SSC and then frozen. A deterministic 35%
+sensor-bank lesion creates the shift. Official validation examples are split
+into disjoint source-selection and adaptation subsets; the official test set is
+evaluation-only.
+
+The static, global-gradient, topology-only, dual-memory-only, learned-delay-only,
+and local-credit-only arms all use the same residual readout allocation and
+active-slot cardinality. Topology uses fixed-capacity utility pruning plus
+gradient-supported sprouting; dual memory separates decaying STW from
+consolidated LTW; delay learning uses matched 0/1/2-step slots; local credit uses
+a sampled-action three-factor update with scalar correctness reward and no
+autograd through the adaptive readout. Causal controls shuffle topology, remove
+LTW, reverse delay slots, or shuffle reward identity respectively.
+
+The frozen screen requires at least +1.0 point shifted adaptation, no more than
+1.5 points clean-retention loss, and at least a 0.5-point causal margin. Passing
+arms receive three-seed confirmation; the combined arm is prohibited unless
+all four individual mechanisms pass. This is a readout-level causal benchmark,
+not yet evidence for whole-backbone synaptogenesis, direct hardware energy, or
+general biological fidelity. Gen-21 is implementation-complete and results are
+pending.

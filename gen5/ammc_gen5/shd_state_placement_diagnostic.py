@@ -133,7 +133,14 @@ class ResidualTemporalConvStateClassifier(nn.Module):
         pooled_features = 2 * sum(self.temporal_levels) + 1
         self.classifier = nn.Linear(channels * pooled_features, config.classes)
 
-    def forward(self, events, *, return_event_rate: bool = False):  # type: ignore[override]
+    def encode_trace(self, events):
+        """Return direct/state traces plus final state and mean activity.
+
+        Gen-21 uses this public representation boundary to freeze the supported
+        residual-LIF backbone while testing matched plastic readouts.  Keeping
+        trace extraction here prevents the benchmark from copying or subtly
+        changing the Phase 46/48 dynamics.
+        """
         if events.ndim != 3 or events.shape[2] != self.config.input_neurons:
             raise ValueError("events must have shape [batch, time, input_neurons]")
         currents = self.temporal(events.to(torch.float32).transpose(1, 2)).transpose(1, 2)
@@ -166,12 +173,24 @@ class ResidualTemporalConvStateClassifier(nn.Module):
         elif self.ablation_mode == "shuffled_state":
             stacked_state = torch.roll(stacked_state, shifts=1, dims=0)
             final_state = torch.roll(final_state, shifts=1, dims=0)
+        return direct_trace, stacked_state, final_state, (
+            activity_sum / int(currents.shape[1])
+        )
+
+    def encode_features(self, events):
+        """Return the exact feature vector consumed by the frozen classifier."""
+
+        direct_trace, stacked_state, final_state, activity = self.encode_trace(events)
         features = _multiscale_features(direct_trace, self.temporal_levels)
         features.extend(_multiscale_features(stacked_state, self.temporal_levels))
         features.append(final_state)
-        logits = self.classifier(torch.cat(features, dim=1))
+        return torch.cat(features, dim=1), activity
+
+    def forward(self, events, *, return_event_rate: bool = False):  # type: ignore[override]
+        features, activity = self.encode_features(events)
+        logits = self.classifier(features)
         if return_event_rate:
-            return logits, activity_sum / int(currents.shape[1])
+            return logits, activity
         return logits
 
     def set_ablation_mode(self, mode: str) -> None:

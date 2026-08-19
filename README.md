@@ -1487,3 +1487,33 @@ did not run. The complete 22-source synthesis is archived in
 [`gen20_evidence_synthesis_2026-08-20`](gen5/outputs/gen20_evidence_synthesis_2026-08-20/),
 and the resulting program decision is documented in the
 [post-Gen-20 sanity check](gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN20.md).
+
+## Gen-21 matched causal mechanism benchmark
+
+Gen-21 is the single factorial package selected by the post-Gen-20 evidence
+synthesis. It freezes the supported SSC residual-LIF backbone and compares a
+static control, global-gradient upper control, topology-only, dual-memory-only,
+learned-delay-only, and local-credit-only adaptation under the same residual
+readout allocation, active-slot budget, data, seeds, and update count. A
+combined arm is blocked unless all four individual mechanisms pass screening.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen21_matched_causal_mechanisms.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen21_matched_causal_mechanisms_cuda
+```
+
+SSC downloads and caches automatically. The progress JSON resumes completed
+arm/seed records after interruption (the frozen source backbone may be retrained
+for an interrupted seed). Download
+`gen21_matched_causal_mechanisms_bundle.zip` when the run finishes. See the
+[frozen Gen-21 preregistration](gen5/docs/GEN21_MATCHED_CAUSAL_MECHANISMS_PREREGISTRATION.md).
