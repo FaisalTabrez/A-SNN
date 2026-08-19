@@ -5915,3 +5915,39 @@ greater than 1e-4, complete predicted-class identity, and at least 1.5x
 residual-LIF speedup at batch 256. Compiled LIF/TCN throughput parity is a
 separate descriptive endpoint. Compile latency and peak CUDA allocation are
 reported, and no hardware-energy claim is authorized.
+
+## 2026-08-20 - Gen-24 passes and removes the eager-loop confound
+
+The Gen-24 manifest passed SHA-256 verification. On an NVIDIA L4, compiled
+residual LIF preserved predicted classes exactly across every seed and batch
+size; maximum logit deviation remained below 9e-8. At batch 256, throughput
+rose from 26,962 to 243,381 examples per second, a 9.027x improvement. The
+compiled matched TCN reached 267,435 examples per second, so residual LIF
+achieved 91.006% throughput parity and passed the separate parity gate.
+
+At batches 1 and 32 the speedups were 67.56x and 62.45x, demonstrating that the
+eager Python timestep loop dominated the earlier Phase-49 comparison. Compile
+latency was about 13.1 seconds at batch 256, so the positive result applies to
+warmed steady-state inference. Accuracy evidence remains Phase 48/49; Gen-24
+does not retrain models or authorize hardware-energy claims.
+
+Decision: retain compiled residual LIF as the supported systems baseline and
+audit event-driven input sparsity next.
+
+## 2026-08-20 - Gen-25 event-driven sparse operator audit implemented
+
+Gen-25 isolates the dense temporal input operator. The control compiles the
+full Conv1d plus residual-LIF pipeline. The candidate converts nonzero events
+to COO matrices, routes them through each temporal kernel offset with sparse
+matrix multiplication, and passes the resulting currents into the identical
+compiled state head. Weights, state dynamics, readout, parameter count, and
+inputs are shared.
+
+The conservative benchmark includes dense-cache-to-COO discovery cost. Three
+seeds evaluate real SSC at batches 1, 32, and 256; registered 0.5%, 1%, 5%, and
+10% synthetic densities at batch 32 locate any sparsity crossover. Exact class
+identity and <=1e-4 logit deviation are mandatory. Promotion requires real SSC
+batch-256 throughput at least equal to compiled dense execution. If numerical
+equivalence holds but generic sparse primitives are slow, the next authorized
+step is a custom Triton/CUDA event kernel rather than a biological-mechanism
+redesign.

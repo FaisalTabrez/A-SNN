@@ -1614,3 +1614,33 @@ The run uses the existing SSC cache and does not retrain models. Download
 `gen24_compiled_residual_state_bundle.zip` at completion. The exact numerical
 equivalence and speed gates are frozen in the
 [Gen-24 preregistration](gen5/docs/GEN24_COMPILED_RESIDUAL_STATE_PREREGISTRATION.md).
+
+Gen-24 passed on the NVIDIA L4. Compiled residual LIF achieved a 9.027x
+batch-256 speedup with exact prediction identity and reached 91.006% of matched
+compiled-TCN throughput. See the
+[Gen-24 analysis](gen5/docs/GEN24_COMPILED_RESIDUAL_STATE_ANALYSIS.md).
+
+## Gen-25 event-driven sparse operator audit
+
+Gen-25 retains the compiled residual-LIF head and replaces only its dense
+temporal input convolution with exact COO event routing. Dense-to-COO discovery
+is included in timing, and registered synthetic densities supplement—not
+replace—the real SSC endpoint.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen25_event_driven_sparse_audit.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen25_event_driven_sparse_audit_cuda
+```
+
+Download `gen25_event_driven_sparse_audit_bundle.zip` at completion. See the
+[Gen-25 preregistration](gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_PREREGISTRATION.md).
