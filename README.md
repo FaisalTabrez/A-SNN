@@ -1517,3 +1517,37 @@ arm/seed records after interruption (the frozen source backbone may be retrained
 for an interrupted seed). Download
 `gen21_matched_causal_mechanisms_bundle.zip` when the run finishes. See the
 [frozen Gen-21 preregistration](gen5/docs/GEN21_MATCHED_CAUSAL_MECHANISMS_PREREGISTRATION.md).
+
+Gen-21 passed only `dual_memory_only`: it gained 9.1042 shifted-accuracy points
+over static across three seeds, retained clean accuracy within 1.2208 points,
+and lost 4.3333 points when LTW was removed. Because its final accuracy was
+identical to ordinary gradient adaptation, this supports useful consolidated
+LTW but not yet superiority of two timescales. See the
+[Gen-21 analysis](gen5/docs/GEN21_MATCHED_CAUSAL_MECHANISMS_ANALYSIS.md) and
+[sanity check](gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN21.md).
+
+## Gen-22 dual-memory sequential-shift replication
+
+Gen-22 directly tests the unresolved claim using two disjoint 35% SSC sensor
+lesions. It compares static, single memory, dual memory, and shuffled
+consolidation over five paired seeds. The decisive endpoint is retaining shift
+A after learning shift B without sacrificing B accuracy.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen22_dual_memory_replication.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen22_dual_memory_replication_cuda
+```
+
+The existing SSC cache is reused. Download
+`gen22_dual_memory_replication_bundle.zip` at completion. The frozen protocol
+is in the [Gen-22 preregistration](gen5/docs/GEN22_DUAL_MEMORY_REPLICATION_PREREGISTRATION.md).

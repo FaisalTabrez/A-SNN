@@ -5805,3 +5805,41 @@ all four individual mechanisms pass. This is a readout-level causal benchmark,
 not yet evidence for whole-backbone synaptogenesis, direct hardware energy, or
 general biological fidelity. Gen-21 is implementation-complete and results are
 pending.
+
+## 2026-08-20 - Gen-21 result and claim boundary
+
+The Gen-21 terminal Colab log reports a preregistered pass for
+`dual_memory_only`, the only mechanism promoted from screening. Across three
+confirmation seeds, static shifted SSC accuracy was 38.0667%; ordinary
+gradient adaptation and dual memory both reached 47.1708% (+9.1042 points).
+Both lost 1.2208 clean-accuracy points. Removing LTW from dual memory cost
+4.3333 points, and all three seeds cleared the adaptation and causal gates.
+
+This supports a bounded causal statement: consolidated LTW stores useful
+post-lesion information in the frozen residual readout. It does not yet prove
+that two timescales outperform a single adaptive memory, because dual memory
+and the global-gradient control produced identical final accuracy. The result
+also does not support whole-network consolidation, replay, combined mechanisms,
+or hardware energy. The canonical bundle is still required to archive and
+verify all screen records omitted from the terminal summary.
+
+Decision: implement Gen-22 as a five-seed direct replication with two
+sequential, disjoint SSC lesions. Compare dual memory with a matched
+single-memory learner and shuffled consolidation. Require improved retention of
+the first lesion after adapting to the second, no material second-lesion cost,
+an LTW-removal effect, and a consolidation-identity effect before moving dual
+memory into backbone synapses.
+
+## 2026-08-20 - Gen-22 sequential-shift replication implemented
+
+Gen-22 freezes the residual-LIF source backbone and partitions official SSC
+validation data into disjoint source-selection, shift-A adaptation, and shift-B
+adaptation thirds. Two non-overlapping 35% sensor lesions create controlled
+interference. Static, single-memory, dual-memory, and class-shuffled
+consolidation arms share allocation, active slots, examples, and update counts.
+
+The registered pass requires dual memory to retain A by at least +1.0 point
+versus single memory, remain within 0.5 point on B, lose at least 0.5 point under
+LTW removal, and exceed shuffled consolidation by 0.5 point on the joint A/B
+score. Aggregate means and at least three of five seeds must pass. Gen-22 is
+implementation-complete; results are pending.

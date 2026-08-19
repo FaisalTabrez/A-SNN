@@ -139,6 +139,7 @@ class Gen21MechanismReadout(torch.nn.Module if torch is not None else object):
         self.register_buffer("reward_baseline", torch.zeros(()))
         self.delay_mode = "normal"
         self.causal_mode = "normal"
+        self.consolidation_mode = "normal"
 
     @property
     def allocated_slots(self) -> int:
@@ -199,7 +200,10 @@ class Gen21MechanismReadout(torch.nn.Module if torch is not None else object):
         if self.delta.grad is not None:
             self.gradient_score.mul_(0.90).add_(self.delta.grad.abs(), alpha=0.10)
         if self.arm in {"dual_memory_only", "combined"}:
-            self.ltw.add_(self.delta, alpha=self.config.consolidation_rate)
+            consolidation = self.delta
+            if self.consolidation_mode == "shuffled":
+                consolidation = consolidation.roll(1, dims=0)
+            self.ltw.add_(consolidation, alpha=self.config.consolidation_rate)
             self.delta.mul_(self.config.stw_decay)
 
     @torch.no_grad()
