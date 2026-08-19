@@ -5716,3 +5716,9 @@ the CUDA execution path; this is a hardware allocation decision, not evidence
 of hardware efficiency. A fresh Colab account must first download and cache the
 native full-resolution N-MNIST train/test splits in Drive before the resumable
 Gen-20 run begins.
+
+The cache was successfully created on 2026-08-20 with Tonic 1.6.0 and NumPy
+2.2.6. It contains 60,000 training and 10,000 test samples with shape
+`[sample, 10, 2, 34, 34]`. Train/test event densities are 0.08133554 and
+0.08149972, exactly matching the earlier full-resolution benchmark, so the new
+account is ready for the frozen Gen-20 run.

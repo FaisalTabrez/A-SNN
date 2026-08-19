@@ -340,6 +340,7 @@ def run_gen20(
     if promoted:
         for seed in cfg.confirmation_seeds:
             if not _has_record(confirmation_records, "spatiotemporal_cnn", seed):
+                seed_everything(seed, device=resolved)
                 teacher = build_gen20_model("spatiotemporal_cnn", classes=cfg.classes).to(resolved)
                 training = _train_model(
                     teacher,
@@ -377,6 +378,7 @@ def run_gen20(
                 teacher = None
                 if arm == "distilled_multiscale_plif":
                     teacher = _load_teacher(cfg, progress_path, "confirmation", seed, resolved)
+                seed_everything(seed, device=resolved)
                 model = build_gen20_model(
                     arm, classes=cfg.classes, surrogate_slope=cfg.surrogate_slope
                 ).to(resolved)
