@@ -5708,3 +5708,11 @@ event-driven organism. It becomes justified only if each proposed mechanism
 first clears this causal standard on controlled real-task benchmarks. Gen-20
 currently tests the prerequisite representation/state mechanism; it does not
 yet test topology, dual-memory consolidation, or local reward credit.
+
+## 2026-08-19 - Gen-20 execution hardware: Colab Pro L4
+
+Gen-20 will run on a Google Colab Pro L4 GPU. The experiment continues to use
+the CUDA execution path; this is a hardware allocation decision, not evidence
+of hardware efficiency. A fresh Colab account must first download and cache the
+native full-resolution N-MNIST train/test splits in Drive before the resumable
+Gen-20 run begins.
