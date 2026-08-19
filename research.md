@@ -5751,3 +5751,31 @@ and unanswered claims under matched confound controls. The original downloaded
 bundle is preserved under
 `gen5/outputs/gen20_spiking_spatiotemporal_cuda_2026-08-20/`; its SHA-256 is
 `097D79D15E6EE2AD471E1A0409527C7730BC52ACF17AC5586ACF037F22F844CB`.
+
+## 2026-08-20 - Post-Gen-20 evidence synthesis and program sanity check
+
+The cumulative evidence ledger now deterministically loads 22 canonical
+sources through Gen-20. It separates supported, rejected, proxy-only, and
+untested claims instead of treating accuracy, activity, or sparsity as
+interchangeable evidence. The synthesis confirms that the strongest supported
+neural mechanism remains beneficially sample-specific residual LIF state on
+SHD and SSC event audio. Gen-19 and Gen-20 jointly establish the present
+event-vision boundary: state identity failed on N-MNIST, and the higher-capacity
+spiking translation did not pass screening.
+
+The original project objective remains scientifically viable but has not yet
+been achieved. Supported foundations include conventional robustness and
+adaptation controls, a solvable embodied task, a stationary delayed-reward
+protocol, and exact analog local-credit mathematics. Reliable behavioral local
+credit, cross-modal state identity, dynamic topology, dual-memory
+consolidation, replay, learned-delay benefit, competitive standalone spiking
+inference, and hardware energy remain rejected or unproven.
+
+Decision: the next experimental phase will be a single preregistered Matched
+Causal Mechanism Benchmark on the supported event-audio residual-state
+backbone. It will test topology, dual memory, learned delays, and local credit
+as separate factorial arms under identical seeds, parameter and active-operation
+budgets, training updates, and model-selection rules. A combined arm is allowed
+only after individual mechanisms pass. This replaces serial mechanism phases
+and prevents parameter inflation or architecture drift from masquerading as
+biological benefit.

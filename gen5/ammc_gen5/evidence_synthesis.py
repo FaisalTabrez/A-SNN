@@ -30,6 +30,7 @@ EVIDENCE_FILENAMES = {
     "gen17": "gen17_sparse_spiking_credit.json",
     "gen18": "gen18_local_credit_replication.json",
     "gen19": "gen19_nmnist_state_replication.json",
+    "gen20": "gen20_spiking_spatiotemporal.json",
 }
 
 
@@ -106,6 +107,7 @@ def synthesize_gen5_evidence(
     gen17 = evidence["gen17"]
     gen18 = evidence["gen18"]
     gen19 = evidence["gen19"]
+    gen20 = evidence["gen20"]
     milestone_screen = {
         row["arm"]: row for row in milestone_a["screen_records"]
     }
@@ -201,6 +203,14 @@ def synthesize_gen5_evidence(
     gen18_oracle = _strategy_row(gen18, "oracle_food_reflex", key="summary")
     gen18_local = _strategy_row(gen18, "manual_local_score_policy", key="summary")
     gen18_shuffled = _strategy_row(gen18, "manual_local_shuffled_reward", key="summary")
+    gen20_screen = {row["arm"]: row for row in gen20["screen_records"]}
+    gen20_teacher = gen20_screen["spatiotemporal_cnn"]
+    gen20_conv = gen20_screen["conv_plif"]
+    gen20_multiscale = gen20_screen["multiscale_residual_plif"]
+    gen20_distilled = gen20_screen["distilled_multiscale_plif"]
+    gen20_teacher_ops = float(gen20_teacher["dense_macs_per_sample"])
+    gen20_multiscale_proxy = _screen_ops_proxy(gen20_multiscale)
+    gen20_distilled_proxy = _screen_ops_proxy(gen20_distilled)
 
     shd_state_only_gap = (
         float(phase45_lif["mean_checkpoint_test_accuracy"])
@@ -556,6 +566,47 @@ def synthesize_gen5_evidence(
             / gen19["summary"]["mean_conv_test_examples_per_second"]
         ),
         "gen19_passed": 1.0 if gen19["decision"]["status"] == "pass" else 0.0,
+        "gen20_teacher_screen_accuracy": float(
+            gen20_teacher["best_validation_accuracy"]
+        ),
+        "gen20_conv_plif_screen_accuracy": float(
+            gen20_conv["best_validation_accuracy"]
+        ),
+        "gen20_multiscale_screen_accuracy": float(
+            gen20_multiscale["best_validation_accuracy"]
+        ),
+        "gen20_distilled_screen_accuracy": float(
+            gen20_distilled["best_validation_accuracy"]
+        ),
+        "gen20_screen_accuracy_gate": float(
+            gen20["config"]["minimum_screen_accuracy"]
+        ),
+        "gen20_multiscale_gap_to_gate": float(
+            gen20_multiscale["best_validation_accuracy"]
+            - gen20["config"]["minimum_screen_accuracy"]
+        ),
+        "gen20_multiscale_gain_vs_conv_plif": float(
+            gen20_multiscale["best_validation_accuracy"]
+            - gen20_conv["best_validation_accuracy"]
+        ),
+        "gen20_distillation_gain_vs_multiscale": float(
+            gen20_distilled["best_validation_accuracy"]
+            - gen20_multiscale["best_validation_accuracy"]
+        ),
+        "gen20_multiscale_activity": float(
+            gen20_multiscale["validation_activity"]
+        ),
+        "gen20_distilled_activity": float(
+            gen20_distilled["validation_activity"]
+        ),
+        "gen20_multiscale_ops_reduction_vs_teacher": (
+            gen20_teacher_ops / gen20_multiscale_proxy
+        ),
+        "gen20_distilled_ops_reduction_vs_teacher": (
+            gen20_teacher_ops / gen20_distilled_proxy
+        ),
+        "gen20_promoted_arm_count": float(len(gen20["promoted_arms"])),
+        "gen20_passed": 1.0 if gen20["decision"]["status"] == "pass" else 0.0,
     }
     claims = [
         _claim(
@@ -1137,31 +1188,85 @@ def synthesize_gen5_evidence(
             f"{gen19['decision']['next_milestone']}.",
             "supported" if gen19["decision"]["status"] == "pass" else "rejected",
         ),
+        _claim(
+            "Gen-20 retains the strong dense N-MNIST spatial-temporal representation",
+            float(gen20_teacher["best_validation_accuracy"])
+            >= float(gen20["config"]["minimum_screen_accuracy"]),
+            "The dense teacher reaches "
+            f"{100.0 * float(gen20_teacher['best_validation_accuracy']):.3f}% validation accuracy against the "
+            f"{100.0 * float(gen20['config']['minimum_screen_accuracy']):.1f}% screen gate.",
+            "supported",
+        ),
+        _claim(
+            "Gen-20 multiscale residual PLIF closes the N-MNIST representation gap",
+            float(gen20_multiscale["best_validation_accuracy"])
+            >= float(gen20["config"]["minimum_screen_accuracy"]),
+            "The best new spiking arm reaches "
+            f"{100.0 * float(gen20_multiscale['best_validation_accuracy']):.3f}%, missing promotion by "
+            f"{100.0 * (float(gen20['config']['minimum_screen_accuracy']) - float(gen20_multiscale['best_validation_accuracy'])):.3f} points.",
+            "rejected",
+        ),
+        _claim(
+            "Gen-20 teacher distillation improves the multiscale spiking translation",
+            float(gen20_distilled["best_validation_accuracy"])
+            > float(gen20_multiscale["best_validation_accuracy"]),
+            "Distillation changes validation accuracy by "
+            f"{100.0 * (float(gen20_distilled['best_validation_accuracy']) - float(gen20_multiscale['best_validation_accuracy'])):+.3f} points.",
+            "rejected",
+        ),
+        _claim(
+            "Gen-20 proposed arms maintain sparse activity and a low operation proxy",
+            (
+                float(gen20["config"]["minimum_activity"])
+                <= float(gen20_multiscale["validation_activity"])
+                <= float(gen20["config"]["maximum_activity"])
+                and gen20_teacher_ops / gen20_multiscale_proxy
+                >= float(gen20["config"]["minimum_ops_reduction"])
+            ),
+            "The best arm has "
+            f"{100.0 * float(gen20_multiscale['validation_activity']):.3f}% activity and a "
+            f"{gen20_teacher_ops / gen20_multiscale_proxy:.2f}x activity-scaled operation reduction versus the teacher.",
+            "supported",
+        ),
+        _claim(
+            "Gen-20 establishes causal temporal state use on N-MNIST",
+            False,
+            "No new arm passed the screen, so confirmation, state removal, and temporal-order controls did not run.",
+            "not tested",
+        ),
+        _claim(
+            "Gen-20 qualifies the program for an automatic Gen-21 architecture phase",
+            gen20["decision"]["status"] == "pass",
+            f"Gen-20 returned status={gen20['decision']['status']}, reason="
+            f"{gen20['decision']['reason']}, and next_milestone="
+            f"{gen20['decision']['next_milestone']}.",
+            "rejected",
+        ),
     ]
     roadmap = [
         {
             "priority": 1,
             "workstream": "publication_evidence_closeout",
-            "objective": "Package the supported event-audio mechanism and the Gen-19 event-vision boundary condition.",
-            "success_measure": "A reproducible 21-source ledger reports positive and negative gates without post-hoc rescue.",
+            "objective": "Package the supported event-audio mechanism and the Gen-19/20 event-vision boundary conditions.",
+            "success_measure": "A reproducible 22-source ledger reports positive, negative, and untested gates without post-hoc rescue.",
         },
         {
             "priority": 2,
-            "workstream": "event_audio_mechanism_scope",
-            "objective": "Limit the causal sample-specific residual-state claim to SHD and SSC.",
-            "success_measure": "N-MNIST is presented as a failed external replication, not hidden by aggregate accuracy.",
+            "workstream": "matched_causal_mechanism_benchmark",
+            "objective": "Test one supported event-audio residual-state backbone with factorial adaptive-mechanism ablations.",
+            "success_measure": "Dynamic topology, dual memory, learned delays, and local reward credit are each compared under matched parameters, active operations, seeds, and optimization budgets.",
         },
         {
             "priority": 3,
-            "workstream": "new_architecture_hypothesis",
-            "objective": "Require a separately theorized and preregistered mechanism before reopening event-vision state identity.",
-            "success_measure": "No parameter sweep or post-hoc Gen-19 rescue is labeled confirmatory evidence.",
+            "workstream": "event_vision_theory_reset",
+            "objective": "Require a genuinely new representation hypothesis before reopening N-MNIST state identity.",
+            "success_measure": "No Gen-19 or Gen-20 rescue sweep is labeled confirmatory evidence.",
         },
         {
             "priority": 4,
             "workstream": "complex_plasticity_remains_gated",
-            "objective": "Keep local reward credit, STW/LTW, replay, and structural plasticity closed.",
-            "success_measure": "A future program must establish stable credit assignment before adding complex plasticity.",
+            "objective": "Keep strong continuous-learning and hardware-energy claims closed until factorial causal gates pass.",
+            "success_measure": "Each mechanism must add replicated task, adaptation, or retention value beyond matched static controls; energy requires direct measurement.",
         },
     ]
     return Gen5EvidenceSynthesisResult(
@@ -1190,7 +1295,7 @@ def plot_gen5_evidence_synthesis(
         metrics["ssc_residual_lif_final_accuracy"],
         metrics["ssc_tcn_accuracy"],
     )
-    figure, axes = plt.subplots(17, 1, figsize=(13, 71), constrained_layout=True)
+    figure, axes = plt.subplots(18, 1, figsize=(13, 75), constrained_layout=True)
     axes[0].bar(labels, [100.0 * value for value in shd_values], color=("#167d55", "#bd3d3a", "#35b4f2"))
     axes[0].set_ylabel("SHD test accuracy (%)")
     axes[0].set_title("AMMC Gen-5 final evidence synthesis")
@@ -1404,6 +1509,25 @@ def plot_gen5_evidence_synthesis(
     )
     axes[16].set_ylabel("N-MNIST accuracy (%)")
     axes[16].set_title("Gen-19 state removal hurts, but state shuffling improves event vision")
+    axes[17].bar(
+        ("Dense teacher", "ConvPLIF", "Multiscale PLIF", "Distilled PLIF"),
+        [
+            100.0 * metrics["gen20_teacher_screen_accuracy"],
+            100.0 * metrics["gen20_conv_plif_screen_accuracy"],
+            100.0 * metrics["gen20_multiscale_screen_accuracy"],
+            100.0 * metrics["gen20_distilled_screen_accuracy"],
+        ],
+        color=("#167d55", "#8b6fd6", "#35b4f2", "#d88935"),
+    )
+    axes[17].axhline(
+        100.0 * metrics["gen20_screen_accuracy_gate"],
+        color="#bd3d3a",
+        linestyle="--",
+        label="promotion gate",
+    )
+    axes[17].set_ylabel("Validation accuracy (%)")
+    axes[17].set_title("Gen-20 sparse arms remain below the frozen promotion gate")
+    axes[17].legend()
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)
@@ -1426,6 +1550,13 @@ def _strategy_row(payload: dict, strategy: str, *, key: str = "adaptation_summar
     raise KeyError(f"missing adaptation strategy: {strategy}")
 
 
+def _screen_ops_proxy(row: dict) -> float:
+    dense = float(row["dense_macs_per_sample"])
+    analog = float(row["analog_dense_macs_per_sample"])
+    activity = float(row["validation_activity"])
+    return analog + (dense - analog) * activity
+
+
 def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
     return {
         "claim": name,
@@ -1438,7 +1569,7 @@ def _claim(name: str, passed: bool, evidence: str, status: str) -> dict:
 def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
     metrics = result.metrics
     lines = [
-        "# AMMC Gen-5 through Gen-19 evidence report",
+        "# AMMC Gen-5 through Gen-20 evidence report",
         "",
         "## Executive conclusion",
         "",
@@ -1558,6 +1689,16 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
         f"{-100.0 * metrics['gen19_state_specificity_vs_shuffled']:.3f} points and zero of three seeds passed identity. "
         "The external replication therefore stopped: sample-specific residual-state benefit is supported on SHD/SSC event audio, not N-MNIST event vision.",
         "",
+        "Gen-20 then attempted to translate the successful dense N-MNIST spatial-temporal representation into multiscale residual PLIF state. The dense teacher screened at "
+        f"{100.0 * metrics['gen20_teacher_screen_accuracy']:.3f}%, while ConvPLIF, multiscale PLIF, and distilled multiscale PLIF reached "
+        f"{100.0 * metrics['gen20_conv_plif_screen_accuracy']:.3f}%, "
+        f"{100.0 * metrics['gen20_multiscale_screen_accuracy']:.3f}%, and "
+        f"{100.0 * metrics['gen20_distilled_screen_accuracy']:.3f}%. The best new arm missed the frozen promotion gate by "
+        f"{-100.0 * metrics['gen20_multiscale_gap_to_gate']:.3f} points; distillation changed accuracy by "
+        f"{100.0 * metrics['gen20_distillation_gain_vs_multiscale']:+.3f} points. Its "
+        f"{100.0 * metrics['gen20_multiscale_activity']:.3f}% activity and "
+        f"{metrics['gen20_multiscale_ops_reduction_vs_teacher']:.2f}x operation proxy are operational strengths, not substitutes for the failed accuracy gate. No arm was promoted, so causal state and time-order controls were not tested.",
+        "",
         "## Claim ledger",
         "",
         "| Claim | Status | Evidence |",
@@ -1572,7 +1713,7 @@ def _render_report(result: Gen5EvidenceSynthesisResult) -> str:
             "",
             "## Defensible contribution",
             "",
-            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary and beneficially sample-specific on two event-audio datasets. Gen-19 shows the boundary: state removal also hurts N-MNIST, but shuffled state improves it, so cross-modal sample-specific benefit is rejected. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and an exact manual score-function gradient. Frozen causal gates reject reliable behavioral replication of that local-credit rule, end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Local continual learning, sparse-spiking credit, and memory remain unproven. These are qualified mechanism, protocol, boundary-condition, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
+            "The supported contribution is a residual temporal mechanism in which direct convolutional features and LIF state are jointly necessary and beneficially sample-specific on two event-audio datasets. Gen-19 and Gen-20 define the event-vision boundary: state shuffling improves the former, while the latter's more ambitious sparse translation fails its promotion gate despite healthy activity and a low operation proxy. Later generations establish predictive alignment, partial analog order sensitivity, a valid damage-adaptation task, strong sensor-dropout robustness, conventional few-shot adaptation, a solvable embodied sensor-action control, a stationary delayed-reward protocol, and an exact manual score-function gradient. Frozen causal gates reject reliable behavioral replication of that local-credit rule, end-to-end spiking state, bounded state adapters, associative class prototypes, supervised three-factor output plasticity, the earlier reward-modulated eligibility rule, and the Gen-17 one-sample Bernoulli translation. Local continual learning, structural plasticity, dual memory, learned-delay benefit, sparse-spiking credit, and hardware energy remain unproven. These are qualified mechanism, protocol, boundary-condition, and negative-selection results—not a best-SNN, Transformer-replacement, continuous-learning, synaptic-memory, or hardware-efficiency result.",
             "",
             "## Next-generation roadmap",
             "",

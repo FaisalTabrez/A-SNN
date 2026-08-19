@@ -1478,3 +1478,12 @@ activity-scaled operation-proxy gates.
 
 The runner resumes from its progress JSON and companion checkpoint directory.
 Download `gen20_spiking_spatiotemporal_bundle.zip` when it finishes.
+
+Gen-20 completed on 2026-08-20 with terminal status `stop`. The dense teacher
+screened at 99.1165%, while ConvPLIF, multiscale residual PLIF, and its
+distilled variant reached 96.2160%, 96.3661%, and 96.3327%. Neither new arm met
+the frozen 97.5% promotion gate, so confirmation and causal temporal controls
+did not run. The complete 22-source synthesis is archived in
+[`gen20_evidence_synthesis_2026-08-20`](gen5/outputs/gen20_evidence_synthesis_2026-08-20/),
+and the resulting program decision is documented in the
+[post-Gen-20 sanity check](gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN20.md).

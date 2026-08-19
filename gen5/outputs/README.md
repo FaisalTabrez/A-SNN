@@ -40,3 +40,8 @@ N-MNIST Gen-20 screen. Its terminal decision is `stop`: neither new spiking arm
 met the frozen 97.5% validation-accuracy promotion gate, so confirmation and
 causal controls were not run. See the bundle's `analysis.md` for provenance,
 gate calculations, interpretation limits, and the corrected screen plot.
+
+`gen20_evidence_synthesis_2026-08-20/` is the cumulative 22-source ledger
+through Gen-20. It contains the machine-readable metrics and claim statuses, a
+Markdown report, and the full evidence plot used for the post-Gen-20 sanity
+decision.

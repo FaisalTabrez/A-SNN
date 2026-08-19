@@ -1,6 +1,7 @@
-# AMMC research evidence freeze after Gen-14
+# AMMC research evidence freeze through Gen-20
 
-Status (2026-08-10): local reward-credit program closed; external event-vision state replication is open.
+Status (2026-08-20): local reward-credit and current event-vision translation
+programs are closed; program-level evidence synthesis is active.
 
 ## Sanity check
 
@@ -98,3 +99,20 @@ three seeds, but shuffling state between samples improved accuracy by 2.300
 points and zero seeds passed the identity gate. Beneficial sample-specific
 residual state is frozen as an event-audio result on SHD/SSC, not a cross-modal
 event-vision result. No Gen-19 rescue sweep is authorized.
+
+Gen-20 result update (2026-08-20): `stop` at the frozen screen. The dense
+spatial-temporal teacher reached 99.1165% validation accuracy, while ConvPLIF,
+multiscale residual PLIF, and its distilled variant reached 96.2160%, 96.3661%,
+and 96.3327%. Neither new arm met the 97.5% promotion gate. The best arm had
+healthy 12.6924% activity and an approximately 74.37x lower activity-scaled
+operation proxy, but sparse operation cannot substitute for the failed
+representation gate. Confirmation and causal temporal controls did not run.
+
+The updated sanity check keeps the long-term goal but rejects an automatic
+Gen-21. Supported evidence is limited to sample-specific residual LIF state on
+SHD/SSC, conventional robustness/adaptation controls, a solvable embodied
+mapping, a stationary reward protocol, and exact analog local-credit
+mathematics. Cross-modal state identity, reliable local behavioral learning,
+structural plasticity, dual-memory consolidation, learned-delay benefit, and
+hardware energy remain unproven. The next experimental program must use a
+factorial matched-mechanism design rather than another serial rescue phase.

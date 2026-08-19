@@ -14,9 +14,9 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
     def test_required_evidence_chain_is_complete(self) -> None:
         self.assertEqual(tuple(EVIDENCE_FILENAMES), (
             "phase44", "phase45", "phase46", "phase47", "phase48", "phase49",
-            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16", "gen17", "gen18", "gen19",
+            "milestone_a", "gen6", "gen7", "gen8", "gen9", "gen10", "gen11", "gen12", "gen13", "gen14", "gen15", "gen16", "gen17", "gen18", "gen19", "gen20",
         ))
-        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 21)
+        self.assertEqual(len(set(EVIDENCE_FILENAMES.values())), 22)
 
     def test_milestone_a_terminal_decision_is_in_final_ledger(self) -> None:
         result = synthesize_gen5_evidence(ROOT / "outputs")
@@ -494,6 +494,50 @@ class EvidenceSynthesisContractTest(unittest.TestCase):
         self.assertEqual(
             claims["The event-audio residual-state result generalizes to event vision"]["status"],
             "rejected",
+        )
+
+    def test_gen20_spiking_translation_is_closed_in_final_ledger(self) -> None:
+        result = synthesize_gen5_evidence(ROOT / "outputs")
+        self.assertAlmostEqual(
+            result.metrics["gen20_teacher_screen_accuracy"],
+            0.9911651941990332,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen20_multiscale_screen_accuracy"],
+            0.9636606101016836,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen20_multiscale_gap_to_gate"],
+            -0.011339389898316399,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen20_distillation_gain_vs_multiscale"],
+            -0.0003333888981496935,
+        )
+        self.assertAlmostEqual(
+            result.metrics["gen20_multiscale_ops_reduction_vs_teacher"],
+            74.37058850781366,
+        )
+        self.assertEqual(result.metrics["gen20_promoted_arm_count"], 0.0)
+        self.assertEqual(result.metrics["gen20_passed"], 0.0)
+        claims = {row["claim"]: row for row in result.claims}
+        self.assertEqual(
+            claims[
+                "Gen-20 multiscale residual PLIF closes the N-MNIST representation gap"
+            ]["status"],
+            "rejected",
+        )
+        self.assertEqual(
+            claims[
+                "Gen-20 proposed arms maintain sparse activity and a low operation proxy"
+            ]["status"],
+            "supported",
+        )
+        self.assertEqual(
+            claims["Gen-20 establishes causal temporal state use on N-MNIST"][
+                "status"
+            ],
+            "not tested",
         )
 
 

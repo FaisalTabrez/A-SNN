@@ -1,4 +1,4 @@
-"""Generate the final Gen-5 evidence ledger, including Milestone A."""
+"""Generate the cumulative Gen-5 through Gen-20 evidence ledger."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from ammc_gen5 import synthesize_gen5_evidence  # noqa: E402
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate the final Gen-5 evidence and architecture-closeout report"
+        description="Generate the cumulative Gen-5 through Gen-20 evidence report"
     )
     parser.add_argument("--evidence-root", default="gen5/outputs")
     parser.add_argument("--output-dir", default="gen5/outputs/gen5_evidence_synthesis")
