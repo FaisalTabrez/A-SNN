@@ -1581,3 +1581,36 @@ drive.mount('/content/drive')
 Download `gen23_boundary_consolidation_bundle.zip` when complete. Failure closes
 the readout dual-memory branch. See the
 [Gen-23 preregistration](gen5/docs/GEN23_BOUNDARY_CONSOLIDATION_PREREGISTRATION.md).
+
+Gen-23 stopped with zero qualifying seeds. Selective consolidation improved A
+retention by 1.9475 points but cost 4.93 points on B and lost to shuffled
+selection by 1.35375 points on the joint score. The readout dual-memory branch
+is therefore closed. See the [Gen-23 analysis](gen5/docs/GEN23_BOUNDARY_CONSOLIDATION_ANALYSIS.md)
+and [program sanity check](gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN23.md).
+
+## Gen-24 compiled residual-state systems audit
+
+Gen-24 returns to the replicated positive result: residual LIF state on SSC.
+It tests whether `torch.compile` can preserve the exact Phase-49 computation
+while removing eager Python overhead. This is an inference systems benchmark,
+not another accuracy experiment.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen24_compiled_residual_state.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen24_compiled_residual_state_cuda
+```
+
+The run uses the existing SSC cache and does not retrain models. Download
+`gen24_compiled_residual_state_bundle.zip` at completion. The exact numerical
+equivalence and speed gates are frozen in the
+[Gen-24 preregistration](gen5/docs/GEN24_COMPILED_RESIDUAL_STATE_PREREGISTRATION.md).

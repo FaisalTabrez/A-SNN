@@ -5877,3 +5877,41 @@ The frozen gates require +1.0 point A retention versus single memory, no more
 than 1.0 point B cost, a +0.5-point LTW-removal effect, a +0.5-point advantage
 over shuffled selection, and boundary invariance within 0.1 point. Aggregate
 means and at least three seeds must pass. Results are pending.
+
+## 2026-08-20 - Gen-23 closes the readout dual-memory program
+
+The complete Gen-23 artifact manifest passed SHA-256 verification. Selective
+boundary consolidation retained lesion A at 35.7175%, versus 33.7700% for
+single-memory adaptation (+1.9475 points), and removing LTW cost 6.57 points.
+The apparent stability was purchased with a 4.93-point lesion-B loss. Selective
+consolidation also trailed shuffled consolidation by 1.35375 points on the
+registered joint A/B score. No seed qualified and the aggregate gate failed.
+
+The bounded-STW control and single-memory learner were almost identical, while
+randomly protected pathways gave a better stability-plasticity compromise than
+magnitude-selected pathways. The rule therefore freezes old weights but does
+not identify a useful memory substrate. Under the preregistered stopping rule,
+the readout-level dual-memory branch is closed. This narrows Gen-21's result to
+the fact that LTW can store useful adapted weights; it does not establish a
+benefit from two memory timescales.
+
+Program claim boundary: structural topology, learned delays, local reward
+credit, and dual-memory readout rules have all failed their controlled causal
+programs. Residual LIF state remains the replicated positive mechanism, with a
+known software-throughput deficit versus a matched TCN.
+
+## 2026-08-20 - Gen-24 compiled residual-state audit implemented
+
+Gen-24 pivots from mechanism invention to systems falsification. It benchmarks
+the exact parameter-matched Phase-49 residual-LIF and dilated-TCN architectures
+under eager and `torch.compile(mode="reduce-overhead")` execution on real SSC
+tensors. Deterministically seeded weights are frozen because this experiment
+tests the executed graph rather than task accuracy; Phase 48/49 remains the
+source of accuracy evidence.
+
+Three timing seeds and batch sizes 1, 32, and 256 isolate compilation by shape.
+The primary gate requires successful compilation, maximum logit deviation no
+greater than 1e-4, complete predicted-class identity, and at least 1.5x
+residual-LIF speedup at batch 256. Compiled LIF/TCN throughput parity is a
+separate descriptive endpoint. Compile latency and peak CUDA allocation are
+reported, and no hardware-energy claim is authorized.
