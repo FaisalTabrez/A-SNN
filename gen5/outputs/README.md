@@ -32,3 +32,11 @@ Examples:
 `legacy_first_run_upload_2026-06-25/` preserves the original top-level
 `1st run/` upload bundle after the repository reorganization. The interpreted
 and annotated version of that run lives in `colab_500_gen_2026-06-25/`.
+
+## Latest terminal experiment
+
+`gen20_spiking_spatiotemporal_cuda_2026-08-20/` preserves the preregistered
+N-MNIST Gen-20 screen. Its terminal decision is `stop`: neither new spiking arm
+met the frozen 97.5% validation-accuracy promotion gate, so confirmation and
+causal controls were not run. See the bundle's `analysis.md` for provenance,
+gate calculations, interpretation limits, and the corrected screen plot.

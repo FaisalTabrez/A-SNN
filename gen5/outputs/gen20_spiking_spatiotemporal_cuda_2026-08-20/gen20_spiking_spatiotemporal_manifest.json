@@ -1,0 +1,35 @@
+{
+  "schema": "ammc-gen20-spiking-spatiotemporal-v1",
+  "artifacts": [
+    {
+      "filename": "gen20_spiking_spatiotemporal.json",
+      "bytes": 3959,
+      "sha256": "5fe2c94df43dc19239288829000db8cd9c767ca98c8c6390ed2e1ff279683cce"
+    },
+    {
+      "filename": "gen20_spiking_spatiotemporal_screen.csv",
+      "bytes": 1139,
+      "sha256": "49fe56b864bedc5f76a8e341badaf21da782d7cec0a8641fb3c87344df6ae572"
+    },
+    {
+      "filename": "gen20_spiking_spatiotemporal_records.csv",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "filename": "gen20_spiking_spatiotemporal_summary.csv",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "filename": "gen20_spiking_spatiotemporal.png",
+      "bytes": 105327,
+      "sha256": "2801dcf86953257988fc8dd4627ed9894a39e08cedf368ae2efd151de640e555"
+    },
+    {
+      "filename": "gen20_spiking_spatiotemporal_progress.json",
+      "bytes": 3603,
+      "sha256": "1fe961affe9081d642dae3c142c2df15f7288f3e2fbec02e28461cbe5f19fdbb"
+    }
+  ]
+}

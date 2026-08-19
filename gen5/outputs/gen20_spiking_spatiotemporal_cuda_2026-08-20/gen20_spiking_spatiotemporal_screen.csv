@@ -1,0 +1,5 @@
+arm,seed,parameters,dense_macs_per_sample,analog_dense_macs_per_sample,best_epoch,best_validation_accuracy,validation_activity,numerically_stable,train_seconds,checkpoint
+spatiotemporal_cnn,220,1551402,966173696,966173696,6,0.9911651941990332,0.0,True,70.09164986800033,/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_spatiotemporal_cnn_seed220.pt
+conv_plif,220,471114,99274240,99274240,5,0.96216036006001,0.15131260391245496,True,62.72320599700015,/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_conv_plif_seed220.pt
+multiscale_residual_plif,220,435306,35999200,9646560,6,0.9636606101016836,0.12692395423321015,True,58.48495700300009,/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_multiscale_residual_plif_seed220.pt
+distilled_multiscale_plif,220,435306,35999200,9646560,6,0.9633272212035339,0.12961670645373932,True,75.10260461200005,/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_distilled_multiscale_plif_seed220.pt

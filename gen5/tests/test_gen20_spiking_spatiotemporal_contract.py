@@ -13,12 +13,14 @@ sys.path.insert(0, str(ROOT))
 from ammc_gen5.gen20_spiking_spatiotemporal import (
     GEN20_ARMS,
     Gen20Config,
+    Gen20Result,
     MultiTimescaleResidualPLIF,
     available_gen20_arms,
     build_gen20_model,
     bundle_gen20_artifacts,
     decide_gen20,
     estimate_gen20_operations,
+    gen20_plot_series,
     select_gen20_promoted_arms,
     torch,
 )
@@ -107,6 +109,40 @@ class Gen20ContractTest(unittest.TestCase):
         decision = decide_gen20([], [], Gen20Config())
         self.assertEqual(decision["status"], "stop")
         self.assertEqual(decision["next_milestone"], "evidence_synthesis")
+
+    def test_early_stop_plot_uses_screen_records(self) -> None:
+        config = Gen20Config()
+        result = Gen20Result(
+            config=config.__dict__,
+            device="cpu",
+            dataset={},
+            screen_records=[
+                {
+                    "arm": "spatiotemporal_cnn",
+                    "best_validation_accuracy": 0.991,
+                    "validation_activity": 0.0,
+                    "dense_macs_per_sample": 1000,
+                    "analog_dense_macs_per_sample": 1000,
+                },
+                {
+                    "arm": "multiscale_residual_plif",
+                    "best_validation_accuracy": 0.963,
+                    "validation_activity": 0.10,
+                    "dense_macs_per_sample": 200,
+                    "analog_dense_macs_per_sample": 50,
+                },
+            ],
+            promoted_arms=[],
+            confirmation_records=[],
+            summary=[],
+            decision={"status": "stop"},
+        )
+        series = gen20_plot_series(result)
+        self.assertEqual(series["stage"], "screen")
+        self.assertEqual(series["accuracy"], [99.1, 96.3])
+        self.assertEqual(series["activity"], [0.0, 10.0])
+        self.assertAlmostEqual(series["reduction"][1], 1000 / 65)
+        self.assertEqual(series["accuracy_gate"], 97.5)
 
     def test_bundle_contains_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

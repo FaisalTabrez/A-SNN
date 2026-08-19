@@ -5722,3 +5722,32 @@ The cache was successfully created on 2026-08-20 with Tonic 1.6.0 and NumPy
 `[sample, 10, 2, 34, 34]`. Train/test event densities are 0.08133554 and
 0.08149972, exactly matching the earlier full-resolution benchmark, so the new
 account is ready for the frozen Gen-20 run.
+
+## 2026-08-20 - Gen-20 terminal result: stop at screen
+
+The frozen Gen-20 N-MNIST spiking spatial-temporal translation completed on a
+Colab Pro L4 and terminated correctly at the preregistered screen. The dense
+spatial-temporal teacher reached 99.1165% validation accuracy. ConvPLIF reached
+96.2160%, the new multiscale residual PLIF 96.3661%, and its distilled variant
+96.3327%. Neither new arm met the 97.5% promotion gate; the best missed it by
+1.1339 percentage points and remained 2.7505 points behind the teacher.
+
+The result narrows the failure mode. Both new spiking arms were numerically
+stable, maintained healthy 12.69-12.96% activity, and had approximately 74x
+lower activity-scaled operation proxies than the dense teacher. Yet the new
+representation gained only 0.1500 points over ConvPLIF, and distillation cost
+0.0333 points. The bottleneck is therefore accuracy/representation under this
+architecture, not dead activity or proxy sparsity.
+
+Because no arm was promoted, the official confirmation, state-removal, and
+temporal-order controls did not run. Gen-20 cannot support causal temporal-state
+claims, and it did not test dynamic topology, dual memory, delay learning, or
+local reward credit. The operation result is not a hardware-energy claim.
+
+Decision: close this translation hypothesis without a rescue sweep and move to
+program-level evidence synthesis. Do not generate Gen-21 automatically. The
+next experiment must follow from a consolidated ledger of supported, rejected,
+and unanswered claims under matched confound controls. The original downloaded
+bundle is preserved under
+`gen5/outputs/gen20_spiking_spatiotemporal_cuda_2026-08-20/`; its SHA-256 is
+`097D79D15E6EE2AD471E1A0409527C7730BC52ACF17AC5586ACF037F22F844CB`.

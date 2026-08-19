@@ -594,17 +594,66 @@ def bundle_gen20_artifacts(paths: dict[str, str], output_dir: str | pathlib.Path
     return {"manifest": str(manifest), "bundle": str(bundle)}
 
 
+def gen20_plot_series(result: Gen20Result) -> dict:
+    """Return plot-ready confirmation data, or screen data after an early stop."""
+    if result.summary:
+        return {
+            "stage": "confirmation",
+            "labels": [row["arm"].replace("_", "\n") for row in result.summary],
+            "accuracy": [
+                100.0 * float(row["mean_test_accuracy"]) for row in result.summary
+            ],
+            "activity": [
+                100.0 * float(row["mean_test_activity"]) for row in result.summary
+            ],
+            "reduction": [
+                float(row["ops_reduction_vs_dense_teacher"]) for row in result.summary
+            ],
+            "accuracy_gate": 100.0 * float(result.config["minimum_test_accuracy"]),
+            "accuracy_label": "Test accuracy (%)",
+        }
+
+    rows = result.screen_records
+    teacher = next(
+        (row for row in rows if row["arm"] == "spatiotemporal_cnn"), None
+    )
+    teacher_ops = float(teacher["dense_macs_per_sample"]) if teacher else 0.0
+    proxies = []
+    for row in rows:
+        dense = float(row["dense_macs_per_sample"])
+        analog = float(row["analog_dense_macs_per_sample"])
+        activity = float(row["validation_activity"])
+        proxy = (
+            analog + (dense - analog) * activity
+            if row["arm"] in GEN20_NEW_SPIKING_ARMS
+            else dense
+        )
+        proxies.append(proxy)
+    return {
+        "stage": "screen",
+        "labels": [row["arm"].replace("_", "\n") for row in rows],
+        "accuracy": [100.0 * float(row["best_validation_accuracy"]) for row in rows],
+        "activity": [100.0 * float(row["validation_activity"]) for row in rows],
+        "reduction": [teacher_ops / proxy if proxy > 0 else 0.0 for proxy in proxies],
+        "accuracy_gate": 100.0 * float(result.config["minimum_screen_accuracy"]),
+        "accuracy_label": "Validation accuracy (%)",
+    }
+
+
 def plot_gen20(result: Gen20Result, path: str | pathlib.Path) -> None:
     import matplotlib.pyplot as plt
 
-    labels = [row["arm"].replace("_", "\n") for row in result.summary]
-    accuracy = [100.0 * float(row["mean_test_accuracy"]) for row in result.summary]
-    activity = [100.0 * float(row["mean_test_activity"]) for row in result.summary]
-    reduction = [float(row["ops_reduction_vs_dense_teacher"]) for row in result.summary]
+    series = gen20_plot_series(result)
+    labels = series["labels"]
+    accuracy = series["accuracy"]
+    activity = series["activity"]
+    reduction = series["reduction"]
     figure, axes = plt.subplots(3, 1, figsize=(12, 14), constrained_layout=True)
     axes[0].bar(labels, accuracy, color="#35b4f2")
-    axes[0].axhline(99.0, color="#d88935", linestyle="--", label="accuracy gate")
-    axes[0].set_ylabel("Test accuracy (%)")
+    axes[0].axhline(
+        series["accuracy_gate"], color="#d88935", linestyle="--", label="accuracy gate"
+    )
+    axes[0].set_ylabel(series["accuracy_label"])
     axes[0].legend()
     axes[1].bar(labels, activity, color="#8b6fd6")
     axes[1].axhspan(1.0, 30.0, color="#6ac68d", alpha=0.15)
@@ -613,7 +662,10 @@ def plot_gen20(result: Gen20Result, path: str | pathlib.Path) -> None:
     axes[2].axhline(5.0, color="#167d55", linestyle=":", label="proxy gate")
     axes[2].set_ylabel("Ops reduction vs dense teacher")
     axes[2].legend()
-    axes[0].set_title("AMMC Gen-20 spiking spatial-temporal translation")
+    axes[0].set_title(
+        "AMMC Gen-20 spiking spatial-temporal translation "
+        f"({series['stage']})"
+    )
     for axis in axes:
         axis.grid(axis="y", alpha=0.25)
     destination = pathlib.Path(path)

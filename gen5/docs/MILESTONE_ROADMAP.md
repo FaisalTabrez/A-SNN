@@ -272,3 +272,12 @@ summary plot, and an explicit `pass` or `stop` decision. Results are copied to
 `gen5/outputs/`, analyzed once, recorded in `research.md`, and then pushed.
 Long runs checkpoint after every arm/seed pair and resume only when the stored
 run signature exactly matches the requested configuration.
+
+## Gen-20 terminal update (2026-08-20)
+
+The preregistered N-MNIST spiking spatial-temporal translation stopped at its
+screen. The best new arm reached 96.3661% validation accuracy against the
+97.5% promotion gate and 99.1165% dense teacher; no arm was promoted and no
+confirmation or causal-control run was authorized. The next action is evidence
+synthesis across the completed program before choosing another architecture or
+adaptive-mechanism experiment.

@@ -101,3 +101,19 @@ The frozen runner is implemented in
 full-resolution N-MNIST cache, saves validation-selected teacher and student
 checkpoints beside the progress file, resumes completed arms and seeds, and
 emits JSON/CSV/plot artifacts plus a checksummed ZIP bundle.
+
+## Terminal result (2026-08-20)
+
+Status: `stop` at the preregistered screen. Neither new spiking arm reached the
+97.5% validation-accuracy promotion gate, so confirmation and causal controls
+were correctly not run. The dense teacher reached 99.1165%, ConvPLIF 96.2160%,
+the multiscale residual PLIF 96.3661%, and its distilled counterpart 96.3327%.
+The best new arm therefore missed promotion by 1.1339 percentage points;
+distillation changed accuracy by -0.0333 points relative to the undistilled
+arm. Both new arms had healthy activity (12.69-12.96%) and low operation
+proxies, but efficiency cannot compensate for failure of the accuracy gate.
+
+This closes the frozen Gen-20 translation hypothesis without a rescue sweep.
+Because no candidate was promoted, Gen-20 supplies no confirmation-set,
+state-removal, or temporal-order evidence. The declared next milestone is
+program-level evidence synthesis, not an automatic Gen-21.
