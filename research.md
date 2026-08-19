@@ -5961,3 +5961,36 @@ uses an explicit `is not None` check, protected by a compiled-like regression
 test. Sparse COO invariant checking is also explicitly disabled because row and
 column bounds are constructed internally and the check adds benchmark overhead.
 No model equation, workload, threshold, timing gate, or research claim changed.
+
+## 2026-08-20 - Gen-25 rejects generic COO execution
+
+The complete Gen-25 manifest passed SHA-256 verification. On real SSC at batch
+256, the event-sparse hybrid reached 15,201 examples per second versus 234,864
+for compiled dense execution: a 0.06473 throughput ratio. Even registered 0.5%
+and 1% synthetic densities reached only 0.03955 and 0.03857. Sparse operator
+latency remained near 4 ms at low density and rose to 16.72 ms for real SSC at
+batch 256; peak memory also exceeded the dense control. Generic PyTorch COO is
+therefore rejected as a production execution path.
+
+The correctness result is more specific. Binary synthetic events were exact,
+but real SSC's count-valued bins produced accumulation-order differences. The
+hard LIF dynamics amplified them to maximum logit differences of 4.98e-5,
+0.01194, and 0.01817 at batches 1, 32, and 256 respectively, while retaining
+100% predicted-class agreement. Because the frozen <=1e-4 all-workload gate
+failed, Gen-25 correctly stopped before a custom kernel.
+
+## 2026-08-20 - Gen-26 sparse numerical-fidelity diagnostic implemented
+
+Gen-26 isolates whether the Gen-25 discrepancy can be repaired without changing
+model behavior. It compares FP32 count COO, FP64 count accumulation cast back
+to FP32, and FP32 binary occupancy COO against dense references with identical
+input semantics. It records current and logit errors, class agreement,
+threshold amplification, and binary-versus-count semantic agreement over three
+seeds and batches 1, 32, and 256.
+
+Promotion is deliberately semantic rather than performance-based. FP64 count
+accumulation must satisfy <=1e-5 current error, <=1e-4 logit error, and exact
+classes. Binary COO must meet the same criteria and preserve at least 99.9% of
+count-valued dense predictions before becoming a kernel target. Binary
+exactness without semantic stability requires a trained binary-encoding
+experiment; no energy claim follows from this diagnostic.

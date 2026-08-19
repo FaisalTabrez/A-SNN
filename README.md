@@ -1644,3 +1644,32 @@ drive.mount('/content/drive')
 
 Download `gen25_event_driven_sparse_audit_bundle.zip` at completion. See the
 [Gen-25 preregistration](gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_PREREGISTRATION.md).
+
+Gen-25 stopped: generic COO achieved only 6.473% of compiled-dense real-SSC
+throughput and failed the numerical gate on count-valued bins, although class
+predictions remained identical. See the
+[Gen-25 analysis](gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_ANALYSIS.md).
+
+## Gen-26 sparse numerical-fidelity diagnostic
+
+Gen-26 determines the arithmetic semantics required before writing a custom
+event kernel. It compares FP32 count COO, FP64 count accumulation, and binary
+event COO against matched dense references.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen26_sparse_numerical_fidelity.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen26_sparse_numerical_fidelity_cuda
+```
+
+Download `gen26_sparse_numerical_fidelity_bundle.zip` at completion. See the
+[Gen-26 preregistration](gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_PREREGISTRATION.md).

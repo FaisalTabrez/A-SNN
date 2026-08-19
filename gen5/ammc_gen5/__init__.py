@@ -618,6 +618,17 @@ from .gen25_event_driven_sparse_audit import (
     sparse_temporal_currents,
     summarize_gen25,
 )
+from .gen26_sparse_numerical_fidelity import (
+    GEN26_VARIANTS,
+    Gen26Config,
+    Gen26Result,
+    bundle_gen26_artifacts,
+    decide_gen26,
+    plot_gen26,
+    run_gen26,
+    sparse_temporal_currents_fp64,
+    summarize_gen26,
+)
 from .evidence_synthesis import (
     EVIDENCE_FILENAMES,
     Gen5EvidenceSynthesisResult,
@@ -1284,6 +1295,15 @@ __all__ = [
     "run_gen25",
     "sparse_temporal_currents",
     "summarize_gen25",
+    "GEN26_VARIANTS",
+    "Gen26Config",
+    "Gen26Result",
+    "bundle_gen26_artifacts",
+    "decide_gen26",
+    "plot_gen26",
+    "run_gen26",
+    "sparse_temporal_currents_fp64",
+    "summarize_gen26",
     "try_xla_device",
     "world_preset_config",
     "world_preset_names",
