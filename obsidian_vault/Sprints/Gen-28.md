@@ -17,7 +17,7 @@ See linked experiment records and the repository's `gen5/docs/` preregistration 
 ## Current Research Position
 **Status:** `active-implementation-complete-results-pending`
 
-Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, behavioral-equivalence gates, and benchmark runner are implemented; terminal results are pending.
+Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, behavioral-equivalence gates, and benchmark runner are implemented. The first L4 run exposed a CUDA Graph output-lifetime bug that is now corrected without changing the protocol; terminal results are pending.
 
 **Next action:** Run the frozen Gen-28 package on an NVIDIA L4, verify its manifest, and import the terminal result without a rescue sweep.
 

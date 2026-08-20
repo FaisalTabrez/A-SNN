@@ -70,7 +70,8 @@ CURRENT_STATE = {
     "status": "active-implementation-complete-results-pending",
     "summary": (
         "Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, "
-        "behavioral-equivalence gates, and benchmark runner are implemented; terminal results are pending."
+        "behavioral-equivalence gates, and benchmark runner are implemented. The first L4 run exposed "
+        "a CUDA Graph output-lifetime bug that is now corrected without changing the protocol; terminal results are pending."
     ),
     "next_action": "Run the frozen Gen-28 package on an NVIDIA L4, verify its manifest, and import the terminal result without a rescue sweep.",
     "benchmark": "Spiking Speech Commands",
@@ -121,7 +122,7 @@ DECISIONS = {
     "gen25": ("stop", "Generic PyTorch COO was behaviorally stable but far slower than compiled dense execution.", "15201 vs 234864 examples/s; ratio 0.06473", "gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_ANALYSIS.md"),
     "gen26": ("stop", "The sparse discrepancy came from accumulation-order error amplified at hard thresholds, not encoding or precision.", "max current error 3.32e-4; max logit error 3.29e-2; amplification 131x", "gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_ANALYSIS.md"),
     "gen27": ("pass", "Trained sparse substitution preserved task behavior under the preregistered gates.", "accuracy 48.0792%; min agreement 99.9625%; spike disagreement 0.00401%", "gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_ANALYSIS.md"),
-    "gen28": ("active-results-pending", "A custom Triton event-scatter kernel is implemented for the decisive throughput audit.", "promotion requires real SSC sensor-native parity at batch 256", "gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md"),
+    "gen28": ("active-results-pending", "A custom Triton event-scatter kernel is implemented for the decisive throughput audit; its CUDA Graph output-lifetime correction does not change the frozen protocol.", "promotion requires real SSC sensor-native parity at batch 256", "gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md"),
 }
 
 ARTIFACTS = (

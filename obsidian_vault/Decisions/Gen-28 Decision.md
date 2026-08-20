@@ -9,7 +9,7 @@ tags: [decision, gen28, gen5]
 # Gen-28 Decision - Triton Event Kernel
 
 ## Decision
-A custom Triton event-scatter kernel is implemented for the decisive throughput audit.
+A custom Triton event-scatter kernel is implemented for the decisive throughput audit; its CUDA Graph output-lifetime correction does not change the frozen protocol.
 
 ## Key Evidence
 promotion requires real SSC sensor-native parity at batch 256

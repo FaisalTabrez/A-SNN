@@ -184,10 +184,10 @@ def _measure_workload(seed,workload,batch,density,source,dense,head,config,devic
     event_list=build_event_list(batch);native=EventNativePipeline(event_list,source.temporal,head,int(batch.shape[0]),int(batch.shape[1]),config)
     end_to_end=EndToEndTritonPipeline(source.temporal,head,config)
     with torch.inference_mode():
-        dense_logits=dense(batch);coo_currents=sparse_temporal_currents(batch,source.temporal)
+        dense_logits=_snapshot_model_output(dense,batch);coo_currents=sparse_temporal_currents(batch,source.temporal)
         triton_currents=triton_event_currents(event_list,source.temporal,batch_size=int(batch.shape[0]),timesteps=int(batch.shape[1]),
             block_events=config.event_block_size,block_channels=config.channel_block_size)
-        triton_logits=head(triton_currents)
+        triton_logits=_snapshot_model_output(head,triton_currents)
     sync(device)
     current_difference=float((triton_currents-coo_currents).abs().max().item())
     agreement=float((triton_logits.argmax(1)==dense_logits.argmax(1)).to(torch.float32).mean().item())
@@ -204,6 +204,11 @@ def _measure_workload(seed,workload,batch,density,source,dense,head,config,devic
             "prediction_agreement_vs_dense":agreement if runtime!="compiled_dense" else 1.0}
         rows.append(row)
     return rows
+
+
+def _snapshot_model_output(model, inputs):
+    """Detach one invocation from torch.compile's reusable CUDA Graph buffer."""
+    return model(inputs).clone()
 
 
 def summarize_gen28(records):

@@ -6055,3 +6055,18 @@ the behaviorally validated COO currents and preserve at least 99.9% class
 identity. Promotion requires real SSC sensor-native throughput parity at batch
 256. This phase will either justify event-stream integration, support a
 density-gated hybrid, or close the software event-sparse path.
+
+## 2026-08-20 - Gen-28 CUDA Graph output-lifetime correction
+
+The first L4 execution completed SSC caching and compilation but stopped before
+producing benchmark records. The compiled dense pipeline returned logits backed
+by a reusable CUDA Graph output buffer; invoking the separately compiled state
+head overwrote that buffer before prediction agreement was evaluated.
+
+The benchmark now clones each compiled output immediately outside
+`torch.compile`, as required by PyTorch's CUDA Graph lifetime contract. A CPU
+regression test simulates a callable that reuses one output buffer and verifies
+that snapshots remain stable across subsequent invocations. This is a runtime
+correctness repair only: the model equations, datasets, workloads, seeds,
+thresholds, timing protocol, and promotion gates are unchanged. The interrupted
+run is not a Gen-28 result and should be rerun from the frozen package.

@@ -11,7 +11,7 @@ tags: [current-state, gen5, gen28]
 ## Current Research Position
 [[Gen-28]] is the active research package: **Gen-28 Triton Event-Native Kernel Audit**.
 
-Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, behavioral-equivalence gates, and benchmark runner are implemented; terminal results are pending.
+Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, behavioral-equivalence gates, and benchmark runner are implemented. The first L4 run exposed a CUDA Graph output-lifetime bug that is now corrected without changing the protocol; terminal results are pending.
 
 ## Frozen Scope
 - Benchmark: [[Spiking Speech Commands]]
