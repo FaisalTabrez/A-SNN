@@ -6024,3 +6024,34 @@ accuracy point, retain at least 99.9% prediction identity, and keep spike
 disagreement at or below 0.01%. Passing authorizes custom Triton kernel work;
 failure moves to threshold-margin training. This is the necessary bridge from
 random numerical diagnostics back to task-level causal evidence.
+
+## 2026-08-20 - Gen-27 validates behavioral sparse semantics
+
+The downloaded Gen-27 folder omitted its summary CSV, which was restored
+byte-for-byte from the supplied bundle; the complete manifest then passed.
+Across three trained seeds, dense and sparse mean accuracy were identical at
+48.0792%. Sparse prediction agreement was at least 99.9625%, and mean spike
+disagreement was 0.00401%, below the registered 0.01% ceiling. The sparse
+operator passed every behavioral gate.
+
+Maximum current and logit differences reached 0.00304 and 0.1518, confirming
+that bitwise equivalence is inappropriate for this operator. Only 0.01333% of
+state updates were within 1e-3 of threshold, explaining why task behavior was
+stable. A shuffled-error control roughly doubled spike disagreement while
+leaving accuracy essentially unchanged. These findings authorize a custom
+event kernel with behavioral—not bitwise—equivalence gates.
+
+## 2026-08-20 - Gen-28 Triton event-native kernel implemented
+
+Gen-28 implements a Triton event-scatter kernel with atomic accumulation and
+the unchanged compiled residual-LIF head. It distinguishes sensor-native
+execution, where event indices already exist, from dense-cache end-to-end
+execution, where nonzero discovery is included. Both are compared with the
+compiled dense Phase-49 pipeline on identical weights and inputs.
+
+Three timing seeds cover real SSC at batches 1, 32, and 256 plus registered
+0.1%, 0.5%, and 1% synthetic densities. The kernel must remain within 1e-3 of
+the behaviorally validated COO currents and preserve at least 99.9% class
+identity. Promotion requires real SSC sensor-native throughput parity at batch
+256. This phase will either justify event-stream integration, support a
+density-gated hybrid, or close the software event-sparse path.

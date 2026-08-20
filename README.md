@@ -1703,3 +1703,31 @@ drive.mount('/content/drive')
 The progress file resumes completed seeds. Download
 `gen27_trained_threshold_robustness_bundle.zip` at completion. See the
 [Gen-27 preregistration](gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_PREREGISTRATION.md).
+
+Gen-27 passed: sparse substitution caused zero mean accuracy change, preserved
+at least 99.9625% prediction identity, and changed only 0.00401% of spikes. See
+the [Gen-27 analysis](gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_ANALYSIS.md).
+
+## Gen-28 Triton event-native kernel audit
+
+Gen-28 implements the authorized custom Triton event-scatter kernel. It times
+sensor-native event lists separately from dense-cache event extraction and
+compares both with compiled dense execution.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen28_triton_event_kernel.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen28_triton_event_kernel_cuda
+```
+
+Download `gen28_triton_event_kernel_bundle.zip` at completion. See the
+[Gen-28 preregistration](gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md).
