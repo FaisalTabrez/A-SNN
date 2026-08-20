@@ -1754,3 +1754,30 @@ The closure preserves the supported residual-state and compiled-execution
 results while explicitly rejecting or leaving untested the unsupported
 adaptive and hardware claims. See the
 [Gen-29 protocol](gen5/docs/GEN29_PROGRAM_CLOSURE_PROTOCOL.md).
+
+## Gen-30 dendritic predictive credit
+
+Gen-30 opens a new workstream with a preregistered synthetic causal microtask,
+not another rescue of a closed mechanism. Delayed Contextual Binding tests
+whether a fixed-topology recurrent spiking network can learn a conflicting
+context mapping through eligibility traces and a residual apical teaching
+signal without backpropagation through time.
+
+Seven paired arms include static and BPTT controls, an e-prop broadcast
+baseline, the proposed dendritic predictive-credit rule, and three causal
+ablations. Ten seeds and all promotion gates are frozen in code. Structural
+plasticity, STW/LTW memory, trainable delays, replay, and astrocyte modulation
+remain disabled so that this phase tests local hidden-layer credit alone.
+
+Run the complete L4/Colab experiment with:
+
+```bash
+python gen5/examples/gen30_dendritic_predictive_credit.py \
+  --device cuda \
+  --output-dir gen5_outputs/gen30_dendritic_predictive_credit_cuda
+```
+
+The runner checkpoints after every arm/seed and emits JSON, record and summary
+CSVs, a plot, SHA-256 manifest, and portable bundle. Results are pending; no
+local-learning or real-dataset claim is authorized yet. See the
+[Gen-30 preregistration](gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md).

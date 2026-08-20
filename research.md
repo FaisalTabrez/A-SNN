@@ -6115,3 +6115,28 @@ causal results for the tested topology, dual-memory, delay, and local-credit
 mechanisms. The next milestone is not Gen-30 training. It is new mechanism
 theory followed by a preregistered causal microtask that must pass before
 another real-dataset workstream opens.
+
+## 2026-08-20 - Gen-30 dendritic predictive-credit microtask implemented
+
+Gen-30 satisfies the successor condition set by the Gen-29 closure: it starts
+from a new, explicit local-credit hypothesis and freezes a causal microtask
+before collecting results. Delayed Contextual Binding presents a sensory cue,
+a later context cue, intervening distractors, a blank delay, and a final query.
+Context B conflicts with the previously learned Context A mapping, so success
+requires both delayed assignment and retention rather than a direct reflex.
+
+The topology and decoder are fixed. The proposed rule combines decaying basal
+eligibility traces with the residual between a symmetric fixed apical teaching
+projection and a neuron's local state prediction. It is compared against
+static, surrogate-BPTT, and e-prop controls plus shuffled-apical,
+no-eligibility, and shuffled-modulator ablations. Symmetric fixed feedback is
+deliberate: an unrelated random feedback matrix would confound the proposed
+credit rule with feedback-alignment failure.
+
+The frozen ten-seed gates require at least 80% new-context accuracy, at least
+75% old-context retention, no more than a five-point retention drop, parity
+within five points of e-prop, at least ten points over every causal ablation,
+bounded spike activity, and 8/10 seed replication. Results are pending.
+Structural plasticity, dual memory, delays, replay, glial modulation,
+real-dataset transfer, and hardware-energy claims remain unauthorized until
+these gates pass.

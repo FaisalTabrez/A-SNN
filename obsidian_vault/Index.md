@@ -7,13 +7,13 @@ tags: [index, gen5]
 # A-SNN Research Knowledge Graph
 
 > [!important] Current bounded experiment
-> Gen-29 is complete and the current empirical workstream is closed. See [[Current State]].
+> Gen-30 is implemented and preregistered; causal-microtask results are pending. See [[Current State]].
 
 ## Program Map
 - Current position: [[Current State]]
 - Supported mechanism: [[Residual LIF State]]
 - Supported systems result: [[Compiled Residual State]]
-- Active systems hypothesis: [[Event-driven Sparse Execution]]
+- Active neural hypothesis: [[Dendritic Predictive Credit]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
 
 ## Evidence Timeline
@@ -23,6 +23,7 @@ tags: [index, gen5]
 - Matched adaptation and dual-memory falsification: [[Gen-21]], [[Gen-22]], [[Gen-23]]
 - Compiled and event-sparse systems audit: [[Gen-24]], [[Gen-25]], [[Gen-26]], [[Gen-27]], [[Gen-28]]
 - Program closure: [[Gen-29]]
+- New local-credit causal microtask: [[Gen-30]]
 
 ## Claim Boundary
-The replicated positive neural result is sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Compilation removes the eager-loop confound; Gen-28 closes the current software event-sparse path, and hardware-energy claims remain unauthorized.
+The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 is a preregistered test of a new fixed-topology local-credit rule, not evidence for it. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
