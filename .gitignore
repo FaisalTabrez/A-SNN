@@ -6,3 +6,4 @@ __pycache__/
 .venv/
 venv/
 gen5_outputs/
+obsidian_vault/.obsidian/
