@@ -1673,3 +1673,33 @@ drive.mount('/content/drive')
 
 Download `gen26_sparse_numerical_fidelity_bundle.zip` at completion. See the
 [Gen-26 preregistration](gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_PREREGISTRATION.md).
+
+Gen-26 stopped: SSC was already binary, FP64 did not repair the discrepancy,
+and hard state thresholds amplified dense/sparse accumulation-order differences
+by up to 131x while leaving random-model classes unchanged. See the
+[Gen-26 analysis](gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_ANALYSIS.md).
+
+## Gen-27 trained threshold-robustness test
+
+Gen-27 trains three validation-selected residual-LIF networks and substitutes
+the sparse operator only at test time. It measures actual accuracy, prediction,
+and spike stability rather than relying on random-weight logit tolerances.
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+%cd /content
+!rm -rf A-SNN
+!git clone https://github.com/FaisalTabrez/A-SNN.git
+%cd /content/A-SNN
+!pip install -q h5py
+!python gen5/examples/gen27_trained_threshold_robustness.py \
+  --device cuda \
+  --data-root /content/drive/MyDrive/A-SNN/gen5_data/ssc \
+  --output-dir /content/drive/MyDrive/A-SNN/gen5_outputs/gen27_trained_threshold_robustness_cuda
+```
+
+The progress file resumes completed seeds. Download
+`gen27_trained_threshold_robustness_bundle.zip` at completion. See the
+[Gen-27 preregistration](gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_PREREGISTRATION.md).

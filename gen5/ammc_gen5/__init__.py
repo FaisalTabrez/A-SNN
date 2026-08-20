@@ -629,6 +629,17 @@ from .gen26_sparse_numerical_fidelity import (
     sparse_temporal_currents_fp64,
     summarize_gen26,
 )
+from .gen27_trained_threshold_robustness import (
+    GEN27_ARMS,
+    Gen27Config,
+    Gen27Result,
+    bundle_gen27_artifacts,
+    decide_gen27,
+    head_with_trace,
+    plot_gen27,
+    run_gen27,
+    summarize_gen27,
+)
 from .evidence_synthesis import (
     EVIDENCE_FILENAMES,
     Gen5EvidenceSynthesisResult,
@@ -1304,6 +1315,15 @@ __all__ = [
     "run_gen26",
     "sparse_temporal_currents_fp64",
     "summarize_gen26",
+    "GEN27_ARMS",
+    "Gen27Config",
+    "Gen27Result",
+    "bundle_gen27_artifacts",
+    "decide_gen27",
+    "head_with_trace",
+    "plot_gen27",
+    "run_gen27",
+    "summarize_gen27",
     "try_xla_device",
     "world_preset_config",
     "world_preset_names",

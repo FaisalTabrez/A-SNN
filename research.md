@@ -5994,3 +5994,33 @@ classes. Binary COO must meet the same criteria and preserve at least 99.9% of
 count-valued dense predictions before becoming a kernel target. Binary
 exactness without semantic stability requires a trained binary-encoding
 experiment; no energy claim follows from this diagnostic.
+
+## 2026-08-20 - Gen-26 localizes the error to threshold amplification
+
+Gen-26 stopped. The SSC source nonbinary fraction was exactly zero, and binary
+versus count dense predictions agreed at 100%; SSC was already using binary
+event semantics. FP64 count accumulation produced essentially the same error as
+FP32 COO. Across all three variants, maximum current deviation was about
+3.32e-4 and maximum logit deviation about 3.29e-2, with state amplification up
+to 131x. Predicted classes nevertheless remained identical for every random
+model and batch.
+
+The discrepancy is therefore accumulation order between dense Conv1d and sparse
+matrix multiplication crossing hard LIF thresholds. It is not repaired by
+input normalization or accumulator precision. Random-weight class stability is
+not sufficient evidence for a trained network, so no kernel semantics are
+selected.
+
+## 2026-08-20 - Gen-27 trained threshold robustness implemented
+
+Gen-27 trains three validation-selected residual-LIF SSC models, then compares
+dense inference, sparse-operator substitution, and a batch-shuffled current-
+error control without changing learned parameters. It records test accuracy,
+prediction identity, spike disagreement, logit/current deviations, and the
+fraction of updates close to threshold.
+
+The frozen behavioral gate requires every sparse seed to remain within 0.1
+accuracy point, retain at least 99.9% prediction identity, and keep spike
+disagreement at or below 0.01%. Passing authorizes custom Triton kernel work;
+failure moves to threshold-margin training. This is the necessary bridge from
+random numerical diagnostics back to task-level causal evidence.
