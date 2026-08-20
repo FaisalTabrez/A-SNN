@@ -21,5 +21,5 @@ Gen-28 is the current bounded systems experiment. Its Triton event-scatter kerne
 
 **Next action:** Run the frozen Gen-28 package on an NVIDIA L4, verify its manifest, and import the terminal result without a rescue sweep.
 
-**Frozen protocol:** gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md  
+**Frozen protocol:** gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md<br>
 **Implementation:** gen5/examples/gen28_triton_event_kernel.py and gen5/ammc_gen5/gen28_triton_event_kernel.py

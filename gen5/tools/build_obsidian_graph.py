@@ -189,7 +189,7 @@ def build_graph(vault: Path, outputs: Path) -> int:
 
 **Next action:** {CURRENT_STATE["next_action"]}
 
-**Frozen protocol:** {CURRENT_STATE["protocol"]}  
+**Frozen protocol:** {CURRENT_STATE["protocol"]}<br>
 **Implementation:** {CURRENT_STATE["implementation"]}
 """
         write_note(vault / "Sprints" / f"{note_id(sprint_id)}.md", f"""---

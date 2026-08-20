@@ -1,0 +1,212 @@
+{
+  "main": {
+    "id": "efbdb7cb883ac525",
+    "type": "split",
+    "children": [
+      {
+        "id": "f0a534aaec978464",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6ba125d11de98020",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ef325fac653f9054",
+    "type": "split",
+    "children": [
+      {
+        "id": "5dcd17fbbe32b558",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2af188aeecdddf0b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "2b658e7d948029b9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2402ede4fac3db1e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "655922826d100a37",
+    "type": "split",
+    "children": [
+      {
+        "id": "0b71fb1f5e40e6d2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2112ce4944346963",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "84b6b9e6b18eaa32",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "6ac8ddb50e7a133f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "210a3e5d3c610f6e",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "1569ac198e5c30df",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Untitled.base",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "2af188aeecdddf0b",
+  "lastOpenFiles": [
+    "Untitled.base",
+    "Index.md",
+    "Experiments/EXP-GEN18-gen18_local_credit_replication_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN17-gen17_sparse_spiking_credit_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN16-gen16_local_score_credit_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN15-gen15_reward_baseline_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN14-gen14_reward_eligibility_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN13-gen13_local_plasticity_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN12-gen12_associative_memory_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN11-gen11_plastic_adapter_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN10-gen10_robust_representation_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN9-gen9_continual_adaptation_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN8-gen8_temporal_binding_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN7-gen7_predictive_state_cuda_2026-08-10.md",
+    "Experiments/EXP-GEN6-gen6_successor_cuda_2026-08-10.md",
+    "Sprints/Gen-8.md",
+    "Sprints/Gen-7.md",
+    "Sprints/Gen-6.md",
+    "Hypotheses/Continual Adaptation.md",
+    "Hypotheses/Multiscale Spiking Representation.md",
+    "Hypotheses/N-MNIST Accuracy Frontier.md",
+    "Hypotheses/Sparse-Width-Scaling.md",
+    "Sprints/Sprint-41.md",
+    "Architectures/Sparse Recurrent Topology.md"
+  ]
+}
