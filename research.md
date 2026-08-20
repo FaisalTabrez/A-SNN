@@ -6070,3 +6070,48 @@ that snapshots remain stable across subsequent invocations. This is a runtime
 correctness repair only: the model equations, datasets, workloads, seeds,
 thresholds, timing protocol, and promotion gates are unchanged. The interrupted
 run is not a Gen-28 result and should be rerun from the frozen package.
+
+## 2026-08-20 - Gen-28 closes the software event-sparse path
+
+The complete Gen-28 manifest passed SHA-256 verification. At real SSC batch
+256, compiled dense execution reached 167,179 examples/s. Sensor-native Triton
+reached 54,769 examples/s, a 0.3276 ratio, while the dense-cache end-to-end path
+reached 0.2900. The best registered low-density sensor-native ratio was only
+0.5208 at 0.1% density, so no density-gated crossover was found.
+
+Current differences versus COO remained below 2.98e-6, but primary-workload
+prediction agreement fell to 99.609%, below the frozen 99.9% behavioral gate.
+Both the numerical contract and throughput promotion gate failed. No hardware
+energy claim is authorized.
+
+Decision: stop Gen-28 and close the current software event-sparse workstream.
+The supported production baseline remains compiled dense residual LIF. Do not
+perform another kernel rescue sweep.
+
+## 2026-08-20 - Gen-29 causal evidence closure implemented
+
+Gen-29 is a deterministic synthesis rather than a training experiment. It
+hashes twelve authoritative evidence documents spanning the replicated
+residual-state result, the matched adaptive-mechanism failures, and the
+compiled/sparse systems audits. It emits a JSON decision, CSV claim ledger,
+Markdown report, SHA-256 manifest, and portable bundle.
+
+The closure directly answers the program question without conflating neural,
+adaptive, systems, and hardware claims. Gen-29 cannot authorize Gen-30; its
+only successor gate is a new mathematical learning mechanism demonstrated on a
+preregistered causal microtask before another real-dataset phase.
+
+## 2026-08-20 - Gen-29 completes the current workstream
+
+The deterministic synthesis passed all eight local contract tests and hashed
+twelve authoritative evidence documents into twelve explicit claims. No tested
+adaptive mechanism is supported. Cooperative sample-specific residual LIF
+state on SHD/SSC remains the supported neural mechanism, and compiled dense
+residual LIF remains the supported systems path. Generic COO and the current
+Triton event-scatter kernel are closed. Hardware energy remains untested.
+
+Decision: the original research question is partially answered, with negative
+causal results for the tested topology, dual-memory, delay, and local-credit
+mechanisms. The next milestone is not Gen-30 training. It is new mechanism
+theory followed by a preregistered causal microtask that must pass before
+another real-dataset workstream opens.

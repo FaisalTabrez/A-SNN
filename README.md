@@ -1731,3 +1731,26 @@ drive.mount('/content/drive')
 
 Download `gen28_triton_event_kernel_bundle.zip` at completion. See the
 [Gen-28 preregistration](gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md).
+
+Gen-28 stopped. Sensor-native Triton reached 32.76% of compiled-dense
+throughput on real SSC at batch 256, and the best registered low-density ratio
+was 52.08%. Prediction agreement at the primary workload was 99.609%, below
+the frozen 99.9% gate. See the
+[Gen-28 analysis](gen5/docs/GEN28_TRITON_EVENT_KERNEL_ANALYSIS.md).
+
+## Gen-29 causal evidence closure
+
+Gen-29 is a deterministic synthesis, not another training or kernel sweep. It
+hashes the authoritative Phase-47-through-Gen-28 analyses and emits the final
+claim ledger:
+
+```bash
+python gen5/examples/gen29_program_closure.py \
+  --repo-root . \
+  --output-dir gen5_outputs/gen29_program_closure
+```
+
+The closure preserves the supported residual-state and compiled-execution
+results while explicitly rejecting or leaving untested the unsupported
+adaptive and hardware claims. See the
+[Gen-29 protocol](gen5/docs/GEN29_PROGRAM_CLOSURE_PROTOCOL.md).

@@ -1,5 +1,13 @@
 # Gen-5 milestone roadmap
 
+> Current closure (2026-08-20): Gen-29 completed the deterministic causal
+> evidence ledger through Gen-28. The supported neural result is cooperative
+> sample-specific residual LIF state on SHD/SSC; compiled dense residual LIF is
+> the supported systems path. The tested adaptive mechanisms and software
+> event-sparse paths are closed or unsupported, and hardware energy is
+> untested. Gen-30 is not authorized. A successor requires new mechanism theory
+> and a preregistered causal microtask.
+
 > Status (2026-08-10): Milestone A returned `stop` with no qualified causal
 > arms. The current architecture branch is closed. Milestones B and C are
 > deferred; they must not be run against this rejected architecture.

@@ -1,0 +1,13 @@
+category,claim,status,evidence
+neural_mechanism,Residual LIF state is beneficially sample-specific on SHD and SSC,supported,Phase 47 and Phase 48
+generalization,Residual-state identity generalizes to N-MNIST event vision,rejected,Gen-19 and Gen-20
+competitiveness,Residual LIF matches the best parameter-matched SSC predictor,rejected,Phase 49
+adaptive_mechanism,Dynamic topology adds matched continual-learning benefit,rejected,Gen-21
+adaptive_mechanism,Dual memory timescales outperform one adaptive memory,rejected,Gen-22 and Gen-23
+adaptive_mechanism,Learned delays add matched causal benefit,rejected,Gen-21
+adaptive_mechanism,Local reward credit adds reliable matched adaptation,rejected,Gen-18 and Gen-21
+systems,Compilation removes the eager residual-LIF loop confound,supported,Gen-24
+systems,Sparse accumulation preserves trained task behavior,supported-scope-limited,Gen-27
+systems,Generic COO is a viable production event-sparse path,rejected,Gen-25
+systems,The Triton event kernel reaches compiled-dense throughput parity,rejected,Gen-28
+hardware,AMMC-SNN reduces measured hardware energy,untested,No wall-plug or neuromorphic measurement

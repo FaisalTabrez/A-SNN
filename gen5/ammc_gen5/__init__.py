@@ -654,6 +654,13 @@ from .gen28_triton_event_kernel import (
     summarize_gen28,
     triton_event_currents,
 )
+from .gen29_program_closure import (
+    CLAIMS as GEN29_CLAIMS,
+    EVIDENCE_DOCUMENTS as GEN29_EVIDENCE_DOCUMENTS,
+    Gen29Result,
+    bundle_gen29_artifacts,
+    run_gen29,
+)
 from .evidence_synthesis import (
     EVIDENCE_FILENAMES,
     Gen5EvidenceSynthesisResult,
@@ -1350,6 +1357,11 @@ __all__ = [
     "run_gen28",
     "summarize_gen28",
     "triton_event_currents",
+    "GEN29_CLAIMS",
+    "GEN29_EVIDENCE_DOCUMENTS",
+    "Gen29Result",
+    "bundle_gen29_artifacts",
+    "run_gen29",
     "try_xla_device",
     "world_preset_config",
     "world_preset_names",

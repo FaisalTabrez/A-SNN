@@ -1,0 +1,153 @@
+{
+  "sources": [
+    {
+      "phase": "phase47",
+      "path": "gen5/docs/MILESTONE_ROADMAP.md",
+      "sha256": "f349d70c749609144c3282b3db48289d24340178044de5691cfe76a0b5de2fc0"
+    },
+    {
+      "phase": "phase48",
+      "path": "gen5/docs/MILESTONE_ROADMAP.md",
+      "sha256": "f349d70c749609144c3282b3db48289d24340178044de5691cfe76a0b5de2fc0"
+    },
+    {
+      "phase": "phase49",
+      "path": "gen5/docs/MILESTONE_ROADMAP.md",
+      "sha256": "f349d70c749609144c3282b3db48289d24340178044de5691cfe76a0b5de2fc0"
+    },
+    {
+      "phase": "gen20",
+      "path": "gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN20.md",
+      "sha256": "53ce18fb7ea269da714bcc5b66b6edf50ebeba730d30049bfba4e46fa51b7ddb"
+    },
+    {
+      "phase": "gen21",
+      "path": "gen5/docs/GEN21_MATCHED_CAUSAL_MECHANISMS_ANALYSIS.md",
+      "sha256": "09ec0388edd5331612c630b9a9901f2b5426a390c739dd9e448fc0a4d9935502"
+    },
+    {
+      "phase": "gen22",
+      "path": "gen5/docs/GEN22_DUAL_MEMORY_REPLICATION_ANALYSIS.md",
+      "sha256": "0886e1dc07e1998c224370833bd109fac29e9ddd2b0d521c13cad5e33a8deb35"
+    },
+    {
+      "phase": "gen23",
+      "path": "gen5/docs/GEN23_BOUNDARY_CONSOLIDATION_ANALYSIS.md",
+      "sha256": "bd76c468a81147757652d3a774a0c8099f35bd0c7c14be5c9c43d633daa09fb1"
+    },
+    {
+      "phase": "gen24",
+      "path": "gen5/docs/GEN24_COMPILED_RESIDUAL_STATE_ANALYSIS.md",
+      "sha256": "74927f36017c67cff3134290f11eccb02988a03b98a91297a8d4c3c71604e0c6"
+    },
+    {
+      "phase": "gen25",
+      "path": "gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_ANALYSIS.md",
+      "sha256": "1b3a4b88640a67cdbe90e7d46dab1724fff52e78c5162eb23f9482668caa8c6f"
+    },
+    {
+      "phase": "gen26",
+      "path": "gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_ANALYSIS.md",
+      "sha256": "a416b83e746b089904278bf07ce2d08060b49cc463498772729dbf5721da3933"
+    },
+    {
+      "phase": "gen27",
+      "path": "gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_ANALYSIS.md",
+      "sha256": "f7c4254a9504ac633e78a2eb81016590071fa404ba779c169707379674044720"
+    },
+    {
+      "phase": "gen28",
+      "path": "gen5/docs/GEN28_TRITON_EVENT_KERNEL_ANALYSIS.md",
+      "sha256": "745b61f5f7d9b1df977b7fe6659d90304efc6cb7be2df5c5faceae9312dcde16"
+    }
+  ],
+  "claims": [
+    {
+      "category": "neural_mechanism",
+      "claim": "Residual LIF state is beneficially sample-specific on SHD and SSC",
+      "status": "supported",
+      "evidence": "Phase 47 and Phase 48"
+    },
+    {
+      "category": "generalization",
+      "claim": "Residual-state identity generalizes to N-MNIST event vision",
+      "status": "rejected",
+      "evidence": "Gen-19 and Gen-20"
+    },
+    {
+      "category": "competitiveness",
+      "claim": "Residual LIF matches the best parameter-matched SSC predictor",
+      "status": "rejected",
+      "evidence": "Phase 49"
+    },
+    {
+      "category": "adaptive_mechanism",
+      "claim": "Dynamic topology adds matched continual-learning benefit",
+      "status": "rejected",
+      "evidence": "Gen-21"
+    },
+    {
+      "category": "adaptive_mechanism",
+      "claim": "Dual memory timescales outperform one adaptive memory",
+      "status": "rejected",
+      "evidence": "Gen-22 and Gen-23"
+    },
+    {
+      "category": "adaptive_mechanism",
+      "claim": "Learned delays add matched causal benefit",
+      "status": "rejected",
+      "evidence": "Gen-21"
+    },
+    {
+      "category": "adaptive_mechanism",
+      "claim": "Local reward credit adds reliable matched adaptation",
+      "status": "rejected",
+      "evidence": "Gen-18 and Gen-21"
+    },
+    {
+      "category": "systems",
+      "claim": "Compilation removes the eager residual-LIF loop confound",
+      "status": "supported",
+      "evidence": "Gen-24"
+    },
+    {
+      "category": "systems",
+      "claim": "Sparse accumulation preserves trained task behavior",
+      "status": "supported-scope-limited",
+      "evidence": "Gen-27"
+    },
+    {
+      "category": "systems",
+      "claim": "Generic COO is a viable production event-sparse path",
+      "status": "rejected",
+      "evidence": "Gen-25"
+    },
+    {
+      "category": "systems",
+      "claim": "The Triton event kernel reaches compiled-dense throughput parity",
+      "status": "rejected",
+      "evidence": "Gen-28"
+    },
+    {
+      "category": "hardware",
+      "claim": "AMMC-SNN reduces measured hardware energy",
+      "status": "untested",
+      "evidence": "No wall-plug or neuromorphic measurement"
+    }
+  ],
+  "decision": {
+    "status": "complete",
+    "required_evidence_count": 12,
+    "claim_count": 12,
+    "original_research_question_answered": "partially",
+    "supported_adaptive_mechanisms": [],
+    "supported_neural_mechanism": "cooperative sample-specific residual LIF state on SHD and SSC",
+    "supported_systems_path": "compiled dense residual LIF",
+    "closed_systems_paths": [
+      "generic COO",
+      "current Triton event-scatter kernel"
+    ],
+    "hardware_energy_claim_authorized": false,
+    "next_milestone": "new_mechanism_theory_and_preregistered_causal_microtask"
+  }
+}

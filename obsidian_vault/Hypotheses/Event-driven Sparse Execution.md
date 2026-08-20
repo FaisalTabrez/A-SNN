@@ -1,7 +1,7 @@
 ---
 type: hypothesis
 origin_sprint: "gen28"
-status: "active"
+status: "closed"
 tags: [hypothesis, gen5]
 ---
 

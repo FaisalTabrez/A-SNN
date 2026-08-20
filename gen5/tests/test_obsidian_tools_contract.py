@@ -49,16 +49,16 @@ class ObsidianToolsContractTest(unittest.TestCase):
             }
             self.assertFalse(links - note_names, f"Unresolved graph links: {sorted(links - note_names)}")
 
-    def test_graph_builder_marks_gen28_as_current_and_results_pending(self):
+    def test_graph_builder_marks_gen29_as_completed_program_closure(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             build_graph(root / "vault", root / "outputs")
             state = (root / "vault" / "Current State.md").read_text(encoding="utf-8")
-            gen28 = (root / "vault" / "Sprints" / "Gen-28.md").read_text(encoding="utf-8")
-            self.assertIn("[[Gen-28]] is the active research package", state)
-            self.assertIn("terminal results are pending", state)
-            self.assertIn("active-implementation-complete-results-pending", gen28)
-            self.assertIn("hardware energy efficiency", state)
+            gen29 = (root / "vault" / "Sprints" / "Gen-29.md").read_text(encoding="utf-8")
+            self.assertIn("[[Gen-29]] is the current program position", state)
+            self.assertIn("current workstream", state)
+            self.assertIn("completed-program-closure", gen29)
+            self.assertIn("Gen-30 is not authorized", state)
 
     def test_graph_builder_covers_every_phase_after_sprint41(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -67,7 +67,7 @@ class ObsidianToolsContractTest(unittest.TestCase):
             sprint_names = {note.stem for note in (root / "vault" / "Sprints").glob("*.md")}
             expected = {
                 *(f"Sprint-{number}" for number in range(42, 50)),
-                *(f"Gen-{number}" for number in range(20, 29)),
+                *(f"Gen-{number}" for number in range(20, 30)),
             }
             self.assertFalse(expected - sprint_names)
             decision_names = {note.stem for note in (root / "vault" / "Decisions").glob("*.md")}
@@ -75,7 +75,7 @@ class ObsidianToolsContractTest(unittest.TestCase):
                 {f"{name} Decision" for name in expected},
                 decision_names,
             )
-            self.assertEqual(len(DECISIONS), 17)
+            self.assertEqual(len(DECISIONS), 18)
 
     def test_graph_builder_imports_completed_gen9_through_gen18_artifacts(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

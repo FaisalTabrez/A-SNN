@@ -62,23 +62,25 @@ SPRINTS = {
     "gen26": ("Sparse Numerical Fidelity", "[[Spiking Speech Commands]], [[Behavioral Sparse Semantics]]"),
     "gen27": ("Trained Threshold Robustness", "[[Spiking Speech Commands]], [[Behavioral Sparse Semantics]]"),
     "gen28": ("Triton Event Kernel", "[[Spiking Speech Commands]], [[Event-driven Sparse Execution]]"),
+    "gen29": ("Causal Evidence Closure", "[[Cross-benchmark Evidence Ledger]], [[Program-level Causal Synthesis]]"),
 }
 
 CURRENT_STATE = {
-    "sprint_id": "gen28",
-    "title": "Gen-28 Triton Event-Native Kernel Audit",
-    "status": "active-implementation-complete-results-pending",
+    "sprint_id": "gen29",
+    "title": "Gen-29 Causal Evidence Closure",
+    "status": "completed-program-closure",
     "summary": (
-        "Gen-28 is the current bounded systems experiment. Its Triton event-scatter kernel, "
-        "behavioral-equivalence gates, and benchmark runner are implemented. The first L4 run exposed "
-        "a CUDA Graph output-lifetime bug that is now corrected without changing the protocol; terminal results are pending."
+        "Gen-29 closes the current workstream with a hashed, deterministic claim ledger. "
+        "Residual LIF state and compiled execution remain supported within scope; the tested adaptive "
+        "mechanisms and software event-sparse paths are closed or unproven."
     ),
-    "next_action": "Run the frozen Gen-28 package on an NVIDIA L4, verify its manifest, and import the terminal result without a rescue sweep.",
-    "benchmark": "Spiking Speech Commands",
-    "hypothesis": "Event-driven Sparse Execution",
-    "protocol": "gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md",
-    "implementation": "gen5/examples/gen28_triton_event_kernel.py and gen5/ammc_gen5/gen28_triton_event_kernel.py",
-    "guardrail": "Do not claim hardware energy efficiency or create another sparse-kernel phase until Gen-28 reaches its frozen terminal decision.",
+    "next_action": "Design a new mathematical learning mechanism and pass a preregistered causal microtask before opening another real-dataset workstream.",
+    "benchmark": "Cross-benchmark Evidence Ledger",
+    "hypothesis": "Program-level Causal Synthesis",
+    "protocol": "gen5/docs/GEN29_PROGRAM_CLOSURE_PROTOCOL.md",
+    "implementation": "gen5/examples/gen29_program_closure.py and gen5/ammc_gen5/gen29_program_closure.py",
+    "guardrail": "Gen-30 is not authorized by this closure. Do not rescue the closed kernel or adaptive-mechanism branches without a new causal theory.",
+    "index_summary": "Gen-29 is complete and the current empirical workstream is closed.",
 }
 
 HYPOTHESES = {
@@ -102,7 +104,8 @@ HYPOTHESES = {
     "Dual Memory Timescales": ("gen22", "closed", "Separated short- and long-term weights improve sequential adaptation and retention over one memory."),
     "Compiled Residual State": ("gen24", "supported-scope-limited", "Compilation removes the eager-loop confound while preserving residual-LIF behavior."),
     "Behavioral Sparse Semantics": ("gen27", "supported-scope-limited", "Sparse event accumulation preserves trained predictions and spike behavior despite numerical differences."),
-    "Event-driven Sparse Execution": ("gen28", "active", "A custom event-native kernel can convert validated sparse semantics into accelerator throughput."),
+    "Event-driven Sparse Execution": ("gen28", "closed", "A custom event-native kernel can convert validated sparse semantics into accelerator throughput."),
+    "Program-level Causal Synthesis": ("gen29", "supported", "A deterministic ledger can separate supported, rejected, untested, and proxy-only project claims."),
 }
 
 DECISIONS = {
@@ -122,7 +125,8 @@ DECISIONS = {
     "gen25": ("stop", "Generic PyTorch COO was behaviorally stable but far slower than compiled dense execution.", "15201 vs 234864 examples/s; ratio 0.06473", "gen5/docs/GEN25_EVENT_DRIVEN_SPARSE_AUDIT_ANALYSIS.md"),
     "gen26": ("stop", "The sparse discrepancy came from accumulation-order error amplified at hard thresholds, not encoding or precision.", "max current error 3.32e-4; max logit error 3.29e-2; amplification 131x", "gen5/docs/GEN26_SPARSE_NUMERICAL_FIDELITY_ANALYSIS.md"),
     "gen27": ("pass", "Trained sparse substitution preserved task behavior under the preregistered gates.", "accuracy 48.0792%; min agreement 99.9625%; spike disagreement 0.00401%", "gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_ANALYSIS.md"),
-    "gen28": ("active-results-pending", "A custom Triton event-scatter kernel is implemented for the decisive throughput audit; its CUDA Graph output-lifetime correction does not change the frozen protocol.", "promotion requires real SSC sensor-native parity at batch 256", "gen5/docs/GEN28_TRITON_EVENT_KERNEL_PREREGISTRATION.md"),
+    "gen28": ("stop", "The Triton event-scatter kernel failed behavioral and throughput gates, closing the software event-sparse path.", "real native ratio 0.3276; best low-density ratio 0.5208; primary agreement 99.609%", "gen5/docs/GEN28_TRITON_EVENT_KERNEL_ANALYSIS.md"),
+    "gen29": ("complete", "The deterministic claim ledger closes the current workstream without promoting a new mechanism.", "12 evidence documents; 12 explicit claims; no supported adaptive mechanism", "gen5/docs/GEN29_PROGRAM_CLOSURE_PROTOCOL.md"),
 }
 
 ARTIFACTS = (
@@ -142,6 +146,7 @@ ARTIFACTS = (
     ("sprint41", "shd_sparse_width_cuda_2026-08-10/shd_sparse_width.json", "SHD Sparse Width Evidence", "Spiking-Heidelberg-Digits", "Sparse Recurrent Topology", "Sparse-Width-Scaling"),
     ("gen19", "gen19_nmnist_state_replication_log_recovery_2026-08-10/gen19_nmnist_state_replication.json", "N-MNIST State Replication", "N-MNIST", "Residual LIF State", "Residual LIF State"),
     ("gen20", "nmnist_accuracy_benchmark_log_recovery_2026-08-11/nmnist_accuracy_benchmark.json", "N-MNIST Accuracy Benchmark", "N-MNIST", "Spatial-temporal CNN", "N-MNIST Accuracy Frontier"),
+    ("gen29", "gen29_program_closure_2026-08-20/gen29_program_closure.json", "Gen-29 Causal Evidence Closure", "Cross-benchmark Evidence Ledger", "Deterministic Evidence Synthesis", "Program-level Causal Synthesis"),
 )
 
 
@@ -215,13 +220,13 @@ type: current-state
 current_sprint: {yaml_value(CURRENT_STATE["sprint_id"])}
 status: {yaml_value(CURRENT_STATE["status"])}
 updated: "2026-08-20"
-tags: [current-state, gen5, gen28]
+tags: [current-state, gen5, gen29]
 ---
 
 # Current State
 
 ## Current Research Position
-[[{note_id(CURRENT_STATE["sprint_id"])}]] is the active research package: **{CURRENT_STATE["title"]}**.
+[[{note_id(CURRENT_STATE["sprint_id"])}]] is the current program position: **{CURRENT_STATE["title"]}**.
 
 {CURRENT_STATE["summary"]}
 
@@ -278,6 +283,7 @@ tags: [hypothesis, gen5]
         "Compiled Residual State": "The parameter-matched residual Conv1D plus LIF-state model under compiled steady-state inference.",
         "Event-driven Sparse Operator": "Event-coordinate accumulation substituted for the dense temporal input operator.",
         "Triton Event Kernel": "Custom Triton event-scatter execution path evaluated with behavioral-equivalence gates.",
+        "Deterministic Evidence Synthesis": "Hashed claim-ledger generation that preserves authoritative program decisions without retraining.",
     }
     for name, description in architecture_notes.items():
         write_note(vault / "Architectures" / f"{name}.md", f"---\ntype: architecture\ntags: [architecture, gen5]\n---\n\n# {name}\n\n{description}\n")
@@ -285,6 +291,7 @@ tags: [hypothesis, gen5]
         "Spiking-Heidelberg-Digits": "Event-based spoken-digit benchmark used by the SHD sprint series.",
         "N-MNIST": "Official event-vision MNIST conversion; native sensor is 34x34x2.",
         "Spiking Speech Commands": "Event-audio benchmark used by the continual-adaptation program.",
+        "Cross-benchmark Evidence Ledger": "Hashed program-level synthesis spanning SHD, SSC, N-MNIST, embodied control, and systems audits.",
         "Embodied Delayed Reward": "Seeded tensorized control environment with delayed scalar reward.",
         "Sequential MNIST": "Row-stream MNIST temporal-memory benchmark.",
         "Event-coded MNIST": "Latency/event-coded MNIST representation benchmark.",
@@ -324,7 +331,7 @@ tags: [index, gen5]
 # A-SNN Research Knowledge Graph
 
 > [!important] Current bounded experiment
-> [[{note_id(CURRENT_STATE["sprint_id"])}]] is implemented and results are pending. See [[Current State]].
+> {CURRENT_STATE["index_summary"]} See [[Current State]].
 
 ## Program Map
 - Current position: [[Current State]]
@@ -339,9 +346,10 @@ tags: [index, gen5]
 - N-MNIST boundary: [[Gen-19]], [[Gen-20]]
 - Matched adaptation and dual-memory falsification: [[Gen-21]], [[Gen-22]], [[Gen-23]]
 - Compiled and event-sparse systems audit: [[Gen-24]], [[Gen-25]], [[Gen-26]], [[Gen-27]], [[Gen-28]]
+- Program closure: [[Gen-29]]
 
 ## Claim Boundary
-The replicated positive neural result is sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Compilation removes the eager-loop confound, while hardware-energy and event-native throughput claims remain unauthorized until [[Gen-28]] terminates.
+The replicated positive neural result is sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Compilation removes the eager-loop confound; Gen-28 closes the current software event-sparse path, and hardware-energy claims remain unauthorized.
 """)
 
     generated = 0
