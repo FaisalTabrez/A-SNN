@@ -1,7 +1,7 @@
 ---
 type: hypothesis
 origin_sprint: "gen30"
-status: "active-results-pending"
+status: "stopped-component-signal-only"
 tags: [hypothesis, gen5]
 ---
 

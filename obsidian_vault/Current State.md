@@ -1,7 +1,7 @@
 ---
 type: current-state
 current_sprint: "gen30"
-status: "active-implementation-complete-results-pending"
+status: "completed-stop"
 updated: "2026-08-20"
 tags: [current-state, gen5, gen30]
 ---
@@ -11,7 +11,7 @@ tags: [current-state, gen5, gen30]
 ## Current Research Position
 [[Gen-30]] is the current program position: **Gen-30 Dendritic Predictive Credit**.
 
-Gen-30 opens the post-closure workstream with a new fixed-topology local-credit theory and a preregistered Delayed Contextual Binding microtask. The seven-arm, ten-seed implementation is complete, but no result or mechanism claim exists until the frozen run finishes.
+Gen-30 stopped: DPC showed large causal gains over its three ablations but failed absolute new-context accuracy, old-context retention, retention-drop, and seed-replication gates. The result blocks SSC transfer and separates weak local credit from interference protection.
 
 ## Frozen Scope
 - Benchmark: [[Delayed Contextual Binding]]
@@ -20,7 +20,7 @@ Gen-30 opens the post-closure workstream with a new fixed-topology local-credit 
 - Implementation: gen5/examples/gen30_dendritic_predictive_credit.py and gen5/ammc_gen5/gen30_dendritic_predictive_credit.py
 
 ## Next Action
-Run the frozen Gen-30 package on Colab L4 and evaluate every preregistered gate without tuning after inspection.
+Design and preregister a new matched-capacity mechanism that separately improves hidden credit strength and protects prior context mappings.
 
 ## Guardrail
-Do not enable structural plasticity or transfer to SSC unless Gen-30 passes all aggregate, causal-control, activity, and 8/10 replication gates.
+Do not tune Gen-30 after inspection, revive closed LTW/STW claims, enable structural plasticity, or transfer to SSC from this stop result.

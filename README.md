@@ -1781,3 +1781,12 @@ The runner checkpoints after every arm/seed and emits JSON, record and summary
 CSVs, a plot, SHA-256 manifest, and portable bundle. Results are pending; no
 local-learning or real-dataset claim is authorized yet. See the
 [Gen-30 preregistration](gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md).
+
+Gen-30 stopped on its frozen gates. DPC reached 52.81% Context-B accuracy and
+40.63% retained Context-A accuracy, with a 14.87-point retention drop and zero
+qualified seeds. It did remain within the e-prop parity gate and exceeded all
+three causal ablations by 21.58-23.89 joint-accuracy points. This supports a
+bounded conclusion that aligned teaching signals and eligibility traces caused
+learning above chance, but the proposed predictive residual did not solve the
+absolute learning or stability-plasticity problem. See the
+[Gen-30 analysis](gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md).

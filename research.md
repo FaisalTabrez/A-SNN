@@ -6140,3 +6140,26 @@ bounded spike activity, and 8/10 seed replication. Results are pending.
 Structural plasticity, dual memory, delays, replay, glial modulation,
 real-dataset transfer, and hardware-energy claims remain unauthorized until
 these gates pass.
+
+## 2026-08-20 - Gen-30 stops but isolates causal local-credit components
+
+The complete ten-seed console summary reports a frozen `stop` decision. DPC
+learned Context A to 55.51%, then finished at 52.81% on Context B and retained
+40.63% on Context A. Its 14.87-point retention drop exceeded the five-point
+ceiling, and none of ten seeds satisfied the combined accuracy/retention gate.
+The proposed mechanism therefore does not authorize SSC transfer.
+
+The failure is informative rather than null. DPC's 46.72% joint score was
+within 0.52 point of e-prop and exceeded shuffled-apical, no-eligibility, and
+shuffled-modulator controls by 22.71, 21.58, and 23.89 points. Its 3.65% spike
+activity passed the bounded-activity gate. Correctly aligned teaching signals
+and temporal eligibility traces therefore made a large causal contribution on
+this microtask. The predictive residual itself showed no meaningful advantage
+over the simpler e-prop broadcast rule.
+
+BPTT confirmed partial task learnability by reaching 81.35% on Context B, but
+it catastrophically forgot Context A (27.11% retained; 71.30-point drop) and
+used 39.39% spike activity. The next theory must address two separable
+problems: stronger local hidden credit and local interference protection. It
+must not rescue Gen-30 through a learning-rate sweep, reuse the closed LTW/STW
+claim, or move to real data before a new preregistered causal microtask passes.

@@ -7,13 +7,13 @@ tags: [index, gen5]
 # A-SNN Research Knowledge Graph
 
 > [!important] Current bounded experiment
-> Gen-30 is implemented and preregistered; causal-microtask results are pending. See [[Current State]].
+> Gen-30 stopped: causal components were isolated, but the proposed local-credit mechanism was insufficient. See [[Current State]].
 
 ## Program Map
 - Current position: [[Current State]]
 - Supported mechanism: [[Residual LIF State]]
 - Supported systems result: [[Compiled Residual State]]
-- Active neural hypothesis: [[Dendritic Predictive Credit]]
+- Latest tested neural hypothesis: [[Dendritic Predictive Credit]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
 
 ## Evidence Timeline
@@ -26,4 +26,4 @@ tags: [index, gen5]
 - New local-credit causal microtask: [[Gen-30]]
 
 ## Claim Boundary
-The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 is a preregistered test of a new fixed-topology local-credit rule, not evidence for it. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
+The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 found large component-level effects for eligibility and aligned teaching identity, but DPC failed the full accuracy and retention gates. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.

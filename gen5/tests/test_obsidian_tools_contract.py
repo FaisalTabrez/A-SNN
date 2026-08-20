@@ -49,16 +49,16 @@ class ObsidianToolsContractTest(unittest.TestCase):
             }
             self.assertFalse(links - note_names, f"Unresolved graph links: {sorted(links - note_names)}")
 
-    def test_graph_builder_marks_gen30_as_active_results_pending(self):
+    def test_graph_builder_marks_gen30_as_completed_stop(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             build_graph(root / "vault", root / "outputs")
             state = (root / "vault" / "Current State.md").read_text(encoding="utf-8")
             gen30 = (root / "vault" / "Sprints" / "Gen-30.md").read_text(encoding="utf-8")
             self.assertIn("[[Gen-30]] is the current program position", state)
-            self.assertIn("no result or mechanism claim exists", state)
-            self.assertIn("active-implementation-complete-results-pending", gen30)
-            self.assertIn("Do not enable structural plasticity", state)
+            self.assertIn("Gen-30 stopped", state)
+            self.assertIn("completed-stop", gen30)
+            self.assertIn("Do not tune Gen-30", state)
 
     def test_graph_builder_covers_every_phase_after_sprint41(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

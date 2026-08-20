@@ -1,19 +1,19 @@
 ---
 type: decision
 sprint_id: "gen30"
-status: "active"
-evidence: "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md"
+status: "stop"
+evidence: "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md"
 tags: [decision, gen30, gen5]
 ---
 
 # Gen-30 Decision - Dendritic Predictive Credit
 
 ## Decision
-A new local-credit rule is frozen for causal evaluation; no result is available yet.
+DPC isolated necessary eligibility and teaching-identity components but failed absolute learning and retention gates.
 
 ## Key Evidence
-7 paired arms; 10 seeds; 8/10 replication gate; results pending
+B 52.8125%; A retained 40.6348%; drop 14.8730 points; qualified seeds 0/10
 
 ## Graph Connections
 - Phase: [[Gen-30]]
-- Source: gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md
+- Source: gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md

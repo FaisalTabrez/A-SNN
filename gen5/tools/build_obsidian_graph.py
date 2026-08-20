@@ -69,19 +69,19 @@ SPRINTS = {
 CURRENT_STATE = {
     "sprint_id": "gen30",
     "title": "Gen-30 Dendritic Predictive Credit",
-    "status": "active-implementation-complete-results-pending",
+    "status": "completed-stop",
     "summary": (
-        "Gen-30 opens the post-closure workstream with a new fixed-topology local-credit theory and "
-        "a preregistered Delayed Contextual Binding microtask. The seven-arm, ten-seed implementation "
-        "is complete, but no result or mechanism claim exists until the frozen run finishes."
+        "Gen-30 stopped: DPC showed large causal gains over its three ablations but failed absolute "
+        "new-context accuracy, old-context retention, retention-drop, and seed-replication gates. "
+        "The result blocks SSC transfer and separates weak local credit from interference protection."
     ),
-    "next_action": "Run the frozen Gen-30 package on Colab L4 and evaluate every preregistered gate without tuning after inspection.",
+    "next_action": "Design and preregister a new matched-capacity mechanism that separately improves hidden credit strength and protects prior context mappings.",
     "benchmark": "Delayed Contextual Binding",
     "hypothesis": "Dendritic Predictive Credit",
     "protocol": "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md",
     "implementation": "gen5/examples/gen30_dendritic_predictive_credit.py and gen5/ammc_gen5/gen30_dendritic_predictive_credit.py",
-    "guardrail": "Do not enable structural plasticity or transfer to SSC unless Gen-30 passes all aggregate, causal-control, activity, and 8/10 replication gates.",
-    "index_summary": "Gen-30 is implemented and preregistered; causal-microtask results are pending.",
+    "guardrail": "Do not tune Gen-30 after inspection, revive closed LTW/STW claims, enable structural plasticity, or transfer to SSC from this stop result.",
+    "index_summary": "Gen-30 stopped: causal components were isolated, but the proposed local-credit mechanism was insufficient.",
 }
 
 HYPOTHESES = {
@@ -107,7 +107,7 @@ HYPOTHESES = {
     "Behavioral Sparse Semantics": ("gen27", "supported-scope-limited", "Sparse event accumulation preserves trained predictions and spike behavior despite numerical differences."),
     "Event-driven Sparse Execution": ("gen28", "closed", "A custom event-native kernel can convert validated sparse semantics into accelerator throughput."),
     "Program-level Causal Synthesis": ("gen29", "supported", "A deterministic ledger can separate supported, rejected, untested, and proxy-only project claims."),
-    "Dendritic Predictive Credit": ("gen30", "active-results-pending", "Residual apical teaching signals combined with basal eligibility traces can assign delayed hidden-layer credit without BPTT."),
+    "Dendritic Predictive Credit": ("gen30", "stopped-component-signal-only", "Residual apical teaching signals combined with basal eligibility traces can assign delayed hidden-layer credit without BPTT."),
 }
 
 DECISIONS = {
@@ -129,7 +129,7 @@ DECISIONS = {
     "gen27": ("pass", "Trained sparse substitution preserved task behavior under the preregistered gates.", "accuracy 48.0792%; min agreement 99.9625%; spike disagreement 0.00401%", "gen5/docs/GEN27_TRAINED_THRESHOLD_ROBUSTNESS_ANALYSIS.md"),
     "gen28": ("stop", "The Triton event-scatter kernel failed behavioral and throughput gates, closing the software event-sparse path.", "real native ratio 0.3276; best low-density ratio 0.5208; primary agreement 99.609%", "gen5/docs/GEN28_TRITON_EVENT_KERNEL_ANALYSIS.md"),
     "gen29": ("complete", "The deterministic claim ledger closes the current workstream without promoting a new mechanism.", "12 evidence documents; 12 explicit claims; no supported adaptive mechanism", "gen5/docs/GEN29_PROGRAM_CLOSURE_PROTOCOL.md"),
-    "gen30": ("active", "A new local-credit rule is frozen for causal evaluation; no result is available yet.", "7 paired arms; 10 seeds; 8/10 replication gate; results pending", "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md"),
+    "gen30": ("stop", "DPC isolated necessary eligibility and teaching-identity components but failed absolute learning and retention gates.", "B 52.8125%; A retained 40.6348%; drop 14.8730 points; qualified seeds 0/10", "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md"),
 }
 
 ARTIFACTS = (
@@ -342,7 +342,7 @@ tags: [index, gen5]
 - Current position: [[Current State]]
 - Supported mechanism: [[Residual LIF State]]
 - Supported systems result: [[Compiled Residual State]]
-- Active neural hypothesis: [[Dendritic Predictive Credit]]
+- Latest tested neural hypothesis: [[Dendritic Predictive Credit]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
 
 ## Evidence Timeline
@@ -355,7 +355,7 @@ tags: [index, gen5]
 - New local-credit causal microtask: [[Gen-30]]
 
 ## Claim Boundary
-The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 is a preregistered test of a new fixed-topology local-credit rule, not evidence for it. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
+The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 found large component-level effects for eligibility and aligned teaching identity, but DPC failed the full accuracy and retention gates. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
 """)
 
     generated = 0
