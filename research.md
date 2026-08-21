@@ -6163,3 +6163,29 @@ used 39.39% spike activity. The next theory must address two separable
 problems: stronger local hidden credit and local interference protection. It
 must not rescue Gen-30 through a learning-rate sweep, reuse the closed LTW/STW
 claim, or move to real data before a new preregistered causal microtask passes.
+
+## 2026-08-21 - Primary evidence track precedes the research track
+
+Decision: consolidate the project's supported residual-LIF temporal-audio
+evidence before beginning active-dendrite context-gating research. This order
+separates a near-term reproducibility/publication obligation from the higher-
+risk search for a new continual-learning mechanism.
+
+The evidence track will not assume that the hybrid is already competitive.
+One canonical SHD/SSC runner must compare the residual LIF model against
+direct-only, zero-state, and shuffled-state causal controls and against strong
+matched TCN/GRU baselines under paired seeds, identical optimization, honest
+validation selection, and explicit parameter/runtime accounting. A future SSM
+baseline is allowed only if its capacity and training budget are transparent.
+
+The decision gates are intentionally separable. If the residual state fails
+its causal controls, close the mechanism claim. If it remains causal but loses
+to the strongest dense baseline, publish or package only the causal-audit
+methodology. Only causal survival plus dense-baseline parity authorizes a
+focused temporal-audio model/library claim. Compilation may support a software
+throughput claim but never an unmeasured energy claim.
+
+The subsequent research track is active-dendrite context gating, initially
+with an explicit context signal and only later with astrocyte-generated
+context. It remains deferred until the primary evidence decision is frozen.
+Source protocol: `gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md`.

@@ -1,26 +1,26 @@
 ---
 type: current-state
-current_sprint: "gen30"
-status: "completed-stop"
+current_sprint: "evidence1"
+status: "active-protocol-defined-runner-pending"
 updated: "2026-08-20"
-tags: [current-state, gen5, gen30]
+tags: [current-state, gen5, evidence1]
 ---
 
 # Current State
 
 ## Current Research Position
-[[Gen-30]] is the current program position: **Gen-30 Dendritic Predictive Credit**.
+[[Evidence-1]] is the current program position: **Primary Audio Evidence Consolidation**.
 
-Gen-30 stopped: DPC showed large causal gains over its three ablations but failed absolute new-context accuracy, old-context retention, retention-drop, and seed-replication gates. The result blocks SSC transfer and separates weak local credit from interference protection.
+The project will first consolidate its supported residual-LIF temporal-audio evidence under one matched SHD/SSC protocol. Active-dendrite and astrocyte-context research is explicitly deferred until the causal, accuracy, systems, and clean-replication decisions are locked.
 
 ## Frozen Scope
-- Benchmark: [[Delayed Contextual Binding]]
-- Hypothesis: [[Dendritic Predictive Credit]]
-- Protocol: gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md
-- Implementation: gen5/examples/gen30_dendritic_predictive_credit.py and gen5/ammc_gen5/gen30_dendritic_predictive_credit.py
+- Benchmark: [[SHD-SSC Matched Audio Evidence]]
+- Hypothesis: [[Residual LIF State]]
+- Protocol: gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md
+- Implementation: pending canonical evidence runner
 
 ## Next Action
-Design and preregister a new matched-capacity mechanism that separately improves hidden credit strength and protects prior context mappings.
+Implement the canonical paired-seed SHD/SSC runner from Stage E1 without selecting architectures or checkpoints on final test data.
 
 ## Guardrail
-Do not tune Gen-30 after inspection, revive closed LTW/STW claims, enable structural plasticity, or transfer to SSC from this stop result.
+Do not claim dense-baseline superiority, independent replication, product readiness, or energy efficiency before their separate registered gates pass.

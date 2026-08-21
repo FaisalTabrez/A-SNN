@@ -64,24 +64,25 @@ SPRINTS = {
     "gen28": ("Triton Event Kernel", "[[Spiking Speech Commands]], [[Event-driven Sparse Execution]]"),
     "gen29": ("Causal Evidence Closure", "[[Cross-benchmark Evidence Ledger]], [[Program-level Causal Synthesis]]"),
     "gen30": ("Dendritic Predictive Credit", "[[Delayed Contextual Binding]], [[Dendritic Predictive Credit]]"),
+    "evidence1": ("Primary Audio Evidence Consolidation", "[[SHD-SSC Matched Audio Evidence]], [[Residual LIF State]]"),
 }
 
 CURRENT_STATE = {
-    "sprint_id": "gen30",
-    "title": "Gen-30 Dendritic Predictive Credit",
-    "status": "completed-stop",
+    "sprint_id": "evidence1",
+    "title": "Primary Audio Evidence Consolidation",
+    "status": "active-protocol-defined-runner-pending",
     "summary": (
-        "Gen-30 stopped: DPC showed large causal gains over its three ablations but failed absolute "
-        "new-context accuracy, old-context retention, retention-drop, and seed-replication gates. "
-        "The result blocks SSC transfer and separates weak local credit from interference protection."
+        "The project will first consolidate its supported residual-LIF temporal-audio evidence under "
+        "one matched SHD/SSC protocol. Active-dendrite and astrocyte-context research is explicitly "
+        "deferred until the causal, accuracy, systems, and clean-replication decisions are locked."
     ),
-    "next_action": "Design and preregister a new matched-capacity mechanism that separately improves hidden credit strength and protects prior context mappings.",
-    "benchmark": "Delayed Contextual Binding",
-    "hypothesis": "Dendritic Predictive Credit",
-    "protocol": "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_PREREGISTRATION.md",
-    "implementation": "gen5/examples/gen30_dendritic_predictive_credit.py and gen5/ammc_gen5/gen30_dendritic_predictive_credit.py",
-    "guardrail": "Do not tune Gen-30 after inspection, revive closed LTW/STW claims, enable structural plasticity, or transfer to SSC from this stop result.",
-    "index_summary": "Gen-30 stopped: causal components were isolated, but the proposed local-credit mechanism was insufficient.",
+    "next_action": "Implement the canonical paired-seed SHD/SSC runner from Stage E1 without selecting architectures or checkpoints on final test data.",
+    "benchmark": "SHD-SSC Matched Audio Evidence",
+    "hypothesis": "Residual LIF State",
+    "protocol": "gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md",
+    "implementation": "pending canonical evidence runner",
+    "guardrail": "Do not claim dense-baseline superiority, independent replication, product readiness, or energy efficiency before their separate registered gates pass.",
+    "index_summary": "Primary temporal-audio evidence consolidation is active; the mechanism research track is deferred.",
 }
 
 HYPOTHESES = {
@@ -182,6 +183,8 @@ def artifact_metrics(data: dict[str, Any]) -> dict[str, Any]:
 
 
 def note_id(sprint_id: str) -> str:
+    if sprint_id.startswith("evidence"):
+        return sprint_id.replace("evidence", "Evidence-")
     return sprint_id.replace("sprint", "Sprint-").replace("gen", "Gen-")
 
 
@@ -300,6 +303,7 @@ tags: [hypothesis, gen5]
         "Sequential MNIST": "Row-stream MNIST temporal-memory benchmark.",
         "Event-coded MNIST": "Latency/event-coded MNIST representation benchmark.",
         "Delayed Contextual Binding": "Four-way synthetic delayed-association task with conflicting context mappings, distractors, and retention testing.",
+        "SHD-SSC Matched Audio Evidence": "Canonical paired-seed evidence protocol spanning SHD and SSC causal, accuracy, systems, and reproduction gates.",
     }
     for name, description in benchmarks.items():
         write_note(vault / "Benchmarks" / f"{name}.md", f"---\ntype: benchmark\ntags: [benchmark, gen5]\n---\n\n# {name}\n\n{description}\n")
@@ -342,7 +346,7 @@ tags: [index, gen5]
 - Current position: [[Current State]]
 - Supported mechanism: [[Residual LIF State]]
 - Supported systems result: [[Compiled Residual State]]
-- Latest tested neural hypothesis: [[Dendritic Predictive Credit]]
+- Active evidence hypothesis: [[Residual LIF State]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
 
 ## Evidence Timeline
@@ -352,10 +356,11 @@ tags: [index, gen5]
 - Matched adaptation and dual-memory falsification: [[Gen-21]], [[Gen-22]], [[Gen-23]]
 - Compiled and event-sparse systems audit: [[Gen-24]], [[Gen-25]], [[Gen-26]], [[Gen-27]], [[Gen-28]]
 - Program closure: [[Gen-29]]
-- New local-credit causal microtask: [[Gen-30]]
+- Stopped local-credit causal microtask: [[Gen-30]]
+- Primary audio evidence consolidation: [[Evidence-1]]
 
 ## Claim Boundary
-The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 found large component-level effects for eligibility and aligned teaching identity, but DPC failed the full accuracy and retention gates. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
+The internal positive neural result remains sample-specific residual LIF state on SHD and SSC. Evidence-1 must determine whether that effect survives canonical paired-seed controls and remains competitive with strong matched dense baselines. Active-dendrite research follows only after this decision. Independent replication, product value, structural-plasticity claims, and hardware-energy claims remain unauthorized.
 """)
 
     generated = 0

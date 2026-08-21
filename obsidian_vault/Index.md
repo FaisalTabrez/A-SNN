@@ -7,13 +7,13 @@ tags: [index, gen5]
 # A-SNN Research Knowledge Graph
 
 > [!important] Current bounded experiment
-> Gen-30 stopped: causal components were isolated, but the proposed local-credit mechanism was insufficient. See [[Current State]].
+> Primary temporal-audio evidence consolidation is active; the mechanism research track is deferred. See [[Current State]].
 
 ## Program Map
 - Current position: [[Current State]]
 - Supported mechanism: [[Residual LIF State]]
 - Supported systems result: [[Compiled Residual State]]
-- Latest tested neural hypothesis: [[Dendritic Predictive Credit]]
+- Active evidence hypothesis: [[Residual LIF State]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
 
 ## Evidence Timeline
@@ -23,7 +23,8 @@ tags: [index, gen5]
 - Matched adaptation and dual-memory falsification: [[Gen-21]], [[Gen-22]], [[Gen-23]]
 - Compiled and event-sparse systems audit: [[Gen-24]], [[Gen-25]], [[Gen-26]], [[Gen-27]], [[Gen-28]]
 - Program closure: [[Gen-29]]
-- New local-credit causal microtask: [[Gen-30]]
+- Stopped local-credit causal microtask: [[Gen-30]]
+- Primary audio evidence consolidation: [[Evidence-1]]
 
 ## Claim Boundary
-The replicated positive neural result remains sample-specific residual LIF state on SHD and SSC. Dynamic topology, learned delays, local reward credit, and readout-level dual-memory advantages remain rejected or unproven under matched controls. Gen-30 found large component-level effects for eligibility and aligned teaching identity, but DPC failed the full accuracy and retention gates. Real-data transfer, structural-plasticity claims, and hardware-energy claims remain unauthorized.
+The internal positive neural result remains sample-specific residual LIF state on SHD and SSC. Evidence-1 must determine whether that effect survives canonical paired-seed controls and remains competitive with strong matched dense baselines. Active-dendrite research follows only after this decision. Independent replication, product value, structural-plasticity claims, and hardware-energy claims remain unauthorized.

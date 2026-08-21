@@ -49,16 +49,16 @@ class ObsidianToolsContractTest(unittest.TestCase):
             }
             self.assertFalse(links - note_names, f"Unresolved graph links: {sorted(links - note_names)}")
 
-    def test_graph_builder_marks_gen30_as_completed_stop(self):
+    def test_graph_builder_marks_primary_evidence_track_as_current(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             build_graph(root / "vault", root / "outputs")
             state = (root / "vault" / "Current State.md").read_text(encoding="utf-8")
-            gen30 = (root / "vault" / "Sprints" / "Gen-30.md").read_text(encoding="utf-8")
-            self.assertIn("[[Gen-30]] is the current program position", state)
-            self.assertIn("Gen-30 stopped", state)
-            self.assertIn("completed-stop", gen30)
-            self.assertIn("Do not tune Gen-30", state)
+            evidence = (root / "vault" / "Sprints" / "Evidence-1.md").read_text(encoding="utf-8")
+            self.assertIn("[[Evidence-1]] is the current program position", state)
+            self.assertIn("Active-dendrite", state)
+            self.assertIn("active-protocol-defined-runner-pending", evidence)
+            self.assertIn("Do not claim dense-baseline superiority", state)
 
     def test_graph_builder_covers_every_phase_after_sprint41(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

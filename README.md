@@ -1790,3 +1790,17 @@ bounded conclusion that aligned teaching signals and eligibility traces caused
 learning above chance, but the proposed predictive residual did not solve the
 absolute learning or stability-plasticity problem. See the
 [Gen-30 analysis](gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md).
+
+## Primary evidence consolidation
+
+The project now prioritizes consolidation of its supported temporal-audio
+result before opening the active-dendrite research track. The evidence phase
+will rebuild SHD and SSC evaluation around one canonical paired-seed protocol,
+including residual-LIF causal ablations, strong matched dense baselines,
+compiled inference, confidence intervals, and clean-clone reproduction.
+
+This is deliberately falsifiable. A causal residual-state effect that loses to
+the strongest dense baseline becomes a methodology result, not an accuracy or
+product claim. Active-dendrite and astrocyte-context experiments remain
+deferred until the audio evidence decision is locked. See the
+[primary evidence roadmap](gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md).
