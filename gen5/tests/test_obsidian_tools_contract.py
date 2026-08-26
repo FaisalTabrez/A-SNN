@@ -55,10 +55,15 @@ class ObsidianToolsContractTest(unittest.TestCase):
             build_graph(root / "vault", root / "outputs")
             state = (root / "vault" / "Current State.md").read_text(encoding="utf-8")
             evidence = (root / "vault" / "Sprints" / "Evidence-1.md").read_text(encoding="utf-8")
+            itinerary = (root / "vault" / "Roadmaps" / "LTH-Informed Itinerary Review.md").read_text(encoding="utf-8")
             self.assertIn("[[Evidence-1]] is the current program position", state)
             self.assertIn("Active-dendrite", state)
             self.assertIn("active-protocol-defined-runner-pending", evidence)
             self.assertIn("Do not claim dense-baseline superiority", state)
+            self.assertIn("[[LTH-Informed Itinerary Review]]", state)
+            self.assertIn("Evidence-1]] remains active", itinerary)
+            self.assertIn("context-specific dendritic supermask routing", itinerary)
+            self.assertIn("not a direct test of a", itinerary)
 
     def test_graph_builder_covers_every_phase_after_sprint41(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

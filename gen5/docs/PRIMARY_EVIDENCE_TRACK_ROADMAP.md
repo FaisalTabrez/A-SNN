@@ -81,6 +81,20 @@ routing-based interference protection from the memory-storage mechanisms
 already rejected. Astrocyte-generated context is a later ablation, not an
 assumed capability.
 
+### LTH-informed itinerary refinements
+
+The first deferred mechanism study is now specified as context-specific
+dendritic supermask routing with a frozen backbone and explicit context. It
+must use capacity-matched shared-mask, random-mask, shuffled-context, replay,
+and regularization controls before any active-dendrite claim. Inferred or
+astrocytic context is a later and separate hypothesis.
+
+LTH-inspired structured sparsity is a conditional systems branch, not the next
+phase: it may open only when a real block/channel-sparse operator can skip the
+masked computation. Evolutionary birth-initialization and overparameterize-
+then-prune experiments remain optional backlog diagnostics. See the
+[LTH-informed itinerary review](LTH_INFORMED_ITINERARY_REVIEW.md).
+
 ## Claim boundary
 
 Until this roadmap completes, the defensible statement remains narrow:

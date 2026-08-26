@@ -1804,3 +1804,10 @@ the strongest dense baseline becomes a methodology result, not an accuracy or
 product claim. Active-dendrite and astrocyte-context experiments remain
 deferred until the audio evidence decision is locked. See the
 [primary evidence roadmap](gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md).
+
+The deferred itinerary now includes an LTH-informed review. Context-specific
+dendritic supermask routing is the first post-evidence mechanism study;
+structured sparsity is conditional on a genuinely executable block-sparse
+operator, while evolutionary reset and overparameterize-then-prune studies
+remain optional diagnostics. See the
+[LTH-informed itinerary review](gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md).

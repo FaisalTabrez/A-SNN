@@ -2,7 +2,7 @@
 type: current-state
 current_sprint: "evidence1"
 status: "active-protocol-defined-runner-pending"
-updated: "2026-08-20"
+updated: "2026-08-26"
 tags: [current-state, gen5, evidence1]
 ---
 
@@ -24,3 +24,7 @@ Implement the canonical paired-seed SHD/SSC runner from Stage E1 without selecti
 
 ## Guardrail
 Do not claim dense-baseline superiority, independent replication, product readiness, or energy efficiency before their separate registered gates pass.
+
+## Deferred Itinerary
+The LTH-informed review refines the post-evidence research backlog without
+changing the active sequence. See [[LTH-Informed Itinerary Review]].

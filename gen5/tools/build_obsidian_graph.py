@@ -225,7 +225,7 @@ See linked experiment records and the repository's `gen5/docs/` preregistration 
 type: current-state
 current_sprint: {yaml_value(CURRENT_STATE["sprint_id"])}
 status: {yaml_value(CURRENT_STATE["status"])}
-updated: "2026-08-20"
+updated: "2026-08-26"
 tags: [current-state, gen5, {CURRENT_STATE["sprint_id"]}]
 ---
 
@@ -247,6 +247,45 @@ tags: [current-state, gen5, {CURRENT_STATE["sprint_id"]}]
 
 ## Guardrail
 {CURRENT_STATE["guardrail"]}
+
+## Deferred Itinerary
+The LTH-informed review refines the post-evidence research backlog without
+changing the active sequence. See [[LTH-Informed Itinerary Review]].
+""")
+    write_note(vault / "Roadmaps" / "LTH-Informed Itinerary Review.md", """---
+type: research-roadmap
+status: deferred-until-evidence1-decision
+updated: "2026-08-26"
+tags: [roadmap, lth, dendrites, sparsity, gen5]
+---
+
+# LTH-Informed Itinerary Review
+
+## Sequence Decision
+[[Evidence-1]] remains active and must finish before this research backlog
+opens. The reviewed proposal refines later experiments; it does not authorize
+Gen-31 through Gen-34 as the next phases.
+
+## Accepted Refinements
+- First deferred mechanism study: context-specific dendritic supermask routing
+  with a frozen backbone, explicit context, matched capacity, and causal
+  context/mask controls.
+- Conditional systems study: structured dendritic sparsity only with an
+  operator that actually skips block or channel work and is compared with
+  [[Compiled Residual State]] plus unstructured sparsity.
+- Optional evolutionary diagnostics: original birth initialization versus
+  reinitialization and continued mutation, followed only optionally by a
+  compute-matched overparameterize-then-prune study.
+
+## Boundaries
+- [[Residual LIF State]] remains the active evidence hypothesis.
+- [[Structural Plasticity]] is not reopened by this review.
+- Gen-19 is negative mechanism-transfer evidence, not a direct test of a
+  winning-ticket mask plus original initialization.
+- No hardware-energy claim is authorized.
+
+## Repository Source
+`gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md`
 """)
     for name, (origin, status, statement) in HYPOTHESES.items():
         write_note(vault / "Hypotheses" / f"{name}.md", f"""---
@@ -333,7 +372,7 @@ tags: [decision, {sprint_id}, gen5]
 
     write_note(vault / "Index.md", f"""---
 type: index
-updated: "2026-08-20"
+updated: "2026-08-26"
 tags: [index, gen5]
 ---
 
@@ -348,6 +387,7 @@ tags: [index, gen5]
 - Supported systems result: [[Compiled Residual State]]
 - Active evidence hypothesis: [[Residual LIF State]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
+- Deferred research itinerary: [[LTH-Informed Itinerary Review]]
 
 ## Evidence Timeline
 - SHD robustness and state discovery: [[Sprint-42]], [[Sprint-43]], [[Sprint-44]], [[Sprint-45]], [[Sprint-46]], [[Sprint-47]]

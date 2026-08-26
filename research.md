@@ -6189,3 +6189,39 @@ The subsequent research track is active-dendrite context gating, initially
 with an explicit context signal and only later with astrocyte-generated
 context. It remains deferred until the primary evidence decision is frozen.
 Source protocol: `gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md`.
+
+## 2026-08-26 - LTH proposals refine, but do not reorder, the itinerary
+
+Decision: accept the attached Lottery Ticket Hypothesis-inspired proposal as
+research input while preserving Evidence-1 as the active program. None of the
+proposed Gen-31 through Gen-34 labels is promoted to an active phase before the
+paired SHD/SSC residual-state decision is frozen.
+
+The strongest deferred hypothesis is context-specific dendritic supermask
+routing. It directly tests whether task interference can be reduced by routing
+contexts through different subnetworks instead of storing both contexts in the
+same plastic weights. Its first test must use an explicit context identifier,
+a frozen backbone, matched mask capacity, and shared-mask, random-mask,
+shuffled-context, replay, and regularization controls. Inferred or astrocytic
+context is a later hypothesis, not part of the first causal test.
+
+Structured per-dendrite pruning is retained only as a conditional systems
+branch. A compartment mask applied to dense tensor work is not structured
+sparse acceleration; the branch opens only if an executable block/channel-
+sparse operator can skip the pruned computation and is benchmarked against
+dense and unstructured controls with fidelity, memory, and steady-state timing
+reported. This does not reopen hardware-energy claims.
+
+The evolutionary reset proposal needs conceptual repair. LTH's relevant
+intervention restores a surviving subnetwork's original initialization, not a
+weight value from an arbitrary recent generation. A future diagnostic must
+separate original birth weights, random reinitialization, continued mutation,
+and topology-only inheritance under paired seeds. Overparameterize-then-prune
+is exploratory and must match cumulative search compute as well as final size.
+
+Gen-19 is relevant negative mechanism-transfer evidence, but it did not test
+transfer of an LTH winning-ticket mask plus its original initialization. We
+must not present it as a direct falsification of winning-ticket transfer.
+
+Full decision matrix and gates:
+`gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md`.

@@ -1,6 +1,6 @@
 ---
 type: index
-updated: "2026-08-20"
+updated: "2026-08-26"
 tags: [index, gen5]
 ---
 
@@ -15,6 +15,7 @@ tags: [index, gen5]
 - Supported systems result: [[Compiled Residual State]]
 - Active evidence hypothesis: [[Residual LIF State]]
 - Closed adaptive-mechanism branches: [[Matched Adaptive Mechanisms]] and [[Dual Memory Timescales]]
+- Deferred research itinerary: [[LTH-Informed Itinerary Review]]
 
 ## Evidence Timeline
 - SHD robustness and state discovery: [[Sprint-42]], [[Sprint-43]], [[Sprint-44]], [[Sprint-45]], [[Sprint-46]], [[Sprint-47]]
