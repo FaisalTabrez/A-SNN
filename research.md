@@ -6225,3 +6225,30 @@ must not present it as a direct falsification of winning-ticket transfer.
 
 Full decision matrix and gates:
 `gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md`.
+
+## 2026-08-26 - Graphify replaces the active Obsidian workflow
+
+Decision: retain Markdown and experiment manifests as the evidence authority,
+but replace the custom Obsidian generator, retriever, and sync scripts with a
+repository-scoped Graphify knowledge layer. The existing `obsidian_vault/` is
+preserved as a historical snapshot and excluded from the new graph; it is not
+current project state.
+
+The Graphify corpus is intentionally bounded. It includes source code,
+preregistrations, analyses, `research.md`, contributor documentation, tests,
+and human-reviewed output Markdown. It excludes raw ZIP bundles, imported run
+folders, plots, caches, and non-reviewed output tables. This prevents the graph
+from mistaking artifact volume for evidential importance.
+
+The migration has two gates. A fully local extraction must cover the package,
+examples, and contract tests. The research acceptance gate additionally
+requires extracted source nodes for `research.md`, the primary evidence
+roadmap, and the LTH-informed itinerary. The tested Graphify 0.9.50 update path
+met both gates locally through parsed code plus Markdown headings and explicit
+references. Optional model-assisted semantic enrichment must use an explicitly
+chosen backend; provider auto-detection is prohibited for private research.
+
+Graphify relationships marked `INFERRED` remain navigation hypotheses. When a
+graph answer conflicts with a source document or experiment manifest, the
+source wins. Workflow and acceptance contract:
+`docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md`.

@@ -1,0 +1,41 @@
+# Graphify's own state and assistant integration.
+graphify-out/
+.git/
+.codex/
+.agents/
+
+# Historical knowledge system retained only as an archive.
+obsidian_vault/
+
+# Local caches, environments, and scratch data.
+.benchmarks/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+tmp/
+**/__pycache__/
+*.pyc
+
+# Imported run bundles and heavyweight media are evidence archives, not graph
+# sources. Their decisions are summarized in research.md, gen5/docs, and the
+# retained analysis Markdown files selected below.
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.mov
+*.wav
+*.mp3
+/*_cuda/
+/*_cuda_*/
+
+# Keep only human-reviewed Markdown analyses from retained output bundles.
+gen5/outputs/**
+!gen5/outputs/**/
+!gen5/outputs/*.md
+!gen5/outputs/**/*.md

@@ -27,6 +27,25 @@ python -m unittest discover -s gen5\tests -v
 
 If PyTorch is unavailable locally, record that limitation in the handoff.
 
+## Knowledge graph updates
+
+Markdown and experiment manifests are authoritative. Graphify is the derived
+query layer; the historical `obsidian_vault/` is no longer regenerated.
+
+When `graphify-out/graph.json` exists, update the implementation graph after
+code changes:
+
+```powershell
+graphify update .
+python gen5/tools/verify_graphify_contract.py
+```
+
+After documentation changes, run `graphify update . --force` and
+`python gen5/tools/verify_graphify_contract.py --require-research` before
+committing a refreshed graph. If optional semantic enrichment is used, retain
+the same explicitly approved backend and record that choice. See
+`docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md` for privacy and acceptance rules.
+
 ## Current baseline discipline
 
 For the simple bot world:

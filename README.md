@@ -10,10 +10,16 @@ The short version:
 - `gen5/` is the Python framework for headless tensor evolution and benchmarks.
 - `research.md` is the living project memory and decision log.
 - `gen5/outputs/` contains retained experiment evidence.
+- Graphify provides the derived code-and-research knowledge graph; Markdown
+  and experiment manifests remain authoritative.
 
 ## Start here
 
 If you are new to the repo, read these in order:
+
+For AI-assisted navigation, install and query Graphify using the
+[knowledge workflow](docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md). Its graph is a
+retrieval aid, not evidence authority.
 
 1. [Repository structure](docs/PROJECT_STRUCTURE.md)
 2. [Gen-5 architecture](gen5/docs/GEN5_ARCHITECTURE.md)
@@ -71,6 +77,9 @@ If you are new to the repo, read these in order:
 .
 |-- index.html                 # Gen-4 browser sandbox / visual connectome lab
 |-- research.md                # living findings, decisions, and next steps
+|-- .graphifyignore            # bounded knowledge-corpus policy
+|-- AGENTS.md                  # Graphify query-first agent guidance
+|-- graphify-out/              # derived shared graph (after extraction)
 |-- docs/                      # newcomer navigation and repo-level docs
 |-- assets/design/             # concept and UI reference images
 `-- gen5/

@@ -13,6 +13,8 @@ This repo has two connected layers:
 | `research.md` | Living lab notebook: core findings, project decisions, evidence status, and next steps. |
 | `README.md` | Main newcomer landing page. |
 | `.gitignore` | Python/cache ignore rules. |
+| `.graphifyignore` | Graphify corpus policy; excludes archives and raw outputs. |
+| `AGENTS.md` | Project-scoped Graphify query-first guidance for coding agents. |
 
 ## Top-level directories
 
@@ -21,6 +23,8 @@ This repo has two connected layers:
 | `docs/` | Repository-level documentation and navigation. |
 | `assets/design/` | Design/concept images used for communication and UI reference. |
 | `gen5/` | Headless Python framework, evaluation scripts, tests, benchmarks, and retained outputs. |
+| `graphify-out/` | Derived, queryable code/research graph generated from canonical repository sources. |
+| `obsidian_vault/` | Historical snapshot only; superseded by Graphify. |
 
 ## Gen-5 layout
 
