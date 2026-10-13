@@ -24,6 +24,14 @@ RESEARCH_ANCHORS = (
     "gen5/docs/lth_informed_itinerary_review.md",
 )
 
+REMOVED_KNOWLEDGE_SOURCES = (
+    "obsidian_vault/",
+    "gen5/tools/obsidian_sync.py",
+    "gen5/tools/obsidian_retriever.py",
+    "gen5/tools/build_obsidian_graph.py",
+    "gen5/tests/test_obsidian_tools_contract.py",
+)
+
 
 def _nodes(payload: Any) -> list[dict[str, Any]]:
     if not isinstance(payload, dict):
@@ -69,13 +77,22 @@ def verify_graph(graph_path: Path, *, require_research: bool = False) -> dict[st
     strings = graph_strings(payload)
     missing_implementation = missing_anchors(strings, IMPLEMENTATION_ANCHORS)
     missing_research = missing_anchors(strings, RESEARCH_ANCHORS) if require_research else []
+    stale_sources = sorted({
+        source.replace("\\", "/")
+        for node in _nodes(payload)
+        for field in ("source_file", "path")
+        if isinstance(source := node.get(field), str)
+        if any(source.replace("\\", "/").lower().startswith(removed)
+               for removed in REMOVED_KNOWLEDGE_SOURCES)
+    })
     return {
         "graph": str(graph_path),
         "node_count": len(_nodes(payload)),
         "require_research": require_research,
         "missing_implementation": missing_implementation,
         "missing_research": missing_research,
-        "passed": not missing_implementation and not missing_research,
+        "stale_knowledge_sources": stale_sources,
+        "passed": not missing_implementation and not missing_research and not stale_sources,
     }
 
 

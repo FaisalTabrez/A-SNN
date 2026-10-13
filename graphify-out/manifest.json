@@ -1104,10 +1104,10 @@
     "semantic_hash": "f4662f48ae085e2b6368f5cebb3397bb"
   },
   "gen5/tests/test_graphify_contract.py": {
-    "mtime": 1787759565.9587092,
-    "seen": 1787759641.1804433,
-    "ast_hash": "ceb3d0e597e934b1e8aef098b9ddb53f",
-    "semantic_hash": "ceb3d0e597e934b1e8aef098b9ddb53f"
+    "mtime": 1791898928.280113,
+    "seen": 1791899011.5223029,
+    "ast_hash": "000c74ce656ca1c1406c2cece50a3d8d",
+    "semantic_hash": ""
   },
   "gen5/tests/test_ltw_diagnostics_contract.py": {
     "mtime": 1786278498.4025729,
@@ -1332,10 +1332,10 @@
     "semantic_hash": "b03d5eb9b6f7aacf103924d063ae0d7b"
   },
   "gen5/tools/verify_graphify_contract.py": {
-    "mtime": 1787759564.3178718,
-    "seen": 1787759641.1804814,
-    "ast_hash": "c61df9901076e015f6f08b7710957f28",
-    "semantic_hash": "c61df9901076e015f6f08b7710957f28"
+    "mtime": 1791898928.2781522,
+    "seen": 1791899011.5223694,
+    "ast_hash": "7a67c61cd4f21b83c3276d237968d663",
+    "semantic_hash": ""
   },
   "gen5/tools/verify_phase11_outputs.py": {
     "mtime": 1782477803.9313958,
@@ -1344,21 +1344,21 @@
     "semantic_hash": "8ad74eaffc6802c1c24c419927951253"
   },
   "AGENTS.md": {
-    "mtime": 1787759816.25795,
-    "seen": 1787759844.3278267,
-    "ast_hash": "9619c2a5d3c7823a485142a4427b3b8d",
+    "mtime": 1791898885.77765,
+    "seen": 1791899011.5223737,
+    "ast_hash": "27743a7b67f6b1b6107d515bdf588a87",
     "semantic_hash": ""
   },
   "CONTRIBUTING.md": {
-    "mtime": 1787759815.0312438,
-    "seen": 1787759844.3278282,
-    "ast_hash": "fca859ed82e657af76516a582957c95d",
+    "mtime": 1791898885.7827015,
+    "seen": 1791899011.5223753,
+    "ast_hash": "943de1f3ed12147e9124c07556c7ed05",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1787759582.1563625,
-    "seen": 1787759751.4368916,
-    "ast_hash": "dc3635a987e85da9e92546add6ac2fe3",
+    "mtime": 1791898928.2692535,
+    "seen": 1791899011.5223773,
+    "ast_hash": "a13e194811e6ce6634b7bc4a9595fc6e",
     "semantic_hash": ""
   },
   "assets/README.md": {
@@ -1368,15 +1368,15 @@
     "semantic_hash": ""
   },
   "docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md": {
-    "mtime": 1787759813.8601732,
-    "seen": 1787759844.3278306,
-    "ast_hash": "28422ca249464ecd6fe3b45fc2a38d64",
+    "mtime": 1791898885.7847412,
+    "seen": 1791899011.522381,
+    "ast_hash": "cc857818f68598bffaedabdf6acd01c3",
     "semantic_hash": ""
   },
   "docs/PROJECT_STRUCTURE.md": {
-    "mtime": 1787759580.660965,
-    "seen": 1787759751.436894,
-    "ast_hash": "c1d285d075bec93aab17ed3b72a4f0c3",
+    "mtime": 1791898885.7811966,
+    "seen": 1791899011.5223827,
+    "ast_hash": "95475d1e77693dab9f3c2fc3ff41c28d",
     "semantic_hash": ""
   },
   "docs/README.md": {
@@ -2454,9 +2454,9 @@
     "semantic_hash": ""
   },
   "research.md": {
-    "mtime": 1787759817.4240775,
-    "seen": 1787759844.328008,
-    "ast_hash": "02cf2687247e02e07b4de5e6d37eb9f4",
+    "mtime": 1791898928.277093,
+    "seen": 1791899011.5227253,
+    "ast_hash": "60a96421545cafa58ccbc7693c82dc5a",
     "semantic_hash": ""
   },
   "gen5/docs/LITERATURE_UNIQUENESS_REVIEW.md": {

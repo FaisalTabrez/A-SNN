@@ -4,9 +4,6 @@ graphify-out/
 .codex/
 .agents/
 
-# Historical knowledge system retained only as an archive.
-obsidian_vault/
-
 # Local caches, environments, and scratch data.
 .benchmarks/
 .pytest_cache/

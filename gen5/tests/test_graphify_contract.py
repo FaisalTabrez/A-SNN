@@ -14,7 +14,6 @@ from verify_graphify_contract import verify_graph
 class GraphifyContractTest(unittest.TestCase):
     def test_graphify_ignore_keeps_the_corpus_bounded(self):
         policy = (REPOSITORY_ROOT / ".graphifyignore").read_text(encoding="utf-8")
-        self.assertIn("obsidian_vault/", policy)
         self.assertIn("*.zip", policy)
         self.assertIn("gen5/outputs/**", policy)
         self.assertIn("!gen5/outputs/**/*.md", policy)
@@ -61,6 +60,21 @@ class GraphifyContractTest(unittest.TestCase):
             research_result = verify_graph(graph, require_research=True)
             self.assertFalse(research_result["passed"])
             self.assertEqual(len(research_result["missing_research"]), 3)
+
+    def test_verifier_rejects_removed_vault_and_tool_nodes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            graph = Path(directory) / "graph.json"
+            graph.write_text(json.dumps({"nodes": [
+                {"source_file": "gen5/ammc_gen5/runtime.py"},
+                {"source_file": "gen5/examples/example.py"},
+                {"source_file": "gen5/tests/test_example.py"},
+                {"source_file": "obsidian_vault/Current State.md"},
+                {"source_file": "gen5/tools/obsidian_retriever.py"},
+            ]}), encoding="utf-8")
+            result = verify_graph(graph)
+            self.assertFalse(result["passed"])
+            self.assertEqual(result["missing_implementation"], [])
+            self.assertEqual(len(result["stale_knowledge_sources"]), 2)
 
 
 if __name__ == "__main__":

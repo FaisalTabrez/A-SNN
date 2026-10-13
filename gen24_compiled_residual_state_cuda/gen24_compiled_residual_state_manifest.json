@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "name": "gen24_compiled_residual_state.json",
+      "sha256": "86e3eab61bb11acb38c26e5f654260118bad640fd343292834185a0e0c679d76"
+    },
+    {
+      "name": "gen24_compiled_residual_state_records.csv",
+      "sha256": "0ee9e6e8546fb95bac891768a44e2cd2973069dd0fbb69de74d3e552d2daecdf"
+    },
+    {
+      "name": "gen24_compiled_residual_state_summary.csv",
+      "sha256": "0918c0f7205c4b10b55e89d6795522f07804695b84d375833598b072fcaaa8ec"
+    },
+    {
+      "name": "gen24_compiled_residual_state.png",
+      "sha256": "9638697496036b06814628845edf6acff182741c145f265dbf4f77e0aaf44e9b"
+    }
+  ]
+}

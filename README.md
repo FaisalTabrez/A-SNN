@@ -17,9 +17,9 @@ The short version:
 
 If you are new to the repo, read these in order:
 
-For AI-assisted navigation, install and query Graphify using the
+For project recall and AI-assisted navigation, query Graphify first using the
 [knowledge workflow](docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md). Its graph is a
-retrieval aid, not evidence authority.
+retrieval aid; follow its source locations to verify research claims.
 
 1. [Repository structure](docs/PROJECT_STRUCTURE.md)
 2. [Gen-5 architecture](gen5/docs/GEN5_ARCHITECTURE.md)

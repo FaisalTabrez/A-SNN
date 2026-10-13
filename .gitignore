@@ -6,7 +6,6 @@ __pycache__/
 .venv/
 venv/
 gen5_outputs/
-obsidian_vault/.obsidian/
 graphify-out/cache/
 graphify-out/cost.json
 graphify-out/.graphify_python

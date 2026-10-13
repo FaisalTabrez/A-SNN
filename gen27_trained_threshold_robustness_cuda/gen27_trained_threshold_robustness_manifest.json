@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "name": "gen27_trained_threshold_robustness.json",
+      "sha256": "f10544525d9109cf0126a7c817a27bb7c08cc46ca7026f7bcbcb07805a9d7819"
+    },
+    {
+      "name": "gen27_trained_threshold_robustness_records.csv",
+      "sha256": "6c19aefc9bca97c15f5a747a3342136ed9f1c0cf1708aec9f45e8a6626191d6d"
+    },
+    {
+      "name": "gen27_trained_threshold_robustness_summary.csv",
+      "sha256": "50258663fff98e8f594caba9e9efcbb3f8e974e1aad27fad0980dbcf746c2252"
+    },
+    {
+      "name": "gen27_trained_threshold_robustness.png",
+      "sha256": "a100d0f889cb0da55eee0960252962f0d3cae142a7decd274afada92be352efc"
+    },
+    {
+      "name": "gen27_trained_threshold_robustness_progress.json",
+      "sha256": "cf0c2729e6e06e63db313b993f33dd2a7f84bdd0f29d3156beb7806f221c6e07"
+    }
+  ]
+}

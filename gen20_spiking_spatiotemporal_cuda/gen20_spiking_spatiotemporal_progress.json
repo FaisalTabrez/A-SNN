@@ -1,0 +1,110 @@
+{
+  "config": {
+    "screen_seed": 220,
+    "confirmation_seeds": [
+      221,
+      222,
+      223
+    ],
+    "timesteps": 10,
+    "duration_us": 300000,
+    "sensor_size": 34,
+    "classes": 10,
+    "screen_train_samples": 20000,
+    "train_samples": 0,
+    "test_samples": 0,
+    "screen_epochs": 6,
+    "confirmation_epochs": 12,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "validation_fraction": 0.1,
+    "data_seed": 2026,
+    "data_root": "/content/drive/MyDrive/A-SNN/gen5_data/nmnist",
+    "download": true,
+    "minimum_screen_accuracy": 0.975,
+    "minimum_activity": 0.01,
+    "maximum_activity": 0.3,
+    "maximum_promoted_arms": 2,
+    "minimum_test_accuracy": 0.99,
+    "maximum_dense_gap": 0.0075,
+    "minimum_seed_accuracy": 0.987,
+    "minimum_causal_margin": 0.01,
+    "minimum_causal_seed_count": 2,
+    "minimum_ops_reduction": 5.0,
+    "event_dropout": 0.02,
+    "maximum_shift": 2,
+    "surrogate_slope": 10.0,
+    "distillation_temperature": 2.0,
+    "distillation_weight": 0.35,
+    "feature_distillation_weight": 0.1
+  },
+  "dataset": {
+    "name": "N-MNIST",
+    "sensor_size": [
+      34,
+      34,
+      2
+    ],
+    "timesteps": 10,
+    "duration_us": 300000,
+    "encoding": "binary_full_resolution_time_polarity_occupancy",
+    "train_event_density": 0.08133554458618164,
+    "test_event_density": 0.08149971812963486
+  },
+  "screen_records": [
+    {
+      "arm": "spatiotemporal_cnn",
+      "seed": 220,
+      "parameters": 1551402,
+      "dense_macs_per_sample": 966173696,
+      "analog_dense_macs_per_sample": 966173696,
+      "best_epoch": 6,
+      "best_validation_accuracy": 0.9911651941990332,
+      "validation_activity": 0.0,
+      "numerically_stable": true,
+      "train_seconds": 70.09164986800033,
+      "checkpoint": "/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_spatiotemporal_cnn_seed220.pt"
+    },
+    {
+      "arm": "conv_plif",
+      "seed": 220,
+      "parameters": 471114,
+      "dense_macs_per_sample": 99274240,
+      "analog_dense_macs_per_sample": 99274240,
+      "best_epoch": 5,
+      "best_validation_accuracy": 0.96216036006001,
+      "validation_activity": 0.15131260391245496,
+      "numerically_stable": true,
+      "train_seconds": 62.72320599700015,
+      "checkpoint": "/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_conv_plif_seed220.pt"
+    },
+    {
+      "arm": "multiscale_residual_plif",
+      "seed": 220,
+      "parameters": 435306,
+      "dense_macs_per_sample": 35999200,
+      "analog_dense_macs_per_sample": 9646560,
+      "best_epoch": 6,
+      "best_validation_accuracy": 0.9636606101016836,
+      "validation_activity": 0.12692395423321015,
+      "numerically_stable": true,
+      "train_seconds": 58.48495700300009,
+      "checkpoint": "/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_multiscale_residual_plif_seed220.pt"
+    },
+    {
+      "arm": "distilled_multiscale_plif",
+      "seed": 220,
+      "parameters": 435306,
+      "dense_macs_per_sample": 35999200,
+      "analog_dense_macs_per_sample": 9646560,
+      "best_epoch": 6,
+      "best_validation_accuracy": 0.9633272212035339,
+      "validation_activity": 0.12961670645373932,
+      "numerically_stable": true,
+      "train_seconds": 75.10260461200005,
+      "checkpoint": "/content/drive/MyDrive/A-SNN/gen5_outputs/gen20_spiking_spatiotemporal_cuda/gen20_checkpoints/screen_distilled_multiscale_plif_seed220.pt"
+    }
+  ],
+  "confirmation_records": []
+}

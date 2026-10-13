@@ -5,7 +5,8 @@ to audit.
 
 ## Before changing code
 
-- Read `README.md` and `docs/PROJECT_STRUCTURE.md`.
+- Query Graphify for relevant context, then read its cited sources,
+  `README.md`, and `docs/PROJECT_STRUCTURE.md`.
 - Check `research.md` for the current baseline and next recommended step.
 - Prefer small, evidence-backed changes over broad rewrites.
 
@@ -29,8 +30,10 @@ If PyTorch is unavailable locally, record that limitation in the handoff.
 
 ## Knowledge graph updates
 
-Markdown and experiment manifests are authoritative. Graphify is the derived
-query layer; the historical `obsidian_vault/` is no longer regenerated.
+Markdown and experiment manifests are authoritative. Graphify is the sole
+project recall and knowledge-graph workflow. Query it first for historical
+decisions, current state, and implementation context, then verify the cited
+sources. The previous Obsidian implementation has been removed.
 
 When `graphify-out/graph.json` exists, update the implementation graph after
 code changes:

@@ -6252,3 +6252,21 @@ Graphify relationships marked `INFERRED` remain navigation hypotheses. When a
 graph answer conflicts with a source document or experiment manifest, the
 source wins. Workflow and acceptance contract:
 `docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md`.
+
+## 2026-10-13 - Complete Obsidian removal and Graphify recall migration
+
+Decision: remove the historical Obsidian vault, including local settings, and
+use Graphify as the sole project recall and knowledge-graph workflow. This
+completes the August migration rather than retaining a parallel archive in the
+working repository. The prior committed vault remains recoverable from Git
+history; a temporary local recovery copy preserves its uncommitted edits.
+
+Query Graphify first for project history, current state, implementation,
+constraints, and decisions, then verify its cited authoritative sources.
+The Graphify-aware sprint harness remains in `gen5/tools/codex_harness.py`.
+The active program remains Evidence-1, subject to its registered decision;
+this tooling migration does not revise any mechanism's research gate.
+
+Refresh the graph locally with `graphify update . --force` and run
+`python gen5/tools/verify_graphify_contract.py --require-research` before
+publishing the migration. No cloud semantic backend is selected by this change.

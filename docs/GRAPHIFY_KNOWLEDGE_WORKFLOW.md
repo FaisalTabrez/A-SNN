@@ -1,8 +1,9 @@
 # Graphify knowledge workflow
 
-Status: active repository knowledge layer as of 2026-08-26.
+Status: sole repository knowledge and recall layer as of 2026-10-13.
 
 Graphify replaces the custom Obsidian generator, retriever, and sync utilities.
+The vault and its local settings have been removed from the repository.
 Markdown remains the evidence authority; Graphify is a derived navigation and
 query layer, never the source of a research claim.
 
@@ -18,7 +19,7 @@ Graphify should index:
 - Markdown `analysis.md` records under `gen5/outputs/`.
 
 `.graphifyignore` excludes raw datasets, ZIP bundles, plots, local result
-imports, caches, Graphify's own output, and the archived Obsidian vault. This
+imports, caches, and Graphify's own output. This
 keeps the graph focused on reviewable evidence rather than duplicating hundreds
 of megabytes of raw artifacts.
 
@@ -27,7 +28,7 @@ of megabytes of raw artifacts.
 On Windows PowerShell from the repository root:
 
 ```powershell
-uv tool install graphifyy==0.9.50
+uv tool install graphifyy==0.9.53
 graphify install --project --platform codex
 ```
 
@@ -46,7 +47,7 @@ graphify cluster-only . --no-label
 graphify update . --force
 ```
 
-The tested `0.9.50` update path also records Markdown headings and explicit
+The local update path also records Markdown headings and explicit
 references as `EXTRACTED` nodes and edges, which is enough for the repository's
 research-source coverage gate. Optional richer semantic relationships require
 a model-assisted update. Run that from Codex with `/graphify . --update`, or
@@ -113,9 +114,18 @@ Expected anchors:
 - Graph-derived `INFERRED` edges are navigation hypotheses; source documents
   and experiment manifests decide claims.
 
-## Historical Obsidian vault
+## Recall across sessions
 
-`obsidian_vault/` is retained as a read-only historical snapshot so prior work
-is not destroyed. It is excluded from Graphify, is no longer regenerated, and
-must not be treated as current project state. Remove it only in a separate
-cleanup after the research acceptance contract passes.
+For project history, current state, research constraints, and code questions,
+start with `graphify query "<question>"`. Use `graphify path "<A>" "<B>"` to
+trace relationships and `graphify explain "<concept>"` for a focused concept.
+Read the returned source locations before treating an answer as research
+evidence. If a query is incomplete, refine it using the graph's vocabulary and
+then inspect the cited sources. If the graph is unavailable, rebuild it using
+the local commands above and report any unresolved coverage gaps.
+
+`AGENTS.md` makes this the persistent agent workflow. The Graphify-aware
+`gen5/tools/codex_harness.py` remains the sprint execution wrapper. The former
+vault, Obsidian sync/retrieval utilities, and generator are removed; their
+committed history remains recoverable through Git. Graphify's optional Obsidian
+export is not part of this project's workflow.

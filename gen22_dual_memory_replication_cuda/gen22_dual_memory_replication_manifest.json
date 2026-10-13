@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "name": "gen22_dual_memory_replication.json",
+      "sha256": "33daac4271a14fbe547fc092057f5537e1e4dd4331fa0879a297ab663f95c3d0"
+    },
+    {
+      "name": "gen22_dual_memory_replication_records.csv",
+      "sha256": "a5a479957fc611ec64b216c13e9d397884d1a8fc881ed8e51f8cc56f3da37c94"
+    },
+    {
+      "name": "gen22_dual_memory_replication_summary.csv",
+      "sha256": "d1f3f78fee2f52efb72cfbe1acc53ec1eb8c071442a266e7562e2b1edeee461b"
+    },
+    {
+      "name": "gen22_dual_memory_replication.png",
+      "sha256": "fd0f3137656b1be63c16199230a756e9db5ed4615c0f2c60d68c2a19d16657cd"
+    },
+    {
+      "name": "gen22_dual_memory_replication_progress.json",
+      "sha256": "7c4e494b802bf35c46718c3c2fbc6b4dddda4f13646ec6be7fb6b62d4cec98e3"
+    }
+  ]
+}

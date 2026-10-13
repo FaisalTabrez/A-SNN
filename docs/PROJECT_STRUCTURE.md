@@ -24,7 +24,6 @@ This repo has two connected layers:
 | `assets/design/` | Design/concept images used for communication and UI reference. |
 | `gen5/` | Headless Python framework, evaluation scripts, tests, benchmarks, and retained outputs. |
 | `graphify-out/` | Derived, queryable code/research graph generated from canonical repository sources. |
-| `obsidian_vault/` | Historical snapshot only; superseded by Graphify. |
 
 ## Gen-5 layout
 
