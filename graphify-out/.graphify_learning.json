@@ -1,5 +1,91 @@
 {
-  "generated_at": "2026-10-13T13:40:09.771144+00:00",
-  "nodes": {},
+  "generated_at": "2026-10-14T05:45:59.914407+00:00",
+  "nodes": {
+    "gen5_ammc_gen5_evidence1_audio": {
+      "code_fingerprint": "94e3dce30bbab3373fe09c78ca2ff365c922ef6fbf3c3788019e5c755ebadcab",
+      "label": "ammc_gen5/evidence1_audio.py",
+      "last": "2026-10-14T03:33:55.988285+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T03:33:55.988285+00:00",
+          "outcome": "useful",
+          "q": "conduct a full audit of our previous work and check if any of our work had some loopholes or missing work"
+        }
+      ],
+      "score": 0.997883244,
+      "source_file": "gen5/ammc_gen5/evidence1_audio.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_docs_evidence1_hardening_2026_10_14_evidence_1_audit_hardening_and_remaining_work": {
+      "code_fingerprint": "cb78eac1907aa6ebf7721aacb54bfcccc40fa55e0b380b19ae838ebf0e3f3b7b",
+      "label": "Evidence-1 audit hardening and remaining work",
+      "last": "2026-10-14T05:30:58.376766+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T05:30:58.376766+00:00",
+          "outcome": "useful",
+          "q": "now that the audit has reported some flaws fix them"
+        }
+      ],
+      "score": 0.999758942,
+      "source_file": "gen5/docs/EVIDENCE1_HARDENING_2026_10_14.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_docs_gen30_dendritic_predictive_credit_analysis_gen_30_dendritic_predictive_credit_analysis": {
+      "code_fingerprint": "6fc0d0b12ad9d0d6dfda123ec050ec391f113d0f9990c1150c689e793c6030e6",
+      "label": "Gen-30 dendritic predictive-credit analysis",
+      "last": "2026-10-13T13:53:54.264685+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-13T13:53:54.264685+00:00",
+          "outcome": "useful",
+          "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
+        }
+      ],
+      "score": 0.984839672,
+      "source_file": "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_docs_lth_informed_itinerary_review_lth_informed_itinerary_review": {
+      "code_fingerprint": "32d66029e6fa9f89c5682f2f876f266a43c2de9275990cd99b30deb7320cd50a",
+      "label": "LTH-informed itinerary review",
+      "last": "2026-10-13T13:53:54.264685+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-13T13:53:54.264685+00:00",
+          "outcome": "useful",
+          "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
+        }
+      ],
+      "score": 0.984839672,
+      "source_file": "gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_docs_primary_evidence_track_roadmap_primary_evidence_track_roadmap": {
+      "code_fingerprint": "39561b8319c6d4a6af9d3f4ed8ae4bca724b98dae7adcca305203be5ca6db444",
+      "label": "Primary evidence track roadmap",
+      "last": "2026-10-14T03:33:55.988285+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T03:33:55.988285+00:00",
+          "outcome": "useful",
+          "q": "conduct a full audit of our previous work and check if any of our work had some loopholes or missing work"
+        },
+        {
+          "date": "2026-10-13T13:53:54.264685+00:00",
+          "outcome": "useful",
+          "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
+        }
+      ],
+      "score": 1.982722916,
+      "source_file": "gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md",
+      "status": "preferred",
+      "uses": 2
+    }
+  },
   "version": 1
 }
