@@ -1,5 +1,12 @@
 # Gen-5 milestone roadmap
 
+> Current authority (2026-10-14): the dated entries below are historical.
+> Gen30 subsequently ran and returned stop, with its canonical bundle still
+> pending. Evidence-1 now has two audited `causal_audit_only` runs. Its reviewed
+> lock and independent source-release replication remain pending. Gen24's
+> workload-specific systems result does not certify Evidence-1 logit fidelity.
+> See `EVIDENCE1_HARDENING_2026_10_14.md` for active work.
+
 > Current closure (2026-08-20): Gen-29 completed the deterministic causal
 > evidence ledger through Gen-28. The supported neural result is cooperative
 > sample-specific residual LIF state on SHD/SSC; compiled dense residual LIF is

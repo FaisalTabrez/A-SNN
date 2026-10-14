@@ -2,6 +2,26 @@
 
 Decision date: 2026-08-21
 
+Audit update (2026-10-14): both complete returned runs support the narrowed
+`causal_audit_only` outcome. State-pairing effects pass, accuracy and systems
+gates fail. The active task is audit hardening, an authorized source-complete
+release, frozen-checkpoint compiler diagnosis and reviewed decision lock,
+not another architecture search. Historical benchmark-test exposure and the
+remaining control/provenance limits are explicit in
+`EVIDENCE1_HARDENING_2026_10_14.md`.
+
+Closure tooling is implemented in `EVIDENCE1_CLOSURE_RUNBOOK.md`, including
+exact-original-source recovery, numerical recomputation, validation-only GPU
+diagnostics and clean-source verification. Human review uses the unfilled
+`EVIDENCE1_REVIEW_TEMPLATE.md`. Follow-up controls are dormant and their protocol
+is a draft, not a new active study.
+
+Implementation/restart update: 2026-10-13. Evidence-1 remains active.
+The [restart plan](RESEARCH_RESTART_2026_10.md) adds the approved literature
+suggestions without bypassing E1-E3. The [audio preregistration](EVIDENCE1_AUDIO_PREREGISTRATION.md)
+freezes the first canonical runner. The portable notebook is
+`gen5/notebooks/evidence1_research_restart.ipynb`.
+
 ## Purpose
 
 Consolidate the project's strongest supported result before opening another
@@ -102,3 +122,25 @@ sample-specific residual LIF state showed causal value on internal SHD/SSC
 experiments, and compiled dense execution removed the eager-loop confound.
 Competitive accuracy, independent replication, product value, and measured
 energy efficiency are not yet established.
+
+## Approved October restart additions
+
+1. Implement the canonical paired-seed runner now, with a synthetic notebook
+   smoke test and an explicit full-confirmation switch. Do not infer a research
+   result from the smoke test.
+2. Download/reproduce FiTS's validation-selected native recipe as a separate
+   reference. A matched FiTS port needs a new frozen protocol; published
+   250-bin/140-channel results are not matched to E1's 64-bin/700-channel data.
+3. Queue rate-preserving temporal perturbations, timing-only SHD, and
+   sliding-window readout for a post-decision timing audit. Freeze each probe
+   before inspecting its test results.
+4. Keep associative-scan training conditional on an exact recurrence,
+   gradient/prediction fidelity, and end-to-end gains over our compiled dense
+   path. BulletTrains is not evidence that event-sparse scatter becomes useful.
+5. Add a separate fly reference diagnostic and, after E1 decision lock, a small
+   fixed connectome-prior study with matched signed/degree-preserving random
+   wiring. Whole-brain simulation is not the next A-SNN training backend.
+6. Retain the frozen-backbone, explicit-context supermask experiment as the
+   first deferred learning mechanism. BrainTrace, dual-memory, AGMP, and DendriCL
+   are research inputs; they do not overturn our closed local-credit/memory
+   results without a separately registered test.

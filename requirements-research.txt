@@ -1,0 +1,11 @@
+# CPU-tested research/tooling versions. Install the intended Torch build separately.
+# This is not a retroactive reconstruction of the original Colab environment.
+numpy==2.2.6
+scipy==1.15.2
+h5py==3.14.0
+pandas==2.3.3
+matplotlib==3.10.1
+nbformat==5.10.4
+nbclient==0.10.2
+ipykernel==6.29.5
+PyYAML==6.0.2

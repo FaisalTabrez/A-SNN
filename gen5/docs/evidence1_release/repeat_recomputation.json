@@ -1,0 +1,156 @@
+{
+  "datasets": {
+    "shd": {
+      "accuracy": {
+        "residual_lif": {
+          "mean": 0.8406360424028267,
+          "standard_deviation": 0.011549600281287235,
+          "ci95_lower": 0.832373956080203,
+          "ci95_upper": 0.8488981287254505,
+          "n": 10
+        },
+        "conv1d": {
+          "mean": 0.8324204946996467,
+          "standard_deviation": 0.02009941116296116,
+          "ci95_lower": 0.8180422421179233,
+          "ci95_upper": 0.8467987472813702,
+          "n": 10
+        },
+        "tcn": {
+          "mean": 0.8321996466431095,
+          "standard_deviation": 0.012054069548247334,
+          "ci95_lower": 0.823576684746507,
+          "ci95_upper": 0.840822608539712,
+          "n": 10
+        },
+        "gru": {
+          "mean": 0.40410777385159014,
+          "standard_deviation": 0.03244016647389544,
+          "ci95_lower": 0.3809014767330776,
+          "ci95_upper": 0.42731407097010266,
+          "n": 10
+        }
+      },
+      "causal_deltas": {
+        "zero_state": {
+          "mean": 0.09434628975265018,
+          "standard_deviation": 0.02894763087044376,
+          "ci95_lower": 0.07363840209747696,
+          "ci95_upper": 0.1150541774078234,
+          "n": 10
+        },
+        "shuffled_state": {
+          "mean": 0.040400471142520614,
+          "standard_deviation": 0.011868237683611718,
+          "ci95_lower": 0.03191044535363791,
+          "ci95_upper": 0.048890496931403314,
+          "n": 10
+        }
+      },
+      "paired_baseline_deltas": {
+        "conv1d": {
+          "mean": 0.008215547703180193,
+          "standard_deviation": 0.027330644728613955,
+          "ci95_lower": -0.01133561774854762,
+          "ci95_upper": 0.02776671315490801,
+          "n": 10
+        },
+        "tcn": {
+          "mean": 0.008436395759717297,
+          "standard_deviation": 0.018237111359166783,
+          "ci95_lower": -0.004609647796341064,
+          "ci95_upper": 0.021482439315775658,
+          "n": 10
+        },
+        "gru": {
+          "mean": 0.4365282685512367,
+          "standard_deviation": 0.041173433417423376,
+          "ci95_lower": 0.4070745686128318,
+          "ci95_upper": 0.46598196848964163,
+          "n": 10
+        }
+      },
+      "causal_gate": true,
+      "accuracy_gate": false,
+      "systems_gate": false
+    },
+    "ssc": {
+      "accuracy": {
+        "residual_lif": {
+          "mean": 0.5647875576489059,
+          "standard_deviation": 0.006579156039129126,
+          "ci95_lower": 0.5600811129407399,
+          "ci95_upper": 0.5694940023570718,
+          "n": 10
+        },
+        "conv1d": {
+          "mean": 0.49768423118437843,
+          "standard_deviation": 0.022724507250593624,
+          "ci95_lower": 0.4814280979874842,
+          "ci95_upper": 0.5139403643812727,
+          "n": 10
+        },
+        "tcn": {
+          "mean": 0.584393091943872,
+          "standard_deviation": 0.009216789041382512,
+          "ci95_lower": 0.5777997982520814,
+          "ci95_upper": 0.5909863856356626,
+          "n": 10
+        },
+        "gru": {
+          "mean": 0.5744235109410264,
+          "standard_deviation": 0.006567934342983121,
+          "ci95_lower": 0.5697250937506955,
+          "ci95_upper": 0.5791219281313573,
+          "n": 10
+        }
+      },
+      "causal_deltas": {
+        "zero_state": {
+          "mean": 0.1363752330487685,
+          "standard_deviation": 0.038183729148032704,
+          "ci95_lower": 0.10906023870633504,
+          "ci95_upper": 0.16369022739120198,
+          "n": 10
+        },
+        "shuffled_state": {
+          "mean": 0.08867137670493572,
+          "standard_deviation": 0.008304526045957923,
+          "ci95_lower": 0.08273067664699968,
+          "ci95_upper": 0.09461207676287176,
+          "n": 10
+        }
+      },
+      "paired_baseline_deltas": {
+        "conv1d": {
+          "mean": 0.0671033264645275,
+          "standard_deviation": 0.023824089586821348,
+          "ci95_lower": 0.05006059944970996,
+          "ci95_upper": 0.08414605347934505,
+          "n": 10
+        },
+        "tcn": {
+          "mean": -0.019605534294966153,
+          "standard_deviation": 0.01166744201379427,
+          "ci95_lower": -0.02795191951475239,
+          "ci95_upper": -0.011259149075179917,
+          "n": 10
+        },
+        "gru": {
+          "mean": -0.009635953292120502,
+          "standard_deviation": 0.009802904114466972,
+          "ci95_lower": -0.016648528449145963,
+          "ci95_upper": -0.002623378135095041,
+          "n": 10
+        }
+      },
+      "causal_gate": true,
+      "accuracy_gate": false,
+      "systems_gate": false
+    }
+  },
+  "decision": "causal_audit_only",
+  "maximum_statistic_error": 0.0,
+  "execution_independence_certified": false,
+  "human_reviewed_lock": false
+}

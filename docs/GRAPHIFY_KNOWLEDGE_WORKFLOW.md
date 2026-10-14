@@ -86,12 +86,29 @@ Run:
 ```powershell
 python gen5/tools/verify_graphify_contract.py
 python gen5/tools/verify_graphify_contract.py --require-research
+python gen5/tools/verify_graphify_contract.py --require-research --require-corpus --refresh-source-receipt
 ```
 
 The first command checks implementation coverage. The second is the migration
 gate and must find `research.md`, the primary evidence roadmap, and the
 LTH-informed itinerary in the graph. It proves source coverage, not the
 correctness of model-inferred relationships.
+
+The stronger `--require-corpus` check requires every canonical source file to
+have real node provenance, verifies edge endpoints, and binds graph/source
+hashes in `graphify-out/source_contract.json`. Refresh that receipt only after
+the local graph update, not as a substitute for rebuilding changed sources.
+It certifies structural coverage/receipt freshness, not semantic correctness.
+Schema 2 normalizes CRLF to LF for canonical text hashes so clean Git checkouts
+are portable. Experimental source/cache/ZIP byte checks remain exact and are
+not replaced by this text contract.
+Some Markdown reviews are classified as papers by Graphify's detector and
+skipped by its normal AST watch path. The local Graphify interpreter can run
+`gen5/tools/refresh_graphify_markdown.py --force` after `graphify update . --force`
+to refresh all canonical Markdown using Graphify's extraction/merge/export APIs,
+including changed documents already represented. Without `--force`, only missing
+Markdown sources are supplemented; that is not a changed-document refresh.
+No API backend or inferred findings are added by that supplement.
 
 The following queries form the human acceptance test:
 

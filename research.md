@@ -14,10 +14,60 @@ architecture pivot, or result interpretation, revise this file with:
 
 ## Current thesis
 
-AMMC is moving from a browser-based biological proof-of-concept into a
-production-grade neuromorphic framework. Gen-4 validated the core mechanics in
-JavaScript. Gen-5 should become a mathematical, hardware-accelerated Python/C++
-runtime for continuous-learning agents.
+### 2026-10-14 evidence audit and hardening (current authority)
+
+Both returned Evidence-1 bundles contain all 80 expected trials and pass
+manifest/statistic verification. Their outcome is `causal_audit_only`: the
+original sample-state pairing contributes internally, while accuracy and
+compiled numerical-fidelity gates fail. Independent clean-clone replication
+and the reviewed decision lock remain pending.
+
+The v2 implementation rejects nonfinite outputs, malformed/duplicate records,
+unbound or altered resumed artifacts, wrong-seed checkpoints and altered
+encoded caches. It adds runtime receipts, CPU CI and a source-release checker.
+The original archives and registered model/statistical rules are preserved;
+new code requires new output/cache receipts. This is hardening, not a rerun or
+a replacement of the original research decision.
+
+Official SHD/SSC test sets influenced historical architecture exploration.
+Current intervals summarize fixed-protocol training-seed variation on known
+benchmarks, not untouched external holdouts. No within-class identity,
+timing-specific or spike-versus-final-membrane mechanism is isolated.
+Historical plasticity comparisons varied capacity, topology and weight noise
+together; they do not prove structural-plasticity superiority. Browser analogies
+and STW/LTW state variables do not validate biological or lifelong-learning
+claims. Date-stamped findings below retain their historical context and later
+supersessions. Gen19/N-MNIST/Gen26/Gen30 raw evidence remains pending.
+
+Next: finish local validation, publish an authorized exact-source release,
+recover missing bundles, diagnose frozen validation-checkpoint compiler errors,
+and review/lock the narrowed decision. Do not open a rescue training sweep.
+See `gen5/docs/PROJECT_AUDIT_2026_10_14.md` and
+`gen5/docs/EVIDENCE1_HARDENING_2026_10_14.md`.
+
+### 2026-10-13 restart status (historical, superseded by the audit above)
+
+Evidence-1 remains active. The user approved integrating the literature
+suggestions into the plan and building a runnable download/setup notebook.
+Implemented: canonical resumable SHD/SSC residual/Conv1D/TCN/GRU paired runner,
+fixed-checkpoint causal probes, strict-validation FiTS reference adapter,
+fly-reference diagnostic helper, and the portable research-restart notebook.
+Only synthetic CPU smoke is validated locally; official confirmation,
+CUDA systems measurements, FiTS/fly reference runs and independent replication
+are not yet research results. No rejected mechanism claim is reopened.
+
+Next: run the frozen ten-seed GPU study, repeat in a clean clone and lock the
+decision. Timing-only/readout/FiTS-matched, scan, context-mask and small fly
+topology-prior suggestions follow the gates in
+`gen5/docs/RESEARCH_RESTART_2026_10.md` and
+`gen5/docs/EVIDENCE1_AUDIO_PREREGISTRATION.md`.
+The executable notebook is `gen5/notebooks/evidence1_research_restart.ipynb`;
+it includes downloads, SHA-256 provenance, epoch resumption and return ZIP.
+
+The following original thesis describes research aspirations. Gen-4 implemented
+engineering mechanics in JavaScript. Gen-5 explores a mathematical tensor
+runtime, without an established biological, production or lifelong-learning
+advantage.
 
 The central bet is that sparse dynamic topology, dual memory timescales
 (`STW + LTW`), astrocyte-like low-frequency modulation, and spatiotemporal
@@ -26,11 +76,11 @@ continuous-learning systems.
 
 ## Core findings
 
-### 1. LTW/STW separation works as a bridge between learning and persistence
+### 1. Historical LTW/STW engineering bridge (memory claim later rejected)
 
-Finding: splitting synaptic state into short-term weight (STW) and long-term
-weight (LTW) gives the system a useful working-memory/permanent-memory
-distinction.
+Historical implementation: short-term weight (STW) and long-term weight (LTW)
+were represented separately. Gen22/23 do not establish a useful causal memory
+advantage, so the original working/permanent-memory interpretation is withdrawn.
 
 Evidence:
 
@@ -42,8 +92,8 @@ Evidence:
 
 Source:
 
-- `outputs/behavior_observation_corrected_2026-06-25T05-53-08-570Z.md`
-- `outputs/behavior_observation_corrected_2026-06-25T05-53-08-570Z.json`
+- `gen5/outputs/behavior_observation_corrected_2026-06-25T05-53-08-570Z.md`
+- `gen5/outputs/behavior_observation_corrected_2026-06-25T05-53-08-570Z.json`
 
 Implication:
 
@@ -67,9 +117,9 @@ Evidence:
 
 Source:
 
-- `outputs/evolved_model.py`
-- `outputs/colab_weights.json`
-- `outputs/evolved_connectome_for_colab_weights.json`
+- `gen5/outputs/evolved_model.py`
+- `gen5/outputs/colab_weights.json`
+- `gen5/outputs/evolved_connectome_for_colab_weights.json`
 
 Implication:
 

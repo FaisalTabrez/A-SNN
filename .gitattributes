@@ -1,3 +1,4 @@
-# Preserve checksummed Gen-20 evidence bytes across Windows checkouts.
-/gen5/outputs/gen20_spiking_spatiotemporal_cuda_2026-08-20/*.json -text
-/gen5/outputs/gen20_spiking_spatiotemporal_cuda_2026-08-20/*.csv -text
+# Preserve generated research artifacts byte-for-byte during Git transfer.
+*.pdf binary
+*.pptx binary
+*.zip binary

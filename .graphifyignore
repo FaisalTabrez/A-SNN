@@ -12,6 +12,7 @@ graphify-out/
 .venv/
 venv/
 tmp/
+research_restart/
 **/__pycache__/
 *.pyc
 

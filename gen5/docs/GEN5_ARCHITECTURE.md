@@ -2,9 +2,11 @@
 
 ## 1. Paradigm shift
 
-Gen-4 was a browser-native biological proof. Gen-5 is the production runtime:
-a sparse, dynamic, embodied, continuously learning neuromorphic framework meant
-to compete with static ANN blocks in agentic workloads.
+Gen-4 was a browser-native engineering sandbox. Gen-5 is an experimental
+runtime exploring sparse/dynamic/embodied computation. Biological fidelity,
+production readiness and reliable continual-learning superiority are not
+validated capabilities. Later matched controls closed the tested adaptive
+mechanism claims; the current program is Evidence-1's bounded audio audit.
 
 The Gen-5 API is Python-first, with TPU/XLA as the near-term Colab accelerator
 target and C++/CUDA extension points reserved for later kernels that PyTorch
@@ -33,9 +35,12 @@ The Gen-5 scaffold handles this by exposing an allocator API:
 - the future CUDA backend can replace masked slots with real VRAM reclamation
 - the current XLA backend benefits from stable fixed-capacity shapes
 
-### The STW/LTW bridge works
+### STW/LTW engineering representation, not a validated memory advantage
 
-Gen-4 showed that separating short-term and long-term weights gives us a clean
+Gen-4 implemented separate short-term and long-term state variables. This
+separation does not establish a useful memory-storage mechanism. Gen22 exposed
+algebraic effective-weight conservation, and the corrected Gen23 rule stopped.
+The following describes the scaffold rather than an experimentally proven
 working-memory/permanent-memory distinction:
 
 - STW changes quickly under reward, replay, and local coincidence

@@ -20,10 +20,11 @@ the frame model is the clear efficiency winner under this implementation.
 
 ## What this proves—and what it does not
 
-This run proves that the native 34×34 polarity-time representation and the
+The supplied log reports that the native 34×34 polarity-time representation and the
 benchmark pipeline can support highly competitive N-MNIST accuracy. The result
-is reproducible across the three preregistered confirmation seeds and is not a
-single lucky checkpoint.
+repeated across the three preregistered seeds. Canonical per-seed/epoch artifacts
+have not been retrieved for independent record-level verification. This is
+reported log evidence, not a certified clean-clone reproduction.
 
 It does **not** establish an SNN record. ConvPLIF screened at 93.07% validation
 accuracy, 5.63 points behind the 98.70% spatial-temporal screen result, and was

@@ -6,6 +6,7 @@ __pycache__/
 .venv/
 venv/
 gen5_outputs/
+research_restart/
 graphify-out/cache/
 graphify-out/cost.json
 graphify-out/.graphify_python
@@ -13,3 +14,10 @@ graphify-out/.graphify_root
 graphify-out/.graphify_detect.json
 graphify-out/.graphify_analysis.json
 graphify-out/20??-??-??/
+tmp/
+output/
+.chart-data-*/
+graphify-out/.vocab.txt
+*.egg-info/
+build/
+dist/

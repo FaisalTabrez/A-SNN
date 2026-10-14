@@ -1,5 +1,10 @@
 # Gen-21 matched causal mechanism benchmark analysis
 
+Current interpretation (2026-10-14): the dated positive memory framing below
+is superseded by Gen22's algebraic effective-weight conservation and Gen23's
+corrected-rule stop. It does not authorize a dual-memory advantage. The current
+Evidence-1 audit and closure limitations take precedence.
+
 Date: 2026-08-20
 
 Status: `pass` for one bounded mechanism; complete JSON/CSV/plot/bundle

@@ -1,8 +1,23 @@
 # A-SNN / AMMC
 
 Adaptive spiking-neural-network research workspace for the AMMC line: a
-browser-proven biological sandbox plus a headless Gen-5 tensor framework for
-large-scale embodied evolution.
+browser engineering sandbox plus a headless Gen-5 tensor research framework.
+Implemented biological analogies are not validated biological mechanisms or
+production/continuous-learning capabilities.
+
+Current status (2026-10-14): both retained Evidence-1 runs return
+`causal_audit_only`. Original sample-state pairing matters, but the registered
+accuracy and numerical-fidelity gates fail. Independent clean-clone replication
+and a reviewed decision lock remain pending. See the
+[audit](gen5/docs/PROJECT_AUDIT_2026_10_14.md) and
+[hardening/reproducibility guide](gen5/docs/EVIDENCE1_HARDENING_2026_10_14.md).
+
+Closure implementation:
+[runbook](gen5/docs/EVIDENCE1_CLOSURE_RUNBOOK.md),
+[no-training compiler diagnostic notebook](gen5/notebooks/evidence1_fidelity_diagnostic.ipynb),
+and [human review template](gen5/docs/EVIDENCE1_REVIEW_TEMPLATE.md).
+The exact original 73-source package and both numeric result records are retained
+for audit; the active new-run implementation has separate v2 hardening.
 
 The short version:
 

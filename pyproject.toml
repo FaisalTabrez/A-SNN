@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asnn-evidence-tools"
+version = "0.2.0"
+description = "A-SNN experimental audit and temporal-audio research tools"
+requires-python = ">=3.11"
+dependencies = ["torch>=2.6,<3", "numpy>=2.2,<3", "scipy>=1.15,<2", "h5py>=3.14,<4"]
+
+[project.scripts]
+asnn-evidence1 = "ammc_gen5.evidence1_audio:main"
+
+[tool.setuptools.packages.find]
+where = ["gen5"]
+include = ["ammc_gen5*"]

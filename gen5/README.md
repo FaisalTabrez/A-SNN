@@ -1,17 +1,25 @@
 # AMMC Gen-5
 
-Production-grade neuromorphic framework scaffold for the AMMC-SNN line.
+Experimental neuromorphic framework scaffold for the AMMC-SNN line.
 
-Gen-4 proved the biological mechanics in a JavaScript sandbox: structural
+Gen-4 implemented engineering analogies in a JavaScript sandbox: structural
 plasticity, astrocyte modulation, embodied feedback, sleep consolidation,
 serialization, PyTorch export, and Colab weight import. Gen-5 moves those ideas
 into a mathematical Python backend with TPU/XLA as the near-term accelerator
-target, plus future CUDA/C++ and neuromorphic hardware backends.
+target, plus future CUDA/C++ and neuromorphic hardware backends. These are
+implementation goals, not proof of biological fidelity or superior learning.
+
+Current authority: the October Evidence-1 audit returns `causal_audit_only`.
+The selected hybrid uses its original sample-state pairing, while accuracy and
+compiled numerical-fidelity gates fail. Human decision lock, independent
+replication, and the source-complete public release are pending. The v2 runner
+adds integrity guards without changing the original registered experiment.
+See [hardening status](docs/EVIDENCE1_HARDENING_2026_10_14.md).
 
 ## Design stance
 
-Gen-5 is not a visual CAD simulator. It is a hardware-accelerated learning
-runtime for continuous agents.
+Gen-5 is a research runtime and test scaffold. Reliable autonomous continuous
+learning has not been established by the retained experiments.
 
 The first scaffold uses PyTorch for integration and testing, but it keeps the
 hard parts behind replaceable backend boundaries:

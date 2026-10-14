@@ -2,6 +2,11 @@
 
 Date analyzed: 2026-08-20
 
+Provenance qualification (2026-10-14): canonical diagnostic JSON/CSV/manifest
+and bundle are not retained locally. The values and root-cause interpretation
+below are reported analysis evidence awaiting raw-artifact verification. They
+must not be assumed to diagnose the separate Evidence-1 compiler discrepancies.
+
 Gen-26 stopped. SSC bins were already binary: the measured nonbinary fraction
 was zero and binary/count dense predictions agreed exactly. FP64 COO did not
 reduce error. All three variants reached approximately `3.32e-4` maximum

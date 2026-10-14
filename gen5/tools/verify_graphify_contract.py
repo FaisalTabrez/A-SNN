@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Any, Iterable
@@ -96,10 +97,55 @@ def verify_graph(graph_path: Path, *, require_research: bool = False) -> dict[st
     }
 
 
+def canonical_files(root: Path) -> list[Path]:
+    files = [root / name for name in ['research.md', 'README.md'] if (root / name).is_file()]
+    for folder in ['docs', 'gen5/docs']:
+        files.extend((root / folder).rglob('*.md'))
+    files.extend((root / 'gen5/outputs').rglob('analysis.md'))
+    for folder in ['gen5/ammc_gen5', 'gen5/examples', 'gen5/tools', 'gen5/tests', 'gen5/benchmarks']:
+        files.extend((root / folder).rglob('*.py'))
+    return sorted(set(files))
+
+
+def verify_corpus(graph_path: Path, root: Path, *, refresh_receipt=False) -> dict[str, Any]:
+    """Structural provenance/freshness only, never inferred-claim validation."""
+    root = root.resolve()
+    payload = json.loads(graph_path.read_text(encoding='utf-8-sig'))
+    represented = set()
+    for node in _nodes(payload):
+        if not isinstance(node.get('source_file'), str): continue
+        path = Path(node['source_file'].replace('\\', '/'))
+        if path.is_absolute():
+            try: path = path.relative_to(root)
+            except ValueError: continue
+        represented.add(path.as_posix().lower())
+    files = canonical_files(root)
+    # Git checkouts can normalize CRLF without changing source text. This receipt
+    # is a canonical-text contract, not a replacement for experiment byte hashes.
+    hashes = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest() for p in files}
+    missing = [name for name in hashes if name.lower() not in represented]
+    ids = {n.get('id') for n in _nodes(payload)}
+    dangling = [str(e.get('source')) + ' -> ' + str(e.get('target')) for e in payload.get('links', payload.get('edges', []))
+                if e.get('source') not in ids or e.get('target') not in ids]
+    receipt_path = graph_path.parent / 'source_contract.json'
+    current = {'schema': 2, 'hash_encoding': 'UTF-8 source bytes with CRLF normalized to LF',
+               'claim_boundary': 'structural coverage and receipt freshness; semantics unverified',
+               'graph_sha256': hashlib.sha256(graph_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest(), 'source_sha256': hashes}
+    if refresh_receipt and not missing and not dangling:
+        receipt_path.write_text(json.dumps(current, indent=2) + '\n', encoding='utf-8')
+    saved = json.loads(receipt_path.read_text(encoding='utf-8')) if receipt_path.is_file() else None
+    return {'canonical_file_count': len(files), 'missing_corpus_sources': missing,
+            'dangling_edge_count': len(dangling), 'receipt_matches_current_graph_and_sources': saved == current,
+            'semantic_freshness_verified': False,
+            'passed': not missing and not dangling and saved == current}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--graph", type=Path, default=DEFAULT_GRAPH)
     parser.add_argument("--require-research", action="store_true")
+    parser.add_argument('--require-corpus', action='store_true')
+    parser.add_argument('--refresh-source-receipt', action='store_true')
     args = parser.parse_args()
 
     if not args.graph.exists():
@@ -107,6 +153,9 @@ def main() -> int:
         return 2
     try:
         result = verify_graph(args.graph, require_research=args.require_research)
+        if args.require_corpus or args.refresh_source_receipt:
+            result['corpus'] = verify_corpus(args.graph, REPOSITORY_ROOT, refresh_receipt=args.refresh_source_receipt)
+            result['passed'] = result['passed'] and result['corpus']['passed']
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print(json.dumps({"passed": False, "error": str(error)}, indent=2))
         return 2

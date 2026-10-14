@@ -1,4 +1,4 @@
-"""Deterministic Gen-29 causal evidence closure."""
+"""Historical source-linked synthesis, never an independent metric certificate."""
 
 from __future__ import annotations
 
@@ -11,9 +11,11 @@ import zipfile
 
 
 EVIDENCE_DOCUMENTS = {
-    "phase47": "gen5/docs/MILESTONE_ROADMAP.md",
-    "phase48": "gen5/docs/MILESTONE_ROADMAP.md",
-    "phase49": "gen5/docs/MILESTONE_ROADMAP.md",
+    "phase47": "gen5/outputs/shd_residual_state_contribution_cuda_2026-08-10/analysis.md",
+    "phase48": "gen5/outputs/ssc_residual_lif_replication_cuda_2026-08-10/analysis.md",
+    "phase49": "gen5/outputs/ssc_efficiency_baselines_cuda_2026-08-10/analysis.md",
+    "gen18": "gen5/docs/GEN18_LOCAL_CREDIT_REPLICATION_ANALYSIS.md",
+    "gen19": "gen5/docs/GEN19_NMNIST_STATE_REPLICATION_ANALYSIS.md",
     "gen20": "gen5/docs/PROGRAM_SANITY_CHECK_AFTER_GEN20.md",
     "gen21": "gen5/docs/GEN21_MATCHED_CAUSAL_MECHANISMS_ANALYSIS.md",
     "gen22": "gen5/docs/GEN22_DUAL_MEMORY_REPLICATION_ANALYSIS.md",
@@ -67,13 +69,17 @@ def run_gen29(repo_root: str | pathlib.Path) -> Gen29Result:
         path = root / relative
         if not path.is_file():
             raise FileNotFoundError(f"missing {phase} evidence: {path}")
+        text = path.read_text(encoding='utf-8')
+        if len(text.strip()) < 120 or not text.lstrip().startswith('#'):
+            raise ValueError(f'Empty/placeholder evidence for {phase}: {path}')
         sources.append({
             "phase": phase,
             "path": relative,
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         })
     claims = [
-        {"category": category, "claim": claim, "status": status, "evidence": evidence}
+        {"category": category, "claim": claim, "status": status, "evidence": evidence,
+         "verification": "historical_source_statement_not_recomputed_metric"}
         for category, claim, status, evidence in CLAIMS
     ]
     supported_adaptive = [
@@ -81,16 +87,18 @@ def run_gen29(repo_root: str | pathlib.Path) -> Gen29Result:
         if row["category"] == "adaptive_mechanism" and row["status"] == "supported"
     ]
     decision = {
-        "status": "complete",
+        "status": "historical_synthesis_requires_review",
+        "metric_validation": "not_performed",
+        "source_integrity_only": True,
         "required_evidence_count": len(EVIDENCE_DOCUMENTS),
         "claim_count": len(claims),
         "original_research_question_answered": "partially",
         "supported_adaptive_mechanisms": supported_adaptive,
         "supported_neural_mechanism": "cooperative sample-specific residual LIF state on SHD and SSC",
-        "supported_systems_path": "compiled dense residual LIF",
+        "supported_systems_path": "historical Gen24 frozen-workload result, not Evidence1 fidelity certification",
         "closed_systems_paths": ["generic COO", "current Triton event-scatter kernel"],
         "hardware_energy_claim_authorized": False,
-        "next_milestone": "new_mechanism_theory_and_preregistered_causal_microtask",
+        "next_milestone": "reviewed_evidence1_decision_before_new_mechanisms",
     }
     return Gen29Result(sources=sources, claims=claims, decision=decision)
 
@@ -114,13 +122,15 @@ def bundle_gen29_artifacts(paths: dict[str, str], output_dir: str | pathlib.Path
 
 def _render_report(result: Gen29Result) -> str:
     lines = [
-        "# Gen-29 causal evidence closure",
+        "# Gen-29 historical evidence synthesis",
+        "",
+        "Source integrity only. Claim statuses below reproduce historical statements; this generator does not recompute experimental metrics or issue a research decision lock.",
         "",
         "## Executive conclusion",
         "",
         "The original biological-learning objective remains unachieved. Matched controls do not support dynamic topology, dual-memory advantage, learned-delay benefit, or reliable local reward credit in the tested implementations. The replicated positive neural result is cooperative, sample-specific residual LIF state on SHD and SSC.",
         "",
-        "Compilation is the supported production path. Generic COO and the current Triton event-scatter kernel are closed, and no hardware-energy claim is authorized.",
+        "Gen24's compiled result has frozen-workload scope. Current Evidence1 numerical fidelity remains unconfirmed. Generic COO and the tested Triton kernel remain closed, and no hardware-energy claim is authorized.",
         "",
         "## Claim ledger",
         "",
@@ -135,7 +145,7 @@ def _render_report(result: Gen29Result) -> str:
         "",
         f"- Status: {result.decision['status']}",
         f"- Next milestone: {result.decision['next_milestone']}",
-        "- Gen-30 is not authorized by this synthesis.",
+        "- This historical synthesis does not authorize new experiments or supersede the later Gen30 stop/Evidence1 program.",
         "",
         "## Hashed evidence",
         "",

@@ -8,10 +8,38 @@ TOOLS = Path(__file__).resolve().parents[1] / "tools"
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(TOOLS))
 
-from verify_graphify_contract import verify_graph
+from verify_graphify_contract import verify_graph, verify_corpus
 
 
 class GraphifyContractTest(unittest.TestCase):
+    def test_corpus_receipt_survives_git_line_ending_normalization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / 'README.md'; graph = root / 'graph.json'
+            source.write_bytes(b'# Example\r\n')
+            graph.write_text(json.dumps({'nodes': [{'id': 'a', 'source_file': 'README.md'}], 'links': []}))
+            self.assertTrue(verify_corpus(graph, root, refresh_receipt=True)['passed'])
+            source.write_bytes(b'# Example\n')
+            self.assertTrue(verify_corpus(graph, root)['passed'])
+    def test_corpus_requires_real_source_nodes_and_detects_hash_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'README.md').write_text('# Example\n')
+            graph = root / 'graph.json'
+            graph.write_text(json.dumps({'nodes': [{'id': 'a', 'source_file': 'README.md'}], 'links': []}))
+            self.assertFalse(verify_corpus(graph, root)['passed'])
+            self.assertTrue(verify_corpus(graph, root, refresh_receipt=True)['passed'])
+            (root / 'README.md').write_text('# Changed\n')
+            self.assertFalse(verify_corpus(graph, root)['passed'])
+            graph.write_text(json.dumps({'nodes': [{'id': 'a', 'label': 'README.md'}], 'links': []}))
+            self.assertFalse(verify_corpus(graph, root, refresh_receipt=True)['passed'])
+
+    def test_corpus_rejects_dangling_edges(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / 'README.md').write_text('# Example\n')
+            graph = root / 'graph.json'
+            graph.write_text(json.dumps({'nodes': [{'id': 'a', 'source_file': 'README.md'}],
+                                         'links': [{'source': 'a', 'target': 'missing'}]}))
+            self.assertFalse(verify_corpus(graph, root, refresh_receipt=True)['passed'])
     def test_graphify_ignore_keeps_the_corpus_bounded(self):
         policy = (REPOSITORY_ROOT / ".graphifyignore").read_text(encoding="utf-8")
         self.assertIn("*.zip", policy)
