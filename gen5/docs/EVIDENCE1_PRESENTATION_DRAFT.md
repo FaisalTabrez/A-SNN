@@ -1,5 +1,17 @@
 # Evidence-1 presentation draft artifact
 
+Presentation revision (2026-10-15): the current deck now covers the full
+program and matches the IEEE paper. See
+[A_SNN_FULL_PROGRAM_PRESENTATION.md](A_SNN_FULL_PROGRAM_PRESENTATION.md).
+The earlier audio-focused artifacts below remain historical versions.
+
+Manuscript revision (2026-10-15): the current paper is now the full-program
+IEEE university presentation manuscript described in
+[A_SNN_IEEE_PRESENTATION_PAPER.md](A_SNN_IEEE_PRESENTATION_PAPER.md).
+It uses the standard two-column IEEEtran conference template and covers all
+research approaches. The files below remain the previous audio-focused version
+and its audit; the slide deck was not revised in this manuscript-only update.
+
 Audit qualification (2026-10-14): include the correction text in
 `EVIDENCE1_HARDENING_2026_10_14.md` when using the original paper/slides.
 Historical official-test exposure limits untouched-holdout claims, and global
