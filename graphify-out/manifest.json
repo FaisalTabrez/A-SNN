@@ -2532,9 +2532,9 @@
     "semantic_hash": ""
   },
   "gen5/docs/EVIDENCE1_PRESENTATION_DRAFT.md": {
-    "mtime": 1791955604.8189034,
-    "seen": 1791955694.6064708,
-    "ast_hash": "b29ea7df426fd710f0f6bbd218569e9f",
+    "mtime": 1792075605.6037128,
+    "seen": 1792075629.4955084,
+    "ast_hash": "f5895dc55cb59ec7679ed8bfac54d4c5",
     "semantic_hash": ""
   },
   "gen5/docs/PROJECT_AUDIT_2026_10_14.md": {
@@ -2727,6 +2727,42 @@
     "mtime": 1791955074.5651789,
     "seen": 1791961611.0693097,
     "ast_hash": "fdf660d2d753c1339b92261ee40feef1",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261014_071823_implement_the_rest_and_push_to_github.md": {
+    "mtime": 1791962303.4559526,
+    "seen": 1791998728.8701668,
+    "ast_hash": "40704009757724935920d49e0bab1944",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261014_091643_how_would_you_have_me_work_with_1000__cloud_gpu_cr.md": {
+    "mtime": 1791969403.2631936,
+    "seen": 1791998728.8701682,
+    "ast_hash": "907de5295f8a23766e47d1ba39d35d1e",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261014_141113_can_you_draft_a_submission_for_the_google_cloud_re.md": {
+    "mtime": 1791987073.7199838,
+    "seen": 1791998728.8701692,
+    "ast_hash": "8edf4907d7c90f4a899b1f8ae29b0426",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261014_085855_what_about_instead_of_lif_we_remove_the_leaky_part.md": {
+    "mtime": 1791968335.4469872,
+    "seen": 1791998728.870176,
+    "ast_hash": "63ad4a070d580d5eae10fffdacccb661",
+    "semantic_hash": ""
+  },
+  "gen5/docs/A_SNN_IEEE_PRESENTATION_PAPER.md": {
+    "mtime": 1792173320.4314654,
+    "seen": 1792173391.7779062,
+    "ast_hash": "2a874401c2c3252b84c616bc970f47db",
+    "semantic_hash": ""
+  },
+  "gen5/docs/A_SNN_FULL_PROGRAM_PRESENTATION.md": {
+    "mtime": 1792173320.4344838,
+    "seen": 1792173391.7779036,
+    "ast_hash": "911a50d6ed95f352cb04da137a1b3374",
     "semantic_hash": ""
   }
 }
