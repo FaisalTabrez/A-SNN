@@ -45,6 +45,14 @@ and review/lock the narrowed decision. Do not open a rescue training sweep.
 See `gen5/docs/PROJECT_AUDIT_2026_10_14.md` and
 `gen5/docs/EVIDENCE1_HARDENING_2026_10_14.md`.
 
+Exploratory direction recorded on 2026-10-21: bounded, redundancy-aware
+capacity allocation through reuse, adaptation, and conditional growth. The
+[reviewed proposal and validation itinerary](#reviewed-capacity-growth-direction-2026-10-21)
+record the mathematical derivation, counterexamples, prior art, and open
+questions. This is a research hypothesis, not an implemented mechanism or a
+revision of the Evidence-1 decision. Recording it does not start an experiment
+or reopen a rejected mechanism claim.
+
 ### 2026-10-13 restart status (historical, superseded by the audit above)
 
 Evidence-1 remains active. The user approved integrating the literature
@@ -6320,3 +6328,308 @@ this tooling migration does not revise any mechanism's research gate.
 Refresh the graph locally with `graphify update . --force` and run
 `python gen5/tools/verify_graphify_contract.py --require-research` before
 publishing the migration. No cloud semantic backend is selected by this change.
+
+## Reviewed capacity growth direction (2026-10-21)
+
+Status: exploratory proposal, critically reviewed and recorded at the user's
+request. No prototype, benchmark result, novelty determination, or new
+experiment authorization is established by this entry. Evidence-1 remains
+the active program until its registered decision is locked. The existing
+deferred context-mask itinerary is not silently replaced by this proposal;
+their ordering and comparison require an explicit later research decision.
+
+### Motivation and research question
+
+The broader ambition is a sparse temporal system that learns when to reuse
+existing capacity, adapt it, or expand as information changes, while bounding
+forgetting, storage, and execution cost. A possible later architecture is a
+shared encoder, router, stateful spiking experts, output combiner, and a
+learning-time capacity controller. Inference-time routing and learning-time
+allocation are separate decisions. A full growing mixture of experts is a
+conditional destination, not the first implementation.
+
+The reviewed question is:
+
+> Can a redundancy-aware, bounded growth estimator predict durable improvements
+> in a temporal model better than simpler selectors, after accounting for
+> adaptation, retention, and candidate-search cost?
+
+The candidate must add value over a fair adaptation-only control, rather than
+merely reduce the loss of an undertrained baseline. A familiar input should
+favor reuse; related variation may favor adaptation; expansion is considered
+only when a useful correction is unavailable within the declared adaptation
+budget. These are desired behaviors to test, not established capabilities.
+
+### Authoritative local evidence and implementation boundaries
+
+- `gen5/outputs/utility_gated_structural_mnist_cuda_2026-08-09/analysis.md`
+  records that every Phase 27 guided arm underperformed paired random growth
+  on every seed and both readouts. This rejects that selector and schedule,
+  not all gradient-informed growth methods.
+- `gen5/docs/UTILITY_GATED_STRUCTURAL_MNIST.md` defines the original arms and
+  decision gates. `gen5/ammc_gen5/utility_gated_structural_mnist.py`, especially
+  `select_gradient_sensor_edges()`, accumulates absolute gradients at zero LTW
+  and introduces selected edges at positive birth weights. The ranking drops
+  gradient sign; a sensitive edge need not be beneficial in its allowed birth
+  direction. This is a plausible weakness, not an isolated causal explanation
+  of the historical failure. Redundancy, interference, and missing capacity
+  were not individually diagnosed by Phase 27.
+- `gen5/ammc_gen5/shd_state_placement_diagnostic.py` exposes
+  `ResidualTemporalConvStateClassifier.encode_features()` and `encode_trace()`.
+  These provide a reusable boundary for frozen features and a signed linear
+  readout without changing the registered backbone dynamics.
+- `gen5/ammc_gen5/dynamic_sparse.py` provides bounded edge slots, masks, and
+  sprouting/pruning operations. Prefer fixed-capacity pools and stable tensor
+  shapes for an initial implementation. Do not resize parameters during
+  backward or equate masked dense work with executable sparse acceleration.
+
+### Proposed residual component and initialization
+
+Write the candidate-augmented model as
+
+$$
+f_{\theta,a}(x)=f_\theta(x)+U_a h_\phi(x),
+$$
+
+where the candidate feature bank `h_phi` could contain temporal features, a
+small spiking population, or eventually an expert. Initialize the output
+weights `U_a` to zero and candidate features to nonzero values. The initial
+predictions are then preserved. Learn output weights before unfreezing
+candidate internals: at zero output weights, gradients into those internals
+are blocked. Initial output preservation is not a retention guarantee after
+training.
+
+### Quadratic derivation and its valid interpretation
+
+Let `Delta theta` be an existing-parameter update and `a` the vectorized
+candidate output coefficients. With candidate internals fixed during scoring,
+approximate the objective locally by
+
+$$
+Q(\Delta\theta,a)=g_\theta^\top\Delta\theta+g_a^\top a+
+\frac12
+\begin{bmatrix}\Delta\theta\\a\end{bmatrix}^{\!\top}
+\begin{bmatrix}A&B\\B^\top&C\end{bmatrix}
+\begin{bmatrix}\Delta\theta\\a\end{bmatrix}.
+$$
+
+The blocks describe existing-parameter curvature, candidate curvature, and
+their coupling. A damped Gauss-Newton approximation can make the complete
+block matrix positive definite. Use linear solves rather than explicit
+inverses in an implementation.
+
+Adaptation alone gives `Delta theta_0 = -A^{-1} g_theta`. Eliminating the
+existing-parameter update from the joint quadratic gives
+
+$$
+b=g_a-B^\top A^{-1}g_\theta,\qquad
+S=C-B^\top A^{-1}B,
+$$
+
+and the additional optimal reduction is
+
+$$
+G_{\mathrm{quad}}=\frac12 b^\top S^{-1}b.
+$$
+
+This expression is exact for the stated unconstrained positive-definite
+quadratic. A session-local numerical check compared it with direct joint
+optimization in 100 synthetic positive-definite cases; the maximum absolute
+discrepancy was below `1e-14`. That check is an algebra sanity check, not an
+SNN experiment, a retained benchmark artifact, or evidence of generalization.
+
+The correct name is **marginal regularized improvement score**. It does not
+by itself prove missing expressive capacity, durable usefulness, or novelty.
+The unconstrained solution also does not apply directly to positive-only,
+bounded LTW updates. A signed readout is the cleaner first test; topology
+updates would need an explicitly constrained optimization problem.
+
+### Review correction 1: duplicate capacity can improve the penalty
+
+An exact duplicate can receive a positive score without expanding the function
+class. For a scalar prediction, consider
+
+$$
+L_0(w)=\tfrac12(w-1)^2+\tfrac12w^2,
+\qquad \min_w L_0=\tfrac14.
+$$
+
+Adding an identical feature gives
+
+$$
+L_1(w,a)=\tfrac12(w+a-1)^2+\tfrac12(w^2+a^2),
+\qquad \min_{w,a}L_1=\tfrac16.
+$$
+
+The score reports gain `1/12`, but only the parameterization and effective
+regularization changed. Splitting a coefficient reduces the penalty. Therefore
+objective improvement and additional expressive directions must be diagnosed
+separately. Scaling and damping choices must be declared; arbitrary parameter
+rescaling must not be mistaken for useful new capacity.
+
+### Review correction 2: near-redundancy can invalidate the local step
+
+If a candidate supplies a missing direction with amplitude `epsilon`, an
+unbounded least-squares fit may use a coefficient of order `1/epsilon` and
+predict a substantial gain even as the direction vanishes. The required
+parameter change can leave the region where the approximation is credible.
+
+Require a declared update budget, feature/parameter scaling, rank tolerances,
+conditioning checks, and actual forward evaluation. A trust-region constraint
+changes the optimization problem; the unrestricted Schur expression is then a
+screening/ranking approximation, not the exact constrained optimum. Candidate
+size also affects fit flexibility and selection bias; compare equal-sized
+banks first and validate selections independently.
+
+### Corrected separation: independence, bounded utility, durability
+
+1. **Independent correction.** Let `J` be the existing output Jacobian and `Z`
+   the candidate output directions on a declared scoring set. After consistent
+   scaling/weighting of current and replay rows, inspect
+
+   $$
+   Z_\perp=(I-JJ^\dagger)Z.
+   $$
+
+   Use an SVD/pseudoinverse with declared numerical rank thresholds. Exact
+   duplicates have zero residual in exact arithmetic. This diagnoses the
+   sampled local tangent space, not global expressivity or unseen-input
+   independence. Under a weighting metric, apply the projection to the
+   transformed matrices in that metric. Use it to screen candidates; deploy
+   original features and fit them jointly with existing parameters rather than
+   assuming a batch-specific projection is a deployable new neuron.
+2. **Bounded utility.** Compare adaptation-only with candidate-assisted fits
+   under declared update constraints and matched training opportunities. Use
+   the quadratic score as an estimator whose calibration must be measured.
+   A frozen-feature squared-loss diagnostic is a tractable first setting;
+   cross-entropy and trainable recurrent/spiking internals require additional
+   approximation checks.
+3. **Durability.** Shortlist on scoring data, fit on training data, and admit
+   candidates only after a bounded probation period evaluated on separate
+   selection data. Reserve final evaluation data from repeated candidate
+   selection. Match cumulative training/search budgets and assess retained
+   performance on earlier distributions. Noise and repeated selection can
+   otherwise create apparent gain.
+
+### Retention, resources, and state policy
+
+A proposed retention term is full-model output preservation on replay set
+`M`, relative to a snapshot taken before adaptation:
+
+$$
+R_{\mathrm{old}}=
+\frac{\lambda}{2|\mathcal M|}\sum_{x\in\mathcal M}
+\left\|f_{\theta+\Delta\theta,a}(x)-f_\theta(x)\right\|^2.
+$$
+
+Its local curvature affects existing, candidate, and cross blocks. Protecting
+old weights alone is insufficient because a new branch can change old
+outputs. If routing is introduced, its changes must be included in full-model
+retention evaluation. Replay protects represented examples only and may
+preserve earlier mistakes; it is not a general no-forgetting guarantee.
+
+A resource accounting proposal is
+
+$$
+K_c=\alpha\Delta P_c+\beta\Delta T_c+\gamma\Delta M_c,
+$$
+
+where the terms measure parameters, execution time, and memory under a fixed
+workload. Coefficients must convert these quantities to the same utility
+scale as any loss-based threshold. A rule such as `G_c > K_c + tau` is only a
+candidate filter until units, coefficients, and the worthwhile-gain threshold
+are preregistered. Hard resource caps and a reported performance/resource
+tradeoff can be preferable to an arbitrary scalar cost. Count scoring,
+candidate training, replay, rejected candidates, and router overhead in total
+training cost. Report allocated storage as well as active capacity.
+
+Reset membrane state at independent-sequence boundaries in the first test,
+consistent with the current feature extractor. A later persistent stream must
+declare what happens to inactive expert state: freeze, decay, reset, or advance
+it. Router drift and inconsistent hidden-state handling can break retention
+even with frozen experts. Spike rate is an activity measure, not measured
+hardware energy; surrogate gradients do not guarantee smooth true dynamics.
+
+### Prior art and novelty boundary
+
+The review found a close predecessor that narrows the original framing:
+
+- [TINY: Growing Tiny Networks: Spotting Expressivity Bottlenecks and Fixing
+  Them Optimally (2024)](https://arxiv.org/abs/2405.19816) studies desired
+  functional updates that existing parameters cannot express and adds neurons
+  to reduce that bottleneck, including redundancy and quadratic formulations.
+  It must be a direct mathematical comparison; the residual-expressivity idea
+  cannot be claimed as new here.
+- [GradMax (2022)](https://arxiv.org/abs/2201.05125) uses gradient information
+  and SVD for initialization of added neurons.
+- [Orthogonal Gradient Descent (2020)](https://proceedings.mlr.press/v108/farajtabar20a.html)
+  protects earlier outputs through projected updates.
+- [HLOP (ICLR 2024)](https://arxiv.org/abs/2402.11984) develops Hebbian
+  orthogonal projection for continual learning in SNNs.
+- [Learn to Grow (2019)](https://proceedings.mlr.press/v97/li19m.html) separates
+  continual structure selection from parameter estimation.
+- [Dynamically Expandable Networks (2018)](https://arxiv.org/abs/1708.01547)
+  combines selective retraining, expansion, and protection against drift.
+
+This is a scoped literature check, not an exhaustive novelty determination.
+Growth, orthogonality, spiking experts, and their combination do not establish
+novelty by themselves. Any future contribution must distinguish the admission
+estimator, retention/resource formulation, and measured behavior against these
+predecessors. No biological, lifelong-learning, competitive-SNN, sparse-kernel,
+or energy claim follows from this proposal.
+
+### Staged validation itinerary and stop conditions
+
+**Stage 0: mathematical diagnostics.** Retain a reproducible check of the
+quadratic identity and the duplicate/near-duplicate counterexamples. Confirm
+that redundancy screening rejects duplicates, bounded updates prevent
+unrealistically large coefficients, and scores are not artifacts of feature
+scaling. This stage establishes estimator behavior, not research performance.
+
+**Stage 1: estimator evaluation before architectural growth.** Freeze a
+backbone and use the public feature boundary with signed readouts. Construct
+equal-sized candidate banks containing exact duplicates, near-duplicates,
+irrelevant features, and deliberately useful missing features. Compare:
+
+- adaptation without growth;
+- random selection from the same candidate pool;
+- raw-gradient selection, declaring signed versus absolute variants;
+- the original marginal quadratic score;
+- redundancy screening plus bounded fitting;
+- a TINY-inspired residual-expressivity comparator with assumptions and any
+  deviations explicitly documented.
+
+Evaluate predicted-versus-realized gain rankings, calibration, selected
+candidate benefit against random, rejected-candidate cost, and sensitivity to
+scoring batches, replay coverage, scaling, and rank thresholds. Use matched
+seeds and total budgets. Run noise/shuffled-target controls. Do not promote the
+estimator if it cannot reliably select durable held-out benefit over simpler
+controls. Effect thresholds, seed counts, and selection policy remain to be
+preregistered; none is established by the earlier algebra check.
+
+**Stage 2: retention and allocation.** Only after Stage 1 succeeds and a later
+research decision opens the experiment, evaluate familiar data, related
+variation, a different distribution, and return to familiar data. Start with
+unchanged label space to separate distribution shift from class-incremental
+head expansion. Compare fixed capacity with replay, bounded random/scheduled
+growth, and the proposed admission method. Report forgetting, backward and
+forward transfer, growth frequency, routing stability if applicable, total
+parameters, allocated/active memory, and measured training/inference costs.
+Keep controls' replay and optimization opportunities explicit.
+
+**Stage 3: temporal/SNN specificity.** Compare matched spiking and analog
+candidate banks, and non-temporal controls where appropriate. Require actual
+forward validation of surrogate-based predictions. Failure to beat matched
+analog features limits the claim to general capacity allocation. Feature-bank
+success alone does not establish useful learned recurrent topology.
+
+**Stage 4: conditional architecture.** Consider a bounded expert pool and a
+learning-time reuse/adapt/expand controller only after estimator and retention
+gates pass. Compare fixed MoE, matched random/scheduled expansion, and a single
+growing network with replay. Separate the effect of routing from growth and
+state dynamics; measure inactive-state policy and cumulative search cost.
+
+Next justified action: preregister the small estimator diagnostic and direct
+TINY comparison when this exploratory track is opened. Do not begin a large
+growth sweep, build a full MoE, revise the registered Evidence-1 protocol, or
+present predicted quadratic gain as a validated research finding.

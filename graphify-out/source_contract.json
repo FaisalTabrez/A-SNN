@@ -2,7 +2,7 @@
   "schema": 2,
   "hash_encoding": "UTF-8 source bytes with CRLF normalized to LF",
   "claim_boundary": "structural coverage and receipt freshness; semantics unverified",
-  "graph_sha256": "ea32f96886251f8441e4a2de9cf497db6d910ecd7e3e5a6a817a8ce618c45e90",
+  "graph_sha256": "d14d246343e5329dc8ac9f200fd481419ae105d0c2f46a419a48e48aabbf2e18",
   "source_sha256": {
     "docs/GRAPHIFY_KNOWLEDGE_WORKFLOW.md": "5ec7d1b58d18dd2aea04aa29cac47449a74c798ccc379b1050816d5dfca2c1f5",
     "docs/PROJECT_STRUCTURE.md": "c15351f2b683352f988ebec3323981db4bba330187b1d818bfa1c39cfe3d6f6d",
@@ -415,6 +415,6 @@
     "gen5/tools/verify_research_notebook.py": "7548bf713c754790b51f113791535ec585c0f65290d2d5b5badde0ac465ce550",
     "gen5/tools/verify_research_release.py": "f73deca35b4062d97e68dab44ed21cdc2cf2d522a21590ac06260dd0983bb8dd",
     "README.md": "508b1b2eaa4171713c6f0c7b25c0968f5ede5fd13ed4a4520c0f75595d8ef10e",
-    "research.md": "015c2e92a8b596e92397b0a3e4d80bae82eecc93f70b2584e93efd94308ba191"
+    "research.md": "228599dcdd825b60e8f4544f2f430e07bc0c548d5f2ac7ce5a48e283f10e9791"
   }
 }

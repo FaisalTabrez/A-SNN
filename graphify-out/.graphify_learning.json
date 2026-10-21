@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T05:45:59.914407+00:00",
+  "generated_at": "2026-10-14T14:09:46.489577+00:00",
   "nodes": {
     "gen5_ammc_gen5_evidence1_audio": {
       "code_fingerprint": "94e3dce30bbab3373fe09c78ca2ff365c922ef6fbf3c3788019e5c755ebadcab",
@@ -12,13 +12,71 @@
           "q": "conduct a full audit of our previous work and check if any of our work had some loopholes or missing work"
         }
       ],
-      "score": 0.997883244,
+      "score": 0.989849738,
       "source_file": "gen5/ammc_gen5/evidence1_audio.py",
       "status": "tentative",
       "uses": 1
     },
+    "gen5_ammc_gen5_shd_state_placement_diagnostic": {
+      "code_fingerprint": "f998a5218cc2021d23fde079329068826a9132b47ef1cad2556e56ecc921418d",
+      "label": "shd_state_placement_diagnostic.py",
+      "last": "2026-10-14T08:58:55.446362+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T08:58:55.446362+00:00",
+          "outcome": "useful",
+          "q": "what about instead of LIF we remove the leaky part and see how things happen and has anyone worked in that direction"
+        }
+      ],
+      "score": 0.995024795,
+      "source_file": "gen5/ammc_gen5/shd_state_placement_diagnostic.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_docs_evidence1_closure_runbook_evidence_1_closure_tooling_and_honest_remaining_gates": {
+      "code_fingerprint": "c8a1f0bf5b37291eae2d226ba863644aacebf428963db7938ad3bc75321b58d3",
+      "label": "Evidence-1 closure tooling and honest remaining gates",
+      "last": "2026-10-14T09:16:43.263136+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T09:16:43.263136+00:00",
+          "outcome": "useful",
+          "q": "how would you have me work with 1000$ cloud gpu credits from google cloud for researchers"
+        },
+        {
+          "date": "2026-10-14T07:18:23.454885+00:00",
+          "outcome": "useful",
+          "q": "implement the rest and push to github"
+        }
+      ],
+      "score": 1.98873002,
+      "source_file": "gen5/docs/EVIDENCE1_CLOSURE_RUNBOOK.md",
+      "status": "preferred",
+      "uses": 2
+    },
+    "gen5_docs_evidence1_followup_protocol_draft_state_component_isolation_follow_up_draft_not_registered": {
+      "code_fingerprint": "4d6fff0c486ebb81e6cc91b02dbda2c65111547cf757c7d4061cda1b84c53127",
+      "label": "State-component isolation follow-up — draft, not registered",
+      "last": "2026-10-14T09:16:43.263136+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T09:16:43.263136+00:00",
+          "outcome": "useful",
+          "q": "how would you have me work with 1000$ cloud gpu credits from google cloud for researchers"
+        },
+        {
+          "date": "2026-10-14T08:58:55.446362+00:00",
+          "outcome": "useful",
+          "q": "what about instead of LIF we remove the leaky part and see how things happen and has anyone worked in that direction"
+        }
+      ],
+      "score": 1.990333763,
+      "source_file": "gen5/docs/EVIDENCE1_FOLLOWUP_PROTOCOL_DRAFT.md",
+      "status": "preferred",
+      "uses": 2
+    },
     "gen5_docs_evidence1_hardening_2026_10_14_evidence_1_audit_hardening_and_remaining_work": {
-      "code_fingerprint": "cb78eac1907aa6ebf7721aacb54bfcccc40fa55e0b380b19ae838ebf0e3f3b7b",
+      "code_fingerprint": "d8ac68fd68a66d2972f5390a4b9460da1dfd0c536738e778a584330b301b3565",
       "label": "Evidence-1 audit hardening and remaining work",
       "last": "2026-10-14T05:30:58.376766+00:00",
       "provenance": [
@@ -28,7 +86,7 @@
           "q": "now that the audit has reported some flaws fix them"
         }
       ],
-      "score": 0.999758942,
+      "score": 0.991710336,
       "source_file": "gen5/docs/EVIDENCE1_HARDENING_2026_10_14.md",
       "status": "tentative",
       "uses": 1
@@ -44,7 +102,7 @@
           "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
         }
       ],
-      "score": 0.984839672,
+      "score": 0.976911174,
       "source_file": "gen5/docs/GEN30_DENDRITIC_PREDICTIVE_CREDIT_ANALYSIS.md",
       "status": "tentative",
       "uses": 1
@@ -60,13 +118,13 @@
           "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
         }
       ],
-      "score": 0.984839672,
+      "score": 0.976911174,
       "source_file": "gen5/docs/LTH_INFORMED_ITINERARY_REVIEW.md",
       "status": "tentative",
       "uses": 1
     },
     "gen5_docs_primary_evidence_track_roadmap_primary_evidence_track_roadmap": {
-      "code_fingerprint": "39561b8319c6d4a6af9d3f4ed8ae4bca724b98dae7adcca305203be5ca6db444",
+      "code_fingerprint": "5227b4d328810fd90526bfb5c589ae65d15818e2aee5ae26ce4bd9b44d05740b",
       "label": "Primary evidence track roadmap",
       "last": "2026-10-14T03:33:55.988285+00:00",
       "provenance": [
@@ -81,10 +139,42 @@
           "q": "Which recent SNN papers are useful to A-SNN and what should we work on next, as of 2026-10-13?"
         }
       ],
-      "score": 1.982722916,
+      "score": 1.966760913,
       "source_file": "gen5/docs/PRIMARY_EVIDENCE_TRACK_ROADMAP.md",
       "status": "preferred",
       "uses": 2
+    },
+    "gen5_tools_evidence1_fidelity_diagnostic": {
+      "code_fingerprint": "b670d47e088e76ade9c713a6f55ced29b1da0fda9f10faff8e6b7d2b1fc64a2c",
+      "label": "evidence1_fidelity_diagnostic.py",
+      "last": "2026-10-14T07:18:23.454885+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T07:18:23.454885+00:00",
+          "outcome": "useful",
+          "q": "implement the rest and push to github"
+        }
+      ],
+      "score": 0.993421052,
+      "source_file": "gen5/tools/evidence1_fidelity_diagnostic.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "gen5_tools_verify_clean_checkout": {
+      "code_fingerprint": "ecb01856ad55162c542d2aeddea30d17aebfb8c8961860e16b1108329eb7d198",
+      "label": "verify_clean_checkout.py",
+      "last": "2026-10-14T07:18:23.454885+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-14T07:18:23.454885+00:00",
+          "outcome": "useful",
+          "q": "implement the rest and push to github"
+        }
+      ],
+      "score": 0.993421052,
+      "source_file": "gen5/tools/verify_clean_checkout.py",
+      "status": "tentative",
+      "uses": 1
     }
   },
   "version": 1
